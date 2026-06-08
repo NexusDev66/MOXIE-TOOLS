@@ -7,7 +7,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/moxie-preview.html" }
+    { "source": "/", "destination": "/moxie-preview" }
   ],
   "headers": [
     {
