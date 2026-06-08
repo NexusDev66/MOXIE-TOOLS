@@ -342,6 +342,10 @@
         .cat-chip{padding:6px 13px;border:1px solid var(--line);background:var(--bg);border-radius:9999px;font-size:13px;color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s;white-space:nowrap}
         .cat-chip:hover{border-color:var(--accent);color:var(--ink)}
         .cat-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+        /* 榜单前 5 名名次高亮:前 3 强调橙、4-5 浅一档 */
+        .prod-list .prow:nth-child(-n+5) .prank-cell{color:var(--accent);font-weight:700}
+        .prod-list .prow:nth-child(-n+3) .prank-cell{font-size:14px}
+        .prod-list .prow:nth-child(n+4):nth-child(-n+5) .prank-cell{opacity:.72}
       </style>
       <nav class="cat-bar" id="catBar"></nav>
 
