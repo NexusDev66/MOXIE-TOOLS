@@ -102,7 +102,7 @@ window.MoxieDB = {
     }
     if (opts.categoryIds) q = q.in('category_id', opts.categoryIds);
     if (opts.featured) q = q.eq('featured', true);
-    q = q.order(opts.orderBy || 'vote_count', { ascending: false })
+    q = q.order(opts.orderBy || 'weight_score', { ascending: false })
          .limit(opts.limit || 24);
     return await q;
   },

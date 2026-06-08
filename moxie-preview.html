@@ -917,7 +917,7 @@
       </div>`;
       return;
     }
-    const { data, error } = await window.MoxieDB.products({ limit: 12, orderBy: 'vote_count' });
+    const { data, error } = await window.MoxieDB.products({ limit: 12, orderBy: 'weight_score' });
     if (error || !data?.length) {
       box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">
         ${error ? '加载失败：' + (error.message || error) : '暂无数据 — 跑 migration_001_init.sql 灌种子'}
@@ -1315,7 +1315,7 @@
   window.moxieWhenDBReady(function(db){
     if (!db) return;
     var bar = document.getElementById('catBar'); if (!bar) return;
-    Promise.all([window.MoxieDB.categories(), window.MoxieDB.products({ limit: 500, orderBy: 'vote_count' })]).then(function(r){
+    Promise.all([window.MoxieDB.categories(), window.MoxieDB.products({ limit: 500, orderBy: 'weight_score' })]).then(function(r){
       var cats = r[0].data || [], prods = r[1].data || [];
       ALL = prods;
       var cnt = {}; prods.forEach(function(p){ cnt[p.category_id] = (cnt[p.category_id]||0) + 1; });
