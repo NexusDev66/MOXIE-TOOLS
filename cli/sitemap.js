@@ -10,7 +10,7 @@
  * 读数据用 anon key(只读 published)。canonical 域名:env SITE_BASE_URL(默认 https://www.latemai.com)。
  */
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -39,6 +39,13 @@ async function main() {
   const products = await res.json();
   console.log(`   published 产品:${products.length}`);
 
+  const ares = await fetch(
+    `${SUPABASE_URL}/rest/v1/moxie_articles?status=eq.published&select=slug,published_at&order=published_at.desc&limit=2000`,
+    { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } },
+  );
+  const articles = ares.ok ? await ares.json() : [];
+  console.log(`   published 文章:${articles.length}`);
+
   const urls = [
     { loc: `${SITE_BASE}/`, lastmod: today, priority: '1.0', changefreq: 'daily' },
     ...products.map((p) => ({
@@ -46,6 +53,12 @@ async function main() {
       lastmod: (p.updated_at || '').slice(0, 10) || today,
       priority: '0.8',
       changefreq: 'weekly',
+    })),
+    ...articles.map((a) => ({
+      loc: `${SITE_BASE}/articles/${a.slug}`,
+      lastmod: (a.published_at || '').slice(0, 10) || today,
+      priority: '0.6',
+      changefreq: 'monthly',
     })),
   ];
 

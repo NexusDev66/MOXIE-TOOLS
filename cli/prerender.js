@@ -26,6 +26,7 @@ if (!SUPABASE_URL || !ANON) {
 const __dir = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dir, '..');
 const OUT_DIR = join(ROOT, 'tools');
+const OUT_ARTICLES = join(ROOT, 'articles');
 
 /** HTML 转义(文本 + 属性通用) */
 function esc(s) {
@@ -103,24 +104,94 @@ function renderProduct(tpl, p) {
   return { html, checks };
 }
 
-async function main() {
-  console.log(`\n🖨  Phase 1.1 产品页预渲染 · base=${SITE_BASE}\n`);
-  const tpl = readFileSync(join(ROOT, 'moxie-product.html'), 'utf8');
-  const products = await fetchPublishedProducts();
-  console.log(`   读到 published 产品:${products.length}`);
+async function fetchPublishedArticles() {
+  const url = `${SUPABASE_URL}/rest/v1/moxie_articles?status=eq.published&select=slug,title,excerpt,category,body_html,cover_url,published_at,read_minutes&order=published_at.desc&limit=1000`;
+  const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
+  if (!res.ok) throw new Error(`读取文章失败 ${res.status}: ${await res.text()}`);
+  return res.json();
+}
 
-  mkdirSync(OUT_DIR, { recursive: true });
-  let ok = 0;
-  const warned = new Set();
-  for (const p of products) {
-    const { html, checks } = renderProduct(tpl, p);
-    if (checks.length) checks.forEach((c) => warned.add(c));
-    writeFileSync(join(OUT_DIR, `${p.slug}.html`), html, 'utf8');
-    ok++;
+function buildArticleHead(a, canonical) {
+  const desc = a.excerpt || a.title;
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.title,
+    ...(a.excerpt ? { description: a.excerpt } : {}),
+    ...(a.cover_url ? { image: [a.cover_url] } : {}),
+    ...(a.published_at ? { datePublished: a.published_at, dateModified: a.published_at } : {}),
+    author: { '@type': 'Organization', name: 'MOXIE' },
+    publisher: { '@type': 'Organization', name: 'MOXIE' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  };
+  return [
+    `<meta name="description" content="${esc(desc)}">`,
+    `<link rel="canonical" href="${canonical}">`,
+    `<meta property="og:type" content="article">`,
+    `<meta property="og:title" content="${esc(a.title)} · MOXIE">`,
+    `<meta property="og:description" content="${esc(desc)}">`,
+    `<meta property="og:url" content="${canonical}">`,
+    `<script type="application/ld+json">${jsonLd(ld)}</script>`,
+  ].join('\n');
+}
+
+/** 把模板渲染成某篇文章的 SEO 静态页 */
+function renderArticle(tpl, a) {
+  const canonical = `${SITE_BASE}/articles/${a.slug}`;
+  let html = tpl;
+  const checks = [];
+  const rep = (from, to, label) => { if (!html.includes(from)) { checks.push(`⚠ 文章未找到[${label}]`); return; } html = html.replace(from, to); };
+
+  html = html
+    .replace(/(href|src)="(moxie-[^"]*)"/g, '$1="/$2"')
+    .replace(/(href|src)="(public\/[^"]*)"/g, '$1="/$2"');
+
+  rep('<title>DeepSeek V3 中文实测 · MOXIE</title>', `<title>${esc(a.title)} · MOXIE</title>`, 'title');
+  rep('</head>', `${buildArticleHead(a, canonical)}\n</head>`, 'head');
+  rep('<h1 class="art-title" id="artTitle">加载中…</h1>', `<h1 class="art-title" id="artTitle">${esc(a.title)}</h1>`, 'artTitle');
+  rep('<p class="art-excerpt" id="artExcerpt"></p>', `<p class="art-excerpt" id="artExcerpt">${esc(a.excerpt || '')}</p>`, 'artExcerpt');
+  rep('<span class="tag" id="artCategory">REVIEW</span>', `<span class="tag" id="artCategory">${esc(a.category || '')}</span>`, 'artCategory');
+  // 有 body_html 才烤进正文(种子文章为空 → 留模板默认,待 Phase 4 生成正文后重渲染)
+  if (a.body_html) {
+    rep('<article class="art-content" id="artBody">', `<article class="art-content" id="artBody">${a.body_html}`, 'artBody');
   }
-  console.log(`✓ 生成 ${ok} 个静态产品页 → tools/<slug>.html`);
-  if (warned.size) console.log('   模板替换告警(可能模板结构变了):', [...warned].join(' '));
-  console.log(`\n抽查:tools/${products[0]?.slug}.html\n`);
+  rep("const slug = new URLSearchParams(location.search).get('slug');", `const slug = ${JSON.stringify(a.slug)};`, 'slug');
+
+  return { html, checks };
+}
+
+async function main() {
+  console.log(`\n🖨  Phase 1.1/1.3 预渲染 · base=${SITE_BASE}\n`);
+  const warned = new Set();
+
+  // 产品页
+  const ptpl = readFileSync(join(ROOT, 'moxie-product.html'), 'utf8');
+  const products = await fetchPublishedProducts();
+  mkdirSync(OUT_DIR, { recursive: true });
+  let pn = 0;
+  for (const p of products) {
+    const { html, checks } = renderProduct(ptpl, p);
+    checks.forEach((c) => warned.add(c));
+    writeFileSync(join(OUT_DIR, `${p.slug}.html`), html, 'utf8');
+    pn++;
+  }
+  console.log(`✓ 产品页 ${pn} → tools/<slug>.html`);
+
+  // 文章页
+  const atpl = readFileSync(join(ROOT, 'moxie-article.html'), 'utf8');
+  const articles = await fetchPublishedArticles();
+  mkdirSync(OUT_ARTICLES, { recursive: true });
+  let an = 0;
+  for (const a of articles) {
+    const { html, checks } = renderArticle(atpl, a);
+    checks.forEach((c) => warned.add(c));
+    writeFileSync(join(OUT_ARTICLES, `${a.slug}.html`), html, 'utf8');
+    an++;
+  }
+  console.log(`✓ 文章页 ${an} → articles/<slug>.html`);
+
+  if (warned.size) console.log('   模板替换告警:', [...warned].join(' '));
+  console.log('');
 }
 
 main().catch((e) => { console.error('❌ 失败:', e.message); process.exit(1); });
