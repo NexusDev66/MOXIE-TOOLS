@@ -1,0 +1,61 @@
+name: Daily Refresh (rank + prerender + sitemap)
+
+# Phase 2.4 / 1.4 · 每天自动:重算权重 → 重渲染产品/文章页 → 重生成 sitemap → 提交。
+# 提交推送后 Vercel 自动重新部署,站点保持最新。
+#
+# 需要在 仓库 Settings → Secrets and variables → Actions 配:
+#   Secrets:  SUPABASE_SERVICE_ROLE_KEY   (写库,sb_secret_...)
+#   Variables: NEXT_PUBLIC_SUPABASE_URL    (https://kyiqgvxvbxktiygohuqh.supabase.co)
+#              NEXT_PUBLIC_SUPABASE_ANON_KEY (sb_publishable_...,公开)
+#              SITE_BASE_URL               (上线域名,如 https://moxie-main-shiyan.vercel.app)
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # 每天 UTC 01:00 = 北京 09:00
+  workflow_dispatch:        # 允许手动触发
+
+permissions:
+  contents: write           # 允许提交回仓库
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SITE_BASE_URL: ${{ vars.SITE_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 检查配置
+        run: |
+          if [ -z "$NEXT_PUBLIC_SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::error::缺 NEXT_PUBLIC_SUPABASE_URL 或 SUPABASE_SERVICE_ROLE_KEY(仓库 Settings → Actions secrets/variables)"
+            exit 1
+          fi
+
+      - name: 重算权重(rank)
+        run: node cli/rank.js
+
+      - name: 重渲染产品/文章页(prerender)
+        run: node cli/prerender.js
+
+      - name: 重生成 sitemap + robots
+        run: node cli/sitemap.js
+
+      - name: 有变化则提交(触发 Vercel 重部署)
+        run: |
+          git config user.name "moxie-bot"
+          git config user.email "bot@latemai.local"
+          git add tools/ articles/ sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "无变化,跳过提交"
+          else
+            git commit -m "chore(refresh): 每日重算权重 + 重渲染 + sitemap [skip ci]"
+            git push
+          fi
