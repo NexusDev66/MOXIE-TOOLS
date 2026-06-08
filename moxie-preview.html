@@ -382,12 +382,13 @@
 <section class="blog-section">
   <div class="container">
     <style>
-      .blog2{display:grid;grid-template-columns:1.6fr 1fr;gap:40px;align-items:start}
+      .blog2{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch}
+      .blog2 .blog-col{display:flex;flex-direction:column}
       .blog2 .blog-grid{grid-template-columns:1fr}
       .news-head-live{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#F53F3F;font-weight:600;margin-left:8px;vertical-align:middle}
       .news-head-live .d{width:6px;height:6px;border-radius:50%;background:#F53F3F;animation:npulse 1.6s infinite}
       @keyframes npulse{0%{box-shadow:0 0 0 0 rgba(245,63,63,.5)}70%{box-shadow:0 0 0 5px rgba(245,63,63,0)}100%{box-shadow:0 0 0 0 rgba(245,63,63,0)}}
-      .news-list{display:flex;flex-direction:column}
+      .news-list{display:flex;flex-direction:column;flex:1;justify-content:space-between}
       .news-item{display:flex;align-items:center;gap:9px;padding:8px 2px;border-bottom:1px solid var(--line);text-decoration:none}
       .news-item::before{content:'';flex-shrink:0;width:5px;height:5px;border-radius:50%;background:#F53F3F;opacity:.7}
       .news-item:last-child{border-bottom:0}
@@ -459,6 +460,18 @@
     </div>
     </div><!-- /blog2 -->
   </div>
+  <script>
+    /* 快讯暂为占位示例(待接真源):让每条点击=新标签打开该标题搜索,真能跳转。
+       接真源后改为给 .news-item 写真实 href 即可,可删本段。 */
+    (function(){
+      document.querySelectorAll('#newsList .news-item').forEach(function(a){
+        if(a.getAttribute('href') && a.getAttribute('href')!=='#') return;
+        var t=(a.querySelector('.news-title')||{}).textContent||'';
+        a.href='https://www.bing.com/search?q='+encodeURIComponent(t.trim());
+        a.target='_blank'; a.rel='noopener';
+      });
+    })();
+  </script>
 </section>
 
 <!-- ═══════ FOOTER ═══════ -->
