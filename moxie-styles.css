@@ -1336,15 +1336,23 @@
   /* ── LEFT SIDE ── */
   .side-block { margin-bottom: 32px; }
 
-  /* 首页主区:各侧栏板块卡片化(白卡+边框+阴影),板块之间区分清晰 */
+  /* 首页主区:侧栏 flex 列 + 统一 gap,板块间隔均匀;各板块卡片化(白卡+边框+阴影) */
+  .main aside {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
   .main aside .side-block {
-    margin-bottom: 16px;
+    margin-bottom: 0;
     padding: 18px 16px;
     background: var(--bg);
     border: 1px solid var(--line);
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(17, 24, 39, 0.05);
   }
+  /* 助手卡 / 提交卡自带样式,这里只清掉各自不一致的外边距,交给 aside 的 gap 统一控制 */
+  .main aside .assistant-card,
+  .main aside .submit-cta-box { margin: 0; }
 
   .stats-grid {
     display: grid;
