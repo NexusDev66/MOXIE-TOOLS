@@ -343,6 +343,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/cursor-github-copilot-trae-compare</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-vs-claude</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
