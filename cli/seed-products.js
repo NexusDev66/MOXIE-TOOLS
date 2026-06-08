@@ -17,8 +17,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
-const SUPABASE_URL = 'https://sqvohgcwzhhsvkmyesvs.supabase.co';
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
+if (!SUPABASE_URL) {
+  console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL(在 .env.local 里)');
+  process.exit(1);
+}
 const DRY_RUN = process.argv.includes('--dry-run');
 
 if (!SERVICE_KEY) {

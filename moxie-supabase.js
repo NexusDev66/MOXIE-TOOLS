@@ -6,8 +6,8 @@
    4. 在 Authentication → Providers 启用 GitHub + Google
    5. Authentication → URL Configuration 加上你的部署域名
 */
-const MOXIE_SUPABASE_URL  = 'https://sqvohgcwzhhsvkmyesvs.supabase.co';
-const MOXIE_SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxdm9oZ2N3emhoc3ZrbXllc3ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2MTkwODgsImV4cCI6MjA5NTE5NTA4OH0.VxalJefNBRWw2xxO5la9Wy5Bc8gDexwZ3JBlU42CnIA';
+const MOXIE_SUPABASE_URL  = 'https://kyiqgvxvbxktiygohuqh.supabase.co';
+const MOXIE_SUPABASE_ANON = 'sb_publishable_QDAR-tJjJpV4jpeDOAt76w_xoEwfHma';
 
 /* ───────── 同步预渲染登录态 (body 解析前执行)，避免登录后头像闪烁 ─────────
    原理：直接读 localStorage 的 Supabase session token，无需等 supabase-js 加载。
@@ -15,7 +15,7 @@ const MOXIE_SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdX
    wireUserMenu() 异步 ready 后再做真正的 DOM 替换 + 下拉绑定 (用户视觉上无缝)。 */
 (function () {
   try {
-    var raw = localStorage.getItem('sb-sqvohgcwzhhsvkmyesvs-auth-token');
+    var raw = localStorage.getItem('sb-kyiqgvxvbxktiygohuqh-auth-token');
     if (!raw) return;
     var data = JSON.parse(raw);
     var session = data && data.access_token ? data
