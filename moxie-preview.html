@@ -300,6 +300,14 @@
         </div>
       </div>
 
+      <style>
+        .cat-bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+        .cat-chip{padding:6px 13px;border:1px solid var(--line);background:var(--bg);border-radius:9999px;font-size:13px;color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s;white-space:nowrap}
+        .cat-chip:hover{border-color:var(--accent);color:var(--ink)}
+        .cat-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+      </style>
+      <nav class="cat-bar" id="catBar"></nav>
+
       <div class="prod-list" id="prodList">
         <div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">加载中…</div>
       </div>
@@ -367,6 +375,20 @@
 <!-- ═══════ BLOG ═══════ -->
 <section class="blog-section">
   <div class="container">
+    <style>
+      .blog2{display:grid;grid-template-columns:1.6fr 1fr;gap:40px;align-items:start}
+      .blog2 .blog-grid{grid-template-columns:1fr}
+      .news-list{display:flex;flex-direction:column}
+      .news-item{display:flex;align-items:baseline;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line);text-decoration:none}
+      .news-item:last-child{border-bottom:0}
+      .news-item:hover .news-title{color:var(--accent-d)}
+      .news-tag{flex-shrink:0;font-size:11px;color:var(--accent-d);background:var(--accent-soft);padding:2px 7px;border-radius:4px;font-weight:600}
+      .news-title{flex:1;font-size:13.5px;color:var(--ink);line-height:1.5}
+      .news-time{flex-shrink:0;font-size:11.5px;color:var(--ink-3)}
+      @media(max-width:880px){.blog2{grid-template-columns:1fr}}
+    </style>
+    <div class="blog2">
+    <div class="blog-col">
     <div class="blog-header">
       <h2>近期文章</h2>
       <a href="moxie-blog.html" class="all-link">全部文章 →</a>
@@ -409,6 +431,23 @@
         <span class="read">阅读全文 →</span>
       </a>
     </div>
+    </div><!-- /blog-col 近期文章 -->
+
+    <div class="blog-col">
+      <div class="blog-header">
+        <h2>每日 AI 快讯热闻</h2>
+        <a href="#" class="all-link">更多 →</a>
+      </div>
+      <nav class="news-list" id="newsList">
+        <a class="news-item" href="#"><span class="news-tag">大模型</span><span class="news-title">OpenAI 据传下月发布新一代推理模型,主打 Agent 长任务</span><span class="news-time">1h</span></a>
+        <a class="news-item" href="#"><span class="news-tag">编程</span><span class="news-title">Anthropic Claude 代码能力更新,SWE-bench 再创新高</span><span class="news-time">3h</span></a>
+        <a class="news-item" href="#"><span class="news-tag">视频</span><span class="news-title">快手可灵上线 2.0,运动一致性大幅提升</span><span class="news-time">5h</span></a>
+        <a class="news-item" href="#"><span class="news-tag">国产</span><span class="news-title">阿里通义千问开源新尺寸模型,中文长文更强</span><span class="news-time">7h</span></a>
+        <a class="news-item" href="#"><span class="news-tag">融资</span><span class="news-title">某国产 Agent 公司完成新一轮融资,估值翻倍</span><span class="news-time">9h</span></a>
+        <a class="news-item" href="#"><span class="news-tag">政策</span><span class="news-title">多地出台 AIGC 内容标识新规,平台需显著标注</span><span class="news-time">12h</span></a>
+      </nav>
+    </div>
+    </div><!-- /blog2 -->
   </div>
 </section>
 
@@ -1237,6 +1276,53 @@
     });
   })();
 
+</script>
+<!-- 分类筛选:融进中间排行榜列表(点分类→该类工具;全部→top 12) -->
+<script>
+(function () {
+  var ALL = [];
+  function esc(s){ return String(s==null?'':s).replace(/[<>&"']/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function rowHTML(p, i){
+    return '<a class="prow" href="moxie-product.html?slug=' + encodeURIComponent(p.slug) + '">'
+      + '<span class="prank-cell"><span class="hash">#</span>' + String(i+1).padStart(2,'0') + '</span>'
+      + '<div class="plogo has-img"><img src="https://www.google.com/s2/favicons?domain=' + p.domain + '&sz=128" alt="' + esc(p.name) + '"/></div>'
+      + '<div class="pmain"><div class="ptop"><span class="pname">' + esc(p.name) + '</span>'
+      + (p.verified ? '<span class="verified-tag">子墨测过</span>' : '') + '</div>'
+      + '<div class="pdesc">' + esc(p.tagline) + '</div></div>'
+      + '<div class="ptags">' + (p.tags||[]).slice(0,2).map(function(t){ return '<span class="ptag">' + esc(t) + '</span>'; }).join('') + '</div>'
+      + '<span class="pprice">' + esc(p.price_label || '免费') + '</span>'
+      + '<div class="pvote" data-product-id="' + p.id + '"><span class="tri">▲</span><span class="num">' + p.vote_count + '</span></div>'
+      + '</a>';
+  }
+  function show(catId){
+    var box = document.getElementById('prodList'); if (!box) return;
+    var list = catId === 'all' ? ALL.slice(0, 12) : ALL.filter(function(p){ return p.category_id === catId; });
+    box.innerHTML = list.length ? list.map(rowHTML).join('')
+      : '<div style="padding:40px 0;text-align:center;color:var(--ink-3);font-size:13px;">该分类暂无工具</div>';
+    if (window.MoxieRewire) window.MoxieRewire();
+  }
+  if (!window.moxieWhenDBReady) return;
+  window.moxieWhenDBReady(function(db){
+    if (!db) return;
+    var bar = document.getElementById('catBar'); if (!bar) return;
+    Promise.all([window.MoxieDB.categories(), window.MoxieDB.products({ limit: 500, orderBy: 'vote_count' })]).then(function(r){
+      var cats = r[0].data || [], prods = r[1].data || [];
+      ALL = prods;
+      var cnt = {}; prods.forEach(function(p){ cnt[p.category_id] = (cnt[p.category_id]||0) + 1; });
+      var chips = [{ id: 'all', name: '全部' }].concat(cats.filter(function(c){ return cnt[c.id]; }).map(function(c){ return { id: c.id, name: c.name, n: cnt[c.id] }; }));
+      bar.innerHTML = chips.map(function(c, i){
+        return '<button class="cat-chip' + (i===0?' active':'') + '" data-cat="' + c.id + '">' + esc(c.name) + (c.n?(' <span style="opacity:.6">'+c.n+'</span>'):'') + '</button>';
+      }).join('');
+      bar.querySelectorAll('.cat-chip').forEach(function(b){
+        b.addEventListener('click', function(){
+          bar.querySelectorAll('.cat-chip').forEach(function(x){ x.classList.toggle('active', x===b); });
+          var v = b.dataset.cat;
+          show(v === 'all' ? 'all' : Number(v));
+        });
+      });
+    });
+  });
+})();
 </script>
 </body>
 </html>
