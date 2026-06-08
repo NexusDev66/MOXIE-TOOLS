@@ -1336,6 +1336,15 @@
   /* ── LEFT SIDE ── */
   .side-block { margin-bottom: 32px; }
 
+  /* 首页主区:各侧栏板块细边框卡片化,板块之间区分更清晰 */
+  .main aside .side-block {
+    margin-bottom: 16px;
+    padding: 16px 16px 18px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+  }
+
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
