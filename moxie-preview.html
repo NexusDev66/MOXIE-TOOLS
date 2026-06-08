@@ -305,7 +305,8 @@
           <span>近期文章</span>
           <a href="moxie-blog.html" class="all-link" style="font-size:11px">全部 →</a>
         </div>
-        <div class="side-arts">
+        <div class="side-arts" id="sideArts">
+          <!-- 兜底:DB 就绪后由下方脚本用真实文章替换;失败则保留这几条 -->
           <a class="side-art" href="moxie-article.html">
             <div class="side-art-meta"><span class="tag">REVIEW</span> · 2026.05.21</div>
             <div class="side-art-title">DeepSeek V3 中文实测：跑完 6 个真实场景，发现 Claude 没有的 3 个优势</div>
@@ -319,6 +320,30 @@
             <div class="side-art-title">中文 AI maker 第一批 1,000 用户怎么来：7 位创始人的真实路径</div>
           </a>
         </div>
+        <script>
+          /* 近期文章接真数据:读最新 published 文章,链到 /articles/<slug>;失败保留兜底 */
+          (function(){
+            if (!window.moxieWhenDBReady) return;
+            var box = document.getElementById('sideArts');
+            function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+            function fdate(s){ if(!s) return ''; var d=new Date(s); if(isNaN(d)) return ''; return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0'); }
+            window.moxieWhenDBReady(async function(db){
+              if (!db || !box || !window.MoxieDB) return;
+              try {
+                var res = await window.MoxieDB.articles({ limit: 4 });
+                var arts = res && res.data;
+                if (!arts || !arts.length) return;
+                box.innerHTML = arts.map(function(a){
+                  var cat = a.category ? esc(a.category) : 'ARTICLE';
+                  var dt = fdate(a.published_at || a.created_at);
+                  return '<a class="side-art" href="/articles/'+encodeURIComponent(a.slug)+'">'
+                    + '<div class="side-art-meta"><span class="tag">'+cat+'</span>'+(dt?' · '+dt:'')+'</div>'
+                    + '<div class="side-art-title">'+esc(a.title)+'</div></a>';
+                }).join('');
+              } catch(e){ /* 保留兜底 */ }
+            });
+          })();
+        </script>
       </div>
     </aside>
 
