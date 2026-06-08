@@ -19,11 +19,11 @@ const KEEP = 60; // 库里最多保留多少条(超出删旧)
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
 
 // 默认源(中文 AI/科技;可被 NEWS_FEEDS 覆盖)。单源失败自动跳过。
+// 已在 GitHub Actions 验证:量子位(纯 AI,主力)+ Solidot(科技兜底)可达;
+// 36氪(泛财经会挤掉 AI)、机器之心(取不到条目)已剔除。需要更多源用 NEWS_FEEDS 加。
 const DEFAULT_FEEDS = [
   'https://www.qbitai.com/feed|量子位',
-  'https://www.jiqizhixin.com/rss|机器之心',
   'https://www.solidot.org/index.rss|Solidot',
-  'https://36kr.com/feed-newsflash|36氪',
 ];
 const FEEDS = (process.env.NEWS_FEEDS
   ? process.env.NEWS_FEEDS.split(',')

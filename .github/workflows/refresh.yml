@@ -39,6 +39,10 @@ jobs:
             exit 1
           fi
 
+      - name: 抓取每日 AI 快讯(RSS→moxie_news,源失败不阻塞)
+        run: node cli/fetch-news.js
+        continue-on-error: true
+
       - name: 重算权重(rank)
         run: node cli/rank.js
 

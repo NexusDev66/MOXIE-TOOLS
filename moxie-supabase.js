@@ -158,6 +158,16 @@ window.MoxieDB = {
       .select('*').eq('slug', slug).maybeSingle();
   },
 
+  /* ---------- 每日 AI 快讯(cron 拉 RSS 写入)---------- */
+  async news(opts) {
+    opts = opts || {};
+    if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
+    return await window.moxieDB.from('moxie_news')
+      .select('title,url,source,tag,published_at')
+      .order('published_at', { ascending: false, nullsFirst: false })
+      .limit(opts.limit || 8);
+  },
+
   /* ---------- 评论 ---------- */
   async commentsFor(targetType, targetId) {
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };

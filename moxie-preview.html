@@ -34,7 +34,7 @@
 <!-- MiSans ExtraLight · 小米开源中文超细体 (商用免费 · jsDelivr CDN 分块按需加载) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans-webfont@4.3.1/misans/misans-extralight/result.min.css">
 <link rel="stylesheet" href="moxie-styles.css?v=20260608-02">
-<script src="moxie-supabase.js?v=20260526-01"></script>
+<script src="moxie-supabase.js?v=20260608-01"></script>
 <script src="moxie-shared.js?v=20260526-01" defer></script>
 </head>
 <body>
@@ -462,13 +462,33 @@
           <a class="news-item" href="#"><span class="news-tag">政策</span><span class="news-title">多地出台 AIGC 内容标识新规,平台需显著标注</span><span class="news-time">12h</span></a>
         </nav>
         <script>
-          /* 快讯暂为占位示例(待接真源):点击=新标签打开该标题搜索。接真源后给 .news-item 写真实 href 即可。 */
+          /* 快讯接真源:DB 就绪后读 moxie_news 渲染(cron 拉 RSS 写入);失败/空则保留占位并让占位可点搜索。 */
           (function(){
-            document.querySelectorAll('#newsList .news-item').forEach(function(a){
-              if(a.getAttribute('href') && a.getAttribute('href')!=='#') return;
-              var t=(a.querySelector('.news-title')||{}).textContent||'';
-              a.href='https://www.bing.com/search?q='+encodeURIComponent(t.trim());
-              a.target='_blank'; a.rel='noopener';
+            var box = document.getElementById('newsList');
+            function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+            function rel(s){ if(!s) return ''; var d=new Date(s); if(isNaN(d)) return ''; var m=(Date.now()-d)/6e4; if(m<60) return Math.max(1,Math.round(m))+'分钟'; var h=m/60; if(h<24) return Math.round(h)+'h'; var dd=h/24; return Math.round(dd)+'d'; }
+            function fallbackClickable(){
+              box.querySelectorAll('.news-item').forEach(function(a){
+                if(a.getAttribute('href') && a.getAttribute('href')!=='#') return;
+                var t=(a.querySelector('.news-title')||{}).textContent||'';
+                a.href='https://www.bing.com/search?q='+encodeURIComponent(t.trim()); a.target='_blank'; a.rel='noopener';
+              });
+            }
+            if (!window.moxieWhenDBReady) { fallbackClickable(); return; }
+            window.moxieWhenDBReady(async function(db){
+              try {
+                if (!db || !box || !window.MoxieDB || !window.MoxieDB.news) { fallbackClickable(); return; }
+                var res = await window.MoxieDB.news({ limit: 8 });
+                var items = res && res.data;
+                if (!items || !items.length) { fallbackClickable(); return; }
+                box.innerHTML = items.map(function(n){
+                  var time = rel(n.published_at);
+                  return '<a class="news-item" href="'+esc(n.url)+'" target="_blank" rel="noopener">'
+                    + '<span class="news-tag">'+esc(n.tag||n.source||'')+'</span>'
+                    + '<span class="news-title">'+esc(n.title)+'</span>'
+                    + '<span class="news-time">'+esc(time)+'</span></a>';
+                }).join('');
+              } catch(e){ fallbackClickable(); }
             });
           })();
         </script>
