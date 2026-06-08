@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
+<title>登录 · MOXIE</title>
+<meta name="description" content="登录 MOXIE，收藏工具、订阅周报、参与投票。中文 AI 工具的每日精选榜。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
+<script src="moxie-supabase.js?v=20260526-01"></script>
+<script src="moxie-shared.js?v=20260526-01" defer></script>
+
+<style>
+  /* ── 登录页：双列 split layout ── */
+  body { background: var(--bg); }
+  .login-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ── 左：表单 ── */
+  .login-form-side {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 48px;
+    min-height: 100vh;
+  }
+  .login-form-side > header {
+    flex-shrink: 0;
+  }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px;
+    color: var(--ink-2);
+    transition: color .15s;
+  }
+  .back-link:hover { color: var(--ink); }
+  .back-link .brand-logo-mini {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .back-link .brand-logo-mini img {
+    height: 22px; width: auto;
+  }
+
+  .form-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 380px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 0;
+  }
+  .form-eyebrow {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .form-wrap h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .form-wrap .sub {
+    font-size: 13.5px;
+    color: var(--ink-1);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  /* ── OAuth 双按钮栈 ── */
+  .oauth-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-oauth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    height: 48px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, box-shadow .15s;
+  }
+  .btn-oauth:hover {
+    background: var(--bg-soft);
+    border-color: var(--ink-3);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .btn-oauth svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .btn-oauth.oauth-github { background: var(--ink); color: white; border-color: var(--ink); }
+  .btn-oauth.oauth-github:hover { background: #2E3441; border-color: #2E3441; }
+  .btn-oauth[disabled] { opacity: .6; cursor: wait; }
+
+  /* ── 法律小字 ── */
+  .legal {
+    margin-top: 18px;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    text-align: center;
+  }
+  .legal a {
+    color: var(--ink-1);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 2px;
+  }
+  .legal a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  .form-foot {
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 24px;
+  }
+  .form-foot a {
+    color: var(--ink-2);
+    transition: color .15s;
+  }
+  .form-foot a:hover { color: var(--ink); }
+
+  /* ── 右：品牌侧 ── */
+  .login-brand-side {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-soft);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 64px;
+  }
+  /* dot grid + 顶/底 mask 跟 hero 一致 */
+  .login-brand-side::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #E5E6EB 1px, transparent 1.2px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* 右上角橘色微光 */
+  .login-brand-side::after {
+    content: "";
+    position: absolute;
+    top: -140px; right: -140px;
+    width: 440px; height: 440px;
+    background: radial-gradient(circle, rgba(221,110,76,0.10), transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .brand-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+  }
+
+  .quote {
+    margin-bottom: 48px;
+  }
+  .quote .mark {
+    font-family: var(--mono);
+    font-size: 40px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .quote p {
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.65;
+    font-weight: 450;
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+  }
+  .quote .author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .quote .author .av {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-d);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .quote .author .name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .quote .author .role {
+    font-size: 11.5px;
+    color: var(--ink-2);
+  }
+
+  .brand-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .brand-stats .v {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .brand-stats .l {
+    font-size: 11.5px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 920px) {
+    .login-page { grid-template-columns: 1fr; }
+    .login-brand-side { display: none; }
+    .login-form-side { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="login-page">
+
+  <!-- LEFT · FORM -->
+  <section class="login-form-side">
+    <header>
+      <a href="moxie-preview.html" class="back-link">
+        <span class="brand-logo-mini">
+          <img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE">
+        </span>
+      </a>
+    </header>
+
+    <main class="form-wrap">
+      <div class="form-eyebrow">登录或注册</div>
+      <h1>欢迎回到 MOXIE</h1>
+      <p class="sub">一键登录，自动创建账号——无需邮箱密码，无需邮件验证</p>
+
+      <div class="oauth-stack">
+        <button type="button" class="btn-oauth oauth-google" onclick="handleOAuth('google')">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span>使用 Google 一键登录</span>
+        </button>
+        <button type="button" class="btn-oauth oauth-github" onclick="handleOAuth('github')">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39.98 0 1.97.13 2.89.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.8-.01 3.18 0 .31.21.67.79.55C20.21 21.38 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+          </svg>
+          <span>使用 GitHub 一键登录</span>
+        </button>
+      </div>
+
+      <p class="legal">
+        继续即代表同意 <a href="moxie-terms.html">服务条款</a> 与 <a href="moxie-privacy.html">隐私政策</a>
+      </p>
+    </main>
+  </section>
+
+  <!-- RIGHT · BRAND -->
+  <aside class="login-brand-side">
+    <div class="brand-content">
+      <div class="quote">
+        <div class="mark">"</div>
+        <p>MOXIE 是我每早打开的第一个 tab。深度评测过的 AI 工具选型，省下我每天一两个小时的盲试时间——这是真正稀缺的中文 AI 内容。</p>
+        <div class="author">
+          <div class="av">陈</div>
+          <div>
+            <div class="name">陈墨</div>
+            <div class="role">AI 产品经理 · Notion</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-stats">
+        <div>
+          <div class="v">3,847</div>
+          <div class="l">款工具已收录</div>
+        </div>
+        <div>
+          <div class="v">6,412</div>
+          <div class="l">人订阅周报</div>
+        </div>
+        <div>
+          <div class="v">142</div>
+          <div class="l">期榜单</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  /* canonical origin —— 避免 latemai.com → www.latemai.com 307 redirect 在 PKCE 流里丢 codeVerifier */
+  function moxieCanonicalOrigin() {
+    if (location.hostname === 'latemai.com') return 'https://www.latemai.com';
+    return location.origin;
+  }
+  /* 如果用户直接进了 root domain 的登录页，立即把 URL 替换成 www 域，让后续 OAuth/magic-link 全程同域 */
+  if (location.hostname === 'latemai.com') {
+    location.replace('https://www.latemai.com' + location.pathname + location.search + location.hash);
+  }
+
+  /* ── OAuth 一键登录 · 真接 Supabase Auth ── */
+  function handleOAuth(provider) {
+    const btn = document.querySelector(`.btn-oauth.oauth-${provider}`);
+    const label = btn.querySelector('span');
+    btn.disabled = true;
+    label.textContent = provider === 'google' ? '跳转 Google 授权…' : '跳转 GitHub 授权…';
+    document.querySelectorAll('.btn-oauth').forEach(b => { if (b !== btn) b.disabled = true; });
+
+    window.moxieWhenDBReady(async (db) => {
+      if (!db) {
+        alert('Supabase 还没配置。打开 moxie-supabase.js?v=20260526-01 填 URL 和 anon key。');
+        location.reload(); return;
+      }
+      // 登录后回首页（带 ?welcome=1 显示欢迎 toast）· 必须用 canonical origin
+      const redirectTo = moxieCanonicalOrigin() + '/moxie-preview.html?welcome=1';
+      const { error } = await db.auth.signInWithOAuth({
+        provider,
+        options: { redirectTo }
+      });
+      if (error) { alert('登录失败：' + error.message); location.reload(); }
+    });
+  }
+
+  /* 如果已登录直接跳首页 */
+  window.moxieWhenDBReady(async (db) => {
+    if (!db) return;
+    const { data: { session } } = await db.auth.getSession();
+    if (session) location.href = 'moxie-preview.html';
+  });
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>

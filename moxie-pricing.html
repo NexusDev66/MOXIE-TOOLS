@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
+<title>商务合作 · MOXIE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=Geist:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
+<script src="moxie-shared.js?v=20260526-01" defer></script>
+<style>
+  .biz-hero { text-align: center; padding: 88px 0 56px; }
+  .biz-hero .eyebrow { font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 600; margin-bottom: 14px; }
+  .biz-hero h1 { font-size: 40px; font-weight: 500; color: var(--ink); letter-spacing: -0.025em; line-height: 1.25; margin-bottom: 16px; }
+  .biz-hero p { font-size: 15px; color: var(--ink-1); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+  .biz-body { padding: 24px 0 96px; }
+  .biz-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 56px; max-width: 1080px; margin: 0 auto; align-items: start; }
+
+  .biz-form {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 36px;
+  }
+  .biz-form h2 { font-size: 18px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+  .biz-form .h-sub { font-size: 13px; color: var(--ink-2); margin-bottom: 28px; line-height: 1.6; }
+
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12.5px; color: var(--ink-1); margin-bottom: 6px; font-weight: 500; }
+  .field label .opt { color: var(--ink-3); font-weight: 400; margin-left: 4px; }
+  .field input[type="text"], .field input[type="email"], .field input[type="tel"], .field select, .field textarea {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--ink);
+    background: var(--bg);
+    transition: border-color .15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--ink); }
+  .field textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .needs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .needs-grid label {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12.5px;
+    color: var(--ink-1);
+    margin: 0;
+    font-weight: 400;
+    transition: all .15s;
+  }
+  .needs-grid label:hover { border-color: var(--ink-3); }
+  .needs-grid label.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 500; }
+  .needs-grid input { width: auto; margin: 0; }
+
+  .form-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 28px; padding-top: 24px;
+    border-top: 1px solid var(--line-2);
+  }
+  .form-foot .terms { font-size: 11.5px; color: var(--ink-2); line-height: 1.6; max-width: 360px; }
+  .btn-submit-biz {
+    background: var(--accent); color: white;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px; font-weight: 500;
+    transition: background .15s;
+    border: none; cursor: pointer;
+  }
+  .btn-submit-biz:hover { background: var(--accent-d); }
+
+  /* Right info panel */
+  .biz-side {}
+  .biz-side .info-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 26px;
+    margin-bottom: 16px;
+  }
+  .biz-side .info-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .biz-side .info-card h3 .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+  .biz-side .info-card p {
+    font-size: 12.5px;
+    color: var(--ink-1);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+  .biz-side .info-card ul { list-style: none; }
+  .biz-side .info-card ul li { font-size: 12.5px; color: var(--ink-1); padding: 4px 0 4px 16px; position: relative; line-height: 1.6; }
+  .biz-side .info-card ul li::before { content: "·"; color: var(--ink-3); position: absolute; left: 4px; font-weight: 600; }
+
+  .biz-side .quick-contact {
+    background: var(--ink); color: var(--bg-soft);
+    border-radius: 12px;
+    padding: 26px;
+  }
+  .biz-side .quick-contact h3 { color: white; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+  .biz-side .quick-contact p { color: var(--ink-4); font-size: 12.5px; line-height: 1.65; margin-bottom: 14px; }
+  .biz-side .quick-contact .em { display: block; font-size: 13px; color: var(--accent); font-family: var(--mono); padding: 8px 0 4px; }
+  .biz-side .quick-contact .wx { display: block; font-size: 11.5px; color: var(--ink-4); font-family: var(--mono); }
+
+  @media (max-width: 900px) {
+    .biz-grid { grid-template-columns: 1fr; }
+    .biz-form { padding: 28px; }
+    .field-row, .needs-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="moxie-preview.html" class="brand-logo"><img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24"></a>
+    <nav class="nav-center">
+      <a href="moxie-preview.html">榜单</a>
+      <a href="moxie-business.html">商业落地</a>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="moxie-blog.html">文章</a>
+      
+    </nav>
+    <div class="top-actions">
+      <a href="#" class="cmd-trigger"><i data-lucide="search" style="width:14px;height:14px;color:var(--ink-3);"></i><span class="label">搜索产品 / maker / tag…</span></a>
+      <a href="moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="moxie-login.html" class="btn-accent" id="loginBtn">登录</a>
+    </div>
+  </div>
+</header>
+
+<section class="biz-hero">
+  <div class="container">
+    <div class="eyebrow">企业服务 · 商务合作</div>
+    <h1>有合作需求？<br>留下信息我们 48 小时内联系你</h1>
+    <p>无论是企业 AI 工具选型、PREMIUM 推广位、内容定制还是 API 数据合作，告诉我们你的场景，我们会安排合适的人对接。</p>
+  </div>
+</section>
+
+<section class="biz-body">
+  <div class="container">
+    <div class="biz-grid">
+
+      <!-- LEFT: form -->
+      <form class="biz-form" onsubmit="event.preventDefault(); alert('已收到，48 小时内会联系你');">
+        <h2>填写需求</h2>
+        <div class="h-sub">所有字段仅用于商务对接，不会用于其他用途。带 * 为必填。</div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>姓名 *</label>
+            <input type="text" placeholder="如何称呼你">
+          </div>
+          <div class="field">
+            <label>邮箱 *</label>
+            <input type="email" placeholder="对接邮箱">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>公司名称 <span class="opt">（个人可留空）</span></label>
+            <input type="text" placeholder="比如：字节跳动 / 个人">
+          </div>
+          <div class="field">
+            <label>角色 *</label>
+            <select>
+              <option>请选择</option>
+              <option>创始人 / CEO</option>
+              <option>CTO / 技术负责人</option>
+              <option>产品 / PM</option>
+              <option>市场 / 增长</option>
+              <option>采购</option>
+              <option>独立开发者</option>
+              <option>其他</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>团队规模</label>
+            <select>
+              <option>1-10 人</option>
+              <option>11-50 人</option>
+              <option>51-200 人</option>
+              <option>201-1000 人</option>
+              <option>1000+ 人</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>微信 / Telegram <span class="opt">（更快联系）</span></label>
+            <input type="text" placeholder="@handle 或微信号">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>需求类型 *<span class="opt">（可多选）</span></label>
+          <div class="needs-grid">
+            <label><input type="checkbox"> PREMIUM 上榜推广</label>
+            <label><input type="checkbox"> 企业 AI 工具选型咨询</label>
+            <label><input type="checkbox"> 编辑内容定制 / 横评</label>
+            <label><input type="checkbox"> API / 数据合作</label>
+            <label><input type="checkbox"> 品牌联名 / 活动</label>
+            <label><input type="checkbox"> 投资 / 战略合作</label>
+            <label><input type="checkbox"> 媒体采访 / PR</label>
+            <label><input type="checkbox"> 其他</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>详细需求 *</label>
+          <textarea placeholder="请简单描述你的场景、痛点、期望，越具体越好。例如：&#10;- 我们是一家 200 人的 SaaS 公司，想为客服团队找一个 AI 工单系统&#10;- 我们想推广一款中文 AI 写作产品到 MOXIE 首页&#10;- ..."></textarea>
+        </div>
+
+        <div class="field">
+          <label>预算范围 <span class="opt">（如适用）</span></label>
+          <select>
+            <option>暂未确定</option>
+            <option>¥1,000 以内</option>
+            <option>¥1,000 - ¥10,000</option>
+            <option>¥10,000 - ¥50,000</option>
+            <option>¥50,000 - ¥200,000</option>
+            <option>¥200,000+</option>
+          </select>
+        </div>
+
+        <div class="form-foot">
+          <div class="terms">
+            提交即同意 MOXIE 的<a href="moxie-privacy.html" style="color:var(--ink-1);border-bottom:1px solid var(--line);">隐私政策</a>。我们承诺信息仅用于商务对接。
+          </div>
+          <button type="submit" class="btn-submit-biz">提交留言</button>
+        </div>
+      </form>
+
+      <!-- RIGHT: info -->
+      <aside class="biz-side">
+        <div class="info-card">
+          <h3><span class="dot"></span>我们能提供什么</h3>
+          <ul>
+            <li>企业级 AI 工具选型咨询（含落地建议）</li>
+            <li>PREMIUM 上榜位（首页 / 周报 / 同类替代页）</li>
+            <li>编辑深度评测文章（独立第三方背书）</li>
+            <li>API 数据合作（结构化 AI 工具数据）</li>
+            <li>定制行业月报 / 横评</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <h3><span class="dot"></span>响应时间</h3>
+          <p>工作日 48 小时内会有专人回复邮件。如果选择微信对接，通常 12 小时内能加上。</p>
+        </div>
+
+        <div class="info-card">
+          <h3><span class="dot"></span>我们暂时不做的</h3>
+          <p>付费排名、软文广告、信息流广告、首页 banner 广告。这些来询我们会礼貌拒绝。</p>
+        </div>
+
+        <div class="quick-contact">
+          <h3>急事？直接发邮件</h3>
+          <p>说明合作类型 + 联系方式，我们会安排合适的人对接。</p>
+          <span class="em">hello@moxie.com</span>
+          <span class="wx">微信：moxie_team</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand"><a href="moxie-preview.html" class="brand-logo"><img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="117" height="28"></a><p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p><div class="meta-line"><span class="live-dot"></span>MOXIE · BUILD 2026.05.23 · 3,847 TOOLS</div></div>
+      <div class="fcol"><h4>发现</h4><a href="moxie-preview.html">今日上新</a><a href="moxie-business.html">商业落地</a><div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div><a href="moxie-blog.html">文章</a></div>
+      <div class="fcol"><h4>产品</h4><a href="moxie-preview.html?chat=open">MOXIE 助手</a><span class="planned">提示词订阅 <span class="tag">规划中</span></span><span class="planned">AI 花销追踪 <span class="tag">规划中</span></span></div>
+      <div class="fcol"><h4>资源</h4><a href="moxie-about.html">关于我们</a><a href="moxie-about.html#faq">FAQ</a></div>
+      <div class="fcol"><h4>合作</h4><a href="moxie-submit.html">提交产品</a><a href="moxie-pricing.html">商务合作</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2024 — 2026 MOXIE</span><div class="right"><a href="moxie-privacy.html">隐私政策</a><a href="moxie-terms.html">服务条款</a><a href="moxie-about.html">联系我们</a></div></div>
+  </div>
+</footer>
+
+<script>
+  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  if (window.lucide) lucide.createIcons();
+
+  // 需求多选样式
+  document.querySelectorAll('.needs-grid label').forEach(label => {
+    label.addEventListener('click', () => {
+      setTimeout(() => {
+        const cb = label.querySelector('input');
+        label.classList.toggle('selected', cb.checked);
+      }, 0);
+    });
+  });
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>

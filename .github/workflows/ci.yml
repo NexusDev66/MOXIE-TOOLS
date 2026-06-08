@@ -1,0 +1,52 @@
+name: CI
+
+# PR(和推 main)时自动跑单测 + 构建,让测试自动把关,
+# reviewer 不必本地装依赖手跑。与 check-pr-task-ref(任务号闸门)并行。
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Unit tests (vitest)
+        run: npx vitest run
+
+      - name: CLI tests (node:test)
+        # cli/ 被 vitest 排除,单独用内置 test runner 跑(scanner-lib / scanners)。
+        # 用 find 列文件,兼容"某些任务还没合并、目录暂不存在"的情况。
+        run: |
+          files=$(find cli -name '*.test.js' -not -path '*/node_modules/*')
+          if [ -n "$files" ]; then
+            echo "running: $files"
+            node --test $files
+          else
+            echo "no cli test files"
+          fi
+
+      - name: Build (next)
+        # 构建不需要 secrets:文章页按需渲染、sitemap 取库失败会降级,metadataBase 有默认域名。
+        run: npx next build

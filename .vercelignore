@@ -1,0 +1,18 @@
+# 静态部署不需要 Next.js 脚手架
+src/
+package.json
+package-lock.json
+tsconfig.json
+next.config.ts
+postcss.config.mjs
+README.md
+AGENTS.md
+CLAUDE.md
+
+# Supabase migration 文件部署到 web 没用
+supabase/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

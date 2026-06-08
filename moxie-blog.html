@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
+<title>文章 · MOXIE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=Geist:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
+<script src="moxie-supabase.js?v=20260526-01"></script>
+<script src="moxie-shared.js?v=20260526-01" defer></script>
+<style>
+  .blog-hero {
+    text-align: center;
+    padding: 88px 0 56px;
+  }
+  .blog-hero .eyebrow { font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 600; margin-bottom: 14px; }
+  .blog-hero h1 { font-size: 40px; font-weight: 500; color: var(--ink); letter-spacing: -0.025em; margin-bottom: 14px; }
+  .blog-hero p { font-size: 14px; color: var(--ink-1); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+  .blog-filter-row {
+    display: flex; justify-content: center;
+    border-bottom: 1px solid var(--line-2);
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+    gap: 8px;
+  }
+  .blog-filter-row .cat-chip { font-size: 12px; cursor: default; }
+  .blog-filter-row .cat-chip:hover { background: var(--bg-soft); color: var(--ink-1); }
+  .blog-filter-row .cat-chip.active:hover { background: var(--accent-soft); color: var(--accent-d); }
+
+  .blog-listing { padding: 0 0 80px; }
+
+  /* ── 封面（图片 + 分类色调 overlay） ── */
+  .cover {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);                     /* 图片加载前的底色 */
+  }
+  /* 分类色板：图片加载失败时作为 fallback */
+  .cover.tag-review   { background: linear-gradient(135deg, #1a1f36 0%, #2E3441 100%); }
+  .cover.tag-growth   { background: linear-gradient(135deg, #1f4937 0%, #2d6b50 100%); }
+  .cover.tag-playbook { background: linear-gradient(135deg, #B5512E 0%, #DD6E4C 100%); }
+  .cover.tag-select   { background: linear-gradient(135deg, #3a2e5f 0%, #5b4e8e 100%); }
+  .cover > img.cover-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 0;
+    transition: transform .5s ease;
+  }
+  .blog-feat:hover .cover > img.cover-img,
+  .blog-wide:hover .cover > img.cover-img,
+  .img-card:hover .cover > img.cover-img { transform: scale(1.03); }
+
+  /* 暗色渐变 overlay：保证白字可读 */
+  .cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.22) 0%,
+      rgba(0,0,0,0.1) 40%,
+      rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  /* 分类色调微染（mix-blend，让图与品牌色融合） */
+  .cover.tag-review::after,
+  .cover.tag-growth::after,
+  .cover.tag-playbook::after,
+  .cover.tag-select::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    mix-blend-mode: color;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+  .cover.tag-review::after   { background: #2c3a5e; }
+  .cover.tag-growth::after   { background: #2d6b50; }
+  .cover.tag-playbook::after { background: #DD6E4C; }
+  .cover.tag-select::after   { background: #5b4e8e; }
+  .cover .cover-tag {
+    position: absolute; top: 14px; left: 16px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.95);
+    letter-spacing: 0.12em;
+    padding: 4px 8px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 4px;
+    z-index: 2;
+  }
+  .cover .cover-glyph {
+    position: absolute; bottom: 14px; right: 18px;
+    font-family: var(--mono);
+    font-size: 56px;
+    font-weight: 200;
+    color: rgba(255,255,255,0.32);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    z-index: 2;
+  }
+
+  /* ── 1. Hero featured（大封面 + 信息双栏） ── */
+  .blog-feat {
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    background: var(--bg);
+    transition: border-color .15s;
+  }
+  .blog-feat:hover { border-color: var(--ink-3); }
+  .blog-feat .cover { min-height: 340px; padding: 32px 36px; display: flex; flex-direction: column; justify-content: space-between; }
+  .blog-feat .cover .feat-eyebrow { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.85); letter-spacing: 0.08em; z-index: 2; position: relative; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+  .blog-feat .cover .feat-title { font-size: 26px; font-weight: 500; line-height: 1.35; color: white; letter-spacing: -0.015em; z-index: 2; position: relative; max-width: 92%; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+  .blog-feat-info {
+    padding: 36px 40px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .blog-feat-info .meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); letter-spacing: 0.06em; margin-bottom: 14px; }
+  .blog-feat-info h2 { font-size: 22px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; line-height: 1.35; margin-bottom: 14px; }
+  .blog-feat-info p { font-size: 13.5px; color: var(--ink-1); line-height: 1.7; margin-bottom: 20px; }
+  .blog-feat-info .read { font-size: 12px; color: var(--accent); }
+
+  /* ── 2. 图文卡片（image-top + text-bottom）── */
+  .blog-grid-3 {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .img-card {
+    display: flex; flex-direction: column;
+    background: var(--bg);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform .2s;
+  }
+  .img-card:hover { transform: translateY(-2px); }
+  .img-card .cover {
+    aspect-ratio: 16/10;
+    width: 100%;
+  }
+  .img-card-body { padding: 18px 4px 0; }
+  .img-card-body .meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); letter-spacing: 0.05em; margin-bottom: 8px; }
+  .img-card-body .meta .tag { color: var(--accent); margin-right: 6px; }
+  .img-card-body h3 { font-size: 16px; font-weight: 500; color: var(--ink); line-height: 1.45; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .img-card-body p { font-size: 12.5px; color: var(--ink-2); line-height: 1.6; }
+
+  /* ── 3. Magazine wide（图左文右）── */
+  .blog-wide {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    background: var(--bg);
+    transition: border-color .15s;
+  }
+  .blog-wide:hover { border-color: var(--ink-3); }
+  .blog-wide .cover { min-height: 260px; padding: 28px 32px; }
+  .blog-wide .cover .wide-glyph {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-family: var(--mono);
+    font-size: 80px;
+    font-weight: 200;
+    color: rgba(255,255,255,0.35);
+    text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    z-index: 2;
+  }
+  .blog-wide .wide-info {
+    padding: 32px 36px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .blog-wide .wide-info .meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); letter-spacing: 0.06em; margin-bottom: 14px; }
+  .blog-wide .wide-info .meta .tag { color: var(--accent); margin-right: 8px; }
+  .blog-wide .wide-info h2 { font-size: 20px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; line-height: 1.4; margin-bottom: 14px; }
+  .blog-wide .wide-info p { font-size: 13px; color: var(--ink-1); line-height: 1.7; margin-bottom: 16px; }
+  .blog-wide .wide-info .read { font-size: 12px; color: var(--accent); }
+
+  /* ── 4. 更早的文章（紧凑列表） ── */
+  .blog-list-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 32px 0 18px;
+  }
+  .blog-list {
+    border-top: 1px solid var(--line-2);
+  }
+  .blog-list-item {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 20px;
+    padding: 18px 6px;
+    border-bottom: 1px solid var(--line-2);
+    cursor: pointer;
+    align-items: baseline;
+    transition: padding-left .18s ease, background .18s ease;
+  }
+  .blog-list-item:hover { padding-left: 14px; background: var(--bg-soft); }
+  .blog-list-item .li-tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .blog-list-item h4 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+  .blog-list-item .li-meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+
+  /* Newsletter */
+  .blog-newsletter {
+    background: var(--bg-soft);
+    border-radius: 14px;
+    padding: 48px 40px;
+    text-align: center;
+    margin: 56px 0 0;
+  }
+  .blog-newsletter h3 { font-size: 22px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 12px; }
+  .blog-newsletter p { font-size: 13.5px; color: var(--ink-1); max-width: 480px; margin: 0 auto 24px; line-height: 1.7; }
+  .nl-form { display: inline-flex; gap: 8px; max-width: 420px; width: 100%; }
+  .nl-form input { flex: 1; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; font-family: var(--sans); font-size: 13px; background: var(--bg); }
+  .nl-form button { background: var(--accent); color: white; padding: 0 22px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .blog-feat, .blog-wide { grid-template-columns: 1fr; }
+    .blog-grid-3 { grid-template-columns: 1fr; }
+    .blog-list-item { grid-template-columns: 70px 1fr; }
+    .blog-list-item .li-meta { grid-column: 2 / 3; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="moxie-preview.html" class="brand-logo">
+      <img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24">
+    </a>
+    <nav class="nav-center">
+      <a href="moxie-preview.html">榜单</a>
+      <a href="moxie-business.html">商业落地</a>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="moxie-blog.html" >文章</a>
+      
+    </nav>
+    <div class="top-actions">
+      <a href="#" class="cmd-trigger"><i data-lucide="search" style="width:14px;height:14px;color:var(--ink-3);"></i><span class="label">搜索产品 / maker / tag…</span></a>
+      <a href="moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="moxie-login.html" class="btn-accent" id="loginBtn">登录</a>
+    </div>
+  </div>
+</header>
+
+<section class="blog-hero">
+  <div class="container">
+    <div class="eyebrow">MOXIE 文章</div>
+    <h1>中文 AI 工具的深度内容</h1>
+    <p>横评 / 手册 / 增长 / 选型。每周一篇，编辑团队亲自写，不卖课不绕弯。</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="blog-filter-row">
+    <button class="cat-chip active">全部 32</button>
+    <button class="cat-chip">横评 12</button>
+    <button class="cat-chip">手册 8</button>
+    <button class="cat-chip">增长 7</button>
+    <button class="cat-chip">选型 5</button>
+  </div>
+</div>
+
+<section class="blog-listing">
+  <div class="container" id="blogList">
+    <div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">加载文章中…</div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="moxie-preview.html" class="brand-logo">
+          <img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="117" height="28">
+        </a>
+        <p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p>
+        <div class="meta-line"><span class="live-dot"></span>MOXIE · BUILD 2026.05.23 · 3,847 TOOLS</div>
+      </div>
+      <div class="fcol"><h4>发现</h4><a href="moxie-preview.html">今日上新</a><a href="moxie-business.html">商业落地</a><div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div><a href="moxie-blog.html">文章</a></div>
+      <div class="fcol"><h4>产品</h4><a href="moxie-preview.html?chat=open">MOXIE 助手</a><span class="planned">提示词订阅 <span class="tag">规划中</span></span><span class="planned">AI 花销追踪 <span class="tag">规划中</span></span></div>
+      <div class="fcol"><h4>资源</h4><a href="moxie-about.html">关于我们</a><a href="moxie-about.html#faq">FAQ</a></div>
+      <div class="fcol"><h4>合作</h4><a href="moxie-submit.html">提交产品</a><a href="moxie-pricing.html">商务合作</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2024 — 2026 MOXIE</span><div class="right"><a href="moxie-privacy.html">隐私政策</a><a href="moxie-terms.html">服务条款</a><a href="moxie-about.html">联系我们</a></div></div>
+  </div>
+</footer>
+
+<script>
+  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  if (window.lucide) lucide.createIcons();
+
+  /* ── 拉文章列表 ── */
+  function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+  function fmtDate(s){ if(!s) return ''; const d=new Date(s); return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`; }
+  const tagClass = { '横评':'tag-review', '增长':'tag-growth', '手册':'tag-playbook', '选型':'tag-select' };
+
+  window.moxieWhenDBReady(async (db) => {
+    const box = document.getElementById('blogList');
+    if (!db) { box.innerHTML = '<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>'; return; }
+    const { data, error } = await window.MoxieDB.articles({ limit: 30 });
+    if (error || !data?.length) {
+      box.innerHTML = `<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">${error?'加载失败':'还没有文章。去 admin 后台发布一篇'}</div>`;
+      return;
+    }
+    // 第 1 篇大封面 / 后续 3-column grid / 再后续 wide / 剩下紧凑列表
+    const [feat, ...rest] = data;
+    const grid3 = rest.slice(0, 3);
+    const wide = rest.slice(3, 4)[0];
+    const grid3b = rest.slice(4, 7);
+    const tail = rest.slice(7);
+
+    let html = '';
+    // Hero featured
+    if (feat) {
+      html += `
+        <a href="moxie-article.html?slug=${encodeURIComponent(feat.slug)}" class="blog-feat" style="text-decoration:none;">
+          <div class="cover ${tagClass[feat.category]||'tag-review'}">
+            ${feat.cover_url ? `<img class="cover-img" src="${escH(feat.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
+            <span class="feat-eyebrow">${escH(feat.category)} · ${feat.read_minutes||5} 分钟</span>
+            <h2 class="feat-title">${escH(feat.title)}</h2>
+          </div>
+          <div class="blog-feat-info">
+            <div class="meta">${fmtDate(feat.published_at)}</div>
+            <h2>${escH(feat.title)}</h2>
+            <p>${escH(feat.excerpt||'')}</p>
+            <span class="read">阅读全文 →</span>
+          </div>
+        </a>`;
+    }
+    // 3-column
+    if (grid3.length) {
+      html += `<div class="blog-grid-3">` + grid3.map(a => `
+        <a href="moxie-article.html?slug=${encodeURIComponent(a.slug)}" class="img-card" style="text-decoration:none;">
+          <div class="cover ${tagClass[a.category]||'tag-review'}">
+            ${a.cover_url ? `<img class="cover-img" src="${escH(a.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
+          </div>
+          <div class="img-card-body">
+            <div class="meta"><span class="tag">${escH(a.category)}</span>· ${fmtDate(a.published_at)} · ${a.read_minutes||5} 分钟</div>
+            <h3>${escH(a.title)}</h3>
+            <p>${escH(a.excerpt||'')}</p>
+          </div>
+        </a>`).join('') + `</div>`;
+    }
+    // wide
+    if (wide) {
+      html += `
+        <a href="moxie-article.html?slug=${encodeURIComponent(wide.slug)}" class="blog-wide" style="text-decoration:none;">
+          <div class="cover ${tagClass[wide.category]||'tag-review'}">
+            ${wide.cover_url ? `<img class="cover-img" src="${escH(wide.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
+          </div>
+          <div class="wide-info">
+            <div class="meta"><span class="tag">${escH(wide.category)}</span>· ${fmtDate(wide.published_at)} · ${wide.read_minutes||5} 分钟</div>
+            <h2>${escH(wide.title)}</h2>
+            <p>${escH(wide.excerpt||'')}</p>
+            <span class="read">阅读全文 →</span>
+          </div>
+        </a>`;
+    }
+    // 3-column 2
+    if (grid3b.length) {
+      html += `<div class="blog-grid-3">` + grid3b.map(a => `
+        <a href="moxie-article.html?slug=${encodeURIComponent(a.slug)}" class="img-card" style="text-decoration:none;">
+          <div class="cover ${tagClass[a.category]||'tag-review'}">
+            ${a.cover_url ? `<img class="cover-img" src="${escH(a.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
+          </div>
+          <div class="img-card-body">
+            <div class="meta"><span class="tag">${escH(a.category)}</span>· ${fmtDate(a.published_at)} · ${a.read_minutes||5} 分钟</div>
+            <h3>${escH(a.title)}</h3>
+            <p>${escH(a.excerpt||'')}</p>
+          </div>
+        </a>`).join('') + `</div>`;
+    }
+    // 紧凑列表
+    if (tail.length) {
+      html += `<div class="blog-list-title">─── 更早的文章 ───</div>`;
+      html += `<div class="blog-list">` + tail.map(a => `
+        <a href="moxie-article.html?slug=${encodeURIComponent(a.slug)}" class="blog-list-item" style="text-decoration:none;color:inherit;">
+          <span class="li-tag">${escH(a.category)}</span>
+          <span class="li-title">${escH(a.title)}</span>
+          <span class="li-meta">${fmtDate(a.published_at)} · ${a.read_minutes||5}m</span>
+        </a>`).join('') + `</div>`;
+    }
+    box.innerHTML = html;
+  });
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+[
+  { "slug": "minimax", "name": "MiniMax", "domain": "minimaxi.com", "category_slug": "llm", "tagline": "海螺背后的大模型,语音与长文本强", "tags": ["大模型", "语音"], "price_label": "按量", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "openai-api", "name": "OpenAI API", "domain": "platform.openai.com", "category_slug": "llm", "tagline": "GPT-4o / o 系列 API,海外开发标配", "tags": ["大模型", "API"], "price_label": "按量", "domestic_available": "partial", "verified": true, "featured": true },
+  { "slug": "anthropic-api", "name": "Claude API", "domain": "anthropic.com", "category_slug": "llm", "tagline": "Anthropic,代码与长文最强之一", "tags": ["大模型", "API"], "price_label": "按量", "domestic_available": "no", "verified": true, "featured": false },
+  { "slug": "siliconflow", "name": "硅基流动", "domain": "siliconflow.cn", "category_slug": "llm", "tagline": "国产模型 API 聚合,便宜稳定", "tags": ["大模型", "API"], "price_label": "免费+按量", "domestic_available": "yes", "verified": true, "featured": false },
+
+  { "slug": "doubao", "name": "豆包", "domain": "doubao.com", "category_slug": "ai-assistant", "tagline": "字节豆包,免费好用,语音强", "tags": ["助手", "字节"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": true },
+  { "slug": "wenxin", "name": "文心一言", "domain": "yiyan.baidu.com", "category_slug": "ai-assistant", "tagline": "百度文心,中文生态与插件丰富", "tags": ["助手", "百度"], "price_label": "免费+会员", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "tongyi", "name": "通义", "domain": "tongyi.com", "category_slug": "ai-assistant", "tagline": "阿里通义助手,免费,长文档强", "tags": ["助手", "阿里"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "yuanbao", "name": "腾讯元宝", "domain": "yuanbao.tencent.com", "category_slug": "ai-assistant", "tagline": "腾讯混元+DeepSeek,微信生态", "tags": ["助手", "腾讯"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "chatgpt", "name": "ChatGPT", "domain": "chatgpt.com", "category_slug": "ai-assistant", "tagline": "OpenAI 对话,生态最大", "tags": ["助手", "海外"], "price_label": "免费+订阅", "domestic_available": "no", "verified": true, "featured": true },
+  { "slug": "claude", "name": "Claude", "domain": "claude.ai", "category_slug": "ai-assistant", "tagline": "Anthropic,代码与长文写作一流", "tags": ["助手", "海外"], "price_label": "免费+订阅", "domestic_available": "no", "verified": true, "featured": false },
+  { "slug": "gemini", "name": "Gemini", "domain": "gemini.google.com", "category_slug": "ai-assistant", "tagline": "谷歌,超长上下文+多模态", "tags": ["助手", "谷歌"], "price_label": "免费+付费", "domestic_available": "no", "verified": true, "featured": false },
+
+  { "slug": "notion-ai", "name": "Notion AI", "domain": "notion.so", "category_slug": "ai-writing", "tagline": "笔记内嵌 AI 写作与总结", "tags": ["写作", "笔记"], "price_label": "订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "xiezuocat", "name": "秘塔写作猫", "domain": "xiezuocat.com", "category_slug": "ai-writing", "tagline": "中文校对、改写、查重", "tags": ["写作", "校对"], "price_label": "免费+会员", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "gamma", "name": "Gamma", "domain": "gamma.app", "category_slug": "ai-writing", "tagline": "AI 生成 PPT / 网页 / 文档", "tags": ["写作", "PPT"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "grammarly", "name": "Grammarly", "domain": "grammarly.com", "category_slug": "ai-writing", "tagline": "英文语法检查与润色老牌", "tags": ["写作", "英文"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+
+  { "slug": "midjourney", "name": "Midjourney", "domain": "midjourney.com", "category_slug": "ai-image", "tagline": "文生图天花板,审美最强", "tags": ["图像", "文生图"], "price_label": "订阅", "domestic_available": "no", "verified": true, "featured": true },
+  { "slug": "liblib", "name": "LiblibAI", "domain": "liblib.art", "category_slug": "ai-image", "tagline": "国内 SD 模型社区+在线生图", "tags": ["图像", "SD"], "price_label": "免费+会员", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "ideogram", "name": "Ideogram", "domain": "ideogram.ai", "category_slug": "ai-image", "tagline": "文字排版与海报生成最强", "tags": ["图像", "海报"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "canva", "name": "Canva 可画", "domain": "canva.cn", "category_slug": "ai-image", "tagline": "在线设计+AI 作图,模板多", "tags": ["设计", "模板"], "price_label": "免费+会员", "domestic_available": "yes", "verified": true, "featured": false },
+
+  { "slug": "kling", "name": "可灵 Kling", "domain": "klingai.com", "category_slug": "ai-video", "tagline": "快手文生视频,国内最强之一", "tags": ["视频", "快手"], "price_label": "免费+按量", "domestic_available": "yes", "verified": true, "featured": true },
+  { "slug": "runway", "name": "Runway", "domain": "runwayml.com", "category_slug": "ai-video", "tagline": "海外视频生成+编辑老牌", "tags": ["视频", "海外"], "price_label": "订阅", "domestic_available": "no", "verified": true, "featured": false },
+  { "slug": "pika", "name": "Pika", "domain": "pika.art", "category_slug": "ai-video", "tagline": "文生视频,创意特效", "tags": ["视频", "特效"], "price_label": "免费+订阅", "domestic_available": "no", "verified": true, "featured": false },
+  { "slug": "vidu", "name": "Vidu", "domain": "vidu.studio", "category_slug": "ai-video", "tagline": "生数科技,角色一致性强", "tags": ["视频", "国产"], "price_label": "免费+按量", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "heygen", "name": "HeyGen", "domain": "heygen.com", "category_slug": "ai-video", "tagline": "AI 数字人口播视频", "tags": ["视频", "数字人"], "price_label": "订阅", "domestic_available": "partial", "verified": true, "featured": false },
+
+  { "slug": "github-copilot", "name": "GitHub Copilot", "domain": "github.com", "category_slug": "ai-coding", "tagline": "微软老牌代码补全", "tags": ["编程", "补全"], "price_label": "订阅", "domestic_available": "partial", "verified": true, "featured": true },
+  { "slug": "windsurf", "name": "Windsurf", "domain": "windsurf.com", "category_slug": "ai-coding", "tagline": "Codeium 出品的 AI 原生 IDE", "tags": ["编程", "IDE"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "claude-code", "name": "Claude Code", "domain": "claude.com", "category_slug": "ai-coding", "tagline": "终端里能动手的 AI 程序员", "tags": ["编程", "终端"], "price_label": "按量", "domestic_available": "no", "verified": true, "featured": false },
+  { "slug": "v0", "name": "v0", "domain": "v0.dev", "category_slug": "ai-coding", "tagline": "Vercel 文生前端 UI", "tags": ["编程", "前端"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "bolt", "name": "Bolt", "domain": "bolt.new", "category_slug": "ai-coding", "tagline": "浏览器里全栈生成+部署", "tags": ["编程", "全栈"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+
+  { "slug": "perplexity", "name": "Perplexity", "domain": "perplexity.ai", "category_slug": "ai-search", "tagline": "AI 搜索标杆,回答带引用", "tags": ["搜索", "海外"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": true },
+  { "slug": "tiangong", "name": "天工 AI 搜索", "domain": "tiangong.cn", "category_slug": "ai-search", "tagline": "昆仑万维 AI 搜索", "tags": ["搜索", "国产"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "360ai", "name": "360 AI 搜索", "domain": "so.com", "category_slug": "ai-search", "tagline": "360 AI 搜索,国内流量大", "tags": ["搜索", "360"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "felo", "name": "Felo", "domain": "felo.ai", "category_slug": "ai-search", "tagline": "多语言 AI 搜索", "tags": ["搜索", "多语"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": false, "featured": false },
+
+  { "slug": "fastgpt", "name": "FastGPT", "domain": "tryfastgpt.ai", "category_slug": "rag", "tagline": "开源知识库问答+工作流", "tags": ["RAG", "开源"], "price_label": "免费+云", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "ragflow", "name": "RAGFlow", "domain": "ragflow.io", "category_slug": "rag", "tagline": "深度文档理解的开源 RAG", "tags": ["RAG", "开源"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "maxkb", "name": "MaxKB", "domain": "maxkb.cn", "category_slug": "rag", "tagline": "飞致云开源知识库问答", "tags": ["RAG", "开源"], "price_label": "免费", "domestic_available": "yes", "verified": false, "featured": false },
+  { "slug": "cherry-studio", "name": "Cherry Studio", "domain": "cherry-ai.com", "category_slug": "rag", "tagline": "本地多模型客户端+知识库", "tags": ["RAG", "客户端"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": false },
+
+  { "slug": "genspark", "name": "GenSpark", "domain": "genspark.ai", "category_slug": "agent", "tagline": "全能 Agent,生成报告/网页", "tags": ["Agent", "通用"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "devin", "name": "Devin", "domain": "devin.ai", "category_slug": "agent", "tagline": "Cognition 的 AI 软件工程师", "tags": ["Agent", "编程"], "price_label": "订阅", "domestic_available": "no", "verified": true, "featured": false },
+  { "slug": "flowith", "name": "Flowith", "domain": "flowith.io", "category_slug": "agent", "tagline": "画布式 AI Agent 工作流", "tags": ["Agent", "画布"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": false, "featured": false },
+
+  { "slug": "n8n", "name": "n8n", "domain": "n8n.io", "category_slug": "workflow", "tagline": "开源工作流自动化,可接 LLM", "tags": ["工作流", "开源"], "price_label": "免费+云", "domestic_available": "yes", "verified": true, "featured": false },
+  { "slug": "zapier", "name": "Zapier", "domain": "zapier.com", "category_slug": "workflow", "tagline": "海外自动化连接器老牌", "tags": ["工作流", "海外"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "make", "name": "Make", "domain": "make.com", "category_slug": "workflow", "tagline": "可视化自动化,性价比高", "tags": ["工作流", "可视"], "price_label": "免费+订阅", "domestic_available": "partial", "verified": true, "featured": false },
+  { "slug": "yuanqi", "name": "腾讯元器", "domain": "yuanqi.tencent.com", "category_slug": "workflow", "tagline": "腾讯零代码智能体平台", "tags": ["工作流", "腾讯"], "price_label": "免费", "domestic_available": "yes", "verified": true, "featured": false }
+]

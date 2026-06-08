@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
+<title>MOXIE · 管理后台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
+<script src="moxie-supabase.js?v=20260526-01"></script>
+
+<style>
+  body { background: #FAFAFA; }
+
+  /* HTML hidden 属性必须真隐藏，覆盖我下面 .admin-shell/.login-overlay 的 display:flex */
+  [hidden] { display: none !important; }
+
+  .admin-shell { min-height: 100vh; display: flex; }
+
+  /* ── Sidebar ── */
+  .admin-side {
+    width: 220px; background: #fff;
+    border-right: 1px solid var(--line);
+    padding: 24px 14px; flex-shrink: 0;
+    display: flex; flex-direction: column;
+  }
+  .admin-brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 10px 24px;
+    border-bottom: 1px solid var(--line-2);
+    margin-bottom: 18px;
+  }
+  .admin-brand img { width: 28px; height: 28px; }
+  .admin-brand b { font-family: var(--mono); font-size: 13px; color: var(--ink); letter-spacing: 0.04em; }
+  .admin-brand small { font-size: 10px; color: var(--ink-3); margin-left: 4px; letter-spacing: 0.06em; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: 8px;
+    font-size: 13px; color: var(--ink-1);
+    cursor: pointer; user-select: none;
+  }
+  .nav-item:hover { background: var(--bg-soft); }
+  .nav-item.active { background: var(--accent-soft); color: var(--accent-d); font-weight: 500; }
+  .nav-item .ico { width: 14px; height: 14px; display: inline-flex; }
+  .nav-section { font-family: var(--mono); font-size: 10px; color: var(--ink-3); padding: 14px 12px 6px; letter-spacing: 0.08em; }
+
+  .admin-side-foot {
+    margin-top: auto; padding: 14px 12px 4px;
+    border-top: 1px solid var(--line-2);
+    font-size: 11px; color: var(--ink-3); font-family: var(--mono);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .admin-side-foot a { color: var(--ink-2); text-decoration: underline; }
+  .signout {
+    color: var(--accent); cursor: pointer;
+    margin-top: 4px;
+  }
+
+  /* ── Main ── */
+  .admin-main { flex: 1; padding: 28px 36px; overflow-x: auto; }
+  .admin-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 22px; }
+  .admin-head h1 { font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; }
+  .admin-head .sub { font-size: 12px; color: var(--ink-3); font-family: var(--mono); }
+
+  .admin-tools {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 18px;
+  }
+  .admin-search {
+    flex: 1; max-width: 360px;
+    padding: 8px 12px;
+    border: 1px solid var(--line); border-radius: 8px;
+    font-size: 12.5px; background: #fff;
+  }
+  .btn-new {
+    background: var(--accent); color: #fff;
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 12.5px; font-weight: 500;
+    cursor: pointer; border: 0;
+  }
+  .btn-new:hover { background: var(--accent-d); }
+
+  /* ── Table ── */
+  .admin-table {
+    width: 100%; background: #fff;
+    border: 1px solid var(--line); border-radius: 12px;
+    overflow: hidden; border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .admin-table thead th {
+    text-align: left;
+    background: var(--bg-soft);
+    padding: 12px 14px;
+    font-size: 11px; font-weight: 500;
+    color: var(--ink-2); letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+  }
+  .admin-table tbody td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--ink-1); vertical-align: middle;
+  }
+  .admin-table tbody tr:last-child td { border-bottom: none; }
+  .admin-table tbody tr:hover { background: var(--bg-soft); }
+
+  .cell-logo {
+    width: 32px; height: 32px;
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 6px; padding: 4px;
+    display: inline-block; vertical-align: middle;
+    margin-right: 10px;
+  }
+  .cell-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .pill {
+    display: inline-block;
+    font-family: var(--mono); font-size: 10.5px;
+    padding: 2px 8px; border-radius: 100px;
+    background: var(--bg-soft); color: var(--ink-2);
+    letter-spacing: 0.04em;
+  }
+  .pill.ok { background: #E6F4EA; color: #137333; }
+  .pill.warn { background: #FEF7E0; color: #B06000; }
+  .pill.err { background: #FCE8E6; color: #C5221F; }
+  .pill.accent { background: var(--accent-soft); color: var(--accent-d); }
+  .row-actions { display: flex; gap: 10px; font-size: 12px; color: var(--ink-2); }
+  .row-actions a { color: var(--ink-2); cursor: pointer; }
+  .row-actions a:hover { color: var(--accent); }
+  .row-actions a.danger:hover { color: #C5221F; }
+
+  .empty {
+    padding: 60px 20px; text-align: center;
+    color: var(--ink-3); font-size: 13px;
+    background: #fff; border: 1px dashed var(--line); border-radius: 12px;
+  }
+  .empty b { color: var(--ink-1); display: block; margin-bottom: 6px; font-weight: 500; }
+
+  /* ── Stats top row ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .stat-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .stat-card .lbl {
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--ink-2); letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .stat-card .num {
+    font-size: 26px; font-weight: 600;
+    color: var(--ink); margin-top: 8px; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-card .delta {
+    font-size: 11px; color: var(--ink-3); margin-top: 4px;
+  }
+
+  /* ── Login screen ── */
+  .login-overlay {
+    position: fixed; inset: 0;
+    background: linear-gradient(180deg, #FAFAFA, #F2F2F2);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+  }
+  .login-card {
+    background: #fff; padding: 40px 44px;
+    border-radius: 16px; max-width: 380px; width: 90vw;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06);
+  }
+  .login-card h2 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .login-card p { font-size: 13px; color: var(--ink-2); margin-bottom: 24px; line-height: 1.6; }
+  .login-card .field {
+    display: block; margin-bottom: 14px;
+  }
+  .login-card label { display: block; font-size: 11.5px; color: var(--ink-2); margin-bottom: 6px; }
+  .login-card input {
+    width: 100%; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: 8px;
+    font-size: 13px; font-family: var(--sans);
+  }
+  .login-card button {
+    width: 100%; padding: 11px 0;
+    background: var(--accent); color: #fff;
+    border: 0; border-radius: 8px;
+    font-size: 13.5px; font-weight: 500; cursor: pointer;
+    margin-top: 8px;
+  }
+  .login-card .err {
+    color: #C5221F; font-size: 12px; min-height: 16px;
+    margin-top: 6px;
+  }
+  .login-card .setup-warn {
+    background: #FEF7E0; color: #B06000;
+    padding: 10px 12px; border-radius: 8px;
+    font-size: 11.5px; line-height: 1.6; margin-bottom: 18px;
+    font-family: var(--mono);
+  }
+
+  /* ── Modal ── */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(29,33,41,0.4);
+    z-index: 900; display: flex; align-items: flex-start; justify-content: center;
+    padding: 60px 20px; overflow-y: auto;
+  }
+  .modal-card {
+    background: #fff; width: 100%; max-width: 640px;
+    border-radius: 14px; box-shadow: 0 12px 48px rgba(0,0,0,0.15);
+    overflow: hidden; animation: modalIn .15s ease;
+  }
+  @keyframes modalIn { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 20px 24px; border-bottom: 1px solid var(--line-2);
+  }
+  .modal-head h3 { font-size: 17px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .modal-head .sub { font-size: 11.5px; color: var(--ink-3); font-family: var(--mono); }
+  .modal-head .close { font-size: 20px; color: var(--ink-3); cursor: pointer; padding: 0 4px; }
+  .modal-head .close:hover { color: var(--ink); }
+  .modal-body { padding: 22px 24px; max-height: 60vh; overflow-y: auto; }
+  .modal-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px; border-top: 1px solid var(--line-2); background: var(--bg-soft);
+  }
+  .modal-foot .left { display: flex; gap: 10px; font-size: 12px; color: var(--ink-3); }
+  .modal-foot .right { display: flex; gap: 10px; }
+  .btn-secondary {
+    background: #fff; color: var(--ink-1);
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 12.5px; cursor: pointer;
+    border: 1px solid var(--line);
+  }
+  .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    padding: 8px 18px; border-radius: 8px;
+    font-size: 12.5px; font-weight: 500; cursor: pointer; border: 0;
+  }
+  .btn-primary:hover { background: var(--accent-d); }
+  .btn-primary[disabled] { opacity: .5; cursor: not-allowed; }
+  .btn-danger {
+    background: #fff; color: #C5221F;
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 12.5px; cursor: pointer;
+    border: 1px solid rgba(197,34,31,0.3);
+  }
+  .btn-danger:hover { background: #FCE8E6; }
+
+  /* Form fields inside modal */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-grid { display: flex; flex-direction: column; gap: 14px; }
+  .form-grid label { display: block; font-size: 11.5px; color: var(--ink-2); margin-bottom: 5px; font-weight: 500; letter-spacing: 0.02em; }
+  .form-grid input[type="text"],
+  .form-grid input[type="url"],
+  .form-grid input[type="number"],
+  .form-grid input[type="email"],
+  .form-grid select,
+  .form-grid textarea {
+    width: 100%; padding: 9px 11px;
+    border: 1px solid var(--line); border-radius: 7px;
+    font-size: 13px; color: var(--ink); background: #fff;
+    font-family: var(--sans);
+  }
+  .form-grid textarea { resize: vertical; min-height: 88px; line-height: 1.55; font-family: var(--sans); }
+  .form-grid textarea.lg { min-height: 220px; font-family: var(--mono); font-size: 12px; }
+  .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus {
+    outline: none; border-color: var(--ink-3); box-shadow: 0 0 0 3px rgba(29,33,41,0.05);
+  }
+  .form-grid .hint { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+  .form-grid .check {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--ink-1); cursor: pointer;
+  }
+  .form-grid .check input { margin: 0; }
+  .form-err {
+    background: #FCE8E6; color: #C5221F;
+    padding: 10px 12px; border-radius: 7px;
+    font-size: 12px; line-height: 1.5; font-family: var(--mono);
+  }
+  .form-ok {
+    background: #E6F4EA; color: #137333;
+    padding: 10px 12px; border-radius: 7px;
+    font-size: 12px;
+  }
+  .upload-area {
+    border: 1.5px dashed var(--line); border-radius: 8px;
+    padding: 14px; text-align: center; cursor: pointer;
+    font-size: 12px; color: var(--ink-2);
+    background: var(--bg-soft);
+  }
+  .upload-area:hover { border-color: var(--accent); color: var(--accent); }
+  .upload-preview {
+    max-height: 120px; max-width: 100%; margin: 8px auto 4px;
+    border-radius: 6px; display: block;
+  }
+  .row-actions a { user-select: none; }
+</style>
+</head>
+<body>
+
+<!-- ═══════ Login Overlay ═══════ -->
+<div class="login-overlay" id="loginOverlay" hidden>
+  <div class="login-card">
+    <h2>MOXIE Admin</h2>
+    <p>仅限管理员账号登录。如果你忘了密码，去 Supabase Dashboard 重置。</p>
+    <div class="setup-warn" id="setupWarn" hidden></div>
+    <form id="loginForm">
+      <div class="field">
+        <label>邮箱</label>
+        <input type="email" id="email" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label>密码</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit">登录</button>
+      <div class="err" id="loginErr"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════ Admin Shell ═══════ -->
+<div class="admin-shell" id="adminShell" hidden>
+  <aside class="admin-side">
+    <div class="admin-brand">
+      <img src="public/moxie-mark.png?v=20260525-01" alt="MOXIE">
+      <b>MOXIE</b><small>ADMIN</small>
+    </div>
+
+    <div class="nav-item active" data-view="dashboard">
+      <span class="ico">📊</span> Dashboard
+    </div>
+
+    <div class="nav-section">内容</div>
+    <div class="nav-item" data-view="products">
+      <span class="ico">📦</span> 产品
+    </div>
+    <div class="nav-item" data-view="articles">
+      <span class="ico">📰</span> 文章
+    </div>
+    <div class="nav-item" data-view="categories">
+      <span class="ico">🏷️</span> 分类
+    </div>
+
+    <div class="nav-section">社区</div>
+    <div class="nav-item" data-view="comments">
+      <span class="ico">💬</span> 评论
+    </div>
+    <div class="nav-item" data-view="users">
+      <span class="ico">👥</span> 用户
+    </div>
+
+    <div class="nav-section">选题</div>
+    <div class="nav-item" data-view="trends">
+      <span class="ico">🛰</span> Trend 候选
+    </div>
+
+    <div class="admin-side-foot">
+      <a href="moxie-preview.html" target="_blank">← 回站点</a>
+      <span id="meEmail">—</span>
+      <span class="signout" id="signoutBtn">注销</span>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <!-- 内容容器，由 JS 渲染 -->
+    <div id="adminView"></div>
+  </main>
+</div>
+
+<!-- ═══════ Modal ═══════ -->
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">编辑</h3>
+        <div class="sub" id="modalSub"></div>
+      </div>
+      <span class="close" id="modalClose">×</span>
+    </div>
+    <div class="modal-body">
+      <div id="modalMsg"></div>
+      <div class="form-grid" id="modalForm"></div>
+    </div>
+    <div class="modal-foot">
+      <div class="left" id="modalLeft"></div>
+      <div class="right">
+        <button class="btn-secondary" id="modalCancel">取消</button>
+        <button class="btn-primary" id="modalSave">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════ 全局状态 ═══════════════════ */
+const State = { db: null, user: null, isAdmin: false, view: 'dashboard' };
+
+/* ═══════════════════ 启动 ═══════════════════ */
+window.moxieWhenDBReady(async (db) => {
+  if (!db) {
+    showLogin('Supabase 还没配置。打开 moxie-supabase.js?v=20260526-01，把 URL 和 anon key 填进去后刷新页面。');
+    return;
+  }
+  State.db = db;
+
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) { showLogin(); return; }
+
+  State.user = session.user;
+  State.isAdmin = await checkAdmin(session.user.id);
+  if (!State.isAdmin) {
+    await db.auth.signOut();
+    showLogin('当前账号不是管理员。请在 Supabase 后台跑：update moxie_profiles set role=\'admin\' where user_id=\'…\';');
+    return;
+  }
+  showShell();
+});
+
+async function checkAdmin(uid) {
+  const { data } = await State.db.from('moxie_profiles').select('role').eq('user_id', uid).single();
+  return data?.role === 'admin';
+}
+
+function showLogin(msg) {
+  document.getElementById('adminShell').hidden = true;
+  document.getElementById('loginOverlay').hidden = false;
+  const warn = document.getElementById('setupWarn');
+  if (msg) { warn.hidden = false; warn.textContent = msg; }
+  else { warn.hidden = true; }
+}
+
+function showShell() {
+  document.getElementById('loginOverlay').hidden = true;
+  document.getElementById('adminShell').hidden = false;
+  document.getElementById('meEmail').textContent = State.user.email || '已登录';
+  renderView('dashboard');
+}
+
+/* ═══════════════════ 登录表单 ═══════════════════ */
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('loginErr');
+  const btn = e.target.querySelector('button[type="submit"]');
+  err.textContent = '';
+
+  // 立即 UI 反馈
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = '登录中…';
+
+  const resetBtn = () => { btn.disabled = false; btn.textContent = originalText; };
+
+  // 如果 supabase-js 还没就绪，等最多 5s
+  if (!State.db) {
+    btn.textContent = '等待数据库连接…';
+    try {
+      await new Promise((resolve, reject) => {
+        const t = setTimeout(() => reject(new Error('db-timeout')), 5000);
+        const tick = setInterval(() => {
+          if (State.db) { clearTimeout(t); clearInterval(tick); resolve(); }
+          if (window.moxieDB === null) { clearTimeout(t); clearInterval(tick); reject(new Error('db-not-configured')); }
+        }, 100);
+      });
+    } catch (e) {
+      err.textContent = e.message === 'db-timeout'
+        ? '数据库连接超时——检查网络或 Supabase 配置'
+        : 'Supabase keys 未配置';
+      resetBtn();
+      return;
+    }
+    btn.textContent = '登录中…';
+  }
+
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  try {
+    // 10 秒登录超时
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('网络超时（10s）—— 检查网络后重试')), 10000)
+    );
+    const loginPromise = State.db.auth.signInWithPassword({ email, password });
+    const { data, error } = await Promise.race([loginPromise, timeoutPromise]);
+
+    if (error) { err.textContent = error.message; resetBtn(); return; }
+
+    State.user = data.user;
+    btn.textContent = '验证权限…';
+    State.isAdmin = await checkAdmin(data.user.id);
+    if (!State.isAdmin) {
+      err.textContent = '此账号未授予 admin 角色';
+      await State.db.auth.signOut();
+      resetBtn();
+      return;
+    }
+    btn.textContent = '进入…';
+    showShell();
+  } catch (e) {
+    err.textContent = e.message || '登录失败';
+    resetBtn();
+  }
+});
+
+document.getElementById('signoutBtn').addEventListener('click', async () => {
+  await State.db.auth.signOut();
+  location.reload();
+});
+
+/* ═══════════════════ 导航 ═══════════════════ */
+document.querySelectorAll('.nav-item').forEach(n => {
+  n.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+    n.classList.add('active');
+    renderView(n.dataset.view);
+  });
+});
+
+/* ═══════════════════ 视图渲染 ═══════════════════ */
+async function renderView(view) {
+  State.view = view;
+  const c = document.getElementById('adminView');
+  c.innerHTML = '<div class="empty">加载中…</div>';
+  try {
+    if (view === 'dashboard') await renderDashboard(c);
+    if (view === 'products')  await renderTable(c, 'products');
+    if (view === 'articles')  await renderTable(c, 'articles');
+    if (view === 'categories')await renderTable(c, 'categories');
+    if (view === 'comments')  await renderTable(c, 'comments');
+    if (view === 'users')     await renderTable(c, 'users');
+    if (view === 'trends')    await renderTrends(c);
+  } catch (e) {
+    c.innerHTML = `<div class="empty"><b>加载失败</b>${e.message}</div>`;
+  }
+}
+
+/* ── Dashboard ── */
+async function renderDashboard(c) {
+  const db = State.db;
+  const [{ count: cp }, { count: ca }, { count: cu }, { count: cc }] = await Promise.all([
+    db.from('moxie_products').select('id', { count: 'exact', head: true }),
+    db.from('moxie_articles').select('id', { count: 'exact', head: true }),
+    db.from('moxie_profiles').select('user_id', { count: 'exact', head: true }),
+    db.from('moxie_comments').select('id', { count: 'exact', head: true })
+  ]);
+  c.innerHTML = `
+    <div class="admin-head">
+      <div><h1>Dashboard</h1><div class="sub">MOXIE · 概览</div></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="lbl">产品</div><div class="num">${cp ?? 0}</div><div class="delta">总收录</div></div>
+      <div class="stat-card"><div class="lbl">文章</div><div class="num">${ca ?? 0}</div><div class="delta">已发布</div></div>
+      <div class="stat-card"><div class="lbl">用户</div><div class="num">${cu ?? 0}</div><div class="delta">注册账号</div></div>
+      <div class="stat-card"><div class="lbl">评论</div><div class="num">${cc ?? 0}</div><div class="delta">全部状态</div></div>
+    </div>
+    <div class="empty">
+      <b>欢迎，admin</b>
+      左侧切换到产品 / 文章 / 评论 / 用户 看完整列表。
+      编辑/新建功能在 Phase 2 加。
+    </div>
+  `;
+}
+
+/* ── 通用列表渲染 ── */
+async function renderTable(c, type) {
+  const db = State.db;
+  const cfg = TABLE_CFG[type];
+  if (!cfg) { c.innerHTML = '<div class="empty">未知视图</div>'; return; }
+
+  let q = db.from(cfg.from).select(cfg.select).order(cfg.orderBy, { ascending: cfg.asc ?? false }).limit(100);
+  const { data, error } = await q;
+  if (error) { c.innerHTML = `<div class="empty"><b>查询失败</b>${error.message}</div>`; return; }
+
+  const rows = (data || []).map(cfg.row).join('');
+  c.innerHTML = `
+    <div class="admin-head">
+      <div><h1>${cfg.title}</h1><div class="sub">${cfg.from} · ${data?.length ?? 0} 条</div></div>
+    </div>
+    <div class="admin-tools">
+      <input class="admin-search" id="searchBox" placeholder="按名称 / slug 过滤…">
+      ${cfg.canCreate === false ? '' : `<button class="btn-new" onclick="openEditor('${type}', null)">+ 新建</button>`}
+    </div>
+    ${data?.length ? `<table class="admin-table">
+      <thead><tr>${cfg.cols.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+      <tbody id="rowsBody">${rows}</tbody>
+    </table>` : `<div class="empty"><b>暂无数据</b>${cfg.canCreate===false?'公网用户产生数据后会出现在这里。':'点右上 + 新建。或者跑 migration_001_init.sql 灌种子数据。'}</div>`}
+  `;
+  /* 搜索过滤 */
+  const sb = document.getElementById('searchBox');
+  if (sb) sb.addEventListener('input', () => {
+    const q = sb.value.toLowerCase().trim();
+    document.querySelectorAll('#rowsBody tr').forEach(tr => {
+      tr.style.display = !q || tr.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+    });
+  });
+}
+
+/* ─── Trend 候选 视图（不是普通 CRUD，自己一套） ─── */
+async function renderTrends(c) {
+  const db = State.db;
+  const [{ data: stats }, { data: cands }, { data: runs }] = await Promise.all([
+    db.from('moxie_trend_candidates').select('status').then(r => ({ data: r.data || [] })),
+    db.from('moxie_trend_candidates')
+      .select('id, product_key, tool_url, tool_domain, tool_name_hint, occurrence_count, first_seen_at, last_seen_at, status, moxie_trend_sources(source_site,source_url)')
+      .order('occurrence_count', { ascending: false })
+      .order('last_seen_at', { ascending: false })
+      .limit(200)
+      .then(r => ({ data: r.data || [] })),
+    db.from('moxie_trend_scan_runs').select('id, started_at, finished_at, total_sources_ok, total_sources_tried, total_items_found').order('started_at', { ascending: false }).limit(5).then(r => ({ data: r.data || [] }))
+  ]);
+
+  const counts = { pending: 0, promoted: 0, dismissed: 0 };
+  stats.forEach(s => counts[s.status] = (counts[s.status] || 0) + 1);
+
+  c.innerHTML = `
+    <div class="admin-head">
+      <div><h1>Trend 候选</h1><div class="sub">海外目录站新工具频次榜 · 编辑选题源</div></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="lbl">Pending</div><div class="num">${counts.pending || 0}</div><div class="delta">待审核</div></div>
+      <div class="stat-card"><div class="lbl">Promoted</div><div class="num">${counts.promoted || 0}</div><div class="delta">已晋升到产品库</div></div>
+      <div class="stat-card"><div class="lbl">Dismissed</div><div class="num">${counts.dismissed || 0}</div><div class="delta">已弃</div></div>
+      <div class="stat-card"><div class="lbl">最近一次扫</div><div class="num" style="font-size:14px;font-family:var(--mono);font-weight:500;">${runs[0]?.started_at ? fmtDate(runs[0].started_at) : '—'}</div><div class="delta">${runs[0] ? `${runs[0].total_sources_ok}/${runs[0].total_sources_tried} sources · ${runs[0].total_items_found} items` : '还没跑过'}</div></div>
+    </div>
+    <div class="admin-tools">
+      <input class="admin-search" id="searchBox" placeholder="按名称 / domain 过滤…">
+      <select id="trendStatusFilter" class="admin-search" style="max-width:160px">
+        <option value="pending">仅 Pending</option>
+        <option value="">全部状态</option>
+        <option value="promoted">仅 Promoted</option>
+        <option value="dismissed">仅 Dismissed</option>
+      </select>
+    </div>
+    ${cands.length ? `<table class="admin-table">
+      <thead><tr>
+        <th>产品名 (hint)</th><th>Source 站</th><th>频次</th><th>首次出现</th><th>状态</th><th>操作</th>
+      </tr></thead>
+      <tbody id="trendRowsBody">
+        ${cands.map(t => `
+          <tr data-status="${t.status}">
+            <td>
+              <div style="font-weight:500;color:var(--ink)">${esc(t.tool_name_hint || t.product_key)}</div>
+              <div style="color:var(--ink-3);font-family:var(--mono);font-size:11px;margin-top:3px"><a href="${esc(t.tool_url)}" target="_blank" rel="noopener" style="color:var(--ink-2)">${esc(t.tool_url)}</a></div>
+            </td>
+            <td>${(t.moxie_trend_sources||[]).map(s => `<span class="pill" title="${esc(s.source_url||'')}">${esc(s.source_site)}</span>`).join(' ')}</td>
+            <td style="font-family:var(--mono);font-weight:500;color:${t.occurrence_count>=2?'var(--accent)':'var(--ink)'}">${t.occurrence_count}</td>
+            <td style="font-family:var(--mono);color:var(--ink-3);font-size:11px">${fmtDate(t.first_seen_at)}</td>
+            <td>${statusPill(t.status)}</td>
+            <td>
+              <div class="row-actions">
+                ${t.status === 'pending' ? `
+                  <a onclick="promoteTrend(${t.id}, ${JSON.stringify(esc(t.tool_name_hint || t.product_key))}, ${JSON.stringify(t.tool_url)})">↑ 晋升</a>
+                  <a class="danger" onclick="dismissTrend(${t.id})">弃</a>
+                ` : t.status === 'promoted' ? '<span style="color:var(--ink-3)">已进产品库</span>' : '<span style="color:var(--ink-3)">已弃</span>'}
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>` : `<div class="empty"><b>暂无候选</b>weekly scanner 还没跑过 · 去 GitHub Actions 手动触发 trend-scanner workflow，或本地 <code>node cli/trend-scanner.js</code></div>`}
+  `;
+
+  /* 搜索 + 状态过滤 */
+  const sb = document.getElementById('searchBox');
+  const sf = document.getElementById('trendStatusFilter');
+  function applyFilter() {
+    const q = sb.value.toLowerCase().trim();
+    const status = sf.value;
+    document.querySelectorAll('#trendRowsBody tr').forEach(tr => {
+      const matchText = !q || tr.textContent.toLowerCase().indexOf(q) !== -1;
+      const matchStatus = !status || tr.dataset.status === status;
+      tr.style.display = matchText && matchStatus ? '' : 'none';
+    });
+  }
+  sb?.addEventListener('input', applyFilter);
+  sf?.addEventListener('change', applyFilter);
+  applyFilter();
+}
+
+/* 把候选晋升到 moxie_products（跳到提交页预填）*/
+window.promoteTrend = async function(id, nameHint, toolUrl) {
+  if (!confirm(`晋升「${nameHint}」到产品库？\n会标记本候选为 promoted，并跳到提交页让你写中文介绍。`)) return;
+  await State.db.from('moxie_trend_candidates').update({
+    status: 'promoted', promoted_at: new Date().toISOString()
+  }).eq('id', id);
+  // 提取 domain（如果 tool_url 是 source 站的，编辑要在 submit 页手动填官网）
+  try {
+    const u = new URL(toolUrl);
+    const submitUrl = `moxie-submit.html?name=${encodeURIComponent(nameHint)}&from=${encodeURIComponent(u.hostname)}&trend_id=${id}`;
+    window.open(submitUrl, '_blank');
+  } catch (e) {
+    window.open(`moxie-submit.html?name=${encodeURIComponent(nameHint)}&trend_id=${id}`, '_blank');
+  }
+  renderView('trends');
+};
+
+/* 弃 */
+window.dismissTrend = async function(id) {
+  const reason = prompt('弃用原因（可选，例：低质 / 重复 / 不适合中文用户）');
+  if (reason === null) return;
+  await State.db.from('moxie_trend_candidates').update({
+    status: 'dismissed', dismissed_reason: reason
+  }).eq('id', id);
+  renderView('trends');
+};
+
+const TABLE_CFG = {
+  products: {
+    title: '产品', from: 'moxie_products', pk: 'id',
+    select: 'id, slug, name, domain, tagline, description, category_id, tags, price_label, domestic_available, vote_count, status, verified, featured, created_at, moxie_categories(name)',
+    orderBy: 'vote_count',
+    cols: ['', '名称', '分类', '标签', '票数', '状态', '操作'],
+    row: r => `<tr>
+      <td><span class="cell-logo"><img src="https://www.google.com/s2/favicons?domain=${r.domain}&sz=64"></span></td>
+      <td><div style="font-weight:500;color:var(--ink)">${esc(r.name)}${r.verified?' <span class="pill accent">子墨测过</span>':''}${r.featured?' <span class="pill accent">FEATURED</span>':''}</div><div style="color:var(--ink-3);font-family:var(--mono);font-size:11px;margin-top:3px">${esc(r.slug)}</div></td>
+      <td><span class="pill">${esc(r.moxie_categories?.name ?? '—')}</span></td>
+      <td style="color:var(--ink-2);max-width:280px">${esc(r.tagline)}</td>
+      <td style="font-family:var(--mono)">${r.vote_count}</td>
+      <td>${statusPill(r.status)}</td>
+      <td><div class="row-actions">
+        <a onclick='openEditor("products", ${JSON.stringify(r).replace(/'/g,"\\'")})'>编辑</a>
+        <a class="danger" onclick='confirmDelete("products", ${r.id}, ${JSON.stringify(r.name)})'>删除</a>
+      </div></td>
+    </tr>`
+  },
+  articles: {
+    title: '文章', from: 'moxie_articles', pk: 'id',
+    select: 'id, slug, title, excerpt, body_html, cover_url, category, read_minutes, status, published_at',
+    orderBy: 'published_at',
+    cols: ['标题', '分类', '阅读', '状态', '发布时间', '操作'],
+    row: r => `<tr>
+      <td><div style="font-weight:500;color:var(--ink)">${esc(r.title)}</div><div style="color:var(--ink-3);font-family:var(--mono);font-size:11px;margin-top:3px">${esc(r.slug)}</div></td>
+      <td><span class="pill accent">${esc(r.category)}</span></td>
+      <td style="font-family:var(--mono)">${r.read_minutes} 分钟</td>
+      <td>${statusPill(r.status)}</td>
+      <td style="font-family:var(--mono);color:var(--ink-3)">${fmtDate(r.published_at)}</td>
+      <td><div class="row-actions">
+        <a onclick='openEditor("articles", ${JSON.stringify(r).replace(/'/g,"\\'")})'>编辑</a>
+        <a class="danger" onclick='confirmDelete("articles", ${r.id}, ${JSON.stringify(r.title)})'>删除</a>
+      </div></td>
+    </tr>`
+  },
+  categories: {
+    title: '分类', from: 'moxie_categories', pk: 'id',
+    select: 'id, slug, name, group_name, sort_order, description',
+    orderBy: 'sort_order', asc: true,
+    cols: ['名称', 'slug', '组', '排序', '描述', '操作'],
+    row: r => `<tr>
+      <td style="font-weight:500;color:var(--ink)">${esc(r.name)}</td>
+      <td style="font-family:var(--mono);color:var(--ink-2)">${esc(r.slug)}</td>
+      <td><span class="pill">${esc(r.group_name)}</span></td>
+      <td style="font-family:var(--mono)">${r.sort_order}</td>
+      <td style="color:var(--ink-2)">${esc(r.description ?? '—')}</td>
+      <td><div class="row-actions">
+        <a onclick='openEditor("categories", ${JSON.stringify(r).replace(/'/g,"\\'")})'>编辑</a>
+        <a class="danger" onclick='confirmDelete("categories", ${r.id}, ${JSON.stringify(r.name)})'>删除</a>
+      </div></td>
+    </tr>`
+  },
+  comments: {
+    title: '评论', from: 'moxie_comments', pk: 'id', canCreate: false,
+    select: 'id, target_type, target_id, body, status, created_at, moxie_profiles(display_name)',
+    orderBy: 'created_at',
+    cols: ['作者', '内容', '目标', '状态', '时间', '操作'],
+    row: r => `<tr>
+      <td style="font-weight:500">${esc(r.moxie_profiles?.display_name ?? '匿名')}</td>
+      <td style="color:var(--ink-1);max-width:480px">${esc(r.body)}</td>
+      <td style="font-family:var(--mono);color:var(--ink-3)">${r.target_type}#${r.target_id}</td>
+      <td>${statusPill(r.status)}</td>
+      <td style="font-family:var(--mono);color:var(--ink-3)">${fmtDate(r.created_at)}</td>
+      <td><div class="row-actions">
+        <a onclick="toggleCommentStatus(${r.id}, '${r.status}')">${r.status==='visible'?'隐藏':'恢复'}</a>
+        <a class="danger" onclick='confirmDelete("comments", ${r.id}, "这条评论")'>删除</a>
+      </div></td>
+    </tr>`
+  },
+  users: {
+    title: '用户', from: 'moxie_profiles', pk: 'user_id', canCreate: false,
+    select: 'user_id, display_name, role, avatar_url, github_handle, bio, created_at',
+    orderBy: 'created_at',
+    cols: ['头像', '昵称', '角色', 'GitHub', '注册时间', '操作'],
+    row: r => `<tr>
+      <td>${r.avatar_url ? `<span class="cell-logo"><img src="${esc(r.avatar_url)}"></span>` : `<span class="cell-logo"></span>`}</td>
+      <td style="font-weight:500">${esc(r.display_name ?? '—')}</td>
+      <td>${r.role==='admin' ? '<span class="pill accent">ADMIN</span>' : '<span class="pill">user</span>'}</td>
+      <td style="font-family:var(--mono);color:var(--ink-2)">${esc(r.github_handle ?? '—')}</td>
+      <td style="font-family:var(--mono);color:var(--ink-3)">${fmtDate(r.created_at)}</td>
+      <td><div class="row-actions">
+        <a onclick="toggleUserRole('${r.user_id}', '${r.role}')">${r.role==='admin'?'撤销 admin':'授予 admin'}</a>
+        <a onclick='openEditor("users", ${JSON.stringify(r).replace(/'/g,"\\'")})'>编辑资料</a>
+      </div></td>
+    </tr>`
+  }
+};
+
+function statusPill(s) {
+  if (s === 'published' || s === 'visible') return `<span class="pill ok">${s}</span>`;
+  if (s === 'pending' || s === 'draft') return `<span class="pill warn">${s}</span>`;
+  if (s === 'hidden' || s === 'archived') return `<span class="pill err">${s}</span>`;
+  return `<span class="pill">${s}</span>`;
+}
+function esc(s) {
+  return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtDate(s) {
+  if (!s) return '—';
+  return new Date(s).toISOString().slice(0, 16).replace('T', ' ');
+}
+
+/* ═══════════════════ Modal · Editor ═══════════════════ */
+let MODAL_CTX = { type: null, row: null, fields: null };
+let CATEGORY_OPTIONS = []; // cached
+
+async function ensureCategoryOptions() {
+  if (CATEGORY_OPTIONS.length) return CATEGORY_OPTIONS;
+  const { data } = await State.db.from('moxie_categories').select('id, name').order('sort_order');
+  CATEGORY_OPTIONS = data || [];
+  return CATEGORY_OPTIONS;
+}
+
+const FIELD_SCHEMAS = {
+  products: async () => {
+    const cats = await ensureCategoryOptions();
+    return [
+      { k: 'name',     l: '产品名称 *',  t: 'text',     req: true },
+      { k: 'slug',     l: 'slug *',      t: 'text',     req: true, hint: '英文小写、用 - 分隔，例: deepseek-v3' },
+      { k: 'domain',   l: '官网域名 *',  t: 'text',     req: true, hint: '不带 https://，例: deepseek.com' },
+      { k: 'tagline',  l: '一句话描述 *', t: 'text',    req: true },
+      { k: 'description', l: '详细介绍', t: 'textarea' },
+      { k: 'category_id', l: '分类',     t: 'select',   options: cats.map(c => ({ v: c.id, l: c.name })), allowNull: true },
+      { k: 'tags',     l: '标签',         t: 'tags',    hint: '逗号分隔，例: 大模型, 开源' },
+      { k: 'price_label',  l: '价格标签', t: 'text',    placeholder: '免费 · ¥29/月 · 按量' },
+      { k: 'domestic_available', l: '国内可用', t: 'select', options: [
+        { v: 'yes', l: '✓ 直连可用' },
+        { v: 'partial', l: '⚠ 部分需梯子' },
+        { v: 'no', l: '✗ 完全需梯子' }
+      ]},
+      { k: 'verified', l: '子墨测过',  t: 'check' },
+      { k: 'featured', l: '本周精选',  t: 'check' },
+      { k: 'status',   l: '状态',       t: 'select', options: [
+        { v: 'published', l: 'published 已发布' },
+        { v: 'pending',   l: 'pending 待审核' },
+        { v: 'draft',     l: 'draft 草稿' },
+        { v: 'archived',  l: 'archived 归档' }
+      ]}
+    ];
+  },
+  articles: async () => [
+    { k: 'title',   l: '标题 *',     t: 'text', req: true },
+    { k: 'slug',    l: 'slug *',     t: 'text', req: true },
+    { k: 'category',l: '分类',       t: 'select', options: ['横评','手册','增长','选型'].map(v => ({ v, l: v })) },
+    { k: 'read_minutes', l: '预估阅读 (分钟)', t: 'number' },
+    { k: 'excerpt', l: '摘要',       t: 'textarea' },
+    { k: 'cover_url', l: '封面图',   t: 'upload', bucket: 'moxie-covers', hint: '点击上传 (或粘贴 URL)，存到 Supabase Storage' },
+    { k: 'body_html', l: '正文 (HTML)', t: 'textarea', large: true, hint: '支持任意 HTML，复杂排版建议用 .md 写好转 HTML 粘进来' },
+    { k: 'status',  l: '状态',       t: 'select', options: [
+      { v: 'published', l: 'published 已发布' },
+      { v: 'draft',     l: 'draft 草稿' },
+      { v: 'archived',  l: 'archived 归档' }
+    ]}
+  ],
+  categories: async () => [
+    { k: 'name',    l: '分类名称 *', t: 'text', req: true },
+    { k: 'slug',    l: 'slug *',     t: 'text', req: true },
+    { k: 'group_name', l: '所属组',   t: 'select', options: [
+      { v: 'aigc',     l: 'AIGC 创作' },
+      { v: 'platform', l: '模型 / 平台' },
+      { v: 'devtool',  l: '开发者 / 效率' }
+    ]},
+    { k: 'sort_order', l: '排序权重', t: 'number', hint: '数字越小越靠前' },
+    { k: 'description', l: '描述',   t: 'textarea' }
+  ],
+  users: async () => [
+    { k: 'display_name', l: '昵称',  t: 'text' },
+    { k: 'role',     l: '角色',      t: 'select', options: [
+      { v: 'user', l: 'user 普通用户' },
+      { v: 'admin', l: 'admin 管理员' }
+    ]},
+    { k: 'github_handle', l: 'GitHub Handle', t: 'text' },
+    { k: 'avatar_url', l: '头像 URL', t: 'text' },
+    { k: 'bio',      l: '简介',      t: 'textarea' }
+  ]
+};
+
+async function openEditor(type, row) {
+  MODAL_CTX = { type, row, fields: null };
+  const fields = await FIELD_SCHEMAS[type]();
+  MODAL_CTX.fields = fields;
+
+  document.getElementById('modalTitle').textContent = (row ? '编辑 ' : '新建 ') + TABLE_CFG[type].title;
+  document.getElementById('modalSub').textContent = row ? `id #${row[TABLE_CFG[type].pk]}` : 'new record';
+  document.getElementById('modalMsg').innerHTML = '';
+  document.getElementById('modalLeft').textContent = row ? `更新于 ${fmtDate(row.created_at || row.published_at)}` : '';
+
+  const form = document.getElementById('modalForm');
+  form.innerHTML = fields.map(f => renderField(f, row ? row[f.k] : null)).join('');
+
+  /* 文件上传绑定 */
+  form.querySelectorAll('input[type="file"]').forEach(inp => {
+    inp.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const bucket = inp.dataset.bucket;
+      const targetField = inp.dataset.target;
+      inp.disabled = true;
+      const previewBox = form.querySelector(`#preview-${targetField}`);
+      const urlField = form.querySelector(`[name="${targetField}"]`);
+      try {
+        const path = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+        const { data, error } = await State.db.storage.from(bucket).upload(path, file, { upsert: false });
+        if (error) throw error;
+        const { data: { publicUrl } } = State.db.storage.from(bucket).getPublicUrl(data.path);
+        urlField.value = publicUrl;
+        previewBox.innerHTML = `<img src="${publicUrl}" class="upload-preview">`;
+      } catch (err) {
+        showModalMsg('上传失败：' + err.message, 'err');
+      } finally {
+        inp.disabled = false;
+      }
+    });
+  });
+
+  document.getElementById('modalBackdrop').hidden = false;
+}
+
+function renderField(f, val) {
+  const v = val ?? '';
+  if (f.t === 'text' || f.t === 'url' || f.t === 'email') {
+    return `<div><label>${f.l}</label><input type="${f.t}" name="${f.k}" value="${esc(v)}" placeholder="${esc(f.placeholder||'')}" ${f.req?'required':''}>${f.hint?`<div class="hint">${f.hint}</div>`:''}</div>`;
+  }
+  if (f.t === 'number') {
+    return `<div><label>${f.l}</label><input type="number" name="${f.k}" value="${esc(v)}">${f.hint?`<div class="hint">${f.hint}</div>`:''}</div>`;
+  }
+  if (f.t === 'textarea') {
+    return `<div><label>${f.l}</label><textarea name="${f.k}" class="${f.large?'lg':''}">${esc(v)}</textarea>${f.hint?`<div class="hint">${f.hint}</div>`:''}</div>`;
+  }
+  if (f.t === 'select') {
+    const opts = (f.options || []).map(o => `<option value="${esc(o.v)}" ${String(v)===String(o.v)?'selected':''}>${esc(o.l)}</option>`).join('');
+    return `<div><label>${f.l}</label><select name="${f.k}">${f.allowNull?'<option value="">— 不分类 —</option>':''}${opts}</select></div>`;
+  }
+  if (f.t === 'check') {
+    return `<div><label class="check"><input type="checkbox" name="${f.k}" ${v?'checked':''}> ${f.l}</label></div>`;
+  }
+  if (f.t === 'tags') {
+    const flat = Array.isArray(v) ? v.join(', ') : (v || '');
+    return `<div><label>${f.l}</label><input type="text" name="${f.k}" value="${esc(flat)}" data-arr="1">${f.hint?`<div class="hint">${f.hint}</div>`:''}</div>`;
+  }
+  if (f.t === 'upload') {
+    return `<div>
+      <label>${f.l}</label>
+      <input type="text" name="${f.k}" value="${esc(v)}" placeholder="https://...">
+      <div id="preview-${f.k}">${v?`<img src="${esc(v)}" class="upload-preview">`:''}</div>
+      <label class="upload-area" for="file-${f.k}">📤 点击上传到 Supabase Storage (${f.bucket})</label>
+      <input type="file" id="file-${f.k}" data-bucket="${f.bucket}" data-target="${f.k}" accept="image/*" style="display:none">
+      ${f.hint?`<div class="hint">${f.hint}</div>`:''}
+    </div>`;
+  }
+  return '';
+}
+
+function collectForm() {
+  const form = document.getElementById('modalForm');
+  const obj = {};
+  MODAL_CTX.fields.forEach(f => {
+    const el = form.querySelector(`[name="${f.k}"]`);
+    if (!el) return;
+    let val;
+    if (f.t === 'check') val = el.checked;
+    else if (f.t === 'number') val = el.value === '' ? null : Number(el.value);
+    else if (f.t === 'tags') val = el.value ? el.value.split(',').map(s => s.trim()).filter(Boolean) : [];
+    else if (f.t === 'select' && f.allowNull && el.value === '') val = null;
+    else val = el.value;
+    obj[f.k] = val;
+  });
+  return obj;
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalCancel').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modalBackdrop') closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !document.getElementById('modalBackdrop').hidden) closeModal();
+});
+function closeModal() {
+  document.getElementById('modalBackdrop').hidden = true;
+  MODAL_CTX = { type: null, row: null, fields: null };
+}
+function showModalMsg(msg, kind) {
+  const c = document.getElementById('modalMsg');
+  c.innerHTML = `<div class="form-${kind==='err'?'err':'ok'}" style="margin-bottom:14px">${esc(msg)}</div>`;
+}
+
+document.getElementById('modalSave').addEventListener('click', async () => {
+  const { type, row } = MODAL_CTX;
+  if (!type) return;
+  const cfg = TABLE_CFG[type];
+  const btn = document.getElementById('modalSave');
+  btn.disabled = true; btn.textContent = '保存中…';
+  try {
+    const payload = collectForm();
+    // 必填校验
+    for (const f of MODAL_CTX.fields) {
+      if (f.req && (payload[f.k] === '' || payload[f.k] === null)) {
+        throw new Error(`字段「${f.l}」必填`);
+      }
+    }
+    let result;
+    if (row) {
+      const pkVal = row[cfg.pk];
+      result = await State.db.from(cfg.from).update(payload).eq(cfg.pk, pkVal).select();
+    } else {
+      result = await State.db.from(cfg.from).insert(payload).select();
+    }
+    if (result.error) throw result.error;
+    showModalMsg(row ? '已更新 ✓' : '已创建 ✓', 'ok');
+    setTimeout(() => { closeModal(); renderView(State.view); }, 600);
+  } catch (e) {
+    showModalMsg(e.message, 'err');
+  } finally {
+    btn.disabled = false; btn.textContent = '保存';
+  }
+});
+
+/* ═══════════════════ Delete + 状态切换 ═══════════════════ */
+async function confirmDelete(type, id, label) {
+  if (!confirm(`确定删除「${label}」？\n该操作不可撤销。`)) return;
+  const cfg = TABLE_CFG[type];
+  const { error } = await State.db.from(cfg.from).delete().eq(cfg.pk, id);
+  if (error) { alert('删除失败：' + error.message); return; }
+  renderView(State.view);
+}
+
+async function toggleCommentStatus(id, currentStatus) {
+  const next = currentStatus === 'visible' ? 'hidden' : 'visible';
+  const { error } = await State.db.from('moxie_comments').update({ status: next }).eq('id', id);
+  if (error) { alert('失败：' + error.message); return; }
+  renderView(State.view);
+}
+
+async function toggleUserRole(uid, currentRole) {
+  if (uid === State.user.id && currentRole === 'admin') {
+    if (!confirm('撤销自己的 admin 权限会让你登出，确定？')) return;
+  }
+  const next = currentRole === 'admin' ? 'user' : 'admin';
+  const { error } = await State.db.from('moxie_profiles').update({ role: next }).eq('user_id', uid);
+  if (error) { alert('失败：' + error.message); return; }
+  renderView(State.view);
+}
+</script>
+</body>
+</html>

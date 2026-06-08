@@ -1,0 +1,52 @@
+name: MOXIE Article Jobs
+
+# T10 (MOXIE-23) 文章生成触发器 · 定时侧
+#
+# 每天 09:30(北京)跑:
+#   1. enqueue-weekly:本周 high-value 产品 → 入队周趋势文(幂等,同 ISO 周只一条,天天跑无副作用)
+#   2. process:消费 pending 任务(含 promote 事件驱动入队的类目横评)→ 调 T8 生成草稿
+#
+# 只需两个配置(不含任何业务 secret —— LLM key 在部署端 Next 服务里):
+#   - secrets.LATEMAI_INTERNAL_TOKEN  内部 API Bearer token
+#   - vars.SITE_BASE_URL              线上站点根 URL,如 https://latemai.com
+
+on:
+  schedule:
+    - cron: '30 1 * * *'   # 每天 UTC 01:30 = 北京 09:30
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check config
+        env:
+          TOKEN: ${{ secrets.LATEMAI_INTERNAL_TOKEN }}
+          BASE: ${{ vars.SITE_BASE_URL }}
+        run: |
+          if [ -z "$TOKEN" ] || [ -z "$BASE" ]; then
+            echo "::error::缺 secrets.LATEMAI_INTERNAL_TOKEN 或 vars.SITE_BASE_URL,跳过"
+            exit 1
+          fi
+
+      - name: Enqueue weekly trend (idempotent)
+        env:
+          TOKEN: ${{ secrets.LATEMAI_INTERNAL_TOKEN }}
+          BASE: ${{ vars.SITE_BASE_URL }}
+        run: |
+          curl -fsS -X POST "$BASE/api/internal/article-jobs/enqueue-weekly" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" | tee /tmp/enqueue.json
+          echo
+
+      - name: Process pending jobs
+        env:
+          TOKEN: ${{ secrets.LATEMAI_INTERNAL_TOKEN }}
+          BASE: ${{ vars.SITE_BASE_URL }}
+        run: |
+          curl -fsS -X POST "$BASE/api/internal/article-jobs/process" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"limit": 3}' | tee /tmp/process.json
+          echo

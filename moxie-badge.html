@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
+<title>MOXIE 徽章 · 把你的排名贴到任何地方 · MOXIE</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@100;200;300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
+<script src="moxie-shared.js?v=20260526-01" defer></script>
+
+<style>
+  /* ── 页面 layout ── */
+  .badge-hero {
+    padding: 88px 0 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .badge-hero .eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: var(--text-2xs);
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .badge-hero .eyebrow::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .badge-hero h1 {
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 18px;
+    max-width: 760px;
+    margin-left: auto; margin-right: auto;
+  }
+  .badge-hero p {
+    font-size: var(--text-md);
+    color: var(--ink-1);
+    line-height: 1.7;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* ── 选产品区 ── */
+  .picker-section {
+    padding: 48px 0 32px;
+    background: var(--bg-soft);
+  }
+  .picker-section .container { max-width: 760px; }
+  .picker-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: 24px 28px;
+  }
+  .picker-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: end;
+  }
+  .picker-label {
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .picker-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    font-size: var(--text-base);
+    font-family: inherit;
+    color: var(--ink);
+    background: var(--bg);
+  }
+  .picker-input:focus { outline: none; border-color: var(--ink); }
+  .picker-btn {
+    padding: 12px 20px;
+    background: var(--ink);
+    color: white;
+    border-radius: var(--r-sm);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .picker-btn:hover { background: var(--accent); }
+
+  .picker-meta {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-2);
+    display: flex; align-items: center; gap: 14px;
+    font-size: var(--text-sm);
+    color: var(--ink-1);
+  }
+  .picker-meta .picker-rank {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .picker-meta .sep { color: var(--ink-3); }
+
+  /* ── 徽章 GALLERY ── */
+  .gallery-section { padding: 64px 0 80px; }
+  .gallery-section .container { max-width: 1080px; }
+  .gallery-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 32px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .gallery-head h2 {
+    font-family: var(--display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .gallery-head .meta {
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+  }
+
+  .badge-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .badge-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .badge-card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line-2);
+    background: var(--bg-soft);
+  }
+  .badge-card-head .name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .badge-card-head .dim {
+    font-family: var(--mono);
+    font-size: var(--text-2xs);
+    color: var(--ink-2);
+  }
+
+  /* 预览区 · 棋盘格底以显示透明度 */
+  .badge-preview {
+    padding: 36px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    background:
+      linear-gradient(45deg, #F7F8FA 25%, transparent 25%),
+      linear-gradient(-45deg, #F7F8FA 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #F7F8FA 75%),
+      linear-gradient(-45deg, transparent 75%, #F7F8FA 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  }
+  .badge-preview--dark {
+    background:
+      linear-gradient(45deg, #1D2129 25%, transparent 25%),
+      linear-gradient(-45deg, #1D2129 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #1D2129 75%),
+      linear-gradient(-45deg, transparent 75%, #1D2129 75%);
+    background-color: #2E3441;
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  }
+
+  /* 代码区 · tabs + 代码块 */
+  .badge-code {
+    border-top: 1px solid var(--line-2);
+    padding: 16px 18px 18px;
+  }
+  .code-tabs {
+    display: flex; gap: 4px;
+    margin-bottom: 10px;
+  }
+  .code-tab {
+    padding: 5px 10px;
+    font-size: var(--text-2xs);
+    font-weight: 500;
+    color: var(--ink-2);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--r-xs);
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: 0.04em;
+    font-family: var(--mono);
+  }
+  .code-tab.active {
+    color: var(--ink);
+    background: var(--bg-soft);
+    border-color: var(--line);
+  }
+  .code-tab:hover:not(.active) { color: var(--ink-1); }
+  .code-block {
+    position: relative;
+    background: var(--bg-soft);
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-sm);
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: var(--text-2xs);
+    color: var(--ink);
+    line-height: 1.55;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .copy-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    padding: 4px 10px;
+    font-size: var(--text-2xs);
+    font-family: var(--mono);
+    color: var(--ink-2);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-xs);
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: 0.04em;
+  }
+  .code-block .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .code-block .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+  /* ── 如何使用 + FAQ ── */
+  .howto-section {
+    padding: 64px 0;
+    background: var(--bg-soft);
+    border-top: 1px solid var(--line-2);
+  }
+  .howto-section .container { max-width: 880px; }
+  .howto-section h2 {
+    font-family: var(--display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+  .step-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 56px;
+  }
+  .step {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 22px 20px;
+  }
+  .step .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 50%;
+    font-family: var(--mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .step h3 {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.005em;
+  }
+  .step p {
+    font-size: var(--text-xs);
+    color: var(--ink-1);
+    line-height: 1.65;
+  }
+
+  /* FAQ */
+  .faq-grid { display: flex; flex-direction: column; gap: 10px; }
+  .faq-q {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    padding: 16px 18px;
+  }
+  .faq-q summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--ink);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px;
+  }
+  .faq-q summary::-webkit-details-marker { display: none; }
+  .faq-q summary::after {
+    content: "+";
+    font-size: 18px;
+    color: var(--ink-2);
+    transition: transform .2s;
+  }
+  .faq-q[open] summary::after { transform: rotate(45deg); }
+  .faq-q p {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line-2);
+    font-size: var(--text-sm);
+    color: var(--ink-1);
+    line-height: 1.7;
+  }
+
+  /* ── CTA 底栏 ── */
+  .cta-bottom {
+    padding: 64px 0;
+    text-align: center;
+    border-top: 1px solid var(--line-2);
+  }
+  .cta-bottom h2 {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+  }
+  .cta-bottom p {
+    color: var(--ink-1);
+    font-size: var(--text-base);
+    margin-bottom: 24px;
+  }
+  .cta-bottom .cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px;
+    background: var(--accent);
+    color: white;
+    border-radius: var(--r-pill);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition: background .15s, transform .15s;
+  }
+  .cta-bottom .cta-btn:hover { background: var(--accent-d); transform: translateY(-1px); }
+
+  @media (max-width: 900px) {
+    .badge-grid { grid-template-columns: 1fr; }
+    .step-grid { grid-template-columns: 1fr; }
+    .badge-hero h1 { font-size: 32px; }
+    .picker-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="moxie-preview.html" class="brand-logo"><img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24"></a>
+    <nav class="nav-center">
+      <a href="moxie-preview.html">榜单</a>
+      <a href="moxie-business.html">商业落地</a>
+      <a href="moxie-categories.html">分类</a>
+      <a href="moxie-blog.html">文章</a>
+    </nav>
+    <div class="top-actions">
+      <a href="moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="moxie-login.html" class="btn-accent">登录</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="badge-hero">
+  <div class="container">
+    <span class="eyebrow">MAKER 专享</span>
+    <h1>把你的 MOXIE 徽章贴到任何地方</h1>
+    <p>每一款上榜的中文 AI 产品都能领取一枚徽章。贴到你的官网、Twitter、GitHub README，让访问者一眼看到你的排名 —— 也帮 MOXIE 把更多用户带回来。</p>
+  </div>
+</section>
+
+<!-- ═══ 选产品 ═══ -->
+<section class="picker-section">
+  <div class="container">
+    <div class="picker-card">
+      <label class="picker-label" for="productPicker">你的产品是？</label>
+      <div class="picker-row">
+        <input id="productPicker" class="picker-input" type="text"
+               placeholder="搜索：DeepSeek / Kimi / 秘塔 / Coze…"
+               value="DeepSeek V3">
+        <button class="picker-btn" id="loadBadgeBtn">获取徽章</button>
+      </div>
+      <div class="picker-meta">
+        <span>当前预览：<strong style="color:var(--ink)" id="curName">DeepSeek V3</strong></span>
+        <span class="sep">·</span>
+        <span>本周 <span class="picker-rank" id="curRank">#23</span></span>
+        <span class="sep">·</span>
+        <span id="curCategory">大模型 · 开源</span>
+        <span class="sep">·</span>
+        <span id="curVotes">847 票</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4 款徽章 ═══ -->
+<section class="gallery-section">
+  <div class="container">
+    <div class="gallery-head">
+      <h2>选一款贴到你的网站</h2>
+      <span class="meta">SVG · 任意分辨率不糊</span>
+    </div>
+
+    <div class="badge-grid">
+
+      <!-- ① Compact Light Pill -->
+      <div class="badge-card" data-style="compact-light">
+        <div class="badge-card-head">
+          <span class="name">紧凑款 · 浅色</span>
+          <span class="dim">220 × 44</span>
+        </div>
+        <div class="badge-preview">
+          <a href="moxie-product.html" aria-label="Featured on MOXIE #23">
+            <svg width="220" height="44" viewBox="0 0 220 44" xmlns="http://www.w3.org/2000/svg" role="img">
+              <rect x="0.5" y="0.5" width="219" height="43" rx="22"
+                    fill="#FFFFFF" stroke="#E5E6EB"/>
+              <circle cx="22" cy="22" r="9" fill="#DD6E4C"/>
+              <text x="22" y="26" font-family="Plus Jakarta Sans, -apple-system, sans-serif"
+                    font-size="11" font-weight="800" fill="#FFFFFF" text-anchor="middle">M</text>
+              <text x="42" y="20" font-family="Plus Jakarta Sans, -apple-system, sans-serif"
+                    font-size="9.5" font-weight="500" fill="#86909C" letter-spacing="1">FEATURED ON</text>
+              <text x="42" y="34" font-family="Plus Jakarta Sans, -apple-system, sans-serif"
+                    font-size="14" font-weight="700" fill="#1D2129">MOXIE</text>
+              <line x1="124" y1="12" x2="124" y2="32" stroke="#E5E6EB" stroke-width="1"/>
+              <text x="138" y="20" font-family="JetBrains Mono, monospace"
+                    font-size="9" font-weight="500" fill="#86909C" letter-spacing="1">RANK</text>
+              <text x="138" y="34" font-family="Outfit, -apple-system, sans-serif"
+                    font-size="14" font-weight="700" fill="#DD6E4C">#23</text>
+              <text x="172" y="20" font-family="JetBrains Mono, monospace"
+                    font-size="9" font-weight="500" fill="#86909C" letter-spacing="1">VOTES</text>
+              <text x="172" y="34" font-family="Outfit, -apple-system, sans-serif"
+                    font-size="14" font-weight="600" fill="#1D2129">847</text>
+            </svg>
+          </a>
+        </div>
+        <div class="badge-code">
+          <div class="code-tabs">
+            <button class="code-tab active" data-fmt="html">HTML</button>
+            <button class="code-tab" data-fmt="md">Markdown</button>
+            <button class="code-tab" data-fmt="url">SVG URL</button>
+          </div>
+          <pre class="code-block"><button class="copy-btn" type="button">复制</button><code class="code-content"></code></pre>
+        </div>
+      </div>
+
+      <!-- ② Compact Dark Pill -->
+      <div class="badge-card" data-style="compact-dark">
+        <div class="badge-card-head">
+          <span class="name">紧凑款 · 深色</span>
+          <span class="dim">220 × 44</span>
+        </div>
+        <div class="badge-preview badge-preview--dark">
+          <a href="moxie-product.html" aria-label="Featured on MOXIE #23">
+            <svg width="220" height="44" viewBox="0 0 220 44" xmlns="http://www.w3.org/2000/svg" role="img">
+              <rect x="0.5" y="0.5" width="219" height="43" rx="22"
+                    fill="#1D2129" stroke="#2E3441"/>
+              <circle cx="22" cy="22" r="9" fill="#DD6E4C"/>
+              <text x="22" y="26" font-family="Plus Jakarta Sans, -apple-system, sans-serif"
+                    font-size="11" font-weight="800" fill="#FFFFFF" text-anchor="middle">M</text>
+              <text x="42" y="20" font-family="Plus Jakarta Sans, -apple-system, sans-serif"
+                    font-size="9.5" font-weight="500" fill="#86909C" letter-spacing="1">FEATURED ON</text>
+              <text x="42" y="34" font-family="Plus Jakarta Sans, -apple-system, sans-serif"
+                    font-size="14" font-weight="700" fill="#FFFFFF">MOXIE</text>
+              <line x1="124" y1="12" x2="124" y2="32" stroke="#2E3441" stroke-width="1"/>
+              <text x="138" y="20" font-family="JetBrains Mono, monospace"
+                    font-size="9" font-weight="500" fill="#86909C" letter-spacing="1">RANK</text>
+              <text x="138" y="34" font-family="Outfit, -apple-system, sans-serif"
+                    font-size="14" font-weight="700" fill="#DD6E4C">#23</text>
+              <text x="172" y="20" font-family="JetBrains Mono, monospace"
+                    font-size="9" font-weight="500" fill="#86909C" letter-spacing="1">VOTES</text>
+              <text x="172" y="34" font-family="Outfit, -apple-system, sans-serif"
+                    font-size="14" font-weight="600" fill="#FFFFFF">847</text>
+            </svg>
+          </a>
+        </div>
+        <div class="badge-code">
+          <div class="code-tabs">
+            <button class="code-tab active" data-fmt="html">HTML</button>
+            <button class="code-tab" data-fmt="md">Markdown</button>
+            <button class="code-tab" data-fmt="url">SVG URL</button>
+          </div>
+          <pre class="code-block"><button class="copy-btn" type="button">复制</button><code class="code-content"></code></pre>
+        </div>
+      </div>
+
+      <!-- ③ Card 大方块 · 浅 -->
+      <div class="badge-card" data-style="card-light">
+        <div class="badge-card-head">
+          <span class="name">卡片款 · 浅色（首页推荐）</span>
+          <span class="dim">280 × 96</span>
+        </div>
+        <div class="badge-preview">
+          <a href="moxie-product.html" aria-label="Featured on MOXIE #23 · DeepSeek V3">
+            <svg width="280" height="96" viewBox="0 0 280 96" xmlns="http://www.w3.org/2000/svg" role="img">
+              <rect x="0.5" y="0.5" width="279" height="95" rx="14"
+                    fill="#FFFFFF" stroke="#E5E6EB"/>
+              <!-- 左侧 logo + 品牌 -->
+              <g transform="translate(20, 16)">
+                <rect x="0" y="0" width="36" height="36" rx="10" fill="#DD6E4C"/>
+                <text x="18" y="25" font-family="Plus Jakarta Sans, sans-serif"
+                      font-size="20" font-weight="800" fill="#FFFFFF" text-anchor="middle">M</text>
+                <text x="48" y="14" font-family="Plus Jakarta Sans, sans-serif"
+                      font-size="10" font-weight="500" fill="#86909C" letter-spacing="1.2">FEATURED ON</text>
+                <text x="48" y="32" font-family="Outfit, sans-serif"
+                      font-size="20" font-weight="700" fill="#1D2129" letter-spacing="-0.5">MOXIE</text>
+              </g>
+              <!-- 分隔线 -->
+              <line x1="20" y1="64" x2="260" y2="64" stroke="#F2F3F5" stroke-width="1"/>
+              <!-- 底部：排名 + 产品名 -->
+              <g transform="translate(20, 74)">
+                <text x="0" y="12" font-family="Outfit, sans-serif"
+                      font-size="18" font-weight="800" fill="#DD6E4C">#23</text>
+                <text x="40" y="12" font-family="Plus Jakarta Sans, sans-serif"
+                      font-size="12" font-weight="500" fill="#4E5969">DeepSeek V3 · 大模型</text>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <div class="badge-code">
+          <div class="code-tabs">
+            <button class="code-tab active" data-fmt="html">HTML</button>
+            <button class="code-tab" data-fmt="md">Markdown</button>
+            <button class="code-tab" data-fmt="url">SVG URL</button>
+          </div>
+          <pre class="code-block"><button class="copy-btn" type="button">复制</button><code class="code-content"></code></pre>
+        </div>
+      </div>
+
+      <!-- ④ Card 大方块 · 深 -->
+      <div class="badge-card" data-style="card-dark">
+        <div class="badge-card-head">
+          <span class="name">卡片款 · 深色（落地页推荐）</span>
+          <span class="dim">280 × 96</span>
+        </div>
+        <div class="badge-preview badge-preview--dark">
+          <a href="moxie-product.html" aria-label="Featured on MOXIE #23 · DeepSeek V3">
+            <svg width="280" height="96" viewBox="0 0 280 96" xmlns="http://www.w3.org/2000/svg" role="img">
+              <rect x="0.5" y="0.5" width="279" height="95" rx="14"
+                    fill="#1D2129" stroke="#2E3441"/>
+              <g transform="translate(20, 16)">
+                <rect x="0" y="0" width="36" height="36" rx="10" fill="#DD6E4C"/>
+                <text x="18" y="25" font-family="Plus Jakarta Sans, sans-serif"
+                      font-size="20" font-weight="800" fill="#FFFFFF" text-anchor="middle">M</text>
+                <text x="48" y="14" font-family="Plus Jakarta Sans, sans-serif"
+                      font-size="10" font-weight="500" fill="#86909C" letter-spacing="1.2">FEATURED ON</text>
+                <text x="48" y="32" font-family="Outfit, sans-serif"
+                      font-size="20" font-weight="700" fill="#FFFFFF" letter-spacing="-0.5">MOXIE</text>
+              </g>
+              <line x1="20" y1="64" x2="260" y2="64" stroke="#2E3441" stroke-width="1"/>
+              <g transform="translate(20, 74)">
+                <text x="0" y="12" font-family="Outfit, sans-serif"
+                      font-size="18" font-weight="800" fill="#DD6E4C">#23</text>
+                <text x="40" y="12" font-family="Plus Jakarta Sans, sans-serif"
+                      font-size="12" font-weight="500" fill="#C9CDD4">DeepSeek V3 · 大模型</text>
+              </g>
+            </svg>
+          </a>
+        </div>
+        <div class="badge-code">
+          <div class="code-tabs">
+            <button class="code-tab active" data-fmt="html">HTML</button>
+            <button class="code-tab" data-fmt="md">Markdown</button>
+            <button class="code-tab" data-fmt="url">SVG URL</button>
+          </div>
+          <pre class="code-block"><button class="copy-btn" type="button">复制</button><code class="code-content"></code></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3 步使用 + FAQ ═══ -->
+<section class="howto-section">
+  <div class="container">
+    <h2>3 步贴到你的网站</h2>
+    <div class="step-grid">
+      <div class="step">
+        <span class="num">1</span>
+        <h3>选择徽章样式</h3>
+        <p>上面 4 款都是 SVG，矢量无失真。落地页推荐卡片款，README / Twitter 推荐紧凑款。</p>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <h3>复制代码</h3>
+        <p>点「HTML / Markdown / SVG URL」切换格式，「复制」按钮一键拷贝到剪贴板。</p>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <h3>粘贴到你的网站</h3>
+        <p>官网首页、底部、关于页都可以。徽章本身是一张图，点击会跳回你在 MOXIE 的详情页。</p>
+      </div>
+    </div>
+
+    <h2>常见问题</h2>
+    <div class="faq-grid">
+      <details class="faq-q" open>
+        <summary>排名变了徽章会自动更新吗？</summary>
+        <p>会。徽章引用的是 MOXIE 服务器上的实时 SVG，你的产品排名变化、票数增加，所有挂在外部的徽章会自动同步刷新。零维护。</p>
+      </details>
+      <details class="faq-q">
+        <summary>能不能换字体 / 改颜色？</summary>
+        <p>当前 4 款是官方版本。如果你的网站调性差异大，复制 SVG URL → 下载 → 改源码自托管也可以，但失去自动同步。我们后续会出可定制版（PRO 等级）。</p>
+      </details>
+      <details class="faq-q">
+        <summary>贴到哪儿效果最好？</summary>
+        <p>① 官网底部 footer（持续曝光）② 关于页 / 团队页（可信背书）③ Twitter pinned tweet（拉新场景）④ GitHub README 顶部（开发者社区）。</p>
+      </details>
+      <details class="faq-q">
+        <summary>会跟踪到点击吗？</summary>
+        <p>会。点击徽章回流 MOXIE 的访问者，会带 <code>?ref=badge</code> 参数，你能在 Maker 后台看到每天有多少人通过你的徽章回流（即将上线）。</p>
+      </details>
+      <details class="faq-q">
+        <summary>没看到我的产品怎么办？</summary>
+        <p>说明你的产品还没在 MOXIE 收录。<a href="moxie-submit.html" style="color:var(--accent);text-decoration:underline">提交产品 →</a> 编辑团队 48h 内审核。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-bottom">
+  <div class="container">
+    <h2>没在榜单上？</h2>
+    <p>提交你的中文 AI 产品，编辑团队 48 小时审核，免费</p>
+    <a href="moxie-submit.html" class="cta-btn">
+      提交我的产品
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="moxie-preview.html" class="brand-logo"><img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24"></a>
+        <p style="margin-top: 14px;">MOXIE 是中文 AI 工具的每日精选榜。编辑团队深度测试制，独立运营。</p>
+      </div>
+      <div class="fcol"><h4>发现</h4><a href="moxie-preview.html">今日上新</a><a href="moxie-categories.html">分类</a></div>
+      <div class="fcol"><h4>产品</h4><a href="moxie-preview.html?chat=open">MOXIE 助手</a></div>
+      <div class="fcol"><h4>资源</h4><a href="moxie-about.html">关于我们</a><a href="moxie-about.html#faq">FAQ</a></div>
+      <div class="fcol"><h4>合作</h4><a href="moxie-submit.html">提交产品</a><a href="moxie-badge.html">领取徽章</a><a href="moxie-pricing.html">商务合作</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2024 — 2026 MOXIE</span><div class="right"><a href="moxie-privacy.html">隐私政策</a><a href="moxie-terms.html">服务条款</a><a href="moxie-about.html">联系我们</a></div></div>
+  </div>
+</footer>
+
+<script>
+  /* Lenis 平滑 + Lucide */
+  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  if (window.lucide) lucide.createIcons();
+
+  /* ──────────── 徽章 · 代码生成 + 复制 ──────────── */
+  // 当前产品（demo 写死，生产从 URL / API 拿）
+  const PRODUCT = {
+    slug: 'deepseek-v3',
+    name: 'DeepSeek V3',
+    rank: 23,
+    detailUrl: 'https://moxie.cn/product/deepseek-v3',
+  };
+  const SVG_BASE = 'https://moxie.cn/badge';   // 生产环境后端给 SVG
+
+  function snippet(style, fmt) {
+    const url = `${SVG_BASE}/${PRODUCT.slug}-${style}.svg`;
+    const alt = `Featured on MOXIE #${PRODUCT.rank} · ${PRODUCT.name}`;
+    if (fmt === 'html') {
+      return `<a href="${PRODUCT.detailUrl}?ref=badge" target="_blank" rel="noopener">\n  <img src="${url}" alt="${alt}" width="${style.startsWith('card') ? 280 : 220}" />\n</a>`;
+    }
+    if (fmt === 'md') {
+      return `[![${alt}](${url})](${PRODUCT.detailUrl}?ref=badge)`;
+    }
+    return url;
+  }
+
+  // 初始化每张卡的 tab 切换 + 复制
+  document.querySelectorAll('.badge-card').forEach(card => {
+    const style = card.dataset.style;
+    const tabs = card.querySelectorAll('.code-tab');
+    const codeEl = card.querySelector('.code-content');
+    const copyBtn = card.querySelector('.copy-btn');
+
+    function render(fmt) {
+      codeEl.textContent = snippet(style, fmt);
+    }
+    render('html');
+
+    tabs.forEach(t => {
+      t.addEventListener('click', () => {
+        tabs.forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        render(t.dataset.fmt);
+      });
+    });
+
+    copyBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        await navigator.clipboard.writeText(codeEl.textContent);
+        copyBtn.textContent = '已复制 ✓';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.textContent = '复制';
+          copyBtn.classList.remove('copied');
+        }, 1500);
+      } catch (err) {
+        copyBtn.textContent = '失败';
+        setTimeout(() => copyBtn.textContent = '复制', 1500);
+      }
+    });
+  });
+
+  /* 选产品按钮 · demo 暂只 reload（生产连搜索 API） */
+  document.getElementById('loadBadgeBtn')?.addEventListener('click', () => {
+    const val = document.getElementById('productPicker').value.trim();
+    if (!val) return;
+    // demo: 不刷新数据，只视觉确认
+    alert(`已加载产品："${val}" · 实际线上会从 MOXIE 数据库拉排名和分类`);
+  });
+</script>
+</body>
+</html>

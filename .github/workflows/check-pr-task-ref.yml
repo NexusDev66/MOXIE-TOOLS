@@ -1,0 +1,61 @@
+name: Check PR task ref
+
+# 强约束：每个 PR 必须在 title / body / 任一 commit message 里写明
+# `task:<PREFIX>-<N>` 形式的任务编号（例：task:MOXIE-1）。
+# 没写 → 这条 check 直接 fail，禁止合并。
+# 规则跟 xiaomo-rd-ai 仓库的 supabase/functions/github-sync 同步。
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate task ref in PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request
+            const pattern = /\btask\s*:\s*([A-Z][A-Z]{1,9})-(\d{1,6})\b/i
+
+            const sources = []
+            if (pr.title) sources.push({ where: 'PR title', text: pr.title })
+            if (pr.body)  sources.push({ where: 'PR body',  text: pr.body })
+
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            })
+            for (const c of commits) {
+              sources.push({ where: `commit ${c.sha.slice(0,7)}`, text: c.commit.message })
+            }
+
+            const hits = []
+            for (const s of sources) {
+              const m = s.text.match(pattern)
+              if (m) hits.push(`${s.where}: task:${m[1].toUpperCase()}-${m[2]}`)
+            }
+
+            if (hits.length === 0) {
+              core.setFailed(
+                '❌ 此 PR 没找到 `task:<PREFIX>-<N>` 引用。\n\n' +
+                '请在 PR title / body / 任一 commit message 里写明关联任务，例：\n' +
+                '  • `feat(scanner): 加 fazier RSS (task:MOXIE-16)`\n' +
+                '  • `fix(admin): promote 流程 (task:MOXIE-15)`\n' +
+                '  • `docs: 设计稿 (task:MOXIE-13)`\n\n' +
+                '前缀支持：MOII / MOXIE / RD。本仓库主要用 MOXIE。\n' +
+                '规则同步 https://rd.sdtads.com 的 task 系统。'
+              )
+              return
+            }
+
+            core.notice(`✓ 找到 ${hits.length} 处 task 引用：\n${hits.join('\n')}`)

@@ -1,0 +1,20 @@
+{
+  "name": "@moxie/cli",
+  "version": "0.1.0",
+  "description": "MOXIE · 中文 AI 工具的每日编辑精选榜 · 命令行查询",
+  "bin": {
+    "moxie": "./index.js"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["ai", "tools", "directory", "chinese", "agent", "moxie"],
+  "homepage": "https://latemai.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Michael00911/moxie.git",
+    "directory": "cli"
+  },
+  "license": "MIT"
+}
