@@ -219,27 +219,6 @@
       </style>
       <div class="side-block">
         <div class="sec-label">
-          <span>近期文章</span>
-          <a href="moxie-blog.html" class="all-link" style="font-size:11px">全部 →</a>
-        </div>
-        <div class="side-arts">
-          <a class="side-art" href="moxie-article.html">
-            <div class="side-art-meta"><span class="tag">REVIEW</span> · 2026.05.21</div>
-            <div class="side-art-title">DeepSeek V3 中文实测：跑完 6 个真实场景，发现 Claude 没有的 3 个优势</div>
-          </a>
-          <a class="side-art" href="moxie-article.html">
-            <div class="side-art-meta"><span class="tag">REVIEW</span> · 2026.05.18</div>
-            <div class="side-art-title">Coze vs Dify vs FastGPT 2026：中文 RAG 工作流谁更适合企业落地</div>
-          </a>
-          <a class="side-art" href="moxie-article.html">
-            <div class="side-art-meta"><span class="tag">GROWTH</span> · 2026.05.12</div>
-            <div class="side-art-title">中文 AI maker 第一批 1,000 用户怎么来：7 位创始人的真实路径</div>
-          </a>
-        </div>
-      </div>
-
-      <div class="side-block">
-        <div class="sec-label">
           <span>本月趋势</span>
         </div>
         <div class="trend-list">
@@ -320,6 +299,27 @@
           </div>
         </div>
       </div>
+
+      <div class="side-block">
+        <div class="sec-label">
+          <span>近期文章</span>
+          <a href="moxie-blog.html" class="all-link" style="font-size:11px">全部 →</a>
+        </div>
+        <div class="side-arts">
+          <a class="side-art" href="moxie-article.html">
+            <div class="side-art-meta"><span class="tag">REVIEW</span> · 2026.05.21</div>
+            <div class="side-art-title">DeepSeek V3 中文实测：跑完 6 个真实场景，发现 Claude 没有的 3 个优势</div>
+          </a>
+          <a class="side-art" href="moxie-article.html">
+            <div class="side-art-meta"><span class="tag">REVIEW</span> · 2026.05.18</div>
+            <div class="side-art-title">Coze vs Dify vs FastGPT 2026：中文 RAG 工作流谁更适合企业落地</div>
+          </a>
+          <a class="side-art" href="moxie-article.html">
+            <div class="side-art-meta"><span class="tag">GROWTH</span> · 2026.05.12</div>
+            <div class="side-art-title">中文 AI maker 第一批 1,000 用户怎么来：7 位创始人的真实路径</div>
+          </a>
+        </div>
+      </div>
     </aside>
 
     <!-- CENTER -->
@@ -370,32 +370,6 @@
         .news-title{flex:1;font-size:12.5px;color:var(--ink);line-height:1.45}
         .news-time{flex-shrink:0;font-size:10.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-top:1px}
       </style>
-      <div class="side-block">
-        <div class="sec-label">
-          <span>每日 AI 快讯热闻 <span class="news-head-live"><span class="d"></span>实时</span></span>
-          <a href="#" class="all-link" style="font-size:11px">更多 →</a>
-        </div>
-        <nav class="news-list" id="newsList">
-          <a class="news-item" href="#"><span class="news-tag">大模型</span><span class="news-title">OpenAI 据传下月发布新一代推理模型,主打 Agent 长任务</span><span class="news-time">1h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">编程</span><span class="news-title">Anthropic Claude 代码能力更新,SWE-bench 再创新高</span><span class="news-time">3h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">视频</span><span class="news-title">快手可灵上线 2.0,运动一致性大幅提升</span><span class="news-time">5h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">国产</span><span class="news-title">阿里通义千问开源新尺寸模型,中文长文更强</span><span class="news-time">7h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">融资</span><span class="news-title">某国产 Agent 公司完成新一轮融资,估值翻倍</span><span class="news-time">9h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">政策</span><span class="news-title">多地出台 AIGC 内容标识新规,平台需显著标注</span><span class="news-time">12h</span></a>
-        </nav>
-        <script>
-          /* 快讯暂为占位示例(待接真源):点击=新标签打开该标题搜索。接真源后给 .news-item 写真实 href 即可。 */
-          (function(){
-            document.querySelectorAll('#newsList .news-item').forEach(function(a){
-              if(a.getAttribute('href') && a.getAttribute('href')!=='#') return;
-              var t=(a.querySelector('.news-title')||{}).textContent||'';
-              a.href='https://www.bing.com/search?q='+encodeURIComponent(t.trim());
-              a.target='_blank'; a.rel='noopener';
-            });
-          })();
-        </script>
-      </div>
-
       <div class="assistant-card">
         <div class="assistant-eyebrow">
           <span class="live-dot"></span>
@@ -443,6 +417,32 @@
         <h4>// MAKERS</h4>
         <p>你的中文 AI 工具，submit 给 MOXIE 收录。</p>
         <a href="moxie-submit.html" class="btn-submit">提交我的产品</a>
+      </div>
+
+      <div class="side-block">
+        <div class="sec-label">
+          <span>每日 AI 快讯热闻 <span class="news-head-live"><span class="d"></span>实时</span></span>
+          <a href="#" class="all-link" style="font-size:11px">更多 →</a>
+        </div>
+        <nav class="news-list" id="newsList">
+          <a class="news-item" href="#"><span class="news-tag">大模型</span><span class="news-title">OpenAI 据传下月发布新一代推理模型,主打 Agent 长任务</span><span class="news-time">1h</span></a>
+          <a class="news-item" href="#"><span class="news-tag">编程</span><span class="news-title">Anthropic Claude 代码能力更新,SWE-bench 再创新高</span><span class="news-time">3h</span></a>
+          <a class="news-item" href="#"><span class="news-tag">视频</span><span class="news-title">快手可灵上线 2.0,运动一致性大幅提升</span><span class="news-time">5h</span></a>
+          <a class="news-item" href="#"><span class="news-tag">国产</span><span class="news-title">阿里通义千问开源新尺寸模型,中文长文更强</span><span class="news-time">7h</span></a>
+          <a class="news-item" href="#"><span class="news-tag">融资</span><span class="news-title">某国产 Agent 公司完成新一轮融资,估值翻倍</span><span class="news-time">9h</span></a>
+          <a class="news-item" href="#"><span class="news-tag">政策</span><span class="news-title">多地出台 AIGC 内容标识新规,平台需显著标注</span><span class="news-time">12h</span></a>
+        </nav>
+        <script>
+          /* 快讯暂为占位示例(待接真源):点击=新标签打开该标题搜索。接真源后给 .news-item 写真实 href 即可。 */
+          (function(){
+            document.querySelectorAll('#newsList .news-item').forEach(function(a){
+              if(a.getAttribute('href') && a.getAttribute('href')!=='#') return;
+              var t=(a.querySelector('.news-title')||{}).textContent||'';
+              a.href='https://www.bing.com/search?q='+encodeURIComponent(t.trim());
+              a.target='_blank'; a.rel='noopener';
+            });
+          })();
+        </script>
       </div>
     </aside>
 
