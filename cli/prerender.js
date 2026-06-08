@@ -38,7 +38,7 @@ function jsonLd(obj) {
 }
 
 async function fetchPublishedProducts() {
-  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=slug,name,domain,tagline,tags,price_label,vote_count,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
+  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
   const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
   if (!res.ok) throw new Error(`读取产品失败 ${res.status}: ${await res.text()}`);
   return res.json();
@@ -105,7 +105,7 @@ function renderProduct(tpl, p) {
 }
 
 async function fetchPublishedArticles() {
-  const url = `${SUPABASE_URL}/rest/v1/moxie_articles?status=eq.published&select=slug,title,excerpt,category,body_html,cover_url,published_at,read_minutes&order=published_at.desc&limit=1000`;
+  const url = `${SUPABASE_URL}/rest/v1/moxie_articles?status=eq.published&select=slug,title,excerpt,category,body_html,cover_url,published_at,read_minutes,related_product_ids&order=published_at.desc&limit=1000`;
   const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
   if (!res.ok) throw new Error(`读取文章失败 ${res.status}: ${await res.text()}`);
   return res.json();
@@ -136,7 +136,7 @@ function buildArticleHead(a, canonical) {
 }
 
 /** 把模板渲染成某篇文章的 SEO 静态页 */
-function renderArticle(tpl, a) {
+function renderArticle(tpl, a, ctx = {}) {
   const canonical = `${SITE_BASE}/articles/${a.slug}`;
   let html = tpl;
   const checks = [];
@@ -151,13 +151,56 @@ function renderArticle(tpl, a) {
   rep('<h1 class="art-title" id="artTitle">加载中…</h1>', `<h1 class="art-title" id="artTitle">${esc(a.title)}</h1>`, 'artTitle');
   rep('<p class="art-excerpt" id="artExcerpt"></p>', `<p class="art-excerpt" id="artExcerpt">${esc(a.excerpt || '')}</p>`, 'artExcerpt');
   rep('<span class="tag" id="artCategory">REVIEW</span>', `<span class="tag" id="artCategory">${esc(a.category || '')}</span>`, 'artCategory');
-  // 有 body_html 才烤进正文(种子文章为空 → 留模板默认,待 Phase 4 生成正文后重渲染)
+  // 有 body_html 才烤进正文:给 h2 注入 id(供 TOC 锚点)+ 整段替换 #artBody
+  // (连同模板 fallback demo)→ 真正文。空(种子文章)→ 留模板默认,待生成正文后重渲染。
+  const toc = [];
   if (a.body_html) {
-    rep('<article class="art-content" id="artBody">', `<article class="art-content" id="artBody">${a.body_html}`, 'artBody');
+    let i = 0;
+    const bodyWithIds = a.body_html.replace(/<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/g, (m, attrs, inner) => {
+      i++;
+      const had = attrs && (attrs.match(/\bid="([^"]*)"/) || [])[1];
+      const id = had || `sec-${i}`;
+      toc.push({ id, text: inner.replace(/<[^>]+>/g, '').trim() });
+      return had ? m : `<h2 id="${id}"${attrs || ''}>${inner}</h2>`;
+    });
+    const re = /(<article class="art-content" id="artBody">)[\s\S]*?(<\/article>)/;
+    if (re.test(html)) html = html.replace(re, (_m, open, close) => `${open}${bodyWithIds}${close}`);
+    else checks.push('⚠ 文章未找到[artBody]');
   }
+
+  // 侧栏整段重建:模板自带 demo(目录/本文涉及产品/更多评测)写死且只有 TOC 被客户端 JS 重建,
+  // 其余对所有文章常驻错误内容 → prerender 用真数据替换整个 <aside>。
+  const aside = buildAside(a, toc, ctx);
+  const are = /(<aside class="art-side">)[\s\S]*?(<\/aside>)/;
+  if (are.test(html)) html = html.replace(are, (_m, open, close) => `${open}${aside}${close}`);
+  else checks.push('⚠ 文章未找到[aside]');
+
   rep("const slug = new URLSearchParams(location.search).get('slug');", `const slug = ${JSON.stringify(a.slug)};`, 'slug');
 
   return { html, checks };
+}
+
+/** 用真数据组装文章侧栏:目录(真 h2)/ 本文涉及产品(related_product_ids)/ 更多评测(其他文章) */
+function buildAside(a, toc, ctx) {
+  const blocks = [];
+  if (toc.length) {
+    const items = toc.map((t, i) => `<li${i === 0 ? ' class="active"' : ''} data-target="#${t.id}">${esc(t.text)}</li>`).join('');
+    blocks.push(`<div class="toc-block"><h4>目录</h4><ul class="toc-list">${items}</ul></div>`);
+  }
+  const rel = (a.related_product_ids || []).map((id) => ctx.productById?.get(id)).filter(Boolean).slice(0, 6);
+  if (rel.length) {
+    const items = rel.map((p) => {
+      const tag = p.moxie_categories?.name || (p.tags && p.tags[0]) || 'AI 工具';
+      return `<a href="/tools/${esc(p.slug)}" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=${esc(p.domain)}&sz=128" alt=""></div><div><div class="related-prod-name">${esc(p.name)}</div><div class="related-prod-tag">${esc(tag)}</div></div></a>`;
+    }).join('');
+    blocks.push(`<div class="related-block"><h4>本文涉及产品</h4>${items}</div>`);
+  }
+  const more = (ctx.allArticles || []).filter((x) => x.slug !== a.slug).slice(0, 3);
+  if (more.length) {
+    const items = more.map((x, i) => `<a href="/articles/${esc(x.slug)}" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;${i < more.length - 1 ? 'border-bottom:1px solid var(--line-2);' : ''}">${esc(x.title)}</a>`).join('');
+    blocks.push(`<div class="tools-block"><h4>更多评测</h4>${items}</div>`);
+  }
+  return blocks.join('\n');
 }
 
 async function main() {
@@ -177,13 +220,14 @@ async function main() {
   }
   console.log(`✓ 产品页 ${pn} → tools/<slug>.html`);
 
-  // 文章页
+  // 文章页(侧栏要用产品数据 → 建 id→product 映射)
   const atpl = readFileSync(join(ROOT, 'moxie-article.html'), 'utf8');
   const articles = await fetchPublishedArticles();
+  const productById = new Map(products.map((p) => [p.id, p]));
   mkdirSync(OUT_ARTICLES, { recursive: true });
   let an = 0;
   for (const a of articles) {
-    const { html, checks } = renderArticle(atpl, a);
+    const { html, checks } = renderArticle(atpl, a, { productById, allArticles: articles });
     checks.forEach((c) => warned.add(c));
     writeFileSync(join(OUT_ARTICLES, `${a.slug}.html`), html, 'utf8');
     an++;
