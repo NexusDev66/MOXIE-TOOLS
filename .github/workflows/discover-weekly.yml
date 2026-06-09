@@ -1,6 +1,14 @@
-name: (临时) 试跑 Phase 3 发现
+name: Weekly Discover (Product Hunt 新锐 → pending)
+
+# Phase 3 · 每周从 Product Hunt 发现新锐 AI 工具 → DeepSeek 中文化补全 → 闸门去重 → 写 moxie_products(status=pending)。
+# 只入 pending,不自动发布;人工极简 QA 后 promote 成 published。
+#
+# 需仓库 Secrets:SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY、PH_CLIENT_ID、PH_CLIENT_SECRET
+#        Variables:NEXT_PUBLIC_SUPABASE_URL
 
 on:
+  schedule:
+    - cron: '0 2 * * 1'   # 每周一 UTC 02:00 = 北京 10:00
   workflow_dispatch:
 
 jobs:
@@ -17,5 +25,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: 真跑发现(入库 pending)
+      - name: 发现新锐 → pending
         run: node cli/discover-tools.js --limit 20 --days 7
