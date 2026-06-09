@@ -142,6 +142,7 @@ async function main() {
   const tally = { ok: 0, dup: 0, nodomain: 0, badcat: 0, fail: 0 };
   for (const it of items) {
     const domain = await resolveDomain(it.website);
+    if (DRY_RUN) console.log(`    [dbg] ${it.name} website=${JSON.stringify(it.website)} → domain=${domain}`);
     if (!domain || /producthunt\.com$/.test(domain)) { console.log(`  · ${it.name} → 无真实域名,跳过`); tally.nodomain++; continue; }
     if (known.has(domain)) { console.log(`  · ${it.name} (${domain}) → 已收录,跳过`); tally.dup++; continue; }
 
