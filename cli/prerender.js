@@ -38,7 +38,7 @@ function jsonLd(obj) {
 }
 
 async function fetchPublishedProducts() {
-  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,domestic_available,created_at,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
+  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,domestic_available,created_at,detail,category_id,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
   const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
   if (!res.ok) throw new Error(`读取产品失败 ${res.status}: ${await res.text()}`);
   return res.json();
@@ -68,7 +68,7 @@ function buildSeoHead(p, canonical) {
 }
 
 /** 把模板渲染成某个产品的 SEO 静态页 */
-function renderProduct(tpl, p) {
+function renderProduct(tpl, p, ctx = {}) {
   const canonical = `${SITE_BASE}/tools/${p.slug}`;
   let html = tpl;
   const checks = [];
@@ -106,7 +106,41 @@ function renderProduct(tpl, p) {
   if (infoRe.test(html)) html = html.replace(infoRe, buildInfoList(p));
   else checks.push('⚠ 未找到[info-list]');
 
+  // 7. 详情页正文板块(子墨评测/核心特点/价格/同类替代):模板写死 demo → 用 detail + 同类产品重建
+  html = bakeDetailSections(html, p, ctx, checks);
+
   return { html, checks };
+}
+
+/** 详情页正文 4 板块按 HTML 注释边界整段替换为真数据 */
+function bakeDetailSections(html, p, ctx, checks) {
+  const d = p.detail || {};
+  const ind = '        ';
+  function sec(comment, next, inner) {
+    const re = new RegExp(`<!-- ${comment} -->[\\s\\S]*?(?=<!-- ${next} -->)`);
+    const block = `<!-- ${comment} -->\n${ind}<div class="prod-section">\n${inner}\n${ind}</div>\n\n${ind}`;
+    if (re.test(html)) html = html.replace(re, block);
+    else if (checks) checks.push(`⚠ 未找到[${comment}]`);
+  }
+  // 点评(原"子墨评测")
+  const review = (d.review || p.tagline || '').trim();
+  sec('子墨评测', '核心特点', `          <h2>点评</h2>\n          <div class="editor-note"><div class="editor-note-quote">${esc(review)}</div></div>`);
+  // 核心特点
+  const feats = Array.isArray(d.features) ? d.features : [];
+  const featInner = feats.length
+    ? feats.map((f, i) => `            <div class="feat-item"><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="t"><strong>${esc(f.t)}</strong> ── ${esc(f.d)}</span></div>`).join('\n')
+    : `            <div class="feat-item"><span class="t">${esc(p.tagline || '')}</span></div>`;
+  sec('核心特点', '价格', `          <h2>核心特点</h2>\n          <div class="feat-list">\n${featInner}\n          </div>`);
+  // 价格(去掉编造价格表,定性 + 以官网为准)
+  const pricing = (d.pricing || '').trim();
+  sec('价格', '替代品', `          <h2>价格</h2>\n          <div class="info-list"><div class="info-row"><span class="k">定价模式</span><span class="v">${esc(p.price_label || '不详')}</span></div></div>\n          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">${esc(pricing || '具体价格以官网为准。')}</p>`);
+  // 同类替代(同分类真实产品,排除自己,取 3)
+  const sibs = ((ctx.byCat && ctx.byCat[p.category_id]) || []).filter((x) => x.slug !== p.slug).slice(0, 3);
+  const altInner = sibs.length
+    ? sibs.map((s) => `            <a href="/tools/${esc(s.slug)}" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="https://www.google.com/s2/favicons?domain=${esc(s.domain)}&sz=128" alt="${esc(s.name)}"></div><div class="alt-card-name">${esc(s.name)}</div></div><div class="alt-card-desc">${esc(s.tagline || '')}</div></a>`).join('\n')
+    : '            <p style="color:var(--ink-3);font-size:13px;">暂无同类。</p>';
+  sec('替代品', '讨论', `          <h2>同类替代</h2>\n          <div class="alt-grid">\n${altInner}\n          </div>`);
+  return html;
 }
 
 /** 国内可用枚举 → 展示文案 */
@@ -241,10 +275,13 @@ async function main() {
   // 产品页
   const ptpl = readFileSync(join(ROOT, 'moxie-product.html'), 'utf8');
   const products = await fetchPublishedProducts();
+  // 同分类映射(同类替代用;products 已按 vote_count 降序)
+  const byCat = {};
+  products.forEach((p) => { (byCat[p.category_id] = byCat[p.category_id] || []).push(p); });
   mkdirSync(OUT_DIR, { recursive: true });
   let pn = 0;
   for (const p of products) {
-    const { html, checks } = renderProduct(ptpl, p);
+    const { html, checks } = renderProduct(ptpl, p, { byCat });
     checks.forEach((c) => warned.add(c));
     writeFileSync(join(OUT_DIR, `${p.slug}.html`), html, 'utf8');
     pn++;

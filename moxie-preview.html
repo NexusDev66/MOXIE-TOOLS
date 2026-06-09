@@ -969,7 +969,7 @@
       return;
     }
     box.innerHTML = data.map((p, i) => `
-      <a class="prow" href="moxie-product.html?slug=${encodeURIComponent(p.slug)}">
+      <a class="prow" href="/tools/${encodeURIComponent(p.slug)}">
         <span class="prank-cell"><span class="hash">#</span>${String(i+1).padStart(2,'0')}</span>
         <div class="plogo has-img"><img src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128" alt="${escAttr(p.name)}" /></div>
         <div class="pmain">
@@ -1016,7 +1016,7 @@
 
     function renderRows(data) {
       box.innerHTML = data.map((p, i) => `
-        <a class="prow" href="moxie-product.html?slug=${encodeURIComponent(p.slug)}">
+        <a class="prow" href="/tools/${encodeURIComponent(p.slug)}">
           <span class="prank-cell"><span class="hash">#</span>${String(i+1).padStart(2,'0')}</span>
           <div class="plogo has-img"><img src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128" alt="${escAttr(p.name)}" /></div>
           <div class="pmain">
@@ -1345,7 +1345,7 @@
   var ALL = [];
   function esc(s){ return String(s==null?'':s).replace(/[<>&"']/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function rowHTML(p, i){
-    return '<a class="prow" href="moxie-product.html?slug=' + encodeURIComponent(p.slug) + '">'
+    return '<a class="prow" href="/tools/' + encodeURIComponent(p.slug) + '">'
       + '<span class="prank-cell"><span class="hash">#</span>' + String(i+1).padStart(2,'0') + '</span>'
       + '<div class="plogo has-img"><img src="https://www.google.com/s2/favicons?domain=' + p.domain + '&sz=128" alt="' + esc(p.name) + '"/></div>'
       + '<div class="pmain"><div class="ptop"><span class="pname">' + esc(p.name) + '</span>'
