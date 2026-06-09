@@ -8,7 +8,7 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/", "destination": "/moxie-preview" },
-    { "source": "/news/:id", "destination": "/moxie-news-item.html?id=:id" }
+    { "source": "/news/:id", "destination": "/moxie-news-item?id=:id" }
   ],
   "headers": [
     {
