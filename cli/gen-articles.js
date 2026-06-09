@@ -31,7 +31,7 @@ const ALL = process.argv.includes('--all'); // 遍历所有分类各生成一篇
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
 if (!DEEPSEEK_API_KEY) { console.error('❌ 缺 DEEPSEEK_API_KEY(.env.local)。先去 platform.deepseek.com 拿 key 填上。'); process.exit(1); }
 if (!ALL && !CATEGORY) { console.error('❌ 需 --category <slug>(如 ai-coding)或 --all(全分类批量)。可选 --template compare|pick|guide'); process.exit(1); }
-if (!['compare', 'pick', 'guide'].includes(TEMPLATE)) { console.error('❌ --template 仅 compare|pick|guide'); process.exit(1); }
+if (!['compare', 'pick', 'guide', 'growth'].includes(TEMPLATE)) { console.error('❌ --template 仅 compare|pick|guide|growth'); process.exit(1); }
 
 async function sb(path, opts = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1${path}`, {
@@ -49,12 +49,14 @@ const META = {
   compare: { category: '横评', slugSuffix: 'compare', angle: '横向对比这几款工具:逐项对比核心功能、价格、上手难度、国内可用性,给出"谁更适合谁"的结论,带一个对比小结。' },
   pick: { category: '选型', slugSuffix: 'pick', angle: '选型指南:按不同人群/预算/场景,告诉读者该选哪一款,给清晰的决策建议(如"预算有限选 X、团队协作选 Y")。' },
   guide: { category: '手册', slugSuffix: 'guide', angle: '上手手册:围绕这些工具讲怎么用、典型工作流、常见坑与最佳实践,偏实操 how-to。' },
+  growth: { category: '增长', slugSuffix: 'growth', angle: '运营增长视角:讲如何用这些工具做增长(获客/内容生产/分发/转化),给可执行的打法、步骤与案例式拆解,偏运营 how-to,不堆砌功能。' },
 };
 function longtailSeeds(template, products) {
   const names = products.map((p) => p.name);
   const joined = names.join(' vs ');
   if (template === 'compare') return [`${joined} 对比`, `${names[0]} 和 ${names[1] ?? '替代品'} 哪个好`, `${names[0]} 平替`];
   if (template === 'pick') return [`${names[0]} 怎么选`, `${names[0]} 值得买吗`, `${names[0]} 适合谁`];
+  if (template === 'growth') return [`用 ${names[0]} 做增长`, `${names[0]} 获客`, `${names[0]} 内容运营`];
   return [`${names[0]} 怎么用`, `${names[0]} 教程`, `${names[0]} 使用技巧`];
 }
 function buildSlug(template, products) {
