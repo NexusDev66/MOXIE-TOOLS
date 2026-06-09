@@ -1,0 +1,15 @@
+name: (临时) 探查 Product Hunt
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 探查 PH feed 结构 + 域名解析
+        run: node cli/discover-tools.js --probe
