@@ -42,7 +42,7 @@
     var wrap = document.getElementById('niWrap');
     function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
     function fdate(s){ if(!s) return ''; var d=new Date(s); if(isNaN(d)) return ''; return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0'); }
-    var id = new URLSearchParams(location.search).get('id');
+    var id = new URLSearchParams(location.search).get('id') || (location.pathname.match(/\/news\/([^/?#]+)/) || [])[1];
     function fail(msg){ wrap.innerHTML = '<div style="padding:70px 0;text-align:center;color:var(--ink-3);font-size:13px;">'+msg+'<br><a href="/moxie-news" style="color:var(--accent);">← 回快讯列表</a></div>'; }
     if(!id){ fail('缺少快讯 id'); return; }
     if(!window.moxieWhenDBReady){ fail('加载失败'); return; }
