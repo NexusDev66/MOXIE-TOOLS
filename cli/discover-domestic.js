@@ -48,6 +48,24 @@ const SEEDS = [
   { name: 'LlamaIndex', domain: 'llamaindex.ai', slug: 'llamaindex' },
   { name: 'LangChain', domain: 'langchain.com', slug: 'langchain' },
   { name: '阿里云百炼', domain: 'bailian.console.aliyun.com', slug: 'bailian' },// 模型/Agent 平台
+
+  // ── 第二批补录(2026-06-09)──
+  { name: 'Grok', domain: 'grok.com', slug: 'grok' },                          // xAI
+  { name: 'Mistral AI', domain: 'mistral.ai', slug: 'mistral' },
+  { name: 'Hugging Face', domain: 'huggingface.co', slug: 'huggingface' },
+  { name: 'Poe', domain: 'poe.com', slug: 'poe' },
+  { name: 'Character.AI', domain: 'character.ai', slug: 'character-ai' },
+  { name: 'Replit', domain: 'replit.com', slug: 'replit' },                    // AI 编程
+  { name: 'Lovable', domain: 'lovable.dev', slug: 'lovable' },
+  { name: 'Synthesia', domain: 'synthesia.io', slug: 'synthesia' },            // AI 数字人视频
+  { name: 'Luma Dream Machine', domain: 'lumalabs.ai', slug: 'luma' },
+  { name: 'ElevenLabs', domain: 'elevenlabs.io', slug: 'elevenlabs' },         // AI 语音
+  { name: 'DeepL', domain: 'deepl.com', slug: 'deepl' },                       // AI 翻译
+  { name: 'Otter.ai', domain: 'otter.ai', slug: 'otter' },                     // 会议转写
+  { name: '火山方舟', domain: 'volcengine.com', slug: 'volcengine' },          // 字节大模型平台
+  { name: '零一万物', domain: '01.ai', slug: 'lingyiwanwu' },                  // Yi 大模型
+  { name: 'WPS AI', domain: 'wps.cn', slug: 'wps-ai' },
+  { name: '讯飞听见', domain: 'iflyrec.com', slug: 'iflyrec' },                // 转写
 ];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
