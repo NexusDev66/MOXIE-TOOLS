@@ -43,6 +43,10 @@ jobs:
         run: node cli/fetch-news.js
         continue-on-error: true
 
+      - name: 拉 Tranco 流量排名(权重真信号,失败不阻塞)
+        run: node cli/fetch-traffic.js
+        continue-on-error: true
+
       - name: 重算权重(rank)
         run: node cli/rank.js
 

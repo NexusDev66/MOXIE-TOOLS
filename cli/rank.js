@@ -56,8 +56,8 @@ function weight(p) {
 
 async function main() {
   console.log(`\n⚖  Phase 2 权重重算${DRY_RUN ? ' [DRY-RUN]' : ''}\n`);
-  // 注:本沙盒库未建 cover_url / traffic_jsonb 列(可选权重项),不选;weight() 缺失即按 0 计
-  const products = await sb('/moxie_products?select=id,slug,name,vote_count,verified,featured,tags,description,created_at&limit=2000');
+  // traffic_jsonb 由 fetch-traffic.js 灌(Tranco 排名);cover_url 沙盒未建,weight() 缺失按 0 计
+  const products = await sb('/moxie_products?select=id,slug,name,vote_count,verified,featured,tags,description,created_at,traffic_jsonb&limit=2000');
   console.log(`   产品:${products.length}`);
 
   const scored = products
