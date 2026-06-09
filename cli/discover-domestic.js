@@ -33,6 +33,21 @@ const SEEDS = [
   { name: 'Monica', domain: 'monica.im', slug: 'monica' },           // 国产出海 AI 助手
   { name: '沉浸式翻译', domain: 'immersivetranslate.com', slug: 'immersive-translate' },
   { name: '讯飞智文', domain: 'zhiwen.xfyun.cn', slug: 'zhiwen' },    // 科大讯飞 AI PPT
+
+  // ── 主流补录(国产+海外,确信真实、未收录;data_overseas 自动按 domestic_available 判定)──
+  { name: 'Llama', domain: 'llama.com', slug: 'llama' },                       // Meta 开源大模型
+  { name: '腾讯混元', domain: 'hunyuan.tencent.com', slug: 'hunyuan' },        // 腾讯大模型
+  { name: 'Apple Intelligence', domain: 'apple.com', slug: 'apple-intelligence' },
+  { name: 'Microsoft Copilot', domain: 'copilot.microsoft.com', slug: 'ms-copilot' },
+  { name: 'Jasper', domain: 'jasper.ai', slug: 'jasper' },                     // 营销文案
+  { name: 'Copy.ai', domain: 'copy.ai', slug: 'copy-ai' },
+  { name: 'Stable Diffusion', domain: 'stability.ai', slug: 'stable-diffusion' },
+  { name: 'Adobe Firefly', domain: 'firefly.adobe.com', slug: 'firefly' },
+  { name: 'Sora', domain: 'sora.com', slug: 'sora' },                          // OpenAI 视频
+  { name: 'Google Veo', domain: 'deepmind.google', slug: 'veo' },              // Google 视频
+  { name: 'LlamaIndex', domain: 'llamaindex.ai', slug: 'llamaindex' },
+  { name: 'LangChain', domain: 'langchain.com', slug: 'langchain' },
+  { name: '阿里云百炼', domain: 'bailian.console.aliyun.com', slug: 'bailian' },// 模型/Agent 平台
 ];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
@@ -104,7 +119,7 @@ async function main() {
         tagline: e.tagline_zh, description: e.description_zh,
         category_id: catId[e.category_slug], tags: e.tags,
         price_label: e.price_label, domestic_available: e.domestic_available,
-        data_overseas: false, verified: false, featured: false, vote_count: 0, status: 'pending',
+        data_overseas: e.domestic_available !== '是', verified: false, featured: false, vote_count: 0, status: 'pending',
       };
       if (DRY_RUN) { console.log(`  ✓[dry] ${it.name} (${domain}) [${e.category_slug}] ${e.tagline_zh} | ${e.price_label}/${e.domestic_available}`); tally.ok++; continue; }
       known.add(domain); knownSlug.add(slug);
