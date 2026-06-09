@@ -66,6 +66,28 @@ const SEEDS = [
   { name: '零一万物', domain: '01.ai', slug: 'lingyiwanwu' },                  // Yi 大模型
   { name: 'WPS AI', domain: 'wps.cn', slug: 'wps-ai' },
   { name: '讯飞听见', domain: 'iflyrec.com', slug: 'iflyrec' },                // 转写
+
+  // ── 第三批补录(2026-06-09)──
+  { name: 'Cohere', domain: 'cohere.com', slug: 'cohere' },
+  { name: 'Together AI', domain: 'together.ai', slug: 'together-ai' },
+  { name: 'Groq', domain: 'groq.com', slug: 'groq' },                          // 极速推理
+  { name: 'Pi', domain: 'pi.ai', slug: 'pi' },                                 // Inflection
+  { name: 'Meta AI', domain: 'meta.ai', slug: 'meta-ai' },
+  { name: 'QuillBot', domain: 'quillbot.com', slug: 'quillbot' },             // 改写/润色
+  { name: 'Leonardo.Ai', domain: 'leonardo.ai', slug: 'leonardo' },
+  { name: 'Recraft', domain: 'recraft.ai', slug: 'recraft' },
+  { name: 'Krea', domain: 'krea.ai', slug: 'krea' },
+  { name: 'Descript', domain: 'descript.com', slug: 'descript' },             // 音视频编辑
+  { name: 'CapCut', domain: 'capcut.com', slug: 'capcut' },                   // 剪辑(海外剪映)
+  { name: 'Aider', domain: 'aider.chat', slug: 'aider' },                     // 终端 AI 编程
+  { name: 'Tabnine', domain: 'tabnine.com', slug: 'tabnine' },
+  { name: 'Phind', domain: 'phind.com', slug: 'phind' },                      // 开发者搜索
+  { name: 'Pinecone', domain: 'pinecone.io', slug: 'pinecone' },             // 向量数据库
+  { name: 'CrewAI', domain: 'crewai.com', slug: 'crewai' },                   // 多智能体框架
+  { name: 'Flowise', domain: 'flowiseai.com', slug: 'flowise' },             // 可视化 LLM 工作流
+  { name: '文心一格', domain: 'yige.baidu.com', slug: 'yige' },               // 百度 AI 绘画
+  { name: '稿定设计', domain: 'gaoding.com', slug: 'gaoding' },               // AI 设计
+  { name: 'AiPPT', domain: 'aippt.cn', slug: 'aippt' },                       // AI 生成 PPT
 ];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
