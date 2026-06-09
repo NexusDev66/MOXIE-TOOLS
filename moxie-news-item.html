@@ -50,8 +50,9 @@
       try{
         if(!db || !window.MoxieDB.newsById){ fail('数据库未就绪'); return; }
         var res = await window.MoxieDB.newsById(id);
+        if(res && res.error){ fail('查询出错:'+(res.error.message||JSON.stringify(res.error))); return; }
         var n = res && res.data;
-        if(!n){ fail('这条快讯可能已下架'); return; }
+        if(!n){ fail('这条快讯可能已下架(id='+id+')'); return; }
         document.title = n.title + ' · MOXIE 快讯';
         var sum = (n.summary||'').trim();
         wrap.innerHTML =
@@ -60,7 +61,7 @@
           + '<div class="ni-sum'+(sum?'':' empty')+'">'+(sum?esc(sum):'本条快讯暂无摘要,点下方阅读原文。')+'</div>'
           + '<div class="ni-actions"><a class="ni-orig" href="'+esc(n.url)+'" target="_blank" rel="noopener">阅读原文 ↗</a><a class="ni-back" href="/moxie-news">← 全部快讯</a></div>'
           + '<div class="ni-note">摘要来自来源媒体('+esc(n.source||'')+')的公开 RSS,版权归原作者。MOXIE 仅做聚合索引,完整内容请以原文为准。</div>';
-      }catch(e){ fail('加载失败'); }
+      }catch(e){ fail('加载失败:'+(e&&e.message||e)); }
     });
   })();
 </script>
