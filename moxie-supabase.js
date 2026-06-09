@@ -163,9 +163,14 @@ window.MoxieDB = {
     opts = opts || {};
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
     return await window.moxieDB.from('moxie_news')
-      .select('title,url,source,tag,published_at')
+      .select('id,title,url,source,tag,published_at,summary')
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(opts.limit || 8);
+  },
+  async newsById(id) {
+    if (!window.moxieDB) return { data: null, error: 'db-not-ready' };
+    return await window.moxieDB.from('moxie_news')
+      .select('id,title,url,source,tag,published_at,summary').eq('id', id).maybeSingle();
   },
 
   /* ---------- 评论 ---------- */

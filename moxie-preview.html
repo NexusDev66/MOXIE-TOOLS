@@ -34,7 +34,7 @@
 <!-- MiSans ExtraLight · 小米开源中文超细体 (商用免费 · jsDelivr CDN 分块按需加载) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans-webfont@4.3.1/misans/misans-extralight/result.min.css">
 <link rel="stylesheet" href="moxie-styles.css?v=20260608-02">
-<script src="moxie-supabase.js?v=20260608-01"></script>
+<script src="moxie-supabase.js?v=20260608-02"></script>
 <script src="moxie-shared.js?v=20260526-01" defer></script>
 </head>
 <body>
@@ -488,7 +488,7 @@
                 if (!items || !items.length) { fallbackClickable(); return; }
                 box.innerHTML = items.map(function(n){
                   var time = rel(n.published_at);
-                  return '<a class="news-item" href="'+esc(n.url)+'" target="_blank" rel="noopener">'
+                  return '<a class="news-item" href="/news/'+n.id+'">'
                     + '<span class="news-tag">'+esc(n.tag||n.source||'')+'</span>'
                     + '<span class="news-title">'+esc(n.title)+'</span>'
                     + '<span class="news-time">'+esc(time)+'</span></a>';

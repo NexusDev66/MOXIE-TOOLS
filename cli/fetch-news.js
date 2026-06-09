@@ -66,7 +66,11 @@ function parseFeed(xml, sourceName) {
     if (!title || !url) continue;
     let published_at = null;
     if (dateRaw) { const d = new Date(dateRaw); if (!isNaN(d)) published_at = d.toISOString(); }
-    out.push({ title: title.slice(0, 200), url, source: sourceName, tag: sourceName, published_at });
+    // 摘要/总结来源:RSS description / Atom summary|content(去标签截断)
+    let summary = decode(pick(b, ['description', 'summary', 'content:encoded', 'content']));
+    if (summary === title) summary = '';
+    summary = summary.slice(0, 300);
+    out.push({ title: title.slice(0, 200), url, source: sourceName, tag: sourceName, published_at, summary });
   }
   return out;
 }
