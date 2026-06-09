@@ -77,6 +77,7 @@ async function fetchFeed(feed) {
     const xml = await res.text();
     const items = parseFeed(xml, feed.name);
     console.log(`  ✓ ${feed.name}:${items.length} 条`);
+    if (DRY_RUN) items.slice(0, 3).forEach((x) => console.log(`      · ${x.title}`));
     return items;
   } catch (e) { console.log(`  ⚠ ${feed.name} 失败(${e.message}),跳过`); return []; }
 }
