@@ -18,12 +18,13 @@ const KEEP = 60; // 库里最多保留多少条(超出删旧)
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
 
-// 默认源(纯 AI;可被 NEWS_FEEDS 覆盖)。单源失败自动跳过。
-// 已在 GitHub Actions 验证可达。量子位是纯 AI 源(每天 ~10 条,够填首页 8 槽)。
-// Solidot/36氪 实测多为非 AI(科技/财经),会污染"AI 快讯"已剔除;机器之心取不到条目剔除。
-// 需要更多 AI 源时用 NEWS_FEEDS 加(逗号分隔 url|来源名)。
+// 默认源(AI 聚焦;可被 NEWS_FEEDS 覆盖)。单源失败自动跳过。
+// 已在 GitHub Actions 实测可达 + 新鲜 + AI 相关:量子位(~10/天)、雷锋网(~20/天)。
+// 排除:Solidot/36氪/IT之家(非 AI 科技/消费,量大会污染)、InfoQ(返回 2019 旧内容)、
+//       机器之心 RSSHub(403)、品玩(405)。需要更多 AI 源用 NEWS_FEEDS 加(逗号分隔 url|来源名)。
 const DEFAULT_FEEDS = [
   'https://www.qbitai.com/feed|量子位',
+  'https://www.leiphone.com/feed|雷锋网',
 ];
 const FEEDS = (process.env.NEWS_FEEDS
   ? process.env.NEWS_FEEDS.split(',')
