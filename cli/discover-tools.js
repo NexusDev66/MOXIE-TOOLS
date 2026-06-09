@@ -13,7 +13,10 @@
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
-const PH_TOKEN = process.env.PH_API_TOKEN;
+// token 两种来源:① 直接给 PH_API_TOKEN(Developer Token);② 给 PH_CLIENT_ID+PH_CLIENT_SECRET 脚本自动换取
+let PH_TOKEN = process.env.PH_API_TOKEN;
+const PH_CLIENT_ID = process.env.PH_CLIENT_ID;
+const PH_CLIENT_SECRET = process.env.PH_CLIENT_SECRET;
 
 function arg(n, d) { const i = process.argv.indexOf(`--${n}`); return i >= 0 && process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : d; }
 const LIMIT = Math.max(1, Number(arg('limit', '20')) || 20);
@@ -24,8 +27,23 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const CATEGORY_SLUGS = ['llm', 'ai-assistant', 'ai-writing', 'ai-image', 'ai-video', 'ai-coding', 'ai-search', 'rag', 'agent', 'workflow'];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
-if (!PH_TOKEN) { console.error('❌ 缺 PH_API_TOKEN(.env.local)。去 producthunt.com/v2/oauth/applications 建应用拿 Developer Token。'); process.exit(1); }
+if (!PH_TOKEN && !(PH_CLIENT_ID && PH_CLIENT_SECRET)) { console.error('❌ 缺 PH 凭据:给 PH_API_TOKEN,或给 PH_CLIENT_ID + PH_CLIENT_SECRET(应用页都有)。'); process.exit(1); }
 if (!DEEPSEEK_API_KEY) { console.error('❌ 缺 DEEPSEEK_API_KEY'); process.exit(1); }
+
+/** 没有现成 token 时,用 client_id+secret 走 client_credentials 换一个 */
+async function ensurePhToken() {
+  if (PH_TOKEN) return;
+  const res = await fetch('https://api.producthunt.com/v2/oauth/token', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ client_id: PH_CLIENT_ID, client_secret: PH_CLIENT_SECRET, grant_type: 'client_credentials' }),
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!res.ok) throw new Error(`PH 换 token 失败 ${res.status}: ${(await res.text()).slice(0, 160)}`);
+  const j = await res.json();
+  if (!j.access_token) throw new Error('PH 换 token 无 access_token');
+  PH_TOKEN = j.access_token;
+  console.log('✓ 已用 client_credentials 换取 PH token');
+}
 
 async function sb(path, opts = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1${path}`, {
@@ -110,6 +128,7 @@ async function enrich(item) {
 
 async function main() {
   console.log(`\n🚀 Phase 3 新锐发现${DRY_RUN ? ' [DRY-RUN]' : ''} · PH topic=${TOPIC} 近${DAYS}天 top${LIMIT}\n`);
+  await ensurePhToken();
 
   // 现有产品域名(去重用)+ 分类映射
   const existing = await sb('/moxie_products?select=domain&limit=2000');
