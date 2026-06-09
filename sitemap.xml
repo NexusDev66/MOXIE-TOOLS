@@ -349,6 +349,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-anthropic-api-compare</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/doubao-chatgpt-kimi-compare</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/notion-ai-xiezuocat-gamma-compare</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/articles/midjourney-jimeng-liblib-compare</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
@@ -379,49 +397,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-anthropic-api-compare</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/doubao-chatgpt-kimi-compare</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/notion-ai-xiezuocat-gamma-compare</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/articles/cursor-github-copilot-trae-compare</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/cursor-trae-windsurf</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/ai-content-saas-playbook</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/rag-vendor-selection-2026</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-vs-claude</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
