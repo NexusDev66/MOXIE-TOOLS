@@ -171,6 +171,20 @@ async function fetchPublishedArticles() {
   return res.json();
 }
 
+/** 从正文「常见问题」段提取问答对(<h3>问</h3><p>答</p>),供 FAQPage 结构化数据 */
+function parseFaq(html) {
+  if (!html) return [];
+  const i = html.search(/<h2[^>]*>[^<]*常见问题/);
+  if (i < 0) return [];
+  const seg = html.slice(i);
+  const strip = (s) => String(s || '').replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+  const out = [];
+  const re = /<h3[^>]*>([\s\S]*?)<\/h3>\s*<p[^>]*>([\s\S]*?)<\/p>/g;
+  let m;
+  while ((m = re.exec(seg))) { const q = strip(m[1]), ans = strip(m[2]); if (q && ans) out.push({ q, a: ans }); }
+  return out.slice(0, 10);
+}
+
 function buildArticleHead(a, canonical) {
   const desc = a.excerpt || a.title;
   const ld = {
@@ -184,7 +198,7 @@ function buildArticleHead(a, canonical) {
     publisher: { '@type': 'Organization', name: 'MOXIE' },
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
   };
-  return [
+  const parts = [
     `<meta name="description" content="${esc(desc)}">`,
     `<link rel="canonical" href="${canonical}">`,
     `<meta property="og:type" content="article">`,
@@ -192,7 +206,18 @@ function buildArticleHead(a, canonical) {
     `<meta property="og:description" content="${esc(desc)}">`,
     `<meta property="og:url" content="${canonical}">`,
     `<script type="application/ld+json">${jsonLd(ld)}</script>`,
-  ].join('\n');
+  ];
+  // FAQPage 结构化数据(有「常见问题」段才加)→ Google 富结果
+  const faq = parseFaq(a.body_html);
+  if (faq.length) {
+    const faqLd = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    };
+    parts.push(`<script type="application/ld+json">${jsonLd(faqLd)}</script>`);
+  }
+  return parts.join('\n');
 }
 
 /** 把模板渲染成某篇文章的 SEO 静态页 */
