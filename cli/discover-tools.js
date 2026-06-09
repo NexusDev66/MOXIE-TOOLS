@@ -78,14 +78,34 @@ async function discoverPH() {
   }));
 }
 
-/** PH website 多为 producthunt.com/r/<hash> 跳转 → 跟随取真实域名 */
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36';
+function cleanHost(h) { return (h || '').replace(/^www\./, '').toLowerCase(); }
+function isPH(h) { return /producthunt\.com$/i.test(h || ''); }
+
+/** PH website = producthunt.com/r/<hash> 跳转 → 取真实域名:① manual 读 Location ② follow 终点 ③ 扫 body 外链 */
 async function resolveDomain(website) {
   if (!website) return null;
   try {
-    let host = new URL(website).hostname.replace(/^www\./, '');
-    if (!/producthunt\.com$/.test(host)) return host; // 已是真实站
-    const r = await fetch(website, { method: 'GET', redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(12000) });
-    return new URL(r.url).hostname.replace(/^www\./, '');
+    const host0 = cleanHost(new URL(website).hostname);
+    if (!isPH(host0)) return host0; // 已是真实站
+
+    // ① manual:真 302 会带 Location
+    try {
+      const r = await fetch(website, { method: 'GET', redirect: 'manual', headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(12000) });
+      const loc = r.headers.get('location');
+      if (loc) { const h = cleanHost(new URL(loc, website).hostname); if (!isPH(h)) return h; }
+    } catch {}
+
+    // ② follow 到底
+    const r2 = await fetch(website, { method: 'GET', redirect: 'follow', headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(12000) });
+    const hf = cleanHost(new URL(r2.url).hostname);
+    if (!isPH(hf)) return hf;
+
+    // ③ 落地页仍在 PH → 扫 body 找第一个非 PH 外链
+    const body = await r2.text();
+    const m = body.match(/https?:\/\/(?:www\.)?([a-z0-9-]+(?:\.[a-z0-9-]+)+)[^"'\s<>]*/gi) || [];
+    for (const u of m) { try { const h = cleanHost(new URL(u).hostname); if (!isPH(h) && !/\.(png|jpg|svg|css|js|gif|woff2?)$/i.test(h) && !/(google|gstatic|cloudflare|gravatar|amazonaws|twitter|facebook|linkedin|youtube|apple|microsoft|githubassets)\./.test(h)) return h; } catch {} }
+    return null;
   } catch { return null; }
 }
 
