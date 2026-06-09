@@ -17,5 +17,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: dry-run 发现(不入库)
-        run: node cli/discover-tools.js --dry-run --limit 15 --days 7
+      - name: 真跑发现(入库 pending)
+        run: node cli/discover-tools.js --limit 20 --days 7
