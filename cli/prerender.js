@@ -38,7 +38,7 @@ function jsonLd(obj) {
 }
 
 async function fetchPublishedProducts() {
-  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
+  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,domestic_available,created_at,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
   const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
   if (!res.ok) throw new Error(`读取产品失败 ${res.status}: ${await res.text()}`);
   return res.json();
@@ -101,7 +101,33 @@ function renderProduct(tpl, p) {
     'slug',
   );
 
+  // 6. 产品信息侧栏:模板是写死 demo(分类/价格/国内可用全固定)→ 用真数据重建
+  const infoRe = /<div class="info-list">[\s\S]*?\n\s*<\/div>/;
+  if (infoRe.test(html)) html = html.replace(infoRe, buildInfoList(p));
+  else checks.push('⚠ 未找到[info-list]');
+
   return { html, checks };
+}
+
+/** 国内可用枚举 → 展示文案 */
+function domLabel(d) {
+  return d === '是' ? '✓ 国内直连' : d === '需代理' ? '⚠ 需代理' : d === '否' ? '✗ 国内不可用' : '— 不详';
+}
+/** 用真数据重建产品信息侧栏(只放有可靠数据的行) */
+function buildInfoList(p) {
+  const cat = p.moxie_categories?.name || 'AI 工具';
+  const rows = [
+    ['分类', esc(cat)],
+    ['价格', esc(p.price_label || '不详')],
+    ['国内可用', domLabel(p.domestic_available)],
+  ];
+  if (p.created_at) {
+    const d = new Date(p.created_at);
+    if (!isNaN(d)) rows.push(['收录于', `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}`]);
+  }
+  return '<div class="info-list">\n' +
+    rows.map(([k, v]) => `            <div class="info-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('\n') +
+    '\n          </div>';
 }
 
 async function fetchPublishedArticles() {
