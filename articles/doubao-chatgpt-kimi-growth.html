@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
+<title>用豆包做增长：获客、内容运营与分发实战指南 · MOXIE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=Geist:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
+<script src="/moxie-supabase.js?v=20260526-01"></script>
+<script src="/moxie-shared.js?v=20260526-01" defer></script>
+<style>
+  /* ── Hero with cover image ── */
+  .art-hero { padding: 32px 0 0; }
+  .art-breadcrumb { font-size: 12px; color: var(--ink-3); margin-bottom: 24px; display: flex; gap: 8px; }
+  .art-breadcrumb a { color: var(--ink-2); }
+  .art-breadcrumb a:hover { color: var(--accent); }
+
+  .art-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+  .art-meta-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.06em; }
+  .art-meta-top .tag { color: var(--accent); font-weight: 600; }
+  .art-meta-top .sep { color: var(--ink-3); }
+  .art-title { font-size: 40px; font-weight: 500; color: var(--ink); letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 20px; }
+  .art-excerpt { font-size: 17px; color: var(--ink-1); line-height: 1.75; margin-bottom: 32px; max-width: 720px; }
+  .art-author { display: flex; align-items: center; gap: 12px; margin-bottom: 48px; }
+  .art-author-av { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; }
+  .art-author-info .n { font-size: 13.5px; color: var(--ink); font-weight: 500; }
+  .art-author-info .d { font-size: 12px; color: var(--ink-2); }
+
+  /* Cover image */
+  .art-cover {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto 56px;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 16/8;
+    background: linear-gradient(135deg, #1D2129, #2E3441);
+    position: relative;
+  }
+  .art-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .art-cover-caption {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--ink-3);
+    max-width: 800px;
+    margin: 12px auto 0;
+    font-style: italic;
+  }
+
+  /* Body */
+  .art-body { padding: 0 0 80px; }
+  .art-grid { display: grid; grid-template-columns: 1fr 240px; gap: 64px; max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+  .art-content { max-width: 720px; font-family: "Inter", "Noto Sans SC", sans-serif; }
+  .art-content h2 { font-size: 24px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin: 56px 0 18px; }
+  .art-content h3 { font-size: 18px; font-weight: 500; color: var(--ink); margin: 36px 0 14px; }
+  .art-content p { font-size: 15.5px; color: var(--ink-1); line-height: 1.85; margin-bottom: 22px; }
+  .art-content ul, .art-content ol { margin: 0 0 24px 24px; }
+  .art-content li { font-size: 15.5px; color: var(--ink-1); line-height: 1.8; margin-bottom: 8px; }
+  .art-content strong { color: var(--ink); font-weight: 500; }
+  .art-content code { font-family: var(--mono); font-size: 13px; background: var(--bg-soft); padding: 2px 6px; border-radius: 4px; color: var(--ink); }
+
+  /* Pull quote */
+  .pull-quote {
+    margin: 40px 0;
+    padding: 28px 32px;
+    border-left: 4px solid var(--accent);
+    background: var(--bg-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .pull-quote p {
+    font-size: 18px !important;
+    font-weight: 500;
+    color: var(--ink) !important;
+    line-height: 1.65 !important;
+    margin-bottom: 0 !important;
+    font-style: italic;
+  }
+  .pull-quote .qa {
+    font-size: 12px;
+    color: var(--ink-2);
+    margin-top: 12px;
+    font-style: normal;
+  }
+
+  /* Figure / inline image */
+  .figure {
+    margin: 36px 0;
+  }
+  .figure img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    background: var(--bg-soft);
+  }
+  .figure figcaption {
+    font-size: 12px;
+    color: var(--ink-2);
+    text-align: center;
+    margin-top: 12px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Side-by-side images */
+  .figure-row {
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .figure-row img { width: 100%; border-radius: 10px; display: block; }
+
+  /* Code block */
+  .code-block {
+    background: #1D2129;
+    color: #E5E6EB;
+    padding: 24px 28px;
+    border-radius: 10px;
+    margin: 28px 0;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .code-block .c-key { color: #FF6B9D; }
+  .code-block .c-str { color: #A6E3A1; }
+  .code-block .c-com { color: #6B7280; }
+
+  /* Table */
+  .art-content table { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: 13.5px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .art-content th, .art-content td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--line-2); }
+  .art-content th { background: var(--bg-soft); font-weight: 500; color: var(--ink); }
+  .art-content td { color: var(--ink-1); }
+  .art-content tr:last-child td { border-bottom: none; }
+
+  /* Tag highlight box */
+  .info-box {
+    margin: 28px 0;
+    padding: 18px 22px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(221,110,76,0.2);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .info-box::before { content: "💡 "; }
+
+  /* Image grid (3 columns) */
+  .figure-grid-3 {
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .figure-grid-3 img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+
+  /* Right side */
+  .art-side { position: sticky; top: 88px; align-self: start; }
+  .toc-block, .related-block, .tools-block { padding: 22px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 20px; }
+  .toc-block h4, .related-block h4, .tools-block h4 { font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; font-weight: 500; margin-bottom: 14px; text-transform: uppercase; }
+  .toc-list { list-style: none; }
+  .toc-list li { padding: 6px 0; font-size: 12.5px; color: var(--ink-1); line-height: 1.5; cursor: pointer; }
+  .toc-list li:hover { color: var(--accent); }
+  .toc-list li.active { color: var(--accent); font-weight: 500; }
+  .related-prod { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+  .related-prod:last-child { border-bottom: none; }
+  .related-prod-logo { width: 28px; height: 28px; background: white; border: 1px solid var(--line); border-radius: 6px; padding: 3px; overflow: hidden; flex-shrink: 0; }
+  .related-prod-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .related-prod-name { font-size: 12.5px; color: var(--ink); font-weight: 500; }
+  .related-prod-tag { font-size: 11px; color: var(--ink-2); }
+
+  /* Comments section */
+  .art-comments { max-width: 720px; margin: 64px auto 0; padding: 40px 0; border-top: 1px solid var(--line); }
+  .art-comments h2 { font-size: 22px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 24px; }
+  .comment-locked { padding: 28px; background: var(--bg-soft); border-radius: 10px; text-align: center; border: 1px dashed var(--line); }
+  .comment-locked p { font-size: 13.5px; color: var(--ink-1); margin-bottom: 14px; line-height: 1.6; }
+  .comment-list { margin-top: 28px; }
+  .comment-item { padding: 18px 0; border-bottom: 1px solid var(--line-2); }
+  .comment-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .comment-av { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-soft); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--ink-1); }
+  .comment-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .comment-time { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+  .comment-body { font-size: 14px; color: var(--ink-1); line-height: 1.7; margin-left: 38px; }
+
+  .art-end-cta { background: var(--bg-soft); border-radius: 14px; padding: 36px 32px; text-align: center; margin: 56px auto; max-width: 720px; }
+  .art-end-cta h3 { font-size: 20px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 8px; }
+  .art-end-cta p { font-size: 13px; color: var(--ink-1); line-height: 1.65; margin-bottom: 20px; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .art-end-cta .row { display: inline-flex; gap: 8px; }
+
+  @media (max-width: 900px) {
+    .art-grid { grid-template-columns: 1fr; }
+    .art-side { position: static; }
+    .art-title { font-size: 28px; }
+    .figure-row { grid-template-columns: 1fr; }
+    .figure-grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+<meta name="description" content="本文从运营增长视角出发，拆解如何用豆包等AI工具实现获客、内容生产与分发，提供可执行的打法与步骤，助力高效增长。">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/articles/doubao-chatgpt-kimi-growth">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用豆包做增长：获客、内容运营与分发实战指南 · MOXIE">
+<meta property="og:description" content="本文从运营增长视角出发，拆解如何用豆包等AI工具实现获客、内容生产与分发，提供可执行的打法与步骤，助力高效增长。">
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/doubao-chatgpt-kimi-growth">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用豆包做增长：获客、内容运营与分发实战指南","description":"本文从运营增长视角出发，拆解如何用豆包等AI工具实现获客、内容生产与分发，提供可执行的打法与步骤，助力高效增长。","datePublished":"2026-06-09T05:47:44.891+00:00","dateModified":"2026-06-09T05:47:44.891+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/doubao-chatgpt-kimi-growth"}}</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="/moxie-preview.html" class="brand-logo"><img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24"></a>
+    <nav class="nav-center">
+      <a href="/moxie-preview.html">榜单</a>
+      <a href="/moxie-business.html">商业落地</a>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="/moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="/moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="/moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="/moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="/moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="/moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="/moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="/moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="/moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="/moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="/moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="/moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="/moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="/moxie-blog.html" >文章</a>
+      
+    </nav>
+    <div class="top-actions">
+      <a href="#" class="cmd-trigger"><i data-lucide="search" style="width:14px;height:14px;color:var(--ink-3);"></i><span class="label">搜索产品 / maker / tag…</span></a>
+      <a href="/moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="/moxie-login.html" class="btn-accent" id="loginBtn">登录</a>
+    </div>
+  </div>
+</header>
+
+<section class="art-hero">
+  <div class="container">
+    <div class="art-breadcrumb">
+      <a href="/moxie-preview.html">首页</a> /
+      <a href="/moxie-blog.html">文章</a> /
+      <span>REVIEW</span>
+    </div>
+  </div>
+
+  <div class="art-hero-inner">
+    <div class="art-meta-top">
+      <span class="tag" id="artCategory">增长</span>
+      <span class="sep">·</span>
+      <span id="artDate">—</span>
+      <span class="sep">·</span>
+      <span id="artReadMins">— MIN READ</span>
+    </div>
+    <h1 class="art-title" id="artTitle">用豆包做增长：获客、内容运营与分发实战指南</h1>
+    <p class="art-excerpt" id="artExcerpt">本文从运营增长视角出发，拆解如何用豆包等AI工具实现获客、内容生产与分发，提供可执行的打法与步骤，助力高效增长。</p>
+    <div class="art-author">
+      <div class="art-author-av">编</div>
+      <div class="art-author-info">
+        <div class="n">MOXIE 编辑团队</div>
+        <div class="d">独立测试 · 不收任何赞助</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cover image -->
+  <figure class="art-cover" id="artCoverWrap">
+    <img id="artCover" src="" alt="" style="display:none;">
+  </figure>
+</section>
+
+<section class="art-body">
+  <div class="container">
+    <div class="art-grid">
+      <article class="art-content" id="artBody"><h2 id="sec-1">一、为什么选择豆包做增长？</h2><p>在AI工具爆发式增长的今天，<strong>用豆包做增长</strong>成为运营人不可忽视的选择。豆包（字节跳动出品）完全免费，语音交互能力强，且国内可直接使用，大幅降低了获客与内容生产的门槛。相比ChatGPT（需海外访问且付费），豆包更适合国内团队快速落地。</p><h2 id="sec-2">二、豆包获客：低成本拉新策略</h2><h3>1. 智能客服与社群互动</h3><p>将豆包接入社群或私域，自动回答用户常见问题，提升响应率与留存。例如，在社群中设置豆包机器人，每日推送干货内容，引导用户互动，实现<strong>豆包获客</strong>。</p><h3>2. 裂变活动设计</h3><p>利用豆包生成创意裂变文案与海报脚本，如“免费领取豆包独家运营指南”，用户分享后自动发放资料，快速扩大曝光。</p><h2 id="sec-3">三、豆包内容运营：高效生产与分发</h2><h3>1. 批量生成高质量内容</h3><p>用豆包撰写公众号文章、小红书笔记、短视频脚本等。例如，输入“写5条关于AI工具推荐的朋友圈文案”，豆包可秒级输出，运营人员微调即可发布。结合Kimi的长文档处理能力，可先让Kimi总结行业报告，再让豆包润色成通俗内容。</p><h3>2. 内容矩阵与A/B测试</h3><p>用豆包生成不同风格的标题与正文，进行A/B测试，选择点击率最高的版本发布。例如，针对同一主题，豆包可输出“干货型”、“故事型”、“列表型”三种内容，测试用户偏好，优化<strong>豆包内容运营</strong>效果。</p><h2 id="sec-4">四、实战案例：从0到1搭建增长飞轮</h2><p>某知识付费团队利用豆包实现月增粉5万：</p><ul><li><strong>获客</strong>：豆包生成裂变海报文案，在社群投放，3天新增3000人。</li><li><strong>内容生产</strong>：每天用豆包产出10篇小红书笔记，覆盖不同关键词，引流至私域。</li><li><strong>转化</strong>：用豆包模拟客户对话，优化销售话术，提升转化率20%。</li></ul><p>整个过程零成本，仅需运营人员提示词优化。</p><h2 id="sec-5">五、常见问题</h2><h3>1. 豆包和ChatGPT哪个更适合国内增长？</h3><p>豆包完全免费且国内可用，适合快速测试和规模化；ChatGPT需付费且需科学上网，适合需要复杂推理的场景。建议先用豆包跑通MVP，再考虑ChatGPT。</p><h3>2. 如何避免豆包生成内容同质化？</h3><p>在提示词中加入具体场景、目标用户和风格要求，例如“针对25-35岁职场人，用案例式写法，语气活泼”。同时结合Kimi处理长文档，豆包做创意发散，可提升内容独特性。</p><h3>3. 豆包获客的效果如何衡量？</h3><p>关注三个指标：内容触达率（阅读/播放量）、互动率（评论/分享）、转化率（加粉/购买）。可通过豆包生成不同版本内容，对比数据优化策略。</p></article>
+
+      <aside class="art-side"><div class="toc-block"><h4>目录</h4><ul class="toc-list"><li class="active" data-target="#sec-1">一、为什么选择豆包做增长？</li><li data-target="#sec-2">二、豆包获客：低成本拉新策略</li><li data-target="#sec-3">三、豆包内容运营：高效生产与分发</li><li data-target="#sec-4">四、实战案例：从0到1搭建增长飞轮</li><li data-target="#sec-5">五、常见问题</li></ul></div>
+<div class="related-block"><h4>本文涉及产品</h4><a href="/tools/doubao" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=doubao.com&sz=128" alt=""></div><div><div class="related-prod-name">豆包</div><div class="related-prod-tag">AI 助手</div></div></a><a href="/tools/chatgpt" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128" alt=""></div><div><div class="related-prod-name">ChatGPT</div><div class="related-prod-tag">AI 助手</div></div></a><a href="/tools/kimi" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=kimi.com&sz=128" alt=""></div><div><div class="related-prod-name">Kimi</div><div class="related-prod-tag">AI 助手</div></div></a></div>
+<div class="tools-block"><h4>更多评测</h4><a href="/articles/cherry-studio-ragflow-fastgpt-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">Cherry Studio 获客指南：AI 工具驱动增长实战</a><a href="/articles/perplexity-mita-360ai-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">用 Perplexity 做增长：AI 搜索获客与内容运营实战</a><a href="/articles/deepseek-v3-openai-api-anthropic-api-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;">用 DeepSeek V3 做增长：低成本获客与内容运营实战</a></div></aside>
+    </div>
+
+    <div class="art-end-cta">
+      <h3>下一篇评测周一发</h3>
+      <p>订阅 MOXIE 周报，第一时间收到中文 AI 工具的真实评测和实操内容。</p>
+      <div class="row">
+        <a href="#" class="btn-accent-lg" style="padding: 11px 22px; font-size: 13px;">订阅周报</a>
+        <a href="/moxie-blog.html" class="btn-text-cta">查看全部文章</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand"><a href="/moxie-preview.html" class="brand-logo"><img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="117" height="28"></a><p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p><div class="meta-line"><span class="live-dot"></span>MOXIE · BUILD 2026.05.23 · 3,847 TOOLS</div></div>
+      <div class="fcol"><h4>发现</h4><a href="/moxie-preview.html">今日上新</a><a href="/moxie-business.html">商业落地</a><div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="/moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="/moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="/moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="/moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="/moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="/moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="/moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="/moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="/moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="/moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="/moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="/moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="/moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="/moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div><a href="/moxie-blog.html">文章</a></div>
+      <div class="fcol"><h4>产品</h4><a href="/moxie-preview.html?chat=open">MOXIE 助手</a><span class="planned">提示词订阅 <span class="tag">规划中</span></span><span class="planned">AI 花销追踪 <span class="tag">规划中</span></span></div>
+      <div class="fcol"><h4>资源</h4><a href="/moxie-about.html">关于我们</a><a href="/moxie-about.html#faq">FAQ</a></div>
+      <div class="fcol"><h4>合作</h4><a href="/moxie-submit.html">提交产品</a><a href="/moxie-pricing.html">商务合作</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2024 — 2026 MOXIE</span><div class="right"><a href="/moxie-privacy.html">隐私政策</a><a href="/moxie-terms.html">服务条款</a><a href="/moxie-about.html">联系我们</a></div></div>
+  </div>
+</footer>
+
+<script>
+  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  if (window.lucide) lucide.createIcons();
+
+  /* ── 按 ?slug= 拉文章 ── */
+  function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+  function fmtDate(s){ if(!s) return ''; const d=new Date(s); return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`; }
+
+  window.moxieWhenDBReady(async (db) => {
+    const slug = "doubao-chatgpt-kimi-growth";
+    if (!slug || !db) return; // 没 slug 就显示 fallback demo 内容
+
+    const { data: a, error } = await window.MoxieDB.articleBySlug(slug);
+    if (error || !a) {
+      document.getElementById('artTitle').textContent = '文章不存在';
+      document.getElementById('artExcerpt').textContent = 'slug = ' + slug;
+      document.getElementById('artBody').innerHTML = '<p style="color:var(--ink-3);text-align:center;padding:60px 0;">这篇文章可能已下架或还没创建。<br><a href="/moxie-blog.html" style="color:var(--accent);">回文章列表 →</a></p>';
+      return;
+    }
+    document.title = a.title + ' · MOXIE';
+    document.getElementById('artTitle').textContent = a.title;
+    document.getElementById('artExcerpt').textContent = a.excerpt || '';
+    document.getElementById('artCategory').textContent = a.category;
+    document.getElementById('artDate').textContent = fmtDate(a.published_at);
+    document.getElementById('artReadMins').textContent = (a.read_minutes || 5) + ' MIN READ';
+
+    if (a.cover_url) {
+      const img = document.getElementById('artCover');
+      img.src = a.cover_url;
+      img.alt = a.title;
+      img.style.display = 'block';
+    } else {
+      document.getElementById('artCoverWrap').style.display = 'none';
+    }
+
+    const body = document.getElementById('artBody');
+    if (a.body_html?.trim()) {
+      body.innerHTML = a.body_html;
+    } else {
+      body.innerHTML = `<div style="padding:40px 24px;background:var(--bg-soft);border-radius:12px;color:var(--ink-2);font-size:13.5px;line-height:1.7;">
+        <p style="margin:0">正文还在编辑中。这篇文章先有了标题和摘要，完整内容会在审核通过后补上。</p>
+      </div>`;
+    }
+    // 重建 TOC（按真实 h2 自动生成）
+    rebuildTOC(body);
+  });
+
+  function rebuildTOC(bodyEl) {
+    const list = document.querySelector('.toc-list');
+    if (!list) return;
+    const h2s = bodyEl.querySelectorAll('h2');
+    if (!h2s.length) { list.closest('.toc-block').style.display = 'none'; return; }
+    list.innerHTML = '';
+    h2s.forEach((h, i) => {
+      if (!h.id) h.id = 'sec-' + (i+1);
+      const li = document.createElement('li');
+      li.dataset.target = '#' + h.id;
+      li.textContent = h.textContent;
+      if (i === 0) li.classList.add('active');
+      list.appendChild(li);
+    });
+    // shared.js 的 wireArticleToc 已经在 DOMContentLoaded 跑过，需要重绑
+    list.querySelectorAll('li').forEach(li => {
+      li.addEventListener('click', () => {
+        list.querySelectorAll('li').forEach(x => x.classList.remove('active'));
+        li.classList.add('active');
+        const t = document.querySelector(li.dataset.target);
+        if (t) {
+          const top = t.getBoundingClientRect().top + window.pageYOffset - 80;
+          if (window.lenis?.scrollTo) window.lenis.scrollTo(top);
+          else window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>

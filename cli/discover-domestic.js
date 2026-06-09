@@ -88,6 +88,21 @@ const SEEDS = [
   { name: '文心一格', domain: 'yige.baidu.com', slug: 'yige' },               // 百度 AI 绘画
   { name: '稿定设计', domain: 'gaoding.com', slug: 'gaoding' },               // AI 设计
   { name: 'AiPPT', domain: 'aippt.cn', slug: 'aippt' },                       // AI 生成 PPT
+
+  // ── 第四批补录(2026-06-09)──
+  { name: 'You.com', domain: 'you.com', slug: 'you-com' },                    // AI 搜索
+  { name: 'Elicit', domain: 'elicit.com', slug: 'elicit' },                   // 科研搜索
+  { name: 'Consensus', domain: 'consensus.app', slug: 'consensus' },          // 论文搜索
+  { name: 'Glean', domain: 'glean.com', slug: 'glean' },                      // 企业搜索
+  { name: 'Cline', domain: 'cline.bot', slug: 'cline' },                      // AI 编程
+  { name: 'Continue', domain: 'continue.dev', slug: 'continue' },
+  { name: 'Sourcegraph Cody', domain: 'sourcegraph.com', slug: 'cody' },
+  { name: 'Reka AI', domain: 'reka.ai', slug: 'reka' },                       // 多模态大模型
+  { name: 'AI21 Labs', domain: 'ai21.com', slug: 'ai21' },
+  { name: 'Photoroom', domain: 'photoroom.com', slug: 'photoroom' },          // AI 抠图/电商图
+  { name: 'Napkin AI', domain: 'napkin.ai', slug: 'napkin' },                 // 文字转图示
+  { name: 'Beautiful.ai', domain: 'beautiful.ai', slug: 'beautiful-ai' },     // AI PPT
+  { name: '网易有道', domain: 'youdao.com', slug: 'youdao' },                 // 翻译/AI
 ];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
