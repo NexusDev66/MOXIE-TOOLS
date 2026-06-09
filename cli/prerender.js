@@ -11,7 +11,7 @@
  * 部署/canonical 域名:env SITE_BASE_URL(默认 https://www.latemai.com)。
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -27,6 +27,7 @@ const __dir = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dir, '..');
 const OUT_DIR = join(ROOT, 'tools');
 const OUT_ARTICLES = join(ROOT, 'articles');
+const OUT_NEWS = join(ROOT, 'news');
 
 /** HTML 转义(文本 + 属性通用) */
 function esc(s) {
@@ -293,6 +294,72 @@ function buildAside(a, toc, ctx) {
   return blocks.join('\n');
 }
 
+async function fetchNews() {
+  const url = `${SUPABASE_URL}/rest/v1/moxie_news?select=id,title,url,source,tag,published_at,summary&order=published_at.desc.nullslast&limit=200`;
+  const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
+  if (!res.ok) throw new Error(`读取快讯失败 ${res.status}: ${await res.text()}`);
+  return res.json();
+}
+
+/** 快讯详情:预渲染静态页(内容烤入,不依赖现场请求) */
+function buildNewsPage(n) {
+  const canonical = `${SITE_BASE}/news/${n.id}`;
+  const src = n.source || n.tag || '';
+  const sum = (n.summary || '').trim();
+  const d = n.published_at ? new Date(n.published_at) : null;
+  const date = d && !isNaN(d) ? `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}` : '';
+  const desc = (sum || n.title).slice(0, 150);
+  const ld = { '@context': 'https://schema.org', '@type': 'NewsArticle', headline: n.title, ...(sum ? { description: sum } : {}), ...(n.published_at ? { datePublished: n.published_at } : {}), author: { '@type': 'Organization', name: src }, publisher: { '@type': 'Organization', name: 'MOXIE' }, mainEntityOfPage: { '@type': 'WebPage', '@id': canonical } };
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
+<title>${esc(n.title)} · MOXIE 快讯</title>
+<meta name="description" content="${esc(desc)}">
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${esc(n.title)} · MOXIE">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${canonical}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/moxie-styles.css?v=20260608-02">
+<script type="application/ld+json">${jsonLd(ld)}</script>
+<style>
+  .nv{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+  .nv .container{display:flex;align-items:center;justify-content:space-between}
+  .nv a.brand{font-weight:600;color:var(--ink);text-decoration:none;font-size:16px}
+  .ni-wrap{max-width:720px;margin:0 auto;padding:56px 20px 90px}
+  .ni-meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-3);margin-bottom:16px}
+  .ni-src{color:#F53F3F;font-weight:600}
+  .ni-wrap h1{font-size:28px;line-height:1.45;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin-bottom:22px}
+  .ni-sum{font-size:15.5px;line-height:1.9;color:var(--ink-1);background:var(--bg-soft);border-radius:12px;padding:20px 22px;margin-bottom:28px}
+  .ni-sum.empty{color:var(--ink-3)}
+  .ni-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .ni-orig{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:11px 22px;border-radius:9999px;font-size:14px;font-weight:500}
+  .ni-orig:hover{background:var(--accent-d)}
+  .ni-back{color:var(--ink-2);text-decoration:none;font-size:13px}
+  .ni-back:hover{color:var(--accent)}
+  .ni-note{margin-top:30px;font-size:12px;color:var(--ink-3);line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<nav class="nv"><div class="container">
+  <a class="brand" href="/">MOXIE</a>
+  <a class="ni-back" href="/moxie-news">← 全部快讯</a>
+</div></nav>
+<div class="ni-wrap">
+  <div class="ni-meta"><span class="ni-src">${esc(src)}</span><span>·</span><span>${esc(date)}</span><span>·</span><span>AI 快讯</span></div>
+  <h1>${esc(n.title)}</h1>
+  <div class="ni-sum${sum ? '' : ' empty'}">${sum ? esc(sum) : '本条快讯暂无摘要,点下方阅读原文。'}</div>
+  <div class="ni-actions"><a class="ni-orig" href="${esc(n.url)}" target="_blank" rel="noopener">阅读原文 ↗</a><a class="ni-back" href="/moxie-news">← 全部快讯</a></div>
+  <div class="ni-note">摘要来自来源媒体(${esc(src)})的公开 RSS,版权归原作者。MOXIE 仅做聚合索引,完整内容请以原文为准。</div>
+</div>
+</body>
+</html>`;
+}
+
 async function main() {
   console.log(`\n🖨  Phase 1.1/1.3 预渲染 · base=${SITE_BASE}\n`);
   const warned = new Set();
@@ -326,6 +393,13 @@ async function main() {
     an++;
   }
   console.log(`✓ 文章页 ${an} → articles/<slug>.html`);
+
+  // 快讯页(预渲染静态页,和文章一样不依赖现场请求)。先清旧 → 写当前
+  const news = await fetchNews();
+  rmSync(OUT_NEWS, { recursive: true, force: true });
+  mkdirSync(OUT_NEWS, { recursive: true });
+  for (const n of news) writeFileSync(join(OUT_NEWS, `${n.id}.html`), buildNewsPage(n), 'utf8');
+  console.log(`✓ 快讯页 ${news.length} → news/<id>.html`);
 
   if (warned.size) console.log('   模板替换告警:', [...warned].join(' '));
   console.log('');
