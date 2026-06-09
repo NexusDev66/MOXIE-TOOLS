@@ -340,11 +340,7 @@
 </section>
 
 <div class="container">
-  <div class="blog-filter-row">
-    <span class="cat-chip active" style="cursor:default;">实时聚合</span>
-    <span class="cat-chip" style="cursor:default;">量子位</span>
-    <span class="cat-chip" style="cursor:default;">雷锋网</span>
-  </div>
+  <div class="blog-filter-row" id="newsFilter"></div>
 </div>
 
 <section class="blog-listing">
@@ -439,6 +435,7 @@
     }
     function rel(s){ if(!s) return ''; const d=new Date(s); if(isNaN(d)) return ''; const m=(Date.now()-d)/6e4; if(m<60) return Math.max(1,Math.round(m))+'分钟前'; const h=m/60; if(h<24) return Math.round(h)+'小时前'; return Math.round(h/24)+'天前'; }
     const css = `<style>
+      .blog-filter-row .cat-chip{cursor:pointer}
       .news-feed{max-width:760px;margin:0 auto;display:flex;flex-direction:column}
       .news-feed-item{display:flex;align-items:flex-start;gap:12px;padding:16px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
       .news-feed-item:hover .nf-title{color:var(--accent)}
@@ -447,13 +444,32 @@
       .nf-title{flex:1;font-size:15px;line-height:1.55;color:var(--ink)}
       .nf-time{flex-shrink:0;font-size:12px;color:var(--ink-3);margin-top:2px;font-variant-numeric:tabular-nums}
     </style>`;
-    box.innerHTML = css + `<div class="news-feed">` + data.map(n => `
-      <a class="news-feed-item" href="${escH(n.url)}" target="_blank" rel="noopener">
-        <span class="nf-dot"></span>
-        <span class="nf-tag">${escH(n.tag||n.source||'')}</span>
-        <span class="nf-title">${escH(n.title)}</span>
-        <span class="nf-time">${escH(rel(n.published_at))}</span>
-      </a>`).join('') + `</div>`;
+    // 来源筛选(真实计数 + 点击过滤)
+    const filterRow = document.getElementById('newsFilter');
+    const counts = {};
+    data.forEach(n => { const s = n.source || n.tag || '其他'; counts[s] = (counts[s] || 0) + 1; });
+    const sources = ['全部', ...Object.keys(counts)];
+    let active = '全部';
+    function renderList() {
+      const items = active === '全部' ? data : data.filter(n => (n.source || n.tag) === active);
+      box.innerHTML = css + `<div class="news-feed">` + items.map(n => `
+        <a class="news-feed-item" href="${escH(n.url)}" target="_blank" rel="noopener">
+          <span class="nf-dot"></span>
+          <span class="nf-tag">${escH(n.tag||n.source||'')}</span>
+          <span class="nf-title">${escH(n.title)}</span>
+          <span class="nf-time">${escH(rel(n.published_at))}</span>
+        </a>`).join('') + `</div>`;
+    }
+    function renderChips() {
+      if (!filterRow) return;
+      filterRow.innerHTML = sources.map(s => {
+        const cnt = s === '全部' ? data.length : counts[s];
+        return `<button class="cat-chip${s === active ? ' active' : ''}" data-src="${escH(s)}">${escH(s)} ${cnt}</button>`;
+      }).join('');
+      filterRow.querySelectorAll('.cat-chip').forEach(b => b.addEventListener('click', () => { active = b.dataset.src; renderChips(); renderList(); }));
+    }
+    renderChips();
+    renderList();
   });
 
   /* ──────────── Mega Menu (分类 ▾) ──────────── */

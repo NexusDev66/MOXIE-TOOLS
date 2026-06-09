@@ -29,7 +29,7 @@
     margin-bottom: 48px;
     gap: 8px;
   }
-  .blog-filter-row .cat-chip { font-size: 12px; cursor: default; }
+  .blog-filter-row .cat-chip { font-size: 12px; cursor: pointer; }
   .blog-filter-row .cat-chip:hover { background: var(--bg-soft); color: var(--ink-1); }
   .blog-filter-row .cat-chip.active:hover { background: var(--accent-soft); color: var(--accent-d); }
 
@@ -340,13 +340,7 @@
 </section>
 
 <div class="container">
-  <div class="blog-filter-row">
-    <button class="cat-chip active">全部 32</button>
-    <button class="cat-chip">横评 12</button>
-    <button class="cat-chip">手册 8</button>
-    <button class="cat-chip">增长 7</button>
-    <button class="cat-chip">选型 5</button>
-  </div>
+  <div class="blog-filter-row" id="blogFilter"></div>
 </div>
 
 <section class="blog-listing">
@@ -439,8 +433,21 @@
       box.innerHTML = `<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">${error?'加载失败':'还没有文章。去 admin 后台发布一篇'}</div>`;
       return;
     }
+    // 分类筛选(真实计数 + 点击过滤)
+    const filterRow = document.getElementById('blogFilter');
+    const counts = {};
+    data.forEach(a => { const c = a.category || '其他'; counts[c] = (counts[c] || 0) + 1; });
+    const cats = ['全部', ...Object.keys(counts)];
+    let active = '全部';
+    function renderChips() {
+      if (!filterRow) return;
+      filterRow.innerHTML = cats.map(c => { const n = c === '全部' ? data.length : counts[c]; return `<button class="cat-chip${c === active ? ' active' : ''}" data-cat="${escH(c)}">${escH(c)} ${n}</button>`; }).join('');
+      filterRow.querySelectorAll('.cat-chip').forEach(b => b.addEventListener('click', () => { active = b.dataset.cat; renderChips(); renderArticles(); }));
+    }
+    function renderArticles() {
     // 第 1 篇大封面 / 后续 3-column grid / 再后续 wide / 剩下紧凑列表
-    const [feat, ...rest] = data;
+    const list = active === '全部' ? data : data.filter(a => (a.category || '其他') === active);
+    const [feat, ...rest] = list;
     const grid3 = rest.slice(0, 3);
     const wide = rest.slice(3, 4)[0];
     const grid3b = rest.slice(4, 7);
@@ -518,6 +525,9 @@
         </a>`).join('') + `</div>`;
     }
     box.innerHTML = html;
+    }
+    renderChips();
+    renderArticles();
   });
 
   /* ──────────── Mega Menu (分类 ▾) ──────────── */
