@@ -445,7 +445,121 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/articles/coze-n8n-zapier-compare</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/coze-n8n-zapier-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/perplexity-mita-tiangong-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/fastgpt-ragflow-cherry-studio-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/genspark-devin-manus-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/coze-n8n-zapier-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/notion-ai-xiezuocat-gamma-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/kling-hailuo-heygen-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/perplexity-mita-tiangong-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/fastgpt-ragflow-cherry-studio-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/genspark-devin-manus-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/doubao-chatgpt-kimi-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/midjourney-jimeng-liblib-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/cursor-github-copilot-trae-guide</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/doubao-chatgpt-kimi-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/notion-ai-xiezuocat-gamma-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/midjourney-jimeng-liblib-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/kling-hailuo-heygen-pick</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/cursor-github-copilot-trae-pick</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -494,6 +608,12 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/articles/genspark-devin-manus-compare</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/articles/coze-n8n-zapier-compare</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
