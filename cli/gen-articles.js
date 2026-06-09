@@ -26,10 +26,11 @@ const TEMPLATE = arg('template', 'compare');
 const LIMIT = Math.max(1, Number(arg('limit', '3')) || 3);
 const PUBLISH = process.argv.includes('--publish');
 const DRY_RUN = process.argv.includes('--dry-run');
+const ALL = process.argv.includes('--all'); // 遍历所有分类各生成一篇
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
 if (!DEEPSEEK_API_KEY) { console.error('❌ 缺 DEEPSEEK_API_KEY(.env.local)。先去 platform.deepseek.com 拿 key 填上。'); process.exit(1); }
-if (!CATEGORY) { console.error('❌ 需 --category <slug>(如 ai-coding)。可选 --template compare|pick|guide'); process.exit(1); }
+if (!ALL && !CATEGORY) { console.error('❌ 需 --category <slug>(如 ai-coding)或 --all(全分类批量)。可选 --template compare|pick|guide'); process.exit(1); }
 if (!['compare', 'pick', 'guide'].includes(TEMPLATE)) { console.error('❌ --template 仅 compare|pick|guide'); process.exit(1); }
 
 async function sb(path, opts = {}) {
@@ -117,41 +118,53 @@ async function callDeepSeek(messages) {
   return { content: j.choices?.[0]?.message?.content || '', usage };
 }
 
-async function main() {
-  console.log(`\n✍  Phase 4 文章生成${DRY_RUN ? ' [DRY-RUN]' : ''} · 分类=${CATEGORY} 模板=${TEMPLATE}\n`);
-  const cats = await sb(`/moxie_categories?slug=eq.${encodeURIComponent(CATEGORY)}&select=id,name`);
-  if (!cats.length) throw new Error(`分类 ${CATEGORY} 不存在`);
-  const catId = cats[0].id;
+/** 给单个分类生成一篇文章。返回 'ok' | 'skip' | 'dry'。 */
+async function generateForCategory(cat, template) {
+  const tag = `[${cat.slug || cat.name}]`;
+  const products = await sb(`/moxie_products?status=eq.published&category_id=eq.${cat.id}&select=id,slug,name,tagline,description,price_label,tags,domestic_available&order=weight_score.desc&limit=${LIMIT}`);
+  if (products.length < 2) { console.log(`${tag} 跳过:published 产品不足 2 个(${products.length})`); return 'skip'; }
 
-  const products = await sb(`/moxie_products?status=eq.published&category_id=eq.${catId}&select=id,slug,name,tagline,description,price_label,tags,domestic_available&order=weight_score.desc&limit=${LIMIT}`);
-  if (products.length < 2) { console.log(`⚠ 该分类 published 产品不足 2 个(${products.length}),换分类或 --limit`); return; }
-  console.log(`   选品:${products.map((p) => p.name).join(' / ')}`);
-
-  const slug = buildSlug(TEMPLATE, products);
+  const slug = buildSlug(template, products);
   const existing = await sb(`/moxie_articles?slug=eq.${encodeURIComponent(slug)}&select=id,status`);
-  if (existing.length && existing[0].status !== 'draft') {
-    console.log(`   跳过:slug "${slug}" 已是 ${existing[0].status}(不覆盖已发布/已编辑)`);
-    return;
-  }
+  if (existing.length && existing[0].status !== 'draft') { console.log(`${tag} 跳过:${slug} 已是 ${existing[0].status}`); return 'skip'; }
+  console.log(`${tag} 选品:${products.map((p) => p.name).join(' / ')}`);
 
-  if (DRY_RUN) { console.log(`   [dry] 将调 DeepSeek 生成 → 写 slug=${slug} status=${PUBLISH ? 'published' : 'draft'}`); return; }
+  if (DRY_RUN) { console.log(`${tag} [dry] 将写 ${slug}(${PUBLISH ? 'published' : 'draft'})`); return 'dry'; }
 
-  console.log('   调 DeepSeek 生成中…');
-  const { content, usage } = await callDeepSeek(buildMessages(TEMPLATE, products));
+  const { content, usage } = await callDeepSeek(buildMessages(template, products));
   const art = parseArticle(content);
   const body = sanitize(art.body_html);
-
   const row = {
     slug, title: art.title, excerpt: art.excerpt, body_html: body,
-    category: META[TEMPLATE].category, read_minutes: readMinutes(body),
+    category: META[template].category, read_minutes: readMinutes(body),
     related_product_ids: products.map((p) => p.id),
     status: PUBLISH ? 'published' : 'draft',
   };
   const saved = await sb('/moxie_articles?on_conflict=slug', { method: 'POST', prefer: 'return=representation,resolution=merge-duplicates', body: [row] });
-  console.log(`\n✓ 已写文章 #${saved[0]?.id} slug=${slug} status=${row.status}(${row.read_minutes}min)`);
-  console.log(`  标题:${art.title}`);
-  console.log(`  tokens:${usage.prompt_tokens}+${usage.completion_tokens}`);
-  console.log(PUBLISH ? '  已 published → 跑 cli/prerender.js + sitemap.js 即上线\n' : '  status=draft(不在站上显示)。满意后改 published 或加 --publish 重跑\n');
+  console.log(`${tag} ✓ #${saved[0]?.id} ${slug}(${row.status}, ${row.read_minutes}min, tok ${usage.prompt_tokens}+${usage.completion_tokens})— ${art.title}`);
+  return 'ok';
+}
+
+async function main() {
+  console.log(`\n✍  Phase 4 文章生成${DRY_RUN ? ' [DRY-RUN]' : ''} · ${ALL ? '全分类' : CATEGORY} · 模板=${TEMPLATE} · status=${PUBLISH ? 'published' : 'draft'}\n`);
+  let cats;
+  if (ALL) {
+    cats = await sb('/moxie_categories?select=id,name,slug&order=sort_order.asc');
+  } else {
+    cats = await sb(`/moxie_categories?slug=eq.${encodeURIComponent(CATEGORY)}&select=id,name,slug`);
+    if (!cats.length) throw new Error(`分类 ${CATEGORY} 不存在`);
+  }
+
+  const tally = { ok: 0, skip: 0, dry: 0, fail: 0 };
+  for (const cat of cats) {
+    try { tally[await generateForCategory(cat, TEMPLATE)]++; }
+    catch (e) { tally.fail++; console.log(`[${cat.slug}] ❌ ${e.message}`); }
+  }
+
+  console.log(`\n汇总:生成 ${tally.ok} · 跳过 ${tally.skip} · dry ${tally.dry} · 失败 ${tally.fail}`);
+  if (tally.ok) console.log(PUBLISH
+    ? '已 published → 跑 cli/prerender.js + cli/sitemap.js 上线。'
+    : '草稿已写。审核后改 published(或加 --publish 重跑),再跑 prerender.js + sitemap.js 上线。');
 }
 
 main().catch((e) => { console.error('❌ 失败:', e.message); process.exit(1); });
