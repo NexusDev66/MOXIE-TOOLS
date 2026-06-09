@@ -166,6 +166,11 @@ function renderArticle(tpl, a, ctx = {}) {
     const re = /(<article class="art-content" id="artBody">)[\s\S]*?(<\/article>)/;
     if (re.test(html)) html = html.replace(re, (_m, open, close) => `${open}${bodyWithIds}${close}`);
     else checks.push('⚠ 文章未找到[artBody]');
+  } else {
+    // 空正文:绝不能留模板自带 demo(假 $2.5/M 测试数据)→ 烤一个干净占位
+    const ph = '<div style="padding:40px 24px;background:var(--bg-soft);border-radius:12px;color:var(--ink-2);font-size:13.5px;line-height:1.7;"><p style="margin:0">正文整理中,完整内容会在审核通过后补上。</p></div>';
+    const re = /(<article class="art-content" id="artBody">)[\s\S]*?(<\/article>)/;
+    if (re.test(html)) html = html.replace(re, (_m, open, close) => `${open}${ph}${close}`);
   }
 
   // 侧栏整段重建:模板自带 demo(目录/本文涉及产品/更多评测)写死且只有 TOC 被客户端 JS 重建,
