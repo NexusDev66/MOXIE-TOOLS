@@ -1358,7 +1358,9 @@
   }
   function show(catId){
     var box = document.getElementById('prodList'); if (!box) return;
-    var list = catId === 'all' ? ALL.slice(0, 12) : ALL.filter(function(p){ return p.category_id === catId; });
+    var list = catId === 'all'
+      ? ALL.slice(0, 12)
+      : ALL.filter(function(p){ return p.category_id === catId; }).sort(function(a, b){ return (b.vote_count||0) - (a.vote_count||0); });
     box.innerHTML = list.length ? list.map(rowHTML).join('')
       : '<div style="padding:40px 0;text-align:center;color:var(--ink-3);font-size:13px;">该分类暂无工具</div>';
     if (window.MoxieRewire) window.MoxieRewire();
