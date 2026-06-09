@@ -18,6 +18,7 @@ const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 function arg(n, d) { const i = process.argv.indexOf(`--${n}`); return i >= 0 && process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : d; }
 const LIMIT = Number(arg('limit', '0')) || 0;
 const FORCE = process.argv.includes('--force');
+const FETCH = process.argv.includes('--fetch'); // 抓官网摘要当依据(抓到才重生成)
 const DRY_RUN = process.argv.includes('--dry-run');
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 SUPABASE 配置'); process.exit(1); }
@@ -42,8 +43,26 @@ const SYS = `你是 AI 工具库编辑,为某工具写详情页正文。要求:
   pricing: 价格说明,1-2 句,定性 + "具体以官网为准",≤ 50 字
 不要输出 JSON 以外内容。`;
 
-async function gen(p, catName) {
-  const user = `名称:${p.name}\n分类:${catName}\n一句话:${p.tagline}\n简介:${p.description || '(无)'}\n价格档:${p.price_label || '不详'}\n国内可用:${p.domestic_available || '不详'}\n按系统要求输出 JSON。`;
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36';
+function pick(html, re) { const m = html.match(re); return m ? m[1].replace(/<[^>]+>/g, '').replace(/&[a-z#0-9]+;/g, ' ').replace(/\s+/g, ' ').trim() : ''; }
+/** 抓官网首页 → 提取 title + meta/og 描述(失败返回 null) */
+async function fetchSite(domain) {
+  try {
+    const res = await fetch(`https://${domain}`, { headers: { 'User-Agent': UA, 'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8' }, redirect: 'follow', signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const html = (await res.text()).slice(0, 80000);
+    const title = pick(html, /<title[^>]*>([\s\S]*?)<\/title>/i);
+    const desc = pick(html, /<meta[^>]+name=["']description["'][^>]*content=["']([^"']+)["']/i)
+      || pick(html, /<meta[^>]+property=["']og:description["'][^>]*content=["']([^"']+)["']/i)
+      || pick(html, /<meta[^>]+content=["']([^"']+)["'][^>]*name=["']description["']/i);
+    if (!title && !desc) return null;
+    return { title: title.slice(0, 120), desc: desc.slice(0, 300) };
+  } catch { return null; }
+}
+
+async function gen(p, catName, site) {
+  const siteBlock = site ? `\n【官网摘要(优先依据此,而非记忆)】\n标题:${site.title}\n描述:${site.desc}` : '';
+  const user = `名称:${p.name}\n分类:${catName}\n一句话:${p.tagline}\n简介:${p.description || '(无)'}\n价格档:${p.price_label || '不详'}\n国内可用:${p.domestic_available || '不详'}${siteBlock}\n按系统要求输出 JSON。`;
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${DEEPSEEK_API_KEY}` },
     body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'system', content: SYS }, { role: 'user', content: user }], response_format: { type: 'json_object' }, temperature: 0.4, max_tokens: 700 }),
@@ -64,24 +83,30 @@ async function main() {
   console.log(`\n🧹 详情页 AI 清洗${DRY_RUN ? ' [DRY-RUN]' : ''}${FORCE ? ' [FORCE]' : ''}\n`);
   const cats = await sb('/moxie_categories?select=id,name');
   const catName = Object.fromEntries(cats.map((c) => [c.id, c.name]));
-  let q = '/moxie_products?status=eq.published&select=id,name,tagline,description,price_label,domestic_available,category_id,detail&order=weight_score.desc';
+  let q = '/moxie_products?status=eq.published&select=id,name,domain,tagline,description,price_label,domestic_available,category_id,detail&order=weight_score.desc';
   if (LIMIT) q += `&limit=${LIMIT}`;
   const prods = await sb(q);
-  const todo = prods.filter((p) => FORCE || !p.detail || !p.detail.features || !p.detail.features.length);
-  console.log(`共 ${prods.length} 个,需清洗 ${todo.length} 个\n`);
+  // --fetch:遍历全部,抓到官网摘要才重生成(grounding);否则按是否缺 detail 决定
+  const todo = FETCH ? prods : prods.filter((p) => FORCE || !p.detail || !p.detail.features || !p.detail.features.length);
+  console.log(`共 ${prods.length} 个,处理 ${todo.length} 个${FETCH ? '(--fetch:抓官网做依据)' : ''}\n`);
 
-  const tally = { ok: 0, fail: 0 };
+  const tally = { ok: 0, grounded: 0, skip: 0, fail: 0 };
   for (const p of todo) {
     try {
-      const detail = await gen(p, catName[p.category_id] || 'AI 工具');
+      let site = null;
+      if (FETCH) {
+        site = await fetchSite(p.domain);
+        if (!site) { tally.skip++; continue; } // 抓不到官网 → 保持现有 detail,不浪费
+      }
+      const detail = await gen(p, catName[p.category_id] || 'AI 工具', site);
       if (!detail.features.length) { console.log(`  · ${p.name} → 无特点,跳过`); tally.fail++; continue; }
-      if (DRY_RUN) { console.log(`  ✓[dry] ${p.name}: ${detail.features.map((f) => f.t).join('/')} | ${detail.review.slice(0, 20)}…`); tally.ok++; continue; }
+      if (DRY_RUN) { console.log(`  ✓[dry]${site ? '[官网]' : ''} ${p.name}: ${detail.features.map((f) => f.t).join('/')} | ${detail.review.slice(0, 20)}…`); tally.ok++; if (site) tally.grounded++; continue; }
       await sb(`/moxie_products?id=eq.${p.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { detail } });
-      console.log(`  ✓ ${p.name}(${detail.features.length} 特点)`);
-      tally.ok++;
+      console.log(`  ✓${site ? '[官网]' : ''} ${p.name}(${detail.features.length} 特点)`);
+      tally.ok++; if (site) tally.grounded++;
     } catch (e) { console.log(`  · ${p.name} → 失败(${e.message})`); tally.fail++; }
   }
-  console.log(`\n汇总:清洗 ${tally.ok} · 失败 ${tally.fail}`);
+  console.log(`\n汇总:清洗 ${tally.ok}(官网依据 ${tally.grounded})· 抓不到跳过 ${tally.skip} · 失败 ${tally.fail}`);
 }
 
 main().catch((e) => { console.error('❌ 失败:', e.message); process.exit(1); });
