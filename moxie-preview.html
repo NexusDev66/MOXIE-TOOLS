@@ -1387,16 +1387,23 @@
         var pl=document.getElementById('pickList'), fp=(fr&&fr.data)||[];
         if(pl&&fp.length){ pl.innerHTML = fp.map(function(p){ return '<a class="pick-mini" href="/tools/'+esc(p.slug)+'" style="text-decoration:none;color:inherit;"><div class="ptitle"><span class="name">'+esc(p.name)+'</span>'+(p.verified?'<span class="verified-tag">子墨测过</span>':'')+'</div><div class="quote">'+esc(p.tagline||'')+'</div><div class="meta"><span>'+esc(p.domain)+'</span><span class="upv">▲ '+(p.vote_count||0)+'</span></div></a>'; }).join(''); }
       });
-      // AI 业界热议 = 实时 AI 快讯(取较新的一批,与右侧"每日快讯"错开),每条跳 /news/<id>
-      db.from('moxie_news').select('id,title,source,published_at').order('published_at',{ascending:false,nullsFirst:false}).range(5,10).then(function(nr){
-        var pl2=document.getElementById('postList'), nm=(nr&&nr.data)||[];
-        if(!pl2) return;
-        if(!nm.length){ pl2.innerHTML = '<div class="post-item"><div class="post-title" style="color:var(--ink-3)">暂无热议</div></div>'; return; }
-        pl2.innerHTML = nm.slice(0,5).map(function(n){
-          var s = n.source || '';
-          return '<a class="post-item" href="/news/'+n.id+'" style="text-decoration:none;color:inherit;display:block;"><div class="post-head"><div class="post-av">'+esc(s[0]||'·')+'</div><div><div class="post-name">'+esc(s)+'</div></div></div><div class="post-title">'+esc(n.title)+'</div></a>';
+      // AI 业界热议 = 名人对 AI 的真实观点/疑问(静态精选,均可点 → 新标签搜索看讨论)
+      (function(){
+        var pl2 = document.getElementById('postList'); if(!pl2) return;
+        var views=[
+          {who:'黄仁勋',role:'英伟达 CEO',take:'AI 是新的工业革命,自然语言正成为新的编程语言。'},
+          {who:'Sam Altman',role:'OpenAI CEO',take:'AGI 可能比多数人预期来得更快,治理要趁早。'},
+          {who:'Geoffrey Hinton',role:'深度学习之父',take:'我们真能控制比自己更聪明的 AI 吗?'},
+          {who:'Yann LeCun',role:'Meta 首席 AI 科学家',take:'只靠大语言模型到不了 AGI——它们没有世界模型。'},
+          {who:'李开复',role:'零一万物 创始人',take:'大模型是 AI 2.0,是平台级、移动互联网级的机会。'}
+        ];
+        pl2.innerHTML = views.map(function(v){
+          var q = encodeURIComponent(v.who + ' ' + v.take.slice(0,16));
+          return '<a class="post-item" href="https://www.bing.com/search?q='+q+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">'
+            + '<div class="post-head"><div class="post-av">'+esc(v.who[0])+'</div><div><div class="post-name">'+esc(v.who)+'</div></div><span class="post-time">· '+esc(v.role)+'</span></div>'
+            + '<div class="post-title">'+esc(v.take)+'</div></a>';
         }).join('');
-      });
+      })();
 
       var chips = [{ id: 'all', name: '全部' }].concat(cats.filter(function(c){ return cnt[c.id]; }).map(function(c){ return { id: c.id, name: c.name, n: cnt[c.id] }; }));
       bar.innerHTML = chips.map(function(c, i){
