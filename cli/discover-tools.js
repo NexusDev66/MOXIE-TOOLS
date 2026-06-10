@@ -33,6 +33,7 @@ const MOCK_ITEMS = [
   { name: 'launch.cab', tagline: 'Submit your startup', description: 'Directory of new startups and tools.', website: 'https://launch.cab', votes: 3, topics: ['Directory'] },
   { name: 'BetSpin', tagline: 'Best casino bonuses', description: 'Online casino with slots, live dealer and sports betting.', website: 'https://betspin-casino.com', votes: 8, topics: ['Gambling'] },
   { name: 'YC News', tagline: 'Social news for hackers', description: 'A social news website focusing on computer science and entrepreneurship.', website: 'https://news.ycombinator.com', votes: 40, topics: ['News'] },
+  { name: 'Tamadoggo', tagline: 'AI pet logger', description: 'An AI-powered pet life logger for tracking your dog.', website: 'https://tamadoggo.com', votes: 5, topics: ['Pets'] },  // A5:已拒黑名单 → 应被跳过(验证不再重现)
 ];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
@@ -125,9 +126,11 @@ async function main() {
   if (!MOCK) await ensurePhToken();
 
   // 现有产品域名(去重用)+ 分类映射
-  const existing = await sb('/moxie_products?select=domain,slug&limit=2000');
-  const known = new Set(existing.map((p) => (p.domain || '').toLowerCase().replace(/^www\./, '')));
+  const existing = await sb('/moxie_products?select=domain,slug,status&limit=2000');
+  const norm = (d) => (d || '').toLowerCase().replace(/^www\./, '');
+  const known = new Set(existing.map((p) => norm(p.domain)));
   const knownSlug = new Set(existing.map((p) => p.slug));   // 防 slug 撞车覆盖已有产品
+  const rejected = new Set(existing.filter((p) => p.status === 'rejected').map((p) => norm(p.domain)));  // A5 黑名单(曾拒)
   const catRows = await sb('/moxie_categories?select=id,slug,name');
   const catId = Object.fromEntries(catRows.map((c) => [c.slug, c.id]));
   const cats = catRows.map((c) => ({ slug: c.slug, name: c.name }));   // 喂给 screen/aiClean
@@ -135,10 +138,11 @@ async function main() {
   const items = MOCK ? MOCK_ITEMS : await discoverPH();
   console.log(`${MOCK ? 'MOCK' : 'PH'} 候选 ${items.length} 个\n`);
 
-  const tally = { ok: 0, dup: 0, nodomain: 0, rule: 0, ai: 0, badcat: 0, fail: 0 };
+  const tally = { ok: 0, dup: 0, rejected: 0, nodomain: 0, rule: 0, ai: 0, badcat: 0, fail: 0 };
   for (const it of items) {
     const domain = await resolveDomain(it.website);
     if (!domain || /producthunt\.com$/.test(domain)) { console.log(`  · ${it.name} → 无真实域名,跳过`); tally.nodomain++; continue; }
+    if (rejected.has(domain)) { console.log(`  ⊘ ${it.name} (${domain}) → 黑名单(曾拒),跳过`); tally.rejected++; continue; }
     if (known.has(domain)) { console.log(`  · ${it.name} (${domain}) → 已收录,跳过`); tally.dup++; continue; }
 
     try {
@@ -185,7 +189,7 @@ async function main() {
     }
   }
 
-  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · 无域名 ${tally.nodomain} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
+  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · 黑名单 ${tally.rejected} · 无域名 ${tally.nodomain} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
   if (tally.ok && !DRY_RUN) console.log(`已写 ${tally.ok} 条 status=pending。人工审核后 promote 成 published(改 status)再跑 rank+prerender+sitemap 上线。`);
 }
 
