@@ -169,7 +169,7 @@
         热门分类
       </span>
       <div class="live-ticker-track">
-        <div class="live-ticker-scroll">
+        <div class="live-ticker-scroll" id="liveTicker">
           <span class="ticker-item"><span class="dot"></span>AI 写作 <span class="time">· 42 款</span></span>
           <span class="ticker-item"><span class="dot"></span>AI 图像 <span class="time">· 58 款</span></span>
           <span class="ticker-item"><span class="dot"></span>AI 视频 <span class="time">· 36 款</span></span>
@@ -221,7 +221,7 @@
         <div class="sec-label">
           <span>本月趋势</span>
         </div>
-        <div class="trend-list">
+        <div class="trend-list" id="trendList">
           <div class="trend-item">
             <span class="t-rank">01</span>
             <span class="t-name">AI 编程工具</span>
@@ -254,7 +254,7 @@
         <div class="sec-label">
           <span>最新讨论</span>
         </div>
-        <div class="post-list">
+        <div class="post-list" id="postList">
           <div class="post-item">
             <div class="post-head">
               <div class="post-av">王</div>
@@ -421,7 +421,7 @@
         <div class="sec-label">
           <span>本周编辑推荐</span>
         </div>
-        <div class="pick-list">
+        <div class="pick-list" id="pickList">
           <div class="pick-mini">
             <div class="ptitle">
               <span class="name">Cherry Studio</span>
@@ -1376,6 +1376,22 @@
       document.querySelectorAll('.js-tool-count').forEach(function(e){ e.textContent = prods.length; });
       document.querySelectorAll('.js-cat-count').forEach(function(e){ e.textContent = cats.length; });
       var cnt = {}; prods.forEach(function(p){ cnt[p.category_id] = (cnt[p.category_id]||0) + 1; });
+
+      /* ── 装饰块接真数据:热门分类 ticker / 本月趋势 / 编辑推荐 / 最新讨论 ── */
+      var catRank = cats.map(function(c){ return { name:c.name, n: cnt[c.id]||0 }; }).filter(function(x){ return x.n>0; }).sort(function(a,b){ return b.n-a.n; });
+      var tick = document.getElementById('liveTicker');
+      if(tick){ var one = catRank.map(function(c){ return '<span class="ticker-item"><span class="dot"></span>'+esc(c.name)+' <span class="time">· '+c.n+' 款</span></span>'; }).join(''); tick.innerHTML = one+one; }
+      var tl = document.getElementById('trendList');
+      if(tl){ tl.innerHTML = catRank.slice(0,5).map(function(c,i){ return '<div class="trend-item"><span class="t-rank">'+String(i+1).padStart(2,'0')+'</span><span class="t-name">'+esc(c.name)+'</span><span class="t-delta">'+c.n+' 款</span></div>'; }).join(''); }
+      db.from('moxie_products').select('name,slug,domain,tagline,vote_count,verified').eq('status','published').eq('featured',true).order('weight_score',{ascending:false}).limit(3).then(function(fr){
+        var pl=document.getElementById('pickList'), fp=(fr&&fr.data)||[];
+        if(pl&&fp.length){ pl.innerHTML = fp.map(function(p){ return '<a class="pick-mini" href="/tools/'+esc(p.slug)+'" style="text-decoration:none;color:inherit;"><div class="ptitle"><span class="name">'+esc(p.name)+'</span>'+(p.verified?'<span class="verified-tag">子墨测过</span>':'')+'</div><div class="quote">'+esc(p.tagline||'')+'</div><div class="meta"><span>'+esc(p.domain)+'</span><span class="upv">▲ '+(p.vote_count||0)+'</span></div></a>'; }).join(''); }
+      });
+      db.from('moxie_comments').select('body,created_at').eq('status','visible').order('created_at',{ascending:false}).limit(4).then(function(cr){
+        var pl2=document.getElementById('postList'), cm=(cr&&cr.data)||[];
+        if(pl2){ pl2.innerHTML = cm.length ? cm.map(function(x){ return '<div class="post-item"><div class="post-title">'+esc((x.body||'').slice(0,42))+'</div></div>'; }).join('') : '<div class="post-item"><div class="post-title" style="color:var(--ink-3)">还没有讨论 —— 去任意产品页留下第一条</div></div>'; }
+      });
+
       var chips = [{ id: 'all', name: '全部' }].concat(cats.filter(function(c){ return cnt[c.id]; }).map(function(c){ return { id: c.id, name: c.name, n: cnt[c.id] }; }));
       bar.innerHTML = chips.map(function(c, i){
         return '<button class="cat-chip' + (i===0?' active':'') + '" data-cat="' + c.id + '">' + esc(c.name) + (c.n?(' <span style="opacity:.6">'+c.n+'</span>'):'') + '</button>';
