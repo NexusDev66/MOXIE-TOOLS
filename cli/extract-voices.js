@@ -34,8 +34,8 @@ const SEEDS = [
   { person: '黄仁勋', role: '英伟达 CEO', take: 'AI 是新的工业革命,自然语言正成为新的编程语言。', importance: 5 },
   { person: 'Sam Altman', role: 'OpenAI CEO', take: 'AGI 可能比多数人预期来得更快,治理要趁早。', importance: 5 },
   { person: 'Geoffrey Hinton', role: '深度学习之父', take: '我们真能控制比自己更聪明的 AI 吗?', importance: 5 },
-  { person: 'Yann LeCun', role: 'Meta 首席 AI 科学家', take: '只靠大语言模型到不了 AGI——它们没有世界模型。', importance: 5 },
-  { person: '李开复', role: '零一万物 创始人', take: '大模型是 AI 2.0,是平台级、移动互联网级的机会。', importance: 5 },
+  { person: 'Yann LeCun', role: 'Meta 首席 AI 科学家', take: '只靠大语言模型到不了 AGI——它们没有世界模型。', importance: 4 },
+  { person: '李开复', role: '零一万物 创始人', take: '大模型是 AI 2.0,是平台级、移动互联网级的机会。', importance: 4 },
   { person: '吴恩达', role: 'AI 科学家', take: 'AI 是新的电力,会赋能几乎每个行业。', importance: 4 },
   { person: '马斯克', role: 'xAI 创始人', take: 'AI 是否会成为人类最大的生存风险?', importance: 4 },
   { person: 'Demis Hassabis', role: 'DeepMind CEO', take: 'AI 将加速科学发现,蛋白质折叠只是开始。', importance: 4 },
@@ -90,7 +90,7 @@ async function doExtract() {
     const n = news[v.i];
     if (!n || !v.person || !v.take) return null;
     return { person: String(v.person).slice(0, 40), role: String(v.role || '').slice(0, 40), take: String(v.take).slice(0, 120), importance: Math.max(1, Math.min(5, Number(v.importance) || 3)), news_id: n.id, published_at: n.published_at };
-  }).filter(Boolean);
+  }).filter(Boolean).filter((r) => r.importance >= 3 && !/未具名|无名|匿名/.test(r.person));
 
   console.log(`抽到 ${rows.length} 条:`);
   rows.forEach((r) => console.log(`  [${r.importance}] ${r.person}(${r.role}): ${r.take.slice(0, 30)} → /news/${r.news_id}`));
