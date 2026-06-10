@@ -483,7 +483,7 @@
             window.moxieWhenDBReady(async function(db){
               try {
                 if (!db || !box || !window.MoxieDB || !window.MoxieDB.news) { fallbackClickable(); return; }
-                var res = await window.MoxieDB.news({ limit: 8 });
+                var res = await window.MoxieDB.news({ limit: 5 });
                 var items = res && res.data;
                 if (!items || !items.length) { fallbackClickable(); return; }
                 box.innerHTML = items.map(function(n){
