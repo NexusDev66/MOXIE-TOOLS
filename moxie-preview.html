@@ -1387,21 +1387,14 @@
         var pl=document.getElementById('pickList'), fp=(fr&&fr.data)||[];
         if(pl&&fp.length){ pl.innerHTML = fp.map(function(p){ return '<a class="pick-mini" href="/tools/'+esc(p.slug)+'" style="text-decoration:none;color:inherit;"><div class="ptitle"><span class="name">'+esc(p.name)+'</span>'+(p.verified?'<span class="verified-tag">子墨测过</span>':'')+'</div><div class="quote">'+esc(p.tagline||'')+'</div><div class="meta"><span>'+esc(p.domain)+'</span><span class="upv">▲ '+(p.vote_count||0)+'</span></div></a>'; }).join(''); }
       });
-      db.from('moxie_comments').select('body,created_at').eq('status','visible').order('created_at',{ascending:false}).limit(4).then(function(cr){
-        var pl2=document.getElementById('postList'), cm=(cr&&cr.data)||[];
+      // AI 业界热议 = 实时 AI 快讯(取较新的一批,与右侧"每日快讯"错开),每条跳 /news/<id>
+      db.from('moxie_news').select('id,title,source,published_at').order('published_at',{ascending:false,nullsFirst:false}).range(5,10).then(function(nr){
+        var pl2=document.getElementById('postList'), nm=(nr&&nr.data)||[];
         if(!pl2) return;
-        if(cm.length){ pl2.innerHTML = cm.map(function(x){ return '<div class="post-item"><div class="post-title">'+esc((x.body||'').slice(0,42))+'</div></div>'; }).join(''); return; }
-        // 暂无用户讨论 → 展示业界名人对 AI 的真实公开观点(可考)
-        var views=[
-          {who:'黄仁勋',role:'英伟达 CEO',take:'AI 是新的工业革命,自然语言正成为新的编程语言。',slug:''},
-          {who:'Sam Altman',role:'OpenAI CEO',take:'AGI 可能比多数人预期来得更快,治理要尽早建立。',slug:'chatgpt'},
-          {who:'李开复',role:'零一万物 创始人',take:'大模型是 AI 2.0,平台级、移动互联网级的机会。',slug:'lingyiwanwu'},
-          {who:'Andrej Karpathy',role:'前特斯拉 AI 总监',take:'最热门的新编程语言是英语;软件进入 3.0 时代。',slug:'cursor'},
-          {who:'Geoffrey Hinton',role:'深度学习之父',take:'2023 离开谷歌,公开警示 AI 失控风险。',slug:''}
-        ];
-        pl2.innerHTML = views.map(function(v){
-          var inner='<div class="post-head"><div class="post-av">'+esc(v.who[0])+'</div><div><div class="post-name">'+esc(v.who)+'</div></div><span class="post-time">· '+esc(v.role)+'</span></div><div class="post-title">'+esc(v.take)+'</div>';
-          return v.slug ? '<a class="post-item" href="/tools/'+v.slug+'" style="text-decoration:none;color:inherit;display:block;">'+inner+'</a>' : '<div class="post-item">'+inner+'</div>';
+        if(!nm.length){ pl2.innerHTML = '<div class="post-item"><div class="post-title" style="color:var(--ink-3)">暂无热议</div></div>'; return; }
+        pl2.innerHTML = nm.slice(0,5).map(function(n){
+          var s = n.source || '';
+          return '<a class="post-item" href="/news/'+n.id+'" style="text-decoration:none;color:inherit;display:block;"><div class="post-head"><div class="post-av">'+esc(s[0]||'·')+'</div><div><div class="post-name">'+esc(s)+'</div></div></div><div class="post-title">'+esc(n.title)+'</div></a>';
         }).join('');
       });
 
