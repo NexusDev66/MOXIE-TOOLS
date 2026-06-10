@@ -11,7 +11,7 @@
  * 部署/canonical 域名:env SITE_BASE_URL(默认 https://www.latemai.com)。
  */
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -380,6 +380,13 @@ async function main() {
     pn++;
   }
   console.log(`✓ 产品页 ${pn} → tools/<slug>.html`);
+  // 清理孤儿页:删掉已不在 published 列表的旧 tool 页(如被 reject 的产品),避免残留页可直接访问
+  const keepFiles = new Set(products.map((p) => `${p.slug}.html`));
+  let pruned = 0;
+  for (const f of readdirSync(OUT_DIR)) {
+    if (f.endsWith('.html') && !keepFiles.has(f)) { rmSync(join(OUT_DIR, f)); pruned++; }
+  }
+  if (pruned) console.log(`✓ 清理孤儿产品页 ${pruned} 个`);
 
   // 文章页(侧栏要用产品数据 → 建 id→product 映射)
   const atpl = readFileSync(join(ROOT, 'moxie-article.html'), 'utf8');
