@@ -173,6 +173,17 @@ window.MoxieDB = {
       .select('id,title,url,source,tag,published_at,summary').eq('id', id).maybeSingle();
   },
 
+  /* ---------- AI 业界热议(名人观点,evergreen + 每日抽取)---------- */
+  async voices(opts) {
+    opts = opts || {};
+    if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
+    return await window.moxieDB.from('moxie_voices')
+      .select('person,role,take,importance,news_id,published_at')
+      .order('importance', { ascending: false })
+      .order('published_at', { ascending: false, nullsFirst: false })
+      .limit(opts.limit || 5);
+  },
+
   /* ---------- 评论 ---------- */
   async commentsFor(targetType, targetId) {
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };

@@ -34,7 +34,7 @@
 <!-- MiSans ExtraLight · 小米开源中文超细体 (商用免费 · jsDelivr CDN 分块按需加载) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans-webfont@4.3.1/misans/misans-extralight/result.min.css">
 <link rel="stylesheet" href="moxie-styles.css?v=20260608-02">
-<script src="moxie-supabase.js?v=20260608-02"></script>
+<script src="moxie-supabase.js?v=20260610-01"></script>
 <script src="moxie-shared.js?v=20260526-01" defer></script>
 </head>
 <body>
@@ -1387,38 +1387,28 @@
         var pl=document.getElementById('pickList'), fp=(fr&&fr.data)||[];
         if(pl&&fp.length){ pl.innerHTML = fp.map(function(p){ return '<a class="pick-mini" href="/tools/'+esc(p.slug)+'" style="text-decoration:none;color:inherit;"><div class="ptitle"><span class="name">'+esc(p.name)+'</span>'+(p.verified?'<span class="verified-tag">子墨测过</span>':'')+'</div><div class="quote">'+esc(p.tagline||'')+'</div><div class="meta"><span>'+esc(p.domain)+'</span><span class="upv">▲ '+(p.vote_count||0)+'</span></div></a>'; }).join(''); }
       });
-      // AI 业界热议 = 名人对 AI 的真实观点/疑问池(每日按日期轮换 5 条,可点 → 搜索看讨论)
-      (function(){
-        var pl2 = document.getElementById('postList'); if(!pl2) return;
-        var POOL=[
-          {who:'黄仁勋',role:'英伟达 CEO',take:'AI 是新的工业革命,自然语言正成为新的编程语言。'},
-          {who:'Sam Altman',role:'OpenAI CEO',take:'AGI 可能比多数人预期来得更快,治理要趁早。'},
-          {who:'Geoffrey Hinton',role:'深度学习之父',take:'我们真能控制比自己更聪明的 AI 吗?'},
-          {who:'Yann LeCun',role:'Meta 首席 AI 科学家',take:'只靠大语言模型到不了 AGI——它们没有世界模型。'},
-          {who:'李开复',role:'零一万物 创始人',take:'大模型是 AI 2.0,是平台级、移动互联网级的机会。'},
-          {who:'吴恩达',role:'AI 科学家',take:'AI 是新的电力,会赋能几乎每个行业。'},
-          {who:'马斯克',role:'xAI 创始人',take:'AI 是否会成为人类最大的生存风险?'},
-          {who:'Demis Hassabis',role:'DeepMind CEO',take:'AI 将加速科学发现,蛋白质折叠只是开始。'},
-          {who:'Dario Amodei',role:'Anthropic CEO',take:'AI 的能力和安全必须同步推进。'},
-          {who:'李彦宏',role:'百度 CEO',take:'未来人人都能用自然语言编程,不必再学写代码。'},
-          {who:'梁文锋',role:'DeepSeek 创始人',take:'开源 + 极致工程,把大模型成本降一个数量级。'},
-          {who:'王小川',role:'百川智能 创始人',take:'做中国的 OpenAI,从医疗等真实场景切入。'},
-          {who:'周鸿祎',role:'360 创始人',take:'大模型终将走向开源与普惠。'},
-          {who:'Andrej Karpathy',role:'前特斯拉 AI 总监',take:'最热门的新编程语言是英语;软件进入 3.0 时代。'},
-          {who:'Mustafa Suleyman',role:'微软 AI CEO',take:'未来每个人都会有一个属于自己的 AI 助手。'},
-          {who:'Stuart Russell',role:'伯克利 AI 教授',take:'如何确保 AI 的目标始终与人类一致?'},
-          {who:'Ilya Sutskever',role:'前 OpenAI 首席科学家',take:'规模化仍会持续带来能力的跃迁。'},
-          {who:'比尔·盖茨',role:'微软 创始人',take:'AI 是继 PC、互联网之后最重要的技术变革。'}
-        ];
-        var start = Math.floor(Date.now()/864e5) % POOL.length; // 按天轮换
-        var views=[]; for(var k=0;k<5;k++) views.push(POOL[(start+k)%POOL.length]);
-        pl2.innerHTML = views.map(function(v){
-          var q = encodeURIComponent(v.who + ' ' + v.take);
-          return '<a class="post-item" href="https://www.bing.com/search?q='+q+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">'
-            + '<div class="post-head"><div class="post-av">'+esc(v.who[0])+'</div><div><div class="post-name">'+esc(v.who)+'</div></div><span class="post-time">· '+esc(v.role)+'</span></div>'
+      // AI 业界热议 = moxie_voices(名人观点:evergreen 种子 + 每日从快讯抽取,按重要度+日期排序);兜底静态池
+      db.from('moxie_voices').select('person,role,take,news_id').order('importance',{ascending:false}).order('published_at',{ascending:false,nullsFirst:false}).limit(5).then(function(vr){
+        var pl2=document.getElementById('postList'); if(!pl2) return;
+        var vs=(vr&&vr.data)||[];
+        if(!vs.length){
+          var POOL=[
+            {person:'黄仁勋',role:'英伟达 CEO',take:'AI 是新的工业革命,自然语言正成为新的编程语言。'},
+            {person:'Sam Altman',role:'OpenAI CEO',take:'AGI 可能比多数人预期来得更快,治理要趁早。'},
+            {person:'Geoffrey Hinton',role:'深度学习之父',take:'我们真能控制比自己更聪明的 AI 吗?'},
+            {person:'Yann LeCun',role:'Meta 首席 AI 科学家',take:'只靠大语言模型到不了 AGI——它们没有世界模型。'},
+            {person:'李开复',role:'零一万物 创始人',take:'大模型是 AI 2.0,是平台级、移动互联网级的机会。'}
+          ];
+          var s=Math.floor(Date.now()/864e5)%POOL.length; vs=[]; for(var k=0;k<5;k++) vs.push(POOL[(s+k)%POOL.length]);
+        }
+        pl2.innerHTML = vs.map(function(v){
+          var href = v.news_id ? ('/news/'+v.news_id) : ('https://www.bing.com/search?q='+encodeURIComponent((v.person||'')+' '+v.take));
+          var ext = v.news_id ? '' : ' target="_blank" rel="noopener"';
+          return '<a class="post-item" href="'+href+'"'+ext+' style="text-decoration:none;color:inherit;display:block;">'
+            + '<div class="post-head"><div class="post-av">'+esc((v.person||' ')[0])+'</div><div><div class="post-name">'+esc(v.person)+'</div></div><span class="post-time">· '+esc(v.role||'')+'</span></div>'
             + '<div class="post-title">'+esc(v.take)+'</div></a>';
         }).join('');
-      })();
+      });
 
       var chips = [{ id: 'all', name: '全部' }].concat(cats.filter(function(c){ return cnt[c.id]; }).map(function(c){ return { id: c.id, name: c.name, n: cnt[c.id] }; }));
       bar.innerHTML = chips.map(function(c, i){

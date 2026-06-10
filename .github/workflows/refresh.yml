@@ -47,6 +47,10 @@ jobs:
         run: node cli/fetch-traffic.js
         continue-on-error: true
 
+      - name: 抽取名人观点(快讯→moxie_voices,失败不阻塞)
+        run: node cli/extract-voices.js
+        continue-on-error: true
+
       - name: 重算权重(rank)
         run: node cli/rank.js
 
