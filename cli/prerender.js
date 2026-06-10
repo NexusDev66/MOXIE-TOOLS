@@ -12,6 +12,7 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs';
+import { orphansToPrune } from './lib.mjs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -380,13 +381,17 @@ async function main() {
     pn++;
   }
   console.log(`✓ 产品页 ${pn} → tools/<slug>.html`);
-  // 清理孤儿页:删掉已不在 published 列表的旧 tool 页(如被 reject 的产品),避免残留页可直接访问
+  // 清理孤儿页:删掉已不在 published 列表的旧 tool 页(如被 reject 的产品)。
+  // orphansToPrune 带炸站下限保护:读库返回空/将删过半时返回 null → 保守跳过,绝不删光全站。
   const keepFiles = new Set(products.map((p) => `${p.slug}.html`));
-  let pruned = 0;
-  for (const f of readdirSync(OUT_DIR)) {
-    if (f.endsWith('.html') && !keepFiles.has(f)) { rmSync(join(OUT_DIR, f)); pruned++; }
+  const existingHtml = readdirSync(OUT_DIR).filter((f) => f.endsWith('.html'));
+  const toPrune = orphansToPrune(existingHtml, keepFiles);
+  if (toPrune === null) {
+    console.warn(`⚠ 跳过孤儿页清理(疑似读库异常):published=${keepFiles.size} / 现有 ${existingHtml.length} 页,保守不删`);
+  } else {
+    for (const f of toPrune) rmSync(join(OUT_DIR, f));
+    if (toPrune.length) console.log(`✓ 清理孤儿产品页 ${toPrune.length} 个`);
   }
-  if (pruned) console.log(`✓ 清理孤儿产品页 ${pruned} 个`);
 
   // 文章页(侧栏要用产品数据 → 建 id→product 映射)
   const atpl = readFileSync(join(ROOT, 'moxie-article.html'), 'utf8');

@@ -8,7 +8,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { gate } from './clean-gate.mjs';
-import { uniqueSlug, normDomain } from './lib.mjs';
+import { uniqueSlug, normDomain, orphansToPrune } from './lib.mjs';
 
 // ── 清洗闸 gate ──
 test('gate: 目录站本身硬拒', () => {
@@ -41,4 +41,18 @@ test('uniqueSlug: 再撞 → 加序号(绝不复用已有 slug)', () => {
 // ── 域名归一 normDomain ──
 test('normDomain: 去协议 / www / 路径,小写', () => {
   assert.equal(normDomain('https://www.Example.com/path?x=1'), 'example.com');
+});
+
+// ── 孤儿页清理炸站下限 orphansToPrune ──
+test('orphansToPrune: 正常 → 只删孤儿', () => {
+  const existing = ['a.html', 'b.html', 'old.html'];
+  const keep = new Set(['a.html', 'b.html']);
+  assert.deepEqual(orphansToPrune(existing, keep), ['old.html']);
+});
+test('orphansToPrune: keep 为空(疑似空读)→ null,绝不删', () => {
+  assert.equal(orphansToPrune(['a.html', 'b.html'], new Set()), null);
+});
+test('orphansToPrune: 将删过半(疑似异常读)→ null,保守跳过', () => {
+  const existing = ['a.html', 'b.html', 'c.html', 'd.html'];
+  assert.equal(orphansToPrune(existing, new Set(['a.html'])), null); // 要删 3/4 > 半 → 跳过
 });
