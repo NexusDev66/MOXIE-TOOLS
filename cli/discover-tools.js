@@ -10,6 +10,7 @@
  * PH 反爬,本机多半连不上 → 在 GitHub Actions 上跑。
  */
 import { screen } from './screen.mjs';
+import { normDomain, uniqueSlug } from './lib.mjs';
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
@@ -64,9 +65,6 @@ async function sb(path, opts = {}) {
   const t = await res.text(); return t ? JSON.parse(t) : null;
 }
 
-function slugify(s) {
-  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60).replace(/-+$/g, '') || 'tool';
-}
 
 // ───── 1. 发现:PH GraphQL ─────
 async function discoverPH() {
@@ -127,7 +125,7 @@ async function main() {
 
   // 现有产品域名(去重用)+ 分类映射
   const existing = await sb('/moxie_products?select=domain,slug,status&limit=2000');
-  const norm = (d) => (d || '').toLowerCase().replace(/^www\./, '');
+  const norm = normDomain;
   const known = new Set(existing.map((p) => norm(p.domain)));
   const knownSlug = new Set(existing.map((p) => p.slug));   // 防 slug 撞车覆盖已有产品
   const rejected = new Set(existing.filter((p) => p.status === 'rejected').map((p) => norm(p.domain)));  // A5 黑名单(曾拒)
@@ -159,13 +157,8 @@ async function main() {
       if (!e.category_slug || !catId[e.category_slug]) { console.log(`  · ${it.name} → 分类无法归类,跳过`); tally.badcat++; continue; }
       if (!e.tagline_zh) { console.log(`  · ${it.name} → 归一缺卖点,跳过`); tally.fail++; continue; }
 
-      // 防 slug 撞车:保证最终 slug 唯一(单次后缀仍可能撞 → 循环加序号),绝不复用已有 slug
-      let slug = slugify(it.name);
-      if (knownSlug.has(slug)) {
-        const base = `${slug}-${domain.split('.')[0]}`;
-        slug = base;
-        for (let i = 2; knownSlug.has(slug); i++) slug = `${base}-${i}`;
-      }
+      // 防 slug 撞车:uniqueSlug 保证不复用已有 slug(见 lib.mjs),绝不覆盖已审产品
+      const slug = uniqueSlug(it.name, domain, knownSlug);
       const row = {
         slug, name: it.name, domain,
         tagline: e.tagline_zh, description: e.description_zh,
