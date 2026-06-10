@@ -94,6 +94,7 @@ function renderProduct(tpl, p, ctx = {}) {
   rep('<span class="prod-hero-url" id="phUrl"></span>', `<span class="prod-hero-url" id="phUrl">${esc(p.domain)}</span>`, 'phUrl');
   rep('<p class="prod-hero-desc" id="phDesc"></p>', `<p class="prod-hero-desc" id="phDesc">${esc(p.tagline)}</p>`, 'phDesc');
   rep('domain=deepseek.com&sz=128', `domain=${esc(p.domain)}&sz=128`, 'favicon');
+  rep('<a id="phVisit" href="#"', `<a id="phVisit" href="https://${esc(p.domain)}?ref=moxie"`, 'visit');
 
   // 5. 让客户端 JS hydrate 本产品(原本从 ?slug= 读)
   rep(

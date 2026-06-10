@@ -90,7 +90,7 @@
             </div>
           </div>
           <div class="mega-foot">
-            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <a href="moxie-categories.html" class="all-link">查看全部 <span class="js-cat-count">24</span> 个分类 →</a>
             <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
           </div>
         </div>
@@ -152,7 +152,7 @@
 
   <!-- 探索区：标题 + 搜索 + 探索按钮 (一整行) -->
   <div class="container explore-block">
-    <h2 class="explore-title">不止今日精选，<b>3,847</b> 款 AI 工具都在这</h2>
+    <h2 class="explore-title">不止今日精选，<b class="js-tool-count">3,847</b> 款 AI 工具都在这</h2>
     <div class="explore-row">
       <div class="explore-search">
         <i data-lucide="search"></i>
@@ -384,7 +384,7 @@
       </div>
 
       <div class="show-all" id="showAllRow">
-        <a href="moxie-categories.html" class="btn-show">查看全部 23 款</a>
+        <a href="moxie-categories.html" class="btn-show">查看全部 <span class="js-tool-count">23</span> 款</a>
       </div>
     </div>
 
@@ -410,7 +410,7 @@
           MOXIE ASSISTANT
         </div>
         <h3>说出你想做的事</h3>
-        <p>从全网 3,847 款中文 AI 工具里，AI 帮你挑出最合适的几款。</p>
+        <p>从全网 <span class="js-tool-count">3,847</span> 款中文 AI 工具里，AI 帮你挑出最合适的几款。</p>
         <div class="assistant-input-mock">
           <i data-lucide="search" style="width:11px;height:11px;vertical-align:middle;margin-right:4px;"></i>想做个中文播客转写工具<span class="cur"></span>
         </div>
@@ -516,7 +516,7 @@
         <p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p>
         <div class="meta-line">
           <span class="live-dot"></span>
-          MOXIE · BUILD 2026.05.23 · 3,847 TOOLS
+          MOXIE · BUILD 2026.05.23 · <span class="js-tool-count">3,847</span> TOOLS
         </div>
       </div>
       <div class="fcol">
@@ -565,7 +565,7 @@
             </div>
           </div>
           <div class="mega-foot">
-            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <a href="moxie-categories.html" class="all-link">查看全部 <span class="js-cat-count">24</span> 个分类 →</a>
             <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
           </div>
         </div>
@@ -1372,6 +1372,9 @@
     Promise.all([window.MoxieDB.categories(), window.MoxieDB.products({ limit: 500, orderBy: 'weight_score' })]).then(function(r){
       var cats = r[0].data || [], prods = r[1].data || [];
       ALL = prods;
+      // 真实计数填进写死的数字位
+      document.querySelectorAll('.js-tool-count').forEach(function(e){ e.textContent = prods.length; });
+      document.querySelectorAll('.js-cat-count').forEach(function(e){ e.textContent = cats.length; });
       var cnt = {}; prods.forEach(function(p){ cnt[p.category_id] = (cnt[p.category_id]||0) + 1; });
       var chips = [{ id: 'all', name: '全部' }].concat(cats.filter(function(c){ return cnt[c.id]; }).map(function(c){ return { id: c.id, name: c.name, n: cnt[c.id] }; }));
       bar.innerHTML = chips.map(function(c, i){
