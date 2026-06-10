@@ -10,15 +10,19 @@
  *   pop      = log10(vote_count+1) * 20      人气(票数,~0..60)
  *   verified = 8                              子墨测过
  *   featured = 15                             当周精选
- *   comp     = 描述4 + 标签≥2:3 + 封面3       完善度(0..10)
+ *   comp     = 描述4 + 标签≥2:3 + 封面3       完善度(0..10;沙盒无封面 → 那 3 分恒 0)
  *   fresh    = 10 * e^(-天数/60)              时效(新品衰减,0..10)
- *   traffic  = max(0, 20 - log10(global_rank)*3)  SimilarWeb 流量(无 key 则 0)
+ *   traffic  = max(0, 20 - log10(global_rank)*3)  Tranco 排名(fetch-traffic 灌;无则 0)
  *   weight_score = pop+verified+featured+comp+fresh+traffic
+ *
+ * --explain:打印 Top N 每项得分明细(可解释,排查"为何这么排")。
+ * 只对 status=published 打分(pending/rejected 不展示,不浪费写)。
  */
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
 const DRY_RUN = process.argv.includes('--dry-run');
+const EXPLAIN = process.argv.includes('--explain');
 if (!SUPABASE_URL || !SERVICE_KEY) {
   console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY(.env.local)');
   process.exit(1);
@@ -40,7 +44,10 @@ async function sb(path, opts = {}) {
   return t ? JSON.parse(t) : null;
 }
 
-function weight(p) {
+const r2 = (x) => Math.round(x * 100) / 100;
+
+/** 拆分每项得分(可解释)。 @returns {{pop:number,ver:number,feat:number,comp:number,fresh:number,traffic:number,total:number}} */
+function weightParts(p) {
   const votes = p.vote_count || 0;
   const pop = Math.log10(votes + 1) * 20;
   const ver = p.verified ? 8 : 0;
@@ -51,20 +58,30 @@ function weight(p) {
   const fresh = 10 * Math.exp(-Math.max(0, days) / 60);
   const gr = p.traffic_jsonb && typeof p.traffic_jsonb.global_rank === 'number' ? p.traffic_jsonb.global_rank : null;
   const traffic = gr && gr > 0 ? Math.max(0, 20 - Math.log10(gr) * 3) : 0;
-  return Math.round((pop + ver + feat + comp + fresh + traffic) * 100) / 100;
+  return { pop: r2(pop), ver, feat, comp, fresh: r2(fresh), traffic: r2(traffic), total: r2(pop + ver + feat + comp + fresh + traffic) };
 }
+function weight(p) { return weightParts(p).total; }
 
 async function main() {
   console.log(`\n⚖  Phase 2 权重重算${DRY_RUN ? ' [DRY-RUN]' : ''}\n`);
-  // traffic_jsonb 由 fetch-traffic.js 灌(Tranco 排名);cover_url 沙盒未建,weight() 缺失按 0 计
-  const products = await sb('/moxie_products?select=id,slug,name,vote_count,verified,featured,tags,description,created_at,traffic_jsonb&limit=2000');
-  console.log(`   产品:${products.length}`);
+  // 只对 published 打分(pending/rejected 不展示);traffic_jsonb 由 fetch-traffic.js 灌(Tranco)
+  // 注:cover_url 列在真库不存在(cover migration 未生效)→ 不 select,p.cover_url 为 undefined→封面分 0
+  const products = await sb('/moxie_products?status=eq.published&select=id,slug,name,vote_count,verified,featured,tags,description,created_at,traffic_jsonb&limit=2000');
+  console.log(`   published 产品:${products.length}`);
 
   const scored = products
-    .map((p) => ({ id: p.id, slug: p.slug, name: p.name, weight_score: weight(p) }))
-    .sort((a, b) => b.weight_score - a.weight_score);
+    .map((p) => ({ id: p.id, name: p.name, parts: weightParts(p) }))
+    .sort((a, b) => b.parts.total - a.parts.total);
 
-  console.log('   Top 8:', scored.slice(0, 8).map((s) => `${s.name}(${s.weight_score})`).join(', '));
+  console.log('   Top 8:', scored.slice(0, 8).map((s) => `${s.name}(${s.parts.total})`).join(', '));
+  if (EXPLAIN) {
+    console.log('\n   明细 Top 12(pop 票数 / ver 实测 / feat 精选 / comp 完善 / fresh 时效 / traffic 流量):');
+    for (const s of scored.slice(0, 12)) {
+      const w = s.parts;
+      console.log(`   ${String(w.total).padStart(7)}  ${s.name}`);
+      console.log(`            pop ${w.pop} · ver ${w.ver} · feat ${w.feat} · comp ${w.comp} · fresh ${w.fresh} · traffic ${w.traffic}`);
+    }
+  }
 
   if (DRY_RUN) {
     console.log(`\n   [dry] 将更新 ${scored.length} 个 weight_score`);
@@ -73,7 +90,7 @@ async function main() {
 
   let n = 0;
   for (const s of scored) {
-    await sb(`/moxie_products?id=eq.${s.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { weight_score: s.weight_score } });
+    await sb(`/moxie_products?id=eq.${s.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { weight_score: s.parts.total } });
     n++;
   }
   console.log(`\n✓ 已更新 ${n} 个 weight_score。UI 按 weight_score 降序即生效。\n`);
