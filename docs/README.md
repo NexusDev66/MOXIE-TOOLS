@@ -15,5 +15,6 @@
 2. 做:**一次只做一小步**,遵守 `设计规范.md`。
 3. 收工:更新当天 `../开发日志/YYYY-MM-DD.md`(完成 / 待办 / 阻塞)。
 
-## 旧文档(上一版"错前提"遗留,仅参考,勿当权威)
-`latemai-data-sync-design.md`、`article-triggers.md`、`auto-promote.md`、`ai-enrichment.md`、`auto-screenshot.md`、`scanner-sources.md`、`seo-*.md`、`admin-candidates.md`、`api/` —— 这些来自"以为 latemai 和 moxie 是两个项目要 API 对接"的旧方案。**核心结论已被推翻**(实为同一个 Supabase、直接读写)。其中的库逻辑(AI 清洗 / 打分 / 截图 / 文章生成)可复用,但架构以本目录新标准为准。
+## 备注
+上一版"以为 latemai 和 moxie 是两个项目、需 API 对接"的**错误前提文档已于 2026-06-10 删除**:T1 数据同步设计、internal API(products/articles)、admin 审核页、文章触发器、auto-promote、trend-scanner 源、自动截图。
+仍在使用的库逻辑文档保留:`ai-enrichment.md`(AI 清洗/补全)、`seo-article-gen.md` / `seo-checklist.md`(SEO)。架构一律以上方新标准为准。
