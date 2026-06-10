@@ -9,6 +9,7 @@
  * 需 env:PH_API_TOKEN、DEEPSEEK_API_KEY、NEXT_PUBLIC_SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY。
  * PH 反爬,本机多半连不上 → 在 GitHub Actions 上跑。
  */
+import { screen } from './screen.mjs';
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
@@ -23,11 +24,19 @@ const LIMIT = Math.max(1, Number(arg('limit', '20')) || 20);
 const DAYS = Math.max(1, Number(arg('days', '7')) || 7);
 const TOPIC = arg('topic', 'artificial-intelligence');
 const DRY_RUN = process.argv.includes('--dry-run');
+const MOCK = process.argv.includes('--mock');  // 本地验证用:绕开 PH 抓取,喂内置候选
 
-const CATEGORY_SLUGS = ['llm', 'ai-assistant', 'ai-writing', 'ai-image', 'ai-video', 'ai-coding', 'ai-search', 'rag', 'agent', 'workflow'];
+// 本地验证候选(PH 形态):真工具 / 聚合站 / 灰产 / 非AI,验证两层清洗 + 入库逻辑
+const MOCK_ITEMS = [
+  { name: 'Wispr Flow', tagline: 'Voice dictation powered by AI', description: 'Wispr Flow lets you write 3x faster with your voice using AI dictation across every app.', website: 'https://wisprflow.ai', votes: 600, topics: ['Productivity', 'Artificial Intelligence'] },
+  { name: 'Granola', tagline: 'AI notepad', description: 'Granola is the AI notepad for people in back-to-back meetings; it transcribes and summarizes your calls.', website: 'https://granola.ai', votes: 1, topics: ['Productivity'] },  // 短 tagline + 低票:验证修复 #1 不再误杀
+  { name: 'launch.cab', tagline: 'Submit your startup', description: 'Directory of new startups and tools.', website: 'https://launch.cab', votes: 3, topics: ['Directory'] },
+  { name: 'BetSpin', tagline: 'Best casino bonuses', description: 'Online casino with slots, live dealer and sports betting.', website: 'https://betspin-casino.com', votes: 8, topics: ['Gambling'] },
+  { name: 'YC News', tagline: 'Social news for hackers', description: 'A social news website focusing on computer science and entrepreneurship.', website: 'https://news.ycombinator.com', votes: 40, topics: ['News'] },
+];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
-if (!PH_TOKEN && !(PH_CLIENT_ID && PH_CLIENT_SECRET)) { console.error('❌ 缺 PH 凭据:给 PH_API_TOKEN,或给 PH_CLIENT_ID + PH_CLIENT_SECRET(应用页都有)。'); process.exit(1); }
+if (!MOCK && !PH_TOKEN && !(PH_CLIENT_ID && PH_CLIENT_SECRET)) { console.error('❌ 缺 PH 凭据:给 PH_API_TOKEN,或给 PH_CLIENT_ID + PH_CLIENT_SECRET(应用页都有)。'); process.exit(1); }
 if (!DEEPSEEK_API_KEY) { console.error('❌ 缺 DEEPSEEK_API_KEY'); process.exit(1); }
 
 /** 没有现成 token 时,用 client_id+secret 走 client_credentials 换一个 */
@@ -109,85 +118,74 @@ async function resolveDomain(website) {
   } catch { return null; }
 }
 
-// ───── 2. AI 中文化补全 ─────
-const ENRICH_SYS = `你是 AI 工具库编辑。给你一个海外 AI 工具的英文资料,产出中文入库字段。要求:
-1. 只依据给定资料,不编造功能。
-2. 价格红线:绝不编造具体金额,price_label 只能用枚举:免费 / 免费+付费 / 订阅 / 付费 / 不详。
-3. category_slug 必须从这 10 个里选最贴切的一个:llm, ai-assistant, ai-writing, ai-image, ai-video, ai-coding, ai-search, rag, agent, workflow。
-只输出 JSON,字段:
-  tagline_zh: 一句话中文卖点,≤ 30 字
-  description_zh: 2-3 句中文简介
-  category_slug: 上述 10 选 1
-  tags: 2-4 个中文短标签数组
-  price_label: 上述枚举之一
-  domestic_available: 国内可用性,枚举:是 / 否 / 需代理 / 不详(海外工具默认"需代理"除非明显国内可用)
-不要输出 JSON 以外内容。`;
-
-async function enrich(item) {
-  const user = `名称:${item.name}\n英文一句话:${item.tagline}\n英文简介:${item.description || '(无)'}\nPH 话题:${item.topics.join(', ') || '(无)'}\n按系统要求输出 JSON。`;
-  const res = await fetch('https://api.deepseek.com/chat/completions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${DEEPSEEK_API_KEY}` },
-    body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'system', content: ENRICH_SYS }, { role: 'user', content: user }], response_format: { type: 'json_object' }, temperature: 0.3, max_tokens: 600 }),
-    signal: AbortSignal.timeout(40000),
-  });
-  if (!res.ok) throw new Error(`DeepSeek ${res.status}`);
-  const j = await res.json();
-  let s = (j.choices?.[0]?.message?.content || '').trim();
-  const a = s.indexOf('{'), b = s.lastIndexOf('}'); if (a >= 0 && b > a) s = s.slice(a, b + 1);
-  const o = JSON.parse(s);
-  return {
-    tagline_zh: (o.tagline_zh || '').toString().slice(0, 30),
-    description_zh: (o.description_zh || '').toString().slice(0, 500),
-    category_slug: CATEGORY_SLUGS.includes(o.category_slug) ? o.category_slug : null,
-    tags: Array.isArray(o.tags) ? o.tags.slice(0, 4).map((t) => String(t).slice(0, 12)) : [],
-    price_label: ['免费', '免费+付费', '订阅', '付费', '不详'].includes(o.price_label) ? o.price_label : '不详',
-    domestic_available: ['是', '否', '需代理', '不详'].includes(o.domestic_available) ? o.domestic_available : '需代理',
-  };
-}
+// ───── 2. 清洗 + 中文化:规则闸 → AI 层(逻辑见 screen.mjs / ai-clean.mjs)─────
 
 async function main() {
-  console.log(`\n🚀 Phase 3 新锐发现${DRY_RUN ? ' [DRY-RUN]' : ''} · PH topic=${TOPIC} 近${DAYS}天 top${LIMIT}\n`);
-  await ensurePhToken();
+  console.log(`\n🚀 Phase 3 新锐发现${DRY_RUN ? ' [DRY-RUN]' : ''}${MOCK ? ' [MOCK]' : ''} · PH topic=${TOPIC} 近${DAYS}天 top${LIMIT}\n`);
+  if (!MOCK) await ensurePhToken();
 
   // 现有产品域名(去重用)+ 分类映射
-  const existing = await sb('/moxie_products?select=domain&limit=2000');
+  const existing = await sb('/moxie_products?select=domain,slug&limit=2000');
   const known = new Set(existing.map((p) => (p.domain || '').toLowerCase().replace(/^www\./, '')));
-  const cats = await sb('/moxie_categories?select=id,slug');
-  const catId = Object.fromEntries(cats.map((c) => [c.slug, c.id]));
+  const knownSlug = new Set(existing.map((p) => p.slug));   // 防 slug 撞车覆盖已有产品
+  const catRows = await sb('/moxie_categories?select=id,slug,name');
+  const catId = Object.fromEntries(catRows.map((c) => [c.slug, c.id]));
+  const cats = catRows.map((c) => ({ slug: c.slug, name: c.name }));   // 喂给 screen/aiClean
 
-  const items = await discoverPH();
-  console.log(`PH 返回 ${items.length} 个候选\n`);
+  const items = MOCK ? MOCK_ITEMS : await discoverPH();
+  console.log(`${MOCK ? 'MOCK' : 'PH'} 候选 ${items.length} 个\n`);
 
-  const tally = { ok: 0, dup: 0, nodomain: 0, badcat: 0, fail: 0 };
+  const tally = { ok: 0, dup: 0, nodomain: 0, rule: 0, ai: 0, badcat: 0, fail: 0 };
   for (const it of items) {
     const domain = await resolveDomain(it.website);
     if (!domain || /producthunt\.com$/.test(domain)) { console.log(`  · ${it.name} → 无真实域名,跳过`); tally.nodomain++; continue; }
     if (known.has(domain)) { console.log(`  · ${it.name} (${domain}) → 已收录,跳过`); tally.dup++; continue; }
 
     try {
-      const e = await enrich(it);
+      // 两层清洗:规则闸 → AI 层(判定 + 归一)
+      // og 取 tagline/description 较长者:真工具用更丰富的描述接地,避免短 tagline 被误判"无描述"
+      const og = [it.description, it.tagline].filter(Boolean).sort((a, b) => b.length - a.length)[0] || '';
+      const raw = { name: it.name, domain, og, occurrence_count: it.votes, traffic_rank: null };
+      const r = await screen(raw, cats);
+      if (r.verdict !== 'keep') {
+        console.log(`  ✗ ${it.name} (${domain}) → ${r.stage === 'rule' ? '规则闸' : 'AI'}拒[${r.kind}]:${r.reason}`);
+        r.stage === 'rule' ? tally.rule++ : tally.ai++; continue;
+      }
+      const e = r.normalized;
       if (!e.category_slug || !catId[e.category_slug]) { console.log(`  · ${it.name} → 分类无法归类,跳过`); tally.badcat++; continue; }
-      if (!e.tagline_zh) { console.log(`  · ${it.name} → 补全缺卖点,跳过`); tally.fail++; continue; }
+      if (!e.tagline_zh) { console.log(`  · ${it.name} → 归一缺卖点,跳过`); tally.fail++; continue; }
 
-      const slug = slugify(it.name);
+      // 防 slug 撞车:保证最终 slug 唯一(单次后缀仍可能撞 → 循环加序号),绝不复用已有 slug
+      let slug = slugify(it.name);
+      if (knownSlug.has(slug)) {
+        const base = `${slug}-${domain.split('.')[0]}`;
+        slug = base;
+        for (let i = 2; knownSlug.has(slug); i++) slug = `${base}-${i}`;
+      }
       const row = {
         slug, name: it.name, domain,
         tagline: e.tagline_zh, description: e.description_zh,
         category_id: catId[e.category_slug], tags: e.tags,
         price_label: e.price_label, domestic_available: e.domestic_available,
-        data_overseas: true, verified: false, featured: false,
+        data_overseas: e.domestic_available !== '是', verified: false, featured: false,
         vote_count: 0, status: 'pending',
       };
-      if (DRY_RUN) { console.log(`  ✓[dry] ${it.name} (${domain}) [${e.category_slug}] ${e.tagline_zh} | ${e.price_label}/${e.domestic_available} | PH票${it.votes}`); tally.ok++; continue; }
-      known.add(domain);
-      await sb('/moxie_products?on_conflict=slug', { method: 'POST', prefer: 'return=minimal,resolution=merge-duplicates', body: [row] });
+      if (DRY_RUN) { console.log(`  ✓[dry] ${it.name} (${domain}) slug=${slug} [${e.category_slug}] ${e.tagline_zh} | ${e.price_label}/${e.domestic_available} | PH票${it.votes}`); tally.ok++; continue; }
+      known.add(domain); knownSlug.add(slug);
+      // ignore-duplicates:撞 slug 只跳过、绝不覆盖已审产品(配合上面的后缀,正常新品仍能入)
+      await sb('/moxie_products?on_conflict=slug', { method: 'POST', prefer: 'return=minimal,resolution=ignore-duplicates', body: [row] });
       console.log(`  ✓ ${it.name} (${domain}) [${e.category_slug}] → pending`);
       tally.ok++;
-    } catch (err) { console.log(`  · ${it.name} → 补全失败(${err.message}),跳过`); tally.fail++; }
+    } catch (err) {
+      // 防御性:若库启用了 domain UNIQUE(on_conflict=slug 不拦它)→ 计为"已存在"而非失败。
+      // 注:实测当前沙盒库**未启用** domain 约束(与 migration 不符)→ 实际去重靠上面的内存 known 集。
+      if (/moxie_products_domain_unique|duplicate key|23505/i.test(err.message)) {
+        console.log(`  · ${it.name} (${domain}) → domain 已存在(DB 约束),跳过`); tally.dup++;
+      } else { console.log(`  · ${it.name} → 处理失败(${err.message}),跳过`); tally.fail++; }
+    }
   }
 
-  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · 无域名 ${tally.nodomain} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
+  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · 无域名 ${tally.nodomain} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
   if (tally.ok && !DRY_RUN) console.log(`已写 ${tally.ok} 条 status=pending。人工审核后 promote 成 published(改 status)再跑 rank+prerender+sitemap 上线。`);
 }
 
