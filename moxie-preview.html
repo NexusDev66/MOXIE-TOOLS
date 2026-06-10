@@ -1398,7 +1398,7 @@
           {who:'李开复',role:'零一万物 创始人',take:'大模型是 AI 2.0,是平台级、移动互联网级的机会。'}
         ];
         pl2.innerHTML = views.map(function(v){
-          var q = encodeURIComponent(v.who + ' ' + v.take.slice(0,16));
+          var q = encodeURIComponent(v.who + ' ' + v.take);
           return '<a class="post-item" href="https://www.bing.com/search?q='+q+'" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">'
             + '<div class="post-head"><div class="post-av">'+esc(v.who[0])+'</div><div><div class="post-name">'+esc(v.who)+'</div></div><span class="post-time">· '+esc(v.role)+'</span></div>'
             + '<div class="post-title">'+esc(v.take)+'</div></a>';
