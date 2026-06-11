@@ -65,11 +65,16 @@ const SYS = `你是 AI 工具目录的严格审核员。给你一个工具的 �
   - domestic_available:国内可用性,只能是 是 / 否 / 需代理 / 不详。
 忠实于官网摘要,不得杜撰。只输出 JSON:{"verdict","kind","reason","normalized"};reject 时 normalized 为 null。`;
 
-/** 调 DeepSeek。@param {string} user @returns {Promise<any>} */
-async function callLLM(user) {
+// trusted 模式:用于人工已确信的源(curated 种子)。只归一、不判定(种子无 og 会被分类层误拒)。
+const SYS_TRUSTED = `你是 AI 工具目录编辑。给你的工具是【人工已确认真实可用】的,你**只做中文字段归一,不做是否AI/灰产的判定**(一律 keep)。凭你确知的事实产出,不确定给保守值,绝不编造功能。
+输出 normalized:tagline_zh(一句话≤30字)、description_zh(2-3句)、category_slug(从【给定分类】选一)、tags(2-4个中文标签)、price_label(免费/免费+付费/订阅/付费/不详,绝不编造金额)、domestic_available(是/否/需代理/不详;国产一般"是"、海外一般"需代理")。
+只输出 JSON:{"normalized":{...}}。`;
+
+/** 调 DeepSeek。@param {string} sys @param {string} user @returns {Promise<any>} */
+async function callLLM(sys, user) {
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${DEEPSEEK_API_KEY}` },
-    body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'system', content: SYS }, { role: 'user', content: user }], response_format: { type: 'json_object' }, temperature: 0.2, max_tokens: 500 }),
+    body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'system', content: sys }, { role: 'user', content: user }], response_format: { type: 'json_object' }, temperature: 0.2, max_tokens: 500 }),
     signal: AbortSignal.timeout(40000),
   });
   if (!res.ok) throw new Error(`DeepSeek ${res.status}`);
@@ -85,7 +90,27 @@ async function callLLM(user) {
  * @param {{slug:string,name:string}[]} cats
  * @returns {Promise<AiCleanResult>}
  */
-export async function aiClean(c, cats) {
+/** 把 LLM 的 normalized 原始值钳到合法范围(分类不在表内则留空,不静默落 llm)。@returns {Normalized} */
+function clampNormalized(n, cats) {
+  n = n || {};
+  return {
+    tagline_zh: String(n.tagline_zh || '').slice(0, 30),
+    description_zh: String(n.description_zh || '').slice(0, 500),
+    category_slug: cats.some((x) => x.slug === n.category_slug) ? n.category_slug : '',
+    tags: Array.isArray(n.tags) ? n.tags.slice(0, 4).map((t) => String(t).slice(0, 12)).filter(Boolean) : [],
+    price_label: PRICE_ENUM.includes(n.price_label) ? n.price_label : '不详',
+    domestic_available: DOMESTIC_ENUM.includes(n.domestic_available) ? n.domestic_available : '需代理',
+  };
+}
+
+/**
+ * AI 清洗层:判定 + 归一(纯函数,不碰库)。
+ * @param {{name:string,domain:string,og?:string|null,price_label?:string}} c
+ * @param {{slug:string,name:string}[]} cats
+ * @param {{trusted?:boolean}} [opts] trusted=true:人工已确信的源(curated 种子,无 og 会被分类层误拒)→ 只归一、恒 keep
+ * @returns {Promise<AiCleanResult>}
+ */
+export async function aiClean(c, cats, opts = {}) {
   const catList = cats.map((x) => `${x.slug}(${x.name})`).join('、');
   // 外部不可信文本包进显式数据边界,其中任何"指令"按系统规则忽略
   const user = `【给定分类】${catList}
@@ -97,23 +122,13 @@ export async function aiClean(c, cats) {
 候选价格档: ${c.price_label || '不详'}
 DATA>>>>
 按系统要求输出 JSON。`;
-  const o = await callLLM(user);
-  const verdict = o.verdict === 'keep' ? 'keep' : 'reject';
-  /** @type {Normalized|null} */
-  let normalized = null;
-  if (verdict === 'keep' && o.normalized) {
-    const n = o.normalized;
-    // 【修复 #3】不静默兜底到第一个分类(会把难归类工具污染成 llm);留空,交调用方按"难归类"处理
-    const slug = cats.some((x) => x.slug === n.category_slug) ? n.category_slug : '';
-    normalized = {
-      tagline_zh: String(n.tagline_zh || '').slice(0, 30),
-      description_zh: String(n.description_zh || '').slice(0, 500),
-      category_slug: slug,
-      tags: Array.isArray(n.tags) ? n.tags.slice(0, 4).map((t) => String(t).slice(0, 12)).filter(Boolean) : [],
-      price_label: PRICE_ENUM.includes(n.price_label) ? n.price_label : '不详',
-      domestic_available: DOMESTIC_ENUM.includes(n.domestic_available) ? n.domestic_available : '需代理',
-    };
+  if (opts.trusted) {
+    const o = await callLLM(SYS_TRUSTED, user);
+    return { verdict: 'keep', kind: 'ai_tool', reason: '人工甄选', normalized: clampNormalized(o.normalized || o, cats) };
   }
+  const o = await callLLM(SYS, user);
+  const verdict = o.verdict === 'keep' ? 'keep' : 'reject';
+  const normalized = (verdict === 'keep' && o.normalized) ? clampNormalized(o.normalized, cats) : null;
   return { verdict, kind: o.kind || 'unknown', reason: String(o.reason || '').slice(0, 80), normalized };
 }
 

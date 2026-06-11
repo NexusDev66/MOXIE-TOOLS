@@ -49,9 +49,13 @@ for (const dir of DIRS) {
     const descContent = attrOf(tagOf(html, /<meta[^>]+name=["']description["'][^>]*>/i), 'content');
     if (!descContent.trim()) problems.push({ file: rel, issue: 'description 缺失或为空' });
     // demo 残留:模板演示值(DeepSeek V3)漏替换会全站泄漏。deepseek-v3 页本身豁免。
-    if (dir === 'tools' && f !== 'deepseek-v3.html') {
-      if (html.includes('deepseek.com?ref=moxie')) problems.push({ file: rel, issue: 'demo 残留:访问链接仍指向 deepseek.com' });
-      if (html.includes('<span>DeepSeek V3</span>')) problems.push({ file: rel, issue: 'demo 残留:面包屑仍是 DeepSeek V3' });
+    if (dir === 'tools') {
+      if (f !== 'deepseek-v3.html' && html.includes('<span>DeepSeek V3</span>')) problems.push({ file: rel, issue: 'demo 残留:面包屑仍是 DeepSeek V3' });
+      // 通用:访问链接(?ref=moxie 出站)域名必须 == 产品展示域名 phUrl —— catch 任何指向错站(不止 deepseek)
+      const phUrl = (html.match(/id=["']phUrl["'][^>]*>\s*([^<\s]+)/) || [])[1] || '';
+      if (phUrl) for (const m of html.matchAll(/href=["']https?:\/\/([^"'/?]+)[^"']*\?ref=moxie/g)) {
+        if (m[1] !== phUrl) { problems.push({ file: rel, issue: `访问链接域名 ${m[1]} ≠ 产品域名 ${phUrl}` }); break; }
+      }
     }
     // 文章:body_html 为空时 prerender 不替换正文 → 泄漏模板 demo 正文(特征句精确匹配,零误报)
     if (dir === 'articles' && html.includes('DeepSeek V3 不是 silver bullet')) {

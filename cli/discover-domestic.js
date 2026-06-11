@@ -10,13 +10,13 @@
  * 需 env:NEXT_PUBLIC_SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY。
  * 新增国产新锐:往下面 SEEDS 加 {name, domain} 即可。
  */
+import { screen } from './screen.mjs';
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 const DRY_RUN = process.argv.includes('--dry-run');
 
-const CATEGORY_SLUGS = ['llm', 'ai-assistant', 'ai-writing', 'ai-image', 'ai-video', 'ai-coding', 'ai-search', 'rag', 'agent', 'workflow'];
 
 // 人工甄选的国产新锐(确信真实,未收录)。要扩源往这加。
 // slug 必填(中文名 slugify 会变垃圾,故显式给英文 slug)。
@@ -118,57 +118,30 @@ async function sb(path, opts = {}) {
 }
 function slugify(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60).replace(/-+$/g, '') || 'tool'; }
 
-const ENRICH_SYS = `你是国产 AI 工具库编辑。给你一个国产 AI 工具的名称和官网,凭你确知的信息产出中文入库字段。要求:
-1. 只依据你确知的事实,不确定就给保守值,绝不编造功能。
-2. 价格红线:绝不编造具体金额,price_label 只能用枚举:免费 / 免费+付费 / 订阅 / 付费 / 不详。
-3. category_slug 必须从这 10 个里选最贴切的一个:llm, ai-assistant, ai-writing, ai-image, ai-video, ai-coding, ai-search, rag, agent, workflow。
-只输出 JSON,字段:
-  tagline_zh: 一句话中文卖点,≤ 30 字
-  description_zh: 2-3 句中文简介
-  category_slug: 上述 10 选 1
-  tags: 2-4 个中文短标签数组
-  price_label: 上述枚举之一
-  domestic_available: 国内可用性,枚举:是 / 否 / 需代理 / 不详(国产工具一般"是")
-不要输出 JSON 以外内容。`;
-
-async function enrich(item) {
-  const user = `名称:${item.name}\n官网:${item.domain}\n按系统要求输出 JSON。`;
-  const res = await fetch('https://api.deepseek.com/chat/completions', {
-    method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${DEEPSEEK_API_KEY}` },
-    body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'system', content: ENRICH_SYS }, { role: 'user', content: user }], response_format: { type: 'json_object' }, temperature: 0.3, max_tokens: 600 }),
-    signal: AbortSignal.timeout(40000),
-  });
-  if (!res.ok) throw new Error(`DeepSeek ${res.status}`);
-  const j = await res.json();
-  let s = (j.choices?.[0]?.message?.content || '').trim();
-  const a = s.indexOf('{'), b = s.lastIndexOf('}'); if (a >= 0 && b > a) s = s.slice(a, b + 1);
-  const o = JSON.parse(s);
-  return {
-    tagline_zh: (o.tagline_zh || '').toString().slice(0, 30),
-    description_zh: (o.description_zh || '').toString().slice(0, 500),
-    category_slug: CATEGORY_SLUGS.includes(o.category_slug) ? o.category_slug : null,
-    tags: Array.isArray(o.tags) ? o.tags.slice(0, 4).map((t) => String(t).slice(0, 12)) : [],
-    price_label: ['免费', '免费+付费', '订阅', '付费', '不详'].includes(o.price_label) ? o.price_label : '不详',
-    domestic_available: ['是', '否', '需代理', '不详'].includes(o.domestic_available) ? o.domestic_available : '是',
-  };
-}
+// 归一/判定走统一 screen(规则闸→AI层)。curated 种子用 skipGate(见下),消掉这里原有的第二份 enrich。
 
 async function main() {
   console.log(`\n🇨🇳 国产新锐发现${DRY_RUN ? ' [DRY-RUN]' : ''} · ${SEEDS.length} 个候选\n`);
   const existing = await sb('/moxie_products?select=domain,slug&limit=2000');
   const known = new Set(existing.map((p) => (p.domain || '').toLowerCase().replace(/^www\./, '')));
   const knownSlug = new Set(existing.map((p) => p.slug));
-  const cats = await sb('/moxie_categories?select=id,slug');
-  const catId = Object.fromEntries(cats.map((c) => [c.slug, c.id]));
+  const catRows = await sb('/moxie_categories?select=id,slug,name');
+  const catId = Object.fromEntries(catRows.map((c) => [c.slug, c.id]));
+  const cats = catRows.map((c) => ({ slug: c.slug, name: c.name }));  // 给 screen/aiClean
 
-  const tally = { ok: 0, dup: 0, badcat: 0, fail: 0 };
+  const tally = { ok: 0, dup: 0, reject: 0, badcat: 0, fail: 0 };
   for (const it of SEEDS) {
     const domain = it.domain.toLowerCase().replace(/^www\./, '');
     if (known.has(domain)) { console.log(`  · ${it.name} (${domain}) → 已收录,跳过`); tally.dup++; continue; }
     try {
-      const e = await enrich(it);
+      // curated 种子人工已确信 → skipGate 跳过反灰产闸(种子无 og/信号会被误拒),仍走 AI 归一+兜底判定
+      const r = await screen({ name: it.name, domain, og: '' }, cats, { trusted: true });
+      if (r.verdict !== 'keep') { console.log(`  ✗ ${it.name} → AI 判 ${r.kind}:${r.reason}`); tally.reject++; continue; }
+      const e = r.normalized;
       if (!e.category_slug || !catId[e.category_slug]) { console.log(`  · ${it.name} → 难归类,跳过`); tally.badcat++; continue; }
-      let slug = it.slug || slugify(it.name); if (knownSlug.has(slug)) slug = slug + '-' + domain.split('.')[0];
+      // slug 防撞:种子优先用显式 slug;撞了循环加后缀保唯一(绝不复用已有 slug)
+      let slug = it.slug || slugify(it.name);
+      if (knownSlug.has(slug)) { const base = `${slug}-${domain.split('.')[0]}`; slug = base; for (let i = 2; knownSlug.has(slug); i++) slug = `${base}-${i}`; }
       const row = {
         slug, name: it.name, domain,
         tagline: e.tagline_zh, description: e.description_zh,
@@ -178,12 +151,12 @@ async function main() {
       };
       if (DRY_RUN) { console.log(`  ✓[dry] ${it.name} (${domain}) [${e.category_slug}] ${e.tagline_zh} | ${e.price_label}/${e.domestic_available}`); tally.ok++; continue; }
       known.add(domain); knownSlug.add(slug);
-      await sb('/moxie_products?on_conflict=slug', { method: 'POST', prefer: 'return=minimal,resolution=merge-duplicates', body: [row] });
+      await sb('/moxie_products?on_conflict=slug', { method: 'POST', prefer: 'return=minimal,resolution=ignore-duplicates', body: [row] });
       console.log(`  ✓ ${it.name} (${domain}) [${e.category_slug}] → pending`);
       tally.ok++;
-    } catch (err) { console.log(`  · ${it.name} → 补全失败(${err.message}),跳过`); tally.fail++; }
+    } catch (err) { console.log(`  · ${it.name} → 处理失败(${err.message}),跳过`); tally.fail++; }
   }
-  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
+  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · AI拒 ${tally.reject} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
   if (tally.ok && !DRY_RUN) console.log(`已写 ${tally.ok} 条 status=pending。人工 QA 后 promote。`);
 }
 

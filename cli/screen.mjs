@@ -32,13 +32,17 @@ import { aiClean } from './ai-clean.mjs';
  * 两层清洗:规则闸 → AI 层。
  * @param {Candidate} raw
  * @param {{slug:string,name:string}[]} cats
+ * @param {{trusted?:boolean}} [opts] trusted=true:人工已确信的源(curated 种子,无 og/票数/流量会被规则闸误拒)
+ *        → 跳过规则闸 + AI 层走"只归一恒 keep"的 trusted 模式。
  * @returns {Promise<ScreenResult>}
  */
-export async function screen(raw, cats) {
-  const g = gate(raw);
-  if (g.verdict === 'reject')
-    return { verdict: 'reject', stage: 'rule', kind: 'rule_block', reason: g.reasons.join('、'), normalized: null };
-  const a = await aiClean(raw, cats);
+export async function screen(raw, cats, opts = {}) {
+  if (!opts.trusted) {
+    const g = gate(raw);
+    if (g.verdict === 'reject')
+      return { verdict: 'reject', stage: 'rule', kind: 'rule_block', reason: g.reasons.join('、'), normalized: null };
+  }
+  const a = await aiClean(raw, cats, { trusted: opts.trusted });
   return { verdict: a.verdict, stage: 'ai', kind: a.kind, reason: a.reason, normalized: a.normalized };
 }
 
