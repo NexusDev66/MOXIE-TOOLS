@@ -385,12 +385,18 @@ async function main() {
   }
   console.log(`✓ 文章页 ${an} → articles/<slug>.html`);
 
-  // 快讯页(预渲染静态页,和文章一样不依赖现场请求)。先清旧 → 写当前
+  // 快讯页(预渲染静态页)。先清旧 → 写当前。
+  // 炸站下限保护:fetchNews 返回空(200 空读/库异常)时**绝不清空**,保留现有 news 页;
+  // 否则配合 refresh.yml 的 `git add news/` 会把整类 news 删光 + 提交 + 部署。
   const news = await fetchNews();
-  rmSync(OUT_NEWS, { recursive: true, force: true });
-  mkdirSync(OUT_NEWS, { recursive: true });
-  for (const n of news) writeFileSync(join(OUT_NEWS, `${n.id}.html`), buildNewsPage(n), 'utf8');
-  console.log(`✓ 快讯页 ${news.length} → news/<id>.html`);
+  if (news.length === 0) {
+    console.warn('⚠ 快讯读取为空,跳过 news 重渲染(保留现有页,防空读删光全站 news)');
+  } else {
+    rmSync(OUT_NEWS, { recursive: true, force: true });
+    mkdirSync(OUT_NEWS, { recursive: true });
+    for (const n of news) writeFileSync(join(OUT_NEWS, `${n.id}.html`), buildNewsPage(n), 'utf8');
+    console.log(`✓ 快讯页 ${news.length} → news/<id>.html`);
+  }
 
   if (warned.size) console.log('   模板替换告警:', [...warned].join(' '));
   console.log('');
