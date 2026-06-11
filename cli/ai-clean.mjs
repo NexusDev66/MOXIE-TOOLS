@@ -17,6 +17,7 @@
  * 需 env:NEXT_PUBLIC_SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY。
  */
 import { gate } from './clean-gate.mjs';
+import { clampNormalized } from './lib.mjs';
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
@@ -25,9 +26,6 @@ const argi = process.argv.indexOf('--sample');
 const SAMPLE = argi >= 0 ? Number(process.argv[argi + 1]) || 3 : 3;
 
 if (!SUPABASE_URL || !SERVICE_KEY || !DEEPSEEK_API_KEY) { console.error('❌ 缺 env(SUPABASE / DEEPSEEK)'); process.exit(1); }
-
-const PRICE_ENUM = ['免费', '免费+付费', '订阅', '付费', '不详'];   // 与现有 discover/库约定一致
-const DOMESTIC_ENUM = ['是', '否', '需代理', '不详'];
 
 /**
  * @typedef {Object} Normalized
@@ -90,21 +88,8 @@ async function callLLM(sys, user) {
  * @param {{slug:string,name:string}[]} cats
  * @returns {Promise<AiCleanResult>}
  */
-/** 把 LLM 的 normalized 原始值钳到合法范围(分类不在表内则留空,不静默落 llm)。@returns {Normalized} */
-function clampNormalized(n, cats) {
-  n = n || {};
-  return {
-    tagline_zh: String(n.tagline_zh || '').slice(0, 30),
-    description_zh: String(n.description_zh || '').slice(0, 500),
-    category_slug: cats.some((x) => x.slug === n.category_slug) ? n.category_slug : '',
-    tags: Array.isArray(n.tags) ? n.tags.slice(0, 4).map((t) => String(t).slice(0, 12)).filter(Boolean) : [],
-    price_label: PRICE_ENUM.includes(n.price_label) ? n.price_label : '不详',
-    domestic_available: DOMESTIC_ENUM.includes(n.domestic_available) ? n.domestic_available : '需代理',
-  };
-}
-
 /**
- * AI 清洗层:判定 + 归一(纯函数,不碰库)。
+ * AI 清洗层:判定 + 归一(纯函数,不碰库)。clampNormalized 抽到 lib.mjs(可单测)。
  * @param {{name:string,domain:string,og?:string|null,price_label?:string}} c
  * @param {{slug:string,name:string}[]} cats
  * @param {{trusted?:boolean}} [opts] trusted=true:人工已确信的源(curated 种子,无 og 会被分类层误拒)→ 只归一、恒 keep

@@ -46,3 +46,26 @@ export function uniqueSlug(name, domain, knownSlug) {
   }
   return slug;
 }
+
+// 与 discover/库约定一致的枚举
+export const PRICE_ENUM = ['免费', '免费+付费', '订阅', '付费', '不详'];
+export const DOMESTIC_ENUM = ['是', '否', '需代理', '不详'];
+
+/**
+ * 把 LLM 的 normalized 原始值钳到合法范围。分类不在表内则**留空**(不静默落第一个分类)。
+ * 纯函数,供 ai-clean 与单测复用。
+ * @param {any} n LLM 输出的 normalized(可能脏)
+ * @param {{slug:string}[]} cats 合法分类
+ * @returns {{tagline_zh:string,description_zh:string,category_slug:string,tags:string[],price_label:string,domestic_available:string}}
+ */
+export function clampNormalized(n, cats) {
+  n = n || {};
+  return {
+    tagline_zh: String(n.tagline_zh || '').slice(0, 30),
+    description_zh: String(n.description_zh || '').slice(0, 500),
+    category_slug: (cats || []).some((x) => x.slug === n.category_slug) ? n.category_slug : '',
+    tags: Array.isArray(n.tags) ? n.tags.slice(0, 4).map((t) => String(t).slice(0, 12)).filter(Boolean) : [],
+    price_label: PRICE_ENUM.includes(n.price_label) ? n.price_label : '不详',
+    domestic_available: DOMESTIC_ENUM.includes(n.domestic_available) ? n.domestic_available : '需代理',
+  };
+}

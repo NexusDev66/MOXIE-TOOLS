@@ -8,7 +8,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { gate } from './clean-gate.mjs';
-import { uniqueSlug, normDomain, orphansToPrune } from './lib.mjs';
+import { uniqueSlug, normDomain, orphansToPrune, clampNormalized } from './lib.mjs';
 
 // ── 清洗闸 gate ──
 test('gate: 目录站本身硬拒', () => {
@@ -55,4 +55,34 @@ test('orphansToPrune: keep 为空(疑似空读)→ null,绝不删', () => {
 test('orphansToPrune: 将删过半(疑似异常读)→ null,保守跳过', () => {
   const existing = ['a.html', 'b.html', 'c.html', 'd.html'];
   assert.equal(orphansToPrune(existing, new Set(['a.html'])), null); // 要删 3/4 > 半 → 跳过
+});
+
+// ── clampNormalized(归一钳制;生产 discover-tools/domestic 真写路径用)──
+const CATS = [{ slug: 'llm' }, { slug: 'ai-coding' }];
+test('clampNormalized: 合法值保留 + tagline 截断 30', () => {
+  const r = clampNormalized({ tagline_zh: 'x'.repeat(50), category_slug: 'llm', tags: ['a', 'b'], price_label: '订阅', domestic_available: '是' }, CATS);
+  assert.equal(r.tagline_zh.length, 30);
+  assert.equal(r.category_slug, 'llm');
+  assert.equal(r.price_label, '订阅');
+  assert.equal(r.domestic_available, '是');
+});
+test('clampNormalized: 非法分类 → 留空(不静默落 llm)', () => {
+  assert.equal(clampNormalized({ category_slug: 'not-a-cat' }, CATS).category_slug, '');
+});
+test('clampNormalized: 非法价格/国内可用 → 兜底枚举', () => {
+  const r = clampNormalized({ price_label: '￥99/月', domestic_available: 'yes' }, CATS);
+  assert.equal(r.price_label, '不详');
+  assert.equal(r.domestic_available, '需代理');
+});
+test('clampNormalized: tags 截 4 个、每个 ≤12 字', () => {
+  const r = clampNormalized({ tags: ['1', '2', '3', '4', '5', 'x'.repeat(20)] }, CATS);
+  assert.equal(r.tags.length, 4);
+  assert.ok(r.tags.every((t) => t.length <= 12));
+});
+test('clampNormalized: null 输入 → 安全默认', () => {
+  const r = clampNormalized(null, CATS);
+  assert.equal(r.tagline_zh, '');
+  assert.equal(r.category_slug, '');
+  assert.equal(r.price_label, '不详');
+  assert.deepEqual(r.tags, []);
 });
