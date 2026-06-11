@@ -208,7 +208,6 @@
 <meta property="og:description" content="本文从零讲解 FastGPT 怎么用，包括知识库搭建、工作流配置、常见坑与最佳实践，并对比 RAGFlow 和 Cherry Studio 的使用技巧，帮你快速上手。">
 <meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/fastgpt-ragflow-cherry-studio-guide">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"FastGPT 怎么用？开源知识库工作流上手手册","description":"本文从零讲解 FastGPT 怎么用，包括知识库搭建、工作流配置、常见坑与最佳实践，并对比 RAGFlow 和 Cherry Studio 的使用技巧，帮你快速上手。","datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/fastgpt-ragflow-cherry-studio-guide"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"FastGPT 怎么用才能提高回答准确率？","acceptedAnswer":{"@type":"Answer","text":"首先，确保知识库文档质量高、分段合理。其次，在检索节点适当降低相似度阈值（如 0.6）以召回更多候选，再通过重排模型精排。最后，Prompt 中明确要求“如果找不到答案，请说不知道”。"}},{"@type":"Question","name":"FastGPT 教程中，工作流调试有哪些技巧？","acceptedAnswer":{"@type":"Answer","text":"开启“调试模式”后，可以逐节点查看输入输出。常见问题：变量引用错误（如 {{query}} 拼写）、节点未连接。建议先使用模板，再逐步修改。"}},{"@type":"Question","name":"FastGPT 使用技巧：如何与 RAGFlow 协同？","acceptedAnswer":{"@type":"Answer","text":"RAGFlow 提供 REST API，可以将其文档解析结果作为 FastGPT 知识库的预处理器。例如，用 Python 脚本调用 RAGFlow 解析 PDF，然后将输出的 Markdown 通过 FastGPT API 上传。具体价格以官网实测为准。"}}]}</script>
 </head>
 <body>
 
