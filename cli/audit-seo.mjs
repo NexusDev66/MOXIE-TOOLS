@@ -53,6 +53,10 @@ for (const dir of DIRS) {
       if (html.includes('deepseek.com?ref=moxie')) problems.push({ file: rel, issue: 'demo 残留:访问链接仍指向 deepseek.com' });
       if (html.includes('<span>DeepSeek V3</span>')) problems.push({ file: rel, issue: 'demo 残留:面包屑仍是 DeepSeek V3' });
     }
+    // 文章:body_html 为空时 prerender 不替换正文 → 泄漏模板 demo 正文(特征句精确匹配,零误报)
+    if (dir === 'articles' && html.includes('DeepSeek V3 不是 silver bullet')) {
+      problems.push({ file: rel, issue: 'demo 残留:文章正文是模板 demo(body_html 空未替换)' });
+    }
   }
 }
 
