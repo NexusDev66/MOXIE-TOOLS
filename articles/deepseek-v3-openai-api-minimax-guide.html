@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
 <script src="/moxie-supabase.js?v=20260611-01"></script>
-<script src="/moxie-shared.js?v=20260611-01" defer></script>
+<script src="/moxie-shared.js?v=20260611-02" defer></script>
 <style>
   /* ── Hero with cover image ── */
   .art-hero { padding: 32px 0 0; }
@@ -200,12 +200,12 @@
   }
 </style>
 <meta name="description" content="本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-guide">
+<link rel="canonical" href="https://www.latemai.com/articles/deepseek-v3-openai-api-minimax-guide">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DeepSeek V3 怎么用？上手教程与使用技巧 · MOXIE">
 <meta property="og:description" content="本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-guide">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"DeepSeek V3 怎么用？上手教程与使用技巧","description":"本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。","datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-guide"}}</script>
+<meta property="og:url" content="https://www.latemai.com/articles/deepseek-v3-openai-api-minimax-guide">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"DeepSeek V3 怎么用？上手教程与使用技巧","description":"本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。","datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.latemai.com/articles/deepseek-v3-openai-api-minimax-guide"}}</script>
 </head>
 <body>
 
@@ -320,7 +320,7 @@ response = openai.ChatCompletion.create(
 print(response.choices[0].message.content)</code></pre><p>注意设置 <code>api_base</code> 为 DeepSeek 的地址。如果使用 OpenAI 的官方 SDK，只需修改 base URL 即可。</p><h2 id="sec-4">典型工作流：从输入到输出</h2><p>以下是一个完整的问答工作流：</p><ul><li>用户输入问题；</li><li>系统将消息格式化为 <code>[{"role": "user", "content": "..."}]</code>；</li><li>调用 API，设置参数如 <code>temperature=0.7</code>、<code>max_tokens=2048</code>；</li><li>解析返回的 JSON，提取 <code>choices[0].message.content</code> 并展示。</li></ul><p>对于多轮对话，需要将历史消息一并传入，包括 <code>role: "assistant"</code> 的回复。</p><h2 id="sec-5">DeepSeek V3 使用技巧</h2><h3>1. 利用开源优势：本地部署</h3><p>DeepSeek V3 是开源模型，你可以下载权重进行本地部署，避免按量付费。适用于对延迟敏感或数据隐私要求高的场景。</p><h3>2. 控制成本：合理设置 max_tokens</h3><p>由于按 token 计费，建议为每个请求设置合理的 <code>max_tokens</code>，避免生成过长内容导致费用激增（具体价格以官网实测为准）。</p><h3>3. 优化 Prompt：参考 GPT-4o 经验</h3><p>DeepSeek V3 的推理能力与 GPT-4o 相当，因此许多针对 GPT-4o 的 Prompt 技巧同样适用。例如：分步指令、角色设定、示例输出等。</p><h3>4. 与其他工具结合：搭建工作流</h3><p>你可以将 DeepSeek V3 与 OpenAI API 或 MiniMax 等其他模型组合。例如：用 DeepSeek V3 处理长文本推理，用 MiniMax 进行语音合成，用 OpenAI API 作为备选。注意 OpenAI API 在国内仅部分可用，可能需要代理。</p><h2 id="sec-6">常见问题</h2><h3>DeepSeek V3 是否完全免费？</h3><p>DeepSeek V3 采用按量计费模式，并非完全免费。具体价格以官网实测为准，但相比 GPT-4o 成本大幅降低。</p><h3>DeepSeek V3 支持哪些编程语言？</h3><p>DeepSeek V3 提供 RESTful API，支持任何能发送 HTTP 请求的语言，官方推荐使用 Python 和 Node.js。</p><h3>如何获得更好的生成质量？</h3><p>建议调整 <code>temperature</code> 参数（0.5-0.8 效果较好），并给出清晰的指令。同时，多轮对话中保留上下文有助于保持连贯性。</p></article>
 
       <aside class="art-side"><div class="toc-block"><h4>目录</h4><ul class="toc-list"><li class="active" data-target="#sec-1">DeepSeek V3 简介与优势</li><li data-target="#sec-2">准备工作：注册与获取 API Key</li><li data-target="#sec-3">API 调用基础：快速上手</li><li data-target="#sec-4">典型工作流：从输入到输出</li><li data-target="#sec-5">DeepSeek V3 使用技巧</li><li data-target="#sec-6">常见问题</li></ul></div>
-<div class="related-block"><h4>本文涉及产品</h4><a href="/tools/deepseek-v3" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=128" alt=""></div><div><div class="related-prod-name">DeepSeek V3</div><div class="related-prod-tag">大模型</div></div></a><a href="/tools/openai-api" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=platform.openai.com&sz=128" alt=""></div><div><div class="related-prod-name">OpenAI API</div><div class="related-prod-tag">大模型</div></div></a><a href="/tools/minimax" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=minimaxi.com&sz=128" alt=""></div><div><div class="related-prod-name">MiniMax</div><div class="related-prod-tag">大模型</div></div></a></div>
+<div class="related-block"><h4>本文涉及产品</h4><a href="/tools/deepseek-v3" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/deepseek.com.png" alt=""></div><div><div class="related-prod-name">DeepSeek V3</div><div class="related-prod-tag">大模型</div></div></a><a href="/tools/openai-api" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/platform.openai.com.png" alt=""></div><div><div class="related-prod-name">OpenAI API</div><div class="related-prod-tag">大模型</div></div></a><a href="/tools/minimax" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/minimaxi.com.png" alt=""></div><div><div class="related-prod-name">MiniMax</div><div class="related-prod-tag">大模型</div></div></a></div>
 <div class="tools-block"><h4>更多评测</h4><a href="/articles/cherry-studio-ragflow-fastgpt-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">Cherry Studio 获客指南：AI 工具驱动增长实战</a><a href="/articles/perplexity-mita-360ai-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">用 Perplexity 做增长：AI 搜索获客与内容运营实战</a><a href="/articles/doubao-chatgpt-kimi-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;">用豆包做增长：获客、内容运营与分发实战指南</a></div></aside>
     </div>
 

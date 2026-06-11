@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
 <script src="moxie-supabase.js?v=20260611-01"></script>
-<script src="moxie-shared.js?v=20260611-01" defer></script>
+<script src="moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
   /* 产品详情页特有样式 */
@@ -402,7 +402,7 @@
 
     <div class="prod-hero-main">
       <div class="prod-hero-logo">
-        <img id="phLogo" src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=128" alt="">
+        <img id="phLogo" src="/public/logos/deepseek.com.png" alt="">
       </div>
       <div class="prod-hero-info">
         <div class="prod-hero-name">
@@ -501,21 +501,21 @@
           <div class="alt-grid">
             <a href="moxie-product.html" class="alt-card">
               <div class="alt-card-top">
-                <div class="alt-card-logo"><img src="https://www.google.com/s2/favicons?domain=kimi.com&sz=128" alt="Kimi"></div>
+                <div class="alt-card-logo"><img src="/public/logos/kimi.com.png" alt="Kimi"></div>
                 <div class="alt-card-name">Kimi</div>
               </div>
               <div class="alt-card-desc">200 万字长上下文，文档处理首选</div>
             </a>
             <a href="moxie-product.html" class="alt-card">
               <div class="alt-card-top">
-                <div class="alt-card-logo"><img src="https://www.google.com/s2/favicons?domain=chatglm.cn&sz=128" alt="智谱清言"></div>
+                <div class="alt-card-logo"><img src="/public/logos/chatglm.cn.png" alt="智谱清言"></div>
                 <div class="alt-card-name">智谱清言</div>
               </div>
               <div class="alt-card-desc">GLM-4 对话模型，文档分析能力突出</div>
             </a>
             <a href="moxie-product.html" class="alt-card">
               <div class="alt-card-top">
-                <div class="alt-card-logo"><img src="https://www.google.com/s2/favicons?domain=tongyi.aliyun.com&sz=128" alt="通义千问"></div>
+                <div class="alt-card-logo"><img src="/public/logos/tongyi.aliyun.com.png" alt="通义千问"></div>
                 <div class="alt-card-name">通义千问</div>
               </div>
               <div class="alt-card-desc">阿里出品，企业级稳定可靠</div>
@@ -710,7 +710,7 @@
     }
     CUR_PRODUCT = p;
     document.title = p.name + ' · MOXIE';
-    document.getElementById('phLogo').src = `https://www.google.com/s2/favicons?domain=${p.domain}&sz=128`;
+    document.getElementById('phLogo').src = `/public/logos/${p.domain}.png`;
     document.getElementById('phLogo').alt = p.name;
     document.getElementById('phName').textContent = p.name;
     document.getElementById('phUrl').textContent = p.domain;

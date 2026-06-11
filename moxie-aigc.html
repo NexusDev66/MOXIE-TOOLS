@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
 <script src="moxie-supabase.js?v=20260611-01"></script>
-<script src="moxie-shared.js?v=20260611-01" defer></script>
+<script src="moxie-shared.js?v=20260611-02" defer></script>
 <style>
   .cat-hero { padding: 64px 0 32px; }
   .cat-hero .eyebrow { font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 600; margin-bottom: 14px; }
@@ -235,7 +235,7 @@
     grid.innerHTML = data.map(p => `
       <a href="moxie-product.html?slug=${encodeURIComponent(p.slug)}" class="aigc-card">
         <div class="aigc-card-head">
-          <div class="aigc-card-logo"><img src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128" alt=""></div>
+          <div class="aigc-card-logo"><img src="/public/logos/${p.domain}.png" alt=""></div>
           <div><div class="aigc-card-name">${escH(p.name)}</div><div class="aigc-card-url">${escH(p.domain)}</div></div>
         </div>
         <div class="aigc-card-desc">${escH(p.tagline)}</div>

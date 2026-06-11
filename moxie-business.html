@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
 <script src="moxie-supabase.js?v=20260611-01"></script>
-<script src="moxie-shared.js?v=20260611-01" defer></script>
+<script src="moxie-shared.js?v=20260611-02" defer></script>
 <style>
   .cat-hero { padding: 64px 0 32px; }
   .cat-hero .eyebrow { font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 600; margin-bottom: 14px; }
@@ -290,7 +290,7 @@
     box.innerHTML = data.map((p, i) => `
       <a class="prow${p.featured?' premium':''}" href="moxie-product.html?slug=${encodeURIComponent(p.slug)}" style="text-decoration:none;color:inherit;">
         <span class="prank-cell"><span class="hash">#</span>${String(i+1).padStart(2,'0')}</span>
-        <div class="plogo has-img"><img src="https://www.google.com/s2/favicons?domain=${p.domain}&sz=128" alt=""></div>
+        <div class="plogo has-img"><img src="/public/logos/${p.domain}.png" alt=""></div>
         <div class="pmain">
           <div class="ptop">
             <span class="pname">${escH(p.name)}</span>

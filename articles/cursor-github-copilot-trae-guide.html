@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
 <script src="/moxie-supabase.js?v=20260611-01"></script>
-<script src="/moxie-shared.js?v=20260611-01" defer></script>
+<script src="/moxie-shared.js?v=20260611-02" defer></script>
 <style>
   /* ── Hero with cover image ── */
   .art-hero { padding: 32px 0 0; }
@@ -200,12 +200,12 @@
   }
 </style>
 <meta name="description" content="本手册详细介绍 Cursor 怎么用，从安装配置到典型工作流，包含 Cursor 教程和实用技巧，助你快速上手 AI 原生 IDE。">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/articles/cursor-github-copilot-trae-guide">
+<link rel="canonical" href="https://www.latemai.com/articles/cursor-github-copilot-trae-guide">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cursor 怎么用：新手教程与使用技巧 · MOXIE">
 <meta property="og:description" content="本手册详细介绍 Cursor 怎么用，从安装配置到典型工作流，包含 Cursor 教程和实用技巧，助你快速上手 AI 原生 IDE。">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/cursor-github-copilot-trae-guide">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cursor 怎么用：新手教程与使用技巧","description":"本手册详细介绍 Cursor 怎么用，从安装配置到典型工作流，包含 Cursor 教程和实用技巧，助你快速上手 AI 原生 IDE。","datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/cursor-github-copilot-trae-guide"}}</script>
+<meta property="og:url" content="https://www.latemai.com/articles/cursor-github-copilot-trae-guide">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cursor 怎么用：新手教程与使用技巧","description":"本手册详细介绍 Cursor 怎么用，从安装配置到典型工作流，包含 Cursor 教程和实用技巧，助你快速上手 AI 原生 IDE。","datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.latemai.com/articles/cursor-github-copilot-trae-guide"}}</script>
 </head>
 <body>
 
@@ -313,7 +313,7 @@
       <article class="art-content" id="artBody"><h2 id="sec-1">Cursor 怎么用：从零开始的完整教程</h2><p>Cursor 是一款 AI 原生 IDE，内置 Claude 和 GPT 双引擎，代码理解能力出色。对于刚接触 Cursor 的用户，了解其基本用法和配置是第一步。本教程将带你快速上手，并分享实用的 Cursor 使用技巧。</p><h3>安装与初始设置</h3><p>前往 Cursor 官网下载对应系统的安装包，安装后打开。首次启动会引导你选择编辑器主题和键位绑定（支持 VS Code 快捷键）。登录或注册账户后，即可进入主界面。</p><h3>核心功能：AI 对话与代码生成</h3><p>按下 <strong>Ctrl+K</strong>（Mac：Cmd+K）打开内联对话，输入自然语言描述，Cursor 会生成代码或修改选中代码。例如输入“实现一个二分查找函数”，Cursor 会输出完整实现。这是 Cursor 教程中最常用的功能。</p><h3>典型工作流：用 Cursor 完成一个功能</h3><p>假设你要在现有项目中添加用户登录功能：</p><ul><li>打开相关文件，按下 <strong>Ctrl+K</strong> 输入“添加用户登录接口，使用 JWT 认证”。</li><li>Cursor 会生成代码，并高亮修改部分。你可以逐行审查，按 Tab 接受建议。</li><li>如果遇到错误，选中错误代码，按下 <strong>Ctrl+Shift+K</strong> 让 AI 解释并修复。</li></ul><h3>Cursor 使用技巧：提升效率的 5 个要点</h3><ul><li><strong>善用上下文</strong>：在对话中引用当前文件（@file）或整个项目（@folder），让 AI 理解全局。</li><li><strong>多模型切换</strong>：在设置中可切换 Claude 或 GPT 模型，根据任务选择更优引擎。</li><li><strong>代码审查助手</strong>：选中代码段，使用“Explain”功能获取详细注释，适合学习。</li><li><strong>避免常见坑</strong>：AI 生成的代码可能有逻辑错误，务必测试；不要直接复制生产环境代码。</li><li><strong>快捷键记忆</strong>：Ctrl+K 对话、Ctrl+L 打开侧栏聊天、Ctrl+Shift+K 修复错误。</li></ul><h2 id="sec-2">常见问题</h2><h3>Cursor 和 GitHub Copilot 有什么区别？</h3><p>Cursor 是完整的 AI 原生 IDE，支持多模型（Claude/GPT），对话式编程体验更强；GitHub Copilot 是代码补全插件，更侧重实时补全。两者可互补使用。</p><h3>Cursor 在国内能用吗？</h3><p>可以。Cursor 国内可用，无需特殊网络。如果遇到连接问题，可尝试切换模型或检查网络设置。</p><h3>如何获取 Cursor 的具体价格？</h3><p>具体价格以官网实测为准。Cursor 提供免费试用，付费版解锁更多高级功能。</p></article>
 
       <aside class="art-side"><div class="toc-block"><h4>目录</h4><ul class="toc-list"><li class="active" data-target="#sec-1">Cursor 怎么用：从零开始的完整教程</li><li data-target="#sec-2">常见问题</li></ul></div>
-<div class="related-block"><h4>本文涉及产品</h4><a href="/tools/cursor" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=cursor.com&sz=128" alt=""></div><div><div class="related-prod-name">Cursor</div><div class="related-prod-tag">AI 编程</div></div></a><a href="/tools/github-copilot" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=github.com&sz=128" alt=""></div><div><div class="related-prod-name">GitHub Copilot</div><div class="related-prod-tag">AI 编程</div></div></a><a href="/tools/trae" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=trae.ai&sz=128" alt=""></div><div><div class="related-prod-name">Trae</div><div class="related-prod-tag">AI 编程</div></div></a></div>
+<div class="related-block"><h4>本文涉及产品</h4><a href="/tools/cursor" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/cursor.com.png" alt=""></div><div><div class="related-prod-name">Cursor</div><div class="related-prod-tag">AI 编程</div></div></a><a href="/tools/github-copilot" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/github.com.png" alt=""></div><div><div class="related-prod-name">GitHub Copilot</div><div class="related-prod-tag">AI 编程</div></div></a><a href="/tools/trae" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/trae.ai.png" alt=""></div><div><div class="related-prod-name">Trae</div><div class="related-prod-tag">AI 编程</div></div></a></div>
 <div class="tools-block"><h4>更多评测</h4><a href="/articles/cherry-studio-ragflow-fastgpt-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">Cherry Studio 获客指南：AI 工具驱动增长实战</a><a href="/articles/perplexity-mita-360ai-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">用 Perplexity 做增长：AI 搜索获客与内容运营实战</a><a href="/articles/doubao-chatgpt-kimi-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;">用豆包做增长：获客、内容运营与分发实战指南</a></div></aside>
     </div>
 

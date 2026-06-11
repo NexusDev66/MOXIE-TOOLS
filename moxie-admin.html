@@ -711,7 +711,7 @@ const TABLE_CFG = {
     orderBy: 'vote_count',
     cols: ['', '名称', '分类', '标签', '票数', '状态', '操作'],
     row: r => `<tr>
-      <td><span class="cell-logo"><img src="https://www.google.com/s2/favicons?domain=${r.domain}&sz=64"></span></td>
+      <td><span class="cell-logo"><img src="/public/logos/${r.domain}.png"></span></td>
       <td><div style="font-weight:500;color:var(--ink)">${esc(r.name)}${r.verified?' <span class="pill accent">子墨测过</span>':''}${r.featured?' <span class="pill accent">FEATURED</span>':''}</div><div style="color:var(--ink-3);font-family:var(--mono);font-size:11px;margin-top:3px">${esc(r.slug)}</div></td>
       <td><span class="pill">${esc(r.moxie_categories?.name ?? '—')}</span></td>
       <td style="color:var(--ink-2);max-width:280px">${esc(r.tagline)}</td>

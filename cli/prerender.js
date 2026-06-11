@@ -94,7 +94,7 @@ function renderProduct(tpl, p, ctx = {}) {
   rep('<h1 id="phName">加载中…</h1>', `<h1 id="phName">${esc(p.name)}</h1>`, 'phName');
   rep('<span class="prod-hero-url" id="phUrl"></span>', `<span class="prod-hero-url" id="phUrl">${esc(p.domain)}</span>`, 'phUrl');
   rep('<p class="prod-hero-desc" id="phDesc"></p>', `<p class="prod-hero-desc" id="phDesc">${esc(p.tagline)}</p>`, 'phDesc');
-  rep('domain=deepseek.com&sz=128', `domain=${esc(p.domain)}&sz=128`, 'favicon');
+  rep('/public/logos/deepseek.com.png', `/public/logos/${esc(p.domain)}.png`, 'phLogo'); // 本地 logo(大陆不碰 Google)
   rep('<a id="phVisit" href="#"', `<a id="phVisit" href="https://${esc(p.domain)}?ref=moxie"`, 'visit');
   // 侧栏「访问产品官网」按钮:模板写死 deepseek.com,必须替成本产品域名(否则全站都跳 deepseek)
   rep('<a href="https://deepseek.com?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">',
@@ -145,7 +145,7 @@ function bakeDetailSections(html, p, ctx, checks) {
   // 同类替代(同分类真实产品,排除自己,取 3)
   const sibs = ((ctx.byCat && ctx.byCat[p.category_id]) || []).filter((x) => x.slug !== p.slug).slice(0, 3);
   const altInner = sibs.length
-    ? sibs.map((s) => `            <a href="/tools/${esc(s.slug)}" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="https://www.google.com/s2/favicons?domain=${esc(s.domain)}&sz=128" alt="${esc(s.name)}"></div><div class="alt-card-name">${esc(s.name)}</div></div><div class="alt-card-desc">${esc(s.tagline || '')}</div></a>`).join('\n')
+    ? sibs.map((s) => `            <a href="/tools/${esc(s.slug)}" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/${esc(s.domain)}.png" alt="${esc(s.name)}"></div><div class="alt-card-name">${esc(s.name)}</div></div><div class="alt-card-desc">${esc(s.tagline || '')}</div></a>`).join('\n')
     : '            <p style="color:var(--ink-3);font-size:13px;">暂无同类。</p>';
   sec('替代品', '讨论', `          <h2>同类替代</h2>\n          <div class="alt-grid">\n${altInner}\n          </div>`);
   return html;
@@ -267,7 +267,7 @@ function buildAside(a, toc, ctx) {
   if (rel.length) {
     const items = rel.map((p) => {
       const tag = p.moxie_categories?.name || (p.tags && p.tags[0]) || 'AI 工具';
-      return `<a href="/tools/${esc(p.slug)}" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="https://www.google.com/s2/favicons?domain=${esc(p.domain)}&sz=128" alt=""></div><div><div class="related-prod-name">${esc(p.name)}</div><div class="related-prod-tag">${esc(tag)}</div></div></a>`;
+      return `<a href="/tools/${esc(p.slug)}" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/${esc(p.domain)}.png" alt=""></div><div><div class="related-prod-name">${esc(p.name)}</div><div class="related-prod-tag">${esc(tag)}</div></div></a>`;
     }).join('');
     blocks.push(`<div class="related-block"><h4>本文涉及产品</h4>${items}</div>`);
   }

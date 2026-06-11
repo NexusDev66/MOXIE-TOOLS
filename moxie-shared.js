@@ -348,15 +348,18 @@
 
   function moxieLocalize(img) {
     if (!img || img.tagName !== 'IMG') return;
-    var m = (img.getAttribute('src') || '').match(/s2\/favicons\?domain=([^&"']+)/);
-    if (!m) return;                       // 不是 Google favicon(含已本地化的)→ 跳过,天然防循环
-    var domain = decodeURIComponent(m[1]);
+    var src = img.getAttribute('src') || '';
+    var domain = null, fromGoogle = false;
+    var gm = src.match(/s2\/favicons\?domain=([^&"']+)/);
+    if (gm) { domain = decodeURIComponent(gm[1]); fromGoogle = true; }                 // 残留 Google favicon
+    else { var lm = src.match(/\/public\/logos\/([^"'?]+)\.png/); if (lm) domain = lm[1]; }  // 已本地的 logo
+    if (!domain) return;
     img.setAttribute('data-domain', domain);
     if (!img.dataset.logoErrWired) { img.dataset.logoErrWired = '1'; img.onerror = function () { moxieLogoFallback(img); }; }
-    img.setAttribute('src', '/public/logos/' + domain + '.png');
+    if (fromGoogle) img.setAttribute('src', '/public/logos/' + domain + '.png');        // 仅 Google 才改写,防循环
   }
   function moxieLocalizeLogos(root) {
-    (root || document).querySelectorAll('img[src*="s2/favicons"]').forEach(moxieLocalize);
+    (root || document).querySelectorAll('img[src*="s2/favicons"], img[src*="/public/logos/"]').forEach(moxieLocalize);
   }
   window.moxieLocalizeLogos = moxieLocalizeLogos;
   try {
@@ -369,7 +372,7 @@
             var n = mu.addedNodes[j];
             if (n.nodeType !== 1) continue;
             if (n.tagName === 'IMG') moxieLocalize(n);
-            else if (n.querySelectorAll) n.querySelectorAll('img[src*="s2/favicons"]').forEach(moxieLocalize);
+            else if (n.querySelectorAll) n.querySelectorAll('img[src*="s2/favicons"], img[src*="/public/logos/"]').forEach(moxieLocalize);
           }
         }
       }
