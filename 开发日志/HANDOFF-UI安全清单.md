@@ -45,4 +45,22 @@ function esc(s) {
 
 ---
 
-*发现日期:2026-06-10 · 来源:数据管道开发期自审(上帝视角复查)*
+## 3. 🟠 功能 bug · `moxie-product.html` 客户端渲染漏更新「访问产品官网」按钮
+
+**位置**:`moxie-product.html` ——
+- 第 564 行:侧栏按钮写死 `<a href="https://deepseek.com?ref=moxie" ... class="btn-block primary">访问产品官网 ↗</a>`(模板默认 DeepSeek)。
+- 第 ~720 行:客户端 hydrate 时 `document.getElementById('phVisit').href = ...` **只更新了顶部 phVisit 按钮**,**没更新这个侧栏按钮**(它无 id)。
+
+**后果**:走客户端渲染的 `/moxie-product?slug=X` 路径,**任何产品**的「访问产品官网」都跳 **deepseek.com**(用户实测 GitHub Copilot 页跳错站)。
+
+**改法**:给侧栏按钮加个 id(如 `phVisitOfficial`),client JS 里同样设其 `href`:
+```js
+document.getElementById('phVisit').href = `https://${p.domain}?ref=moxie`;
+document.getElementById('phVisitOfficial').href = `https://${p.domain}?ref=moxie`; // 新增
+```
+
+> 注:**预渲染的 `/tools/<slug>` 静态页(用户主要入口)已由数据管道侧 `cli/prerender.js` 修复**(替换该按钮 deepseek→真实域名)。此条仅针对**客户端渲染路径**,归 UI。
+
+---
+
+*发现日期:2026-06-10(#1#2)/ 2026-06-11(#3)· 来源:数据管道开发期自审 + 用户实测*

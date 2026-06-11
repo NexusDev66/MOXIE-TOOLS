@@ -96,6 +96,9 @@ function renderProduct(tpl, p, ctx = {}) {
   rep('<p class="prod-hero-desc" id="phDesc"></p>', `<p class="prod-hero-desc" id="phDesc">${esc(p.tagline)}</p>`, 'phDesc');
   rep('domain=deepseek.com&sz=128', `domain=${esc(p.domain)}&sz=128`, 'favicon');
   rep('<a id="phVisit" href="#"', `<a id="phVisit" href="https://${esc(p.domain)}?ref=moxie"`, 'visit');
+  // 侧栏「访问产品官网」按钮:模板写死 deepseek.com,必须替成本产品域名(否则全站都跳 deepseek)
+  rep('<a href="https://deepseek.com?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">',
+    `<a href="https://${esc(p.domain)}?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">`, 'visit-official');
 
   // 5. 让客户端 JS hydrate 本产品(原本从 ?slug= 读)
   rep(
