@@ -108,6 +108,9 @@ export async function aiClean(c, cats, opts = {}) {
 DATA>>>>
 按系统要求输出 JSON。`;
   if (opts.trusted) {
+    // ⚠ 幻觉风险:trusted 去掉了 og 接地、恒 keep,对**模型不认识的工具会自信瞎编**描述(实测确认)。
+    // 因此 trusted **只可用于人工甄选的真实种子**(discover-domestic SEEDS),且产物**必须经 pending 人工 QA**。
+    // 切勿用 trusted 处理自动抓取/未核实的候选——那会把幻觉内容当真数据入库。
     const o = await callLLM(SYS_TRUSTED, user);
     return { verdict: 'keep', kind: 'ai_tool', reason: '人工甄选', normalized: clampNormalized(o.normalized || o, cats) };
   }
