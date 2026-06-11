@@ -99,6 +99,8 @@ function renderProduct(tpl, p, ctx = {}) {
   // 侧栏「访问产品官网」按钮:模板写死 deepseek.com,必须替成本产品域名(否则全站都跳 deepseek)
   rep('<a href="https://deepseek.com?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">',
     `<a href="https://${esc(p.domain)}?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">`, 'visit-official');
+  // 面包屑当前产品名(模板写死 DeepSeek V3)
+  rep('<span>DeepSeek V3</span>', `<span>${esc(p.name)}</span>`, 'breadcrumb');
 
   // 5. 让客户端 JS hydrate 本产品(原本从 ?slug= 读)
   rep(

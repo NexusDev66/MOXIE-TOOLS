@@ -48,6 +48,11 @@ for (const dir of DIRS) {
     // description:存在 + 非空
     const descContent = attrOf(tagOf(html, /<meta[^>]+name=["']description["'][^>]*>/i), 'content');
     if (!descContent.trim()) problems.push({ file: rel, issue: 'description 缺失或为空' });
+    // demo 残留:模板演示值(DeepSeek V3)漏替换会全站泄漏。deepseek-v3 页本身豁免。
+    if (dir === 'tools' && f !== 'deepseek-v3.html') {
+      if (html.includes('deepseek.com?ref=moxie')) problems.push({ file: rel, issue: 'demo 残留:访问链接仍指向 deepseek.com' });
+      if (html.includes('<span>DeepSeek V3</span>')) problems.push({ file: rel, issue: 'demo 残留:面包屑仍是 DeepSeek V3' });
+    }
   }
 }
 
