@@ -16,8 +16,8 @@ const DIRS = ['tools', 'articles', 'news'];
 
 const LD_RE = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
 const hasTitle = (h) => /<title>[^<]+<\/title>/i.test(h);
-const hasCanonical = (h) => /<link[^>]+rel=["']canonical["']/i.test(h);
-const hasDesc = (h) => /<meta[^>]+name=["']description["'][^>]*>/i.test(h);
+const tagOf = (h, re) => (h.match(re) || [])[0] || '';
+const attrOf = (tag, attr) => ((tag || '').match(new RegExp(attr + '=["\\\']([^"\\\']*)["\\\']')) || [])[1] || '';
 
 /** @type {{file:string,issue:string}[]} */
 const problems = [];
@@ -40,8 +40,14 @@ for (const dir of DIRS) {
     if (found === 0) problems.push({ file: rel, issue: '无 JSON-LD' });
     // 2. meta 三件
     if (!hasTitle(html)) problems.push({ file: rel, issue: '缺 <title>' });
-    if (!hasCanonical(html)) problems.push({ file: rel, issue: '缺 canonical' });
-    if (!hasDesc(html)) problems.push({ file: rel, issue: '缺 meta description' });
+    // canonical:存在 + 指向本页路径
+    const canonHref = attrOf(tagOf(html, /<link[^>]+rel=["']canonical["'][^>]*>/i), 'href');
+    const expectPath = `/${rel.replace(/\.html$/, '')}`;
+    if (!canonHref) problems.push({ file: rel, issue: '缺 canonical' });
+    else if (!canonHref.includes(expectPath)) problems.push({ file: rel, issue: `canonical 不指向本页:${canonHref}` });
+    // description:存在 + 非空
+    const descContent = attrOf(tagOf(html, /<meta[^>]+name=["']description["'][^>]*>/i), 'content');
+    if (!descContent.trim()) problems.push({ file: rel, issue: 'description 缺失或为空' });
   }
 }
 

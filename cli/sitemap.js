@@ -46,6 +46,14 @@ async function main() {
   const articles = ares.ok ? await ares.json() : [];
   console.log(`   published 文章:${articles.length}`);
 
+  // 快讯:与 prerender 一致(同序 + limit 200),只收已烤的 news 页,避免 sitemap 指向不存在页
+  const nres = await fetch(
+    `${SUPABASE_URL}/rest/v1/moxie_news?select=id,published_at&order=published_at.desc.nullslast&limit=200`,
+    { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } },
+  );
+  const news = nres.ok ? await nres.json() : [];
+  console.log(`   快讯:${news.length}`);
+
   const urls = [
     { loc: `${SITE_BASE}/`, lastmod: today, priority: '1.0', changefreq: 'daily' },
     ...products.map((p) => ({
@@ -59,6 +67,12 @@ async function main() {
       lastmod: (a.published_at || '').slice(0, 10) || today,
       priority: '0.6',
       changefreq: 'monthly',
+    })),
+    ...news.map((n) => ({
+      loc: `${SITE_BASE}/news/${n.id}`,
+      lastmod: (n.published_at || '').slice(0, 10) || today,
+      priority: '0.5',
+      changefreq: 'daily',
     })),
   ];
 
