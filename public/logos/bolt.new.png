@@ -1,0 +1,786 @@
+<!DOCTYPE html><html lang="en" data-theme="dark" data-theme-option="dark"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><script>(function setMinViewport() {
+  const MIN_WIDTH = 360;
+  const meta = document.querySelector('meta[name="viewport"]');
+
+  if (!meta) {
+    return;
+  }
+
+  function update() {
+    /**
+     * Never let the layout drop below the min width: on narrower screens the
+     * browser scales the page down to fit instead of reflowing or scrolling.
+     */
+    const width = Math.max(window.screen.width, MIN_WIDTH);
+    meta.setAttribute('content', 'width=' + width);
+  }
+
+  update();
+  window.addEventListener('resize', update);
+  window.addEventListener('orientationchange', update);
+})();
+</script><title>Favicon.Ico (duplicated) - Bolt.new</title><meta name="description" content="Prompt, run, edit &amp; publish apps"/><meta property="og:type" content="object"/><meta property="og:site_name" content="bolt.new"/><meta property="og:title" content="Favicon.Ico (duplicated) - Bolt.new"/><meta property="og:description" content="Prompt, run, edit &amp; publish apps"/><meta property="og:image" content="https://social-img.staticblitz.com/bolt-projects/favicon.ico"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Favicon.Ico (duplicated) - Bolt.new"/><meta name="twitter:description" content="Prompt, run, edit &amp; publish apps"/><meta name="twitter:image" content="https://social-img.staticblitz.com/bolt-projects/favicon.ico"/><meta name="twitter:site" content="@StackBlitz"/><meta name="bolt-version" content="82956f5"/><script>(function detectTheme() {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  globalThis.prefersDark = prefersDark;
+
+  const themeOption = document.documentElement.getAttribute('data-theme-option');
+
+  if (themeOption === 'system') {
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }
+})();
+</script><link rel="stylesheet" href="/assets/root-DOxapkvC.css"/><link rel="stylesheet" href="/assets/Empty-scVdpVyl.css"/><link rel="stylesheet" href="/assets/LightRaysCloud-DqVcXTCJ.css"/><link rel="stylesheet" href="/assets/LightRays-apN2LHcc.css"/><link rel="icon" href="/static/favicon.svg" type="image/svg+xml"/><link rel="icon" href="/static/favicon-48x48.png" type="image/png" sizes="48x48"/><link rel="icon" href="/static/favicon-96x96.png" type="image/png" sizes="96x96"/><link rel="icon" href="/static/favicon-192x192.png" type="image/png" sizes="192x192"/><link rel="apple-touch-icon" href="/static/apple-touch-icon.png" sizes="180x180"/><link rel="stylesheet" href="/assets/tailwind-compat-DeJTMLhw.css"/><link rel="stylesheet" href="/assets/index-B5W4K1Xe.css"/><link rel="stylesheet" href="/assets/xterm-LZoznX6r.css"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/><link rel="preload" href="/static/fonts/inter-display-semibold.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link rel="preload" href="/static/fonts/inter-display-bold.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"/><link rel="stylesheet" href="/static/fonts/fonts.css"/><link rel="stylesheet" href="/assets/Chat-0qepX-_1.css"/><link rel="stylesheet" href="/assets/Markdown-D4TtTTqj.css"/><link rel="stylesheet" href="/assets/Prompt-BAuldNfg.css"/><script>(function createWorkaroundGlobal() {
+  /**
+   * A bug in wrangler injects a __name call in these script tags.
+   *
+   * @see https://github.com/cloudflare/workers-sdk/issues/7107#issuecomment-2454829854
+   */
+  window['__' + 'name'] = () => {
+    // noop
+  };
+})();
+</script><script>// prevent modifications to the DOM until hydration is finished
+(function blockDOMMutations() {
+  const observer = new MutationObserver((mutations) => {
+    observer.disconnect();
+
+    // we iterate backwards so that the oldValue is always correct by the end, in the case of simultaneous changes
+    mutations.reverse().forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        mutation.addedNodes.forEach((node) => {
+          /**
+           * Modifications to the head do not affect hydration (vite uses this for HMR styles).
+           *
+           * Nodes added as children of the body do not affect hydration (WebContainer uses this for the iframe).
+           */
+          if ([document.head, document.body, document.documentElement].includes(node.parentNode)) {
+            return;
+          }
+
+          if (node.parentNode) {
+            node.parentNode.removeChild(node);
+          }
+        });
+
+        mutation.removedNodes.forEach((node) => {
+          if (mutation.previousSibling) {
+            mutation.target.insertBefore(node, mutation.previousSibling.nextSibling);
+          } else if (mutation.target) {
+            mutation.target.appendChild(node);
+          }
+        });
+      }
+
+      if (mutation.type === 'attributes') {
+        const { target, attributeName, oldValue } = mutation;
+
+        if (attributeName) {
+          if (oldValue === null) {
+            target.removeAttribute(attributeName);
+          } else {
+            target.setAttribute(attributeName, oldValue);
+          }
+        }
+      }
+
+      if (mutation.type === 'characterData') {
+        mutation.target.data = mutation.oldValue ?? '';
+      }
+    });
+
+    observe();
+  });
+
+  function observe() {
+    observer.observe(document, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeOldValue: true,
+      characterData: true,
+      characterDataOldValue: true,
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', observe);
+
+  window.__allowDOMMutations = () => {
+    observer.disconnect();
+    window.__loadingPrompt = document.querySelector('textarea')?.value;
+  };
+})();
+</script></head><body class="bg-bolt-ds-proj-bg"><div id="root" class="w-full h-full"><div class="flex size-full"><div class="size-full flex flex-col"><div class="size-full flex flex-col border-bolt-ds-borderOutline light:bg-bolt-ds-surface"><!--$--><div role="status" aria-label="Loading" class="fixed inset-0 flex items-center justify-center bg-bolt-ds-surfaceOne"><div class="i-bolt:logos-bolt-b size-16 text-bolt-ds-textTertiary opacity-50 animate-pulse"></div></div><!--/$--></div></div></div><section aria-label="Notifications alt+T" tabindex="-1" aria-live="polite" aria-relevant="additions text" aria-atomic="false"></section></div><script>((STORAGE_KEY3, restoreKey) => {
+    if (!window.history.state || !window.history.state.key) {
+      let key2 = Math.random().toString(32).slice(2);
+      window.history.replaceState({
+        key: key2
+      }, "");
+    }
+    try {
+      let positions = JSON.parse(sessionStorage.getItem(STORAGE_KEY3) || "{}");
+      let storedY = positions[restoreKey || window.history.state.key];
+      if (typeof storedY === "number") {
+        window.scrollTo(0, storedY);
+      }
+    } catch (error7) {
+      console.error(error7);
+      sessionStorage.removeItem(STORAGE_KEY3);
+    }
+  })("positions", null)</script><link rel="modulepreload" href="/assets/entry.client-CeiK1rCv.js"/><link rel="modulepreload" href="/assets/jsx-runtime-D3k-3Ml1.js"/><link rel="modulepreload" href="/assets/index-DODfV70h.js"/><link rel="modulepreload" href="/assets/index-DDrYxKPG.js"/><link rel="modulepreload" href="/assets/constants-DI-FD5n3.js"/><link rel="modulepreload" href="/assets/sentry.client-CDEDpH-p.js"/><link rel="modulepreload" href="/assets/exports-DZHwtqGV.js"/><link rel="modulepreload" href="/assets/performance-COlQASAw.js"/><link rel="modulepreload" href="/assets/breadcrumbs-CPvzTY_j.js"/><link rel="modulepreload" href="/assets/node-DcxelEY0.js"/><link rel="modulepreload" href="/assets/index-CtySX5EY.js"/><link rel="modulepreload" href="/assets/components-nD854hwf.js"/><link rel="modulepreload" href="/assets/index-D4gKh8uQ.js"/><link rel="modulepreload" href="/assets/Toast-BH-M6BRh.js"/><link rel="modulepreload" href="/assets/Empty-DWT0FOOQ.js"/><link rel="modulepreload" href="/assets/index-DCrEXHIe.js"/><link rel="modulepreload" href="/assets/stripIndents-DgnhF7jp.js"/><link rel="modulepreload" href="/assets/compare-Br3z3FUS-WhH4lFEs.js"/><link rel="modulepreload" href="/assets/client-only-DVXvCFBg.js"/><link rel="modulepreload" href="/assets/analytics-rZiKX2yU.js"/><link rel="modulepreload" href="/assets/ErrorBoundary-Bk2CFz_L.js"/><link rel="modulepreload" href="/assets/growthbook-BUuT5Ui6.js"/><link rel="modulepreload" href="/assets/theme-BBWgZfR8.js"/><link rel="modulepreload" href="/assets/index-sqjwmDJQ.js"/><link rel="modulepreload" href="/assets/login-DM6ewDvv.js"/><link rel="modulepreload" href="/assets/settings-Cx4k85PQ.js"/><link rel="modulepreload" href="/assets/Alert-B-zXctBF.js"/><link rel="modulepreload" href="/assets/preload-helper-D-lGUHqZ.js"/><link rel="modulepreload" href="/assets/queryClient-BKxEGDeI.js"/><link rel="modulepreload" href="/assets/QueryClientProvider-DkoqYnPh.js"/><link rel="modulepreload" href="/assets/urls-BevC_3mn.js"/><link rel="modulepreload" href="/assets/bundle-mjs-Cr5F0Nzq.js"/><link rel="modulepreload" href="/assets/index-cZFek6_Z.js"/><link rel="modulepreload" href="/assets/Header-CSkJT7Xq.js"/><link rel="modulepreload" href="/assets/config-B1uc19iv.js"/><link rel="modulepreload" href="/assets/classNames-DYWyrjPA.js"/><link rel="modulepreload" href="/assets/Logo-CCP-SB3m.js"/><link rel="modulepreload" href="/assets/Link-DNZOBwoO.js"/><link rel="modulepreload" href="/assets/Avatar-DpYrQYMW.js"/><link rel="modulepreload" href="/assets/index-BoyuuWt_.js"/><link rel="modulepreload" href="/assets/ai-YD8iYOki.js"/><link rel="modulepreload" href="/assets/invariant-cZduZm4x.js"/><link rel="modulepreload" href="/assets/util-BItJ9jjH.js"/><link rel="modulepreload" href="/assets/url-BdfB2X2I.js"/><link rel="modulepreload" href="/assets/index-DmrlziDQ.js"/><link rel="modulepreload" href="/assets/path-CTUSV0jZ.js"/><link rel="modulepreload" href="/assets/download-YVhCYn8w.js"/><link rel="modulepreload" href="/assets/BaseMenuDropdown-Bkt_LAIr.js"/><link rel="modulepreload" href="/assets/useProjectRename-DKdcTxcf.js"/><link rel="modulepreload" href="/assets/animationVariants-DlIN6PaB.js"/><link rel="modulepreload" href="/assets/easings-DCeYFPt3.js"/><link rel="modulepreload" href="/assets/LazyLoadWrapper-CPHfWYDK.js"/><link rel="modulepreload" href="/assets/LightRays.client-DFo3H2WM.js"/><link rel="modulepreload" href="/assets/LightRaysCore-CgxuImFY.js"/><link rel="modulepreload" href="/assets/LightRays.module-fqG2JysI.js"/><link rel="modulepreload" href="/assets/LightRaysCloud.client-BXU4jKxn.js"/><link rel="modulepreload" href="/assets/LoadingDots-xL9DzT5G.js"/><link rel="modulepreload" href="/assets/oauth-DTt-UpvP.js"/><link rel="modulepreload" href="/assets/query-DS21chQw.js"/><link rel="modulepreload" href="/assets/mutation-BsnW6suF.js"/><link rel="modulepreload" href="/assets/infiniteQueryBehavior-B7Bj9ojT.js"/><link rel="modulepreload" href="/assets/root-DL6Gv090.js"/><link rel="modulepreload" href="/assets/AgentSwitchDialog-DhLAFr9J.js"/><link rel="modulepreload" href="/assets/organizations-DXhWp4Nq.js"/><link rel="modulepreload" href="/assets/useChatAgent-BCXuD9tI.js"/><link rel="modulepreload" href="/assets/MembersTable-B0qKOhJw.js"/><link rel="modulepreload" href="/assets/designSystemStepper-C02H0XUb.js"/><link rel="modulepreload" href="/assets/persistentBanner-DKTUzQQW.js"/><link rel="modulepreload" href="/assets/team-Bu4dj9Lk.js"/><link rel="modulepreload" href="/assets/withSpinner-BHxUHfmG.js"/><link rel="modulepreload" href="/assets/confetti-Dm1DDdfp.js"/><link rel="modulepreload" href="/assets/Skeletons-B6WEDD5T.js"/><link rel="modulepreload" href="/assets/useDesignSystemDraft-DIjn9TFX.js"/><link rel="modulepreload" href="/assets/useDesignSystems-BJxY7HFj.js"/><link rel="modulepreload" href="/assets/DeleteChatDialogContent-UhVfzwDP.js"/><link rel="modulepreload" href="/assets/TransferProjectDialogContent-Bs0kwJQm.js"/><link rel="modulepreload" href="/assets/proPlans-493S_ogC.js"/><link rel="modulepreload" href="/assets/tokens-stats-DDb66F-9.js"/><link rel="modulepreload" href="/assets/menu-CZS5y841.js"/><link rel="modulepreload" href="/assets/useQuery-CfHdPgEr.js"/><link rel="modulepreload" href="/assets/StripeLogo-BCIPyN8U.js"/><link rel="modulepreload" href="/assets/queryOptions-CPKgtTMW.js"/><link rel="modulepreload" href="/assets/format-BvKQmOqt.js"/><link rel="modulepreload" href="/assets/organizations-Cw-ecPOS.js"/><link rel="modulepreload" href="/assets/IndexLayout-BK-N19hO.js"/><link rel="modulepreload" href="/assets/meta-Ca8lYuTD.js"/><link rel="modulepreload" href="/assets/agent-Da0s42HO.js"/><link rel="modulepreload" href="/assets/SearchInput-CpLXKc5R.js"/><link rel="modulepreload" href="/assets/ActionMenu-B0SInGCU.js"/><link rel="modulepreload" href="/assets/useRequestUpgrade-kZSJ3jVd.js"/><link rel="modulepreload" href="/assets/AccountDisplay-CaHEnSuo.js"/><link rel="modulepreload" href="/assets/Pagination-9789P_0f.js"/><link rel="modulepreload" href="/assets/usePaginatedData-C-kEWfnb.js"/><link rel="modulepreload" href="/assets/openWithStackblitzAuth-BJTse5g-.js"/><link rel="modulepreload" href="/assets/confetti.module-C_q81i21.js"/><link rel="modulepreload" href="/assets/useMutation-c67-KZ3G.js"/><link rel="modulepreload" href="/assets/designSystems-0roGHwMZ.js"/><link rel="modulepreload" href="/assets/mutationOptions-COwZFFQf.js"/><link rel="modulepreload" href="/assets/index-Dxp3dJsO.js"/><link rel="modulepreload" href="/assets/netlify-OCy-exnv.js"/><link rel="modulepreload" href="/assets/projects-wVH4hoHk.js"/><link rel="modulepreload" href="/assets/domains-CknlN0by.js"/><link rel="modulepreload" href="/assets/parse-domain-se2DPxNL.js"/><link rel="modulepreload" href="/assets/AccountSelectMenu-D8PVTBs8.js"/><link rel="modulepreload" href="/assets/teamPlans-B-8REmtL.js"/><link rel="modulepreload" href="/assets/index-Bf1ZfVsz.js"/><link rel="modulepreload" href="/assets/formatDistanceToNow-B79Qfvan.js"/><link rel="modulepreload" href="/assets/constructNow-BCgnZ6h5.js"/><link rel="modulepreload" href="/assets/command--NRgap11.js"/><link rel="modulepreload" href="/assets/index-1ohzxeUa.js"/><link rel="modulepreload" href="/assets/use-reduced-motion-BzCsFsgZ.js"/><link rel="modulepreload" href="/assets/AccountSelector.client-B940-XYu.js"/><link rel="modulepreload" href="/assets/UpgradePlanDialogs-C8ILE7H0.js"/><link rel="modulepreload" href="/assets/UpdatePlanScreenDialog-B9WJZ43O.js"/><link rel="modulepreload" href="/assets/useFreeTrialVariant-eu2ZKt2X.js"/><link rel="modulepreload" href="/assets/useActiveOrganization-BJP3EGnP.js"/><link rel="modulepreload" href="/assets/Sheet-1WanvgF2.js"/><link rel="modulepreload" href="/assets/useDashboardLayout-Dy4pr1TS.js"/><link rel="modulepreload" href="/assets/proctor-CcKeavi_.js"/><link rel="modulepreload" href="/assets/init-ref-BWO2zk9C.js"/><link rel="modulepreload" href="/assets/subscription-BKCS_SZP.js"/><link rel="modulepreload" href="/assets/useInitializeUserStore-CdKPYdT0.js"/><link rel="modulepreload" href="/assets/token-CJ6PMzu6.js"/><link rel="modulepreload" href="/assets/_chat-C_zcuCmL.js"/><link rel="modulepreload" href="/assets/Chat.client-_vl9Osxb.js"/><link rel="modulepreload" href="/assets/Logs.client-G9pz85uq.js"/><link rel="modulepreload" href="/assets/Markdown-DELFezAT.js"/><link rel="modulepreload" href="/assets/prepare-body-Cy2GvBJj.js"/><link rel="modulepreload" href="/assets/index-B3ghZ4VB.js"/><link rel="modulepreload" href="/assets/SupabaseConfigurationDialog-B1PvzZE4.js"/><link rel="modulepreload" href="/assets/deploy.client-DOYAGpwZ.js"/><link rel="modulepreload" href="/assets/support-DrMm_Mpo.js"/><link rel="modulepreload" href="/assets/csv-wviW-atM.js"/><link rel="modulepreload" href="/assets/useApplications-DVKA6iL3.js"/><link rel="modulepreload" href="/assets/version-history-DAIqwUUD.js"/><link rel="modulepreload" href="/assets/parseISO-0pTMtpEH.js"/><link rel="modulepreload" href="/assets/DesignSources-DItkB7NT.js"/><link rel="modulepreload" href="/assets/zod-DMmrsehd.js"/><link rel="modulepreload" href="/assets/index.esm-19XLpEWS.js"/><link rel="modulepreload" href="/assets/index-Vf0hnrKI.js"/><link rel="modulepreload" href="/assets/getDefaultOptions-CzLz1J76.js"/><link rel="modulepreload" href="/assets/TextArea-ByPJgije.js"/><link rel="modulepreload" href="/assets/ProgressBar-BzEiRa5e.js"/><link rel="modulepreload" href="/assets/ConfirmationDialog.client-DmLC3HT6.js"/><link rel="modulepreload" href="/assets/Prompt-C1jQx_Ak.js"/><link rel="modulepreload" href="/assets/scroll-overflow-mask-5yWJojA_.js"/><link rel="modulepreload" href="/assets/index-CHtzgDOZ.js"/><link rel="modulepreload" href="/assets/useSelectedDesignSystem-Cm0keBbP.js"/><link rel="modulepreload" href="/assets/mcp-known-servers-CRONK_wD.js"/><link rel="modulepreload" href="/assets/mcp-CAdcbiTp.js"/><link rel="modulepreload" href="/assets/selectors-D-17Nm-S.js"/><link rel="modulepreload" href="/assets/store-CqCJF8_3.js"/><link rel="modulepreload" href="/assets/ConnectToFigmaDialog-LEi9V8g_.js"/><link rel="modulepreload" href="/assets/useEnsureSkillsLoaded-qslGf8Lo.js"/><link rel="modulepreload" href="/assets/skills-CaW8SMM5.js"/><link rel="modulepreload" href="/assets/stripe-BGG0SiyX.js"/><link rel="modulepreload" href="/assets/useTokenRefresh-Bv6ly6lI.js"/><link rel="modulepreload" href="/assets/DiscordSupportModal-CPAFlHbx.js"/><link rel="modulepreload" href="/assets/utils-CG4H9ul7.js"/><link rel="modulepreload" href="/assets/ProjectGridSkeleton-bEMKIXXK.js"/><link rel="modulepreload" href="/assets/differenceInDays-C-tFSNKW.js"/><link rel="modulepreload" href="/assets/isYesterday-7x0sAfug.js"/><link rel="modulepreload" href="/assets/addDays-CLPU7XP1.js"/><link rel="modulepreload" href="/assets/useDuplicateProject.client-BAJg_Ebr.js"/><link rel="modulepreload" href="/assets/sso-BLIcEPk8.js"/><link rel="modulepreload" href="/assets/AllProjects-DNyamGkI.js"/><link rel="modulepreload" href="/assets/FiltersBar-BmOntGvX.js"/><link rel="modulepreload" href="/assets/useProjectsOwnerContext-Cekxv9hU.js"/><link rel="modulepreload" href="/assets/useTrackOnMount-Ck9hKoGZ.js"/><link rel="modulepreload" href="/assets/RecentProjects-DGeEDYah.js"/><link rel="modulepreload" href="/assets/useMediaQuery-CLRuDmhh.js"/><link rel="modulepreload" href="/assets/detectBrowser-BmCAl_Fx.js"/><link rel="modulepreload" href="/assets/date-binning-DcZCDsM0.js"/><link rel="modulepreload" href="/assets/isThisWeek-BA_WwS70.js"/><link rel="modulepreload" href="/assets/sheetNavigation-DDo3ru0E.js"/><link rel="modulepreload" href="/assets/chart-CusxINHd.js"/><link rel="modulepreload" href="/assets/client-error-ChocH1kL.js"/><link rel="modulepreload" href="/assets/theme-D64Y4_Ez.js"/><link rel="modulepreload" href="/assets/unpublish-project-CK6iFALA.js"/><link rel="modulepreload" href="/assets/teamTemplates-Chr_tqrB.js"/><link rel="modulepreload" href="/assets/organizationMembers-Mpz570FX.js"/><link rel="modulepreload" href="/assets/useInfiniteQuery-BM7KanoJ.js"/><link rel="modulepreload" href="/assets/index-DsOSq0RY.js"/><link rel="modulepreload" href="/assets/mcp-oauth-listener-DH8wCVn7.js"/><link rel="modulepreload" href="/assets/usePaymentIntentStatusMessage-CiyZSxj3.js"/><link rel="modulepreload" href="/assets/UpgradeLink-RNrY753p.js"/><link rel="modulepreload" href="/assets/_chat.~._slug-BHo1HpG8.js"/><link rel="modulepreload" href="/assets/_chat.~._slug._index-BzZyLDPk.js"/><script>window.__remixContext = {"basename":"/","future":{"v3_fetcherPersist":true,"v3_relativeSplatPath":true,"v3_throwAbortReason":true,"v3_routeConfig":false,"v3_singleFetch":true,"v3_lazyRouteDiscovery":true,"unstable_optimizeDeps":false},"isSpaMode":false};window.__remixContext.stream = new ReadableStream({start(controller){window.__remixContext.streamController = controller;}}).pipeThrough(new TextEncoderStream());</script><script type="module" async="">;
+import * as route0 from "/assets/root-DL6Gv090.js";
+import * as route1 from "/assets/_chat-C_zcuCmL.js";
+import * as route2 from "/assets/_chat.~._slug-BHo1HpG8.js";
+import * as route3 from "/assets/_chat.~._slug._index-BzZyLDPk.js";
+window.__remixManifest = {
+  "entry": {
+    "module": "/assets/entry.client-CeiK1rCv.js",
+    "imports": [
+      "/assets/jsx-runtime-D3k-3Ml1.js",
+      "/assets/index-DODfV70h.js",
+      "/assets/index-DDrYxKPG.js",
+      "/assets/constants-DI-FD5n3.js",
+      "/assets/sentry.client-CDEDpH-p.js",
+      "/assets/exports-DZHwtqGV.js",
+      "/assets/performance-COlQASAw.js",
+      "/assets/breadcrumbs-CPvzTY_j.js",
+      "/assets/node-DcxelEY0.js",
+      "/assets/index-CtySX5EY.js",
+      "/assets/components-nD854hwf.js",
+      "/assets/index-D4gKh8uQ.js"
+    ],
+    "css": []
+  },
+  "routes": {
+    "root": {
+      "id": "root",
+      "path": "",
+      "hasAction": false,
+      "hasLoader": true,
+      "hasClientAction": false,
+      "hasClientLoader": false,
+      "hasErrorBoundary": true,
+      "module": "/assets/root-DL6Gv090.js",
+      "imports": [
+        "/assets/jsx-runtime-D3k-3Ml1.js",
+        "/assets/index-DODfV70h.js",
+        "/assets/index-DDrYxKPG.js",
+        "/assets/constants-DI-FD5n3.js",
+        "/assets/sentry.client-CDEDpH-p.js",
+        "/assets/exports-DZHwtqGV.js",
+        "/assets/performance-COlQASAw.js",
+        "/assets/breadcrumbs-CPvzTY_j.js",
+        "/assets/node-DcxelEY0.js",
+        "/assets/index-CtySX5EY.js",
+        "/assets/components-nD854hwf.js",
+        "/assets/index-D4gKh8uQ.js",
+        "/assets/Toast-BH-M6BRh.js",
+        "/assets/Empty-DWT0FOOQ.js",
+        "/assets/index-DCrEXHIe.js",
+        "/assets/stripIndents-DgnhF7jp.js",
+        "/assets/compare-Br3z3FUS-WhH4lFEs.js",
+        "/assets/client-only-DVXvCFBg.js",
+        "/assets/analytics-rZiKX2yU.js",
+        "/assets/ErrorBoundary-Bk2CFz_L.js",
+        "/assets/growthbook-BUuT5Ui6.js",
+        "/assets/theme-BBWgZfR8.js",
+        "/assets/index-sqjwmDJQ.js",
+        "/assets/login-DM6ewDvv.js",
+        "/assets/settings-Cx4k85PQ.js",
+        "/assets/Alert-B-zXctBF.js",
+        "/assets/preload-helper-D-lGUHqZ.js",
+        "/assets/queryClient-BKxEGDeI.js",
+        "/assets/QueryClientProvider-DkoqYnPh.js",
+        "/assets/urls-BevC_3mn.js",
+        "/assets/bundle-mjs-Cr5F0Nzq.js",
+        "/assets/index-cZFek6_Z.js",
+        "/assets/Header-CSkJT7Xq.js",
+        "/assets/config-B1uc19iv.js",
+        "/assets/classNames-DYWyrjPA.js",
+        "/assets/Logo-CCP-SB3m.js",
+        "/assets/Link-DNZOBwoO.js",
+        "/assets/Avatar-DpYrQYMW.js",
+        "/assets/index-BoyuuWt_.js",
+        "/assets/ai-YD8iYOki.js",
+        "/assets/invariant-cZduZm4x.js",
+        "/assets/util-BItJ9jjH.js",
+        "/assets/url-BdfB2X2I.js",
+        "/assets/index-DmrlziDQ.js",
+        "/assets/path-CTUSV0jZ.js",
+        "/assets/download-YVhCYn8w.js",
+        "/assets/BaseMenuDropdown-Bkt_LAIr.js",
+        "/assets/useProjectRename-DKdcTxcf.js",
+        "/assets/animationVariants-DlIN6PaB.js",
+        "/assets/easings-DCeYFPt3.js",
+        "/assets/LazyLoadWrapper-CPHfWYDK.js",
+        "/assets/LightRays.client-DFo3H2WM.js",
+        "/assets/LightRaysCore-CgxuImFY.js",
+        "/assets/LightRays.module-fqG2JysI.js",
+        "/assets/LightRaysCloud.client-BXU4jKxn.js",
+        "/assets/LoadingDots-xL9DzT5G.js",
+        "/assets/oauth-DTt-UpvP.js",
+        "/assets/query-DS21chQw.js",
+        "/assets/mutation-BsnW6suF.js",
+        "/assets/infiniteQueryBehavior-B7Bj9ojT.js"
+      ],
+      "css": [
+        "/assets/root-DOxapkvC.css",
+        "/assets/Empty-scVdpVyl.css",
+        "/assets/LightRaysCloud-DqVcXTCJ.css",
+        "/assets/LightRays-apN2LHcc.css"
+      ]
+    },
+    "routes/_chat": {
+      "id": "routes/_chat",
+      "parentId": "root",
+      "hasAction": false,
+      "hasLoader": true,
+      "hasClientAction": false,
+      "hasClientLoader": false,
+      "hasErrorBoundary": false,
+      "module": "/assets/_chat-C_zcuCmL.js",
+      "imports": [
+        "/assets/preload-helper-D-lGUHqZ.js",
+        "/assets/jsx-runtime-D3k-3Ml1.js",
+        "/assets/index-DCrEXHIe.js",
+        "/assets/index-DODfV70h.js",
+        "/assets/client-only-DVXvCFBg.js",
+        "/assets/Empty-DWT0FOOQ.js",
+        "/assets/AgentSwitchDialog-DhLAFr9J.js",
+        "/assets/index-sqjwmDJQ.js",
+        "/assets/Toast-BH-M6BRh.js",
+        "/assets/organizations-DXhWp4Nq.js",
+        "/assets/constants-DI-FD5n3.js",
+        "/assets/useChatAgent-BCXuD9tI.js",
+        "/assets/MembersTable-B0qKOhJw.js",
+        "/assets/designSystemStepper-C02H0XUb.js",
+        "/assets/persistentBanner-DKTUzQQW.js",
+        "/assets/team-Bu4dj9Lk.js",
+        "/assets/classNames-DYWyrjPA.js",
+        "/assets/withSpinner-BHxUHfmG.js",
+        "/assets/components-nD854hwf.js",
+        "/assets/analytics-rZiKX2yU.js",
+        "/assets/settings-Cx4k85PQ.js",
+        "/assets/confetti-Dm1DDdfp.js",
+        "/assets/Alert-B-zXctBF.js",
+        "/assets/Skeletons-B6WEDD5T.js",
+        "/assets/useDesignSystemDraft-DIjn9TFX.js",
+        "/assets/useDesignSystems-BJxY7HFj.js",
+        "/assets/DeleteChatDialogContent-UhVfzwDP.js",
+        "/assets/TransferProjectDialogContent-Bs0kwJQm.js",
+        "/assets/proPlans-493S_ogC.js",
+        "/assets/config-B1uc19iv.js",
+        "/assets/tokens-stats-DDb66F-9.js",
+        "/assets/menu-CZS5y841.js",
+        "/assets/useQuery-CfHdPgEr.js",
+        "/assets/StripeLogo-BCIPyN8U.js",
+        "/assets/index-BoyuuWt_.js",
+        "/assets/queryOptions-CPKgtTMW.js",
+        "/assets/format-BvKQmOqt.js",
+        "/assets/organizations-Cw-ecPOS.js",
+        "/assets/index-CtySX5EY.js",
+        "/assets/LazyLoadWrapper-CPHfWYDK.js",
+        "/assets/IndexLayout-BK-N19hO.js",
+        "/assets/urls-BevC_3mn.js",
+        "/assets/meta-Ca8lYuTD.js",
+        "/assets/index-DDrYxKPG.js",
+        "/assets/bundle-mjs-Cr5F0Nzq.js",
+        "/assets/invariant-cZduZm4x.js",
+        "/assets/sentry.client-CDEDpH-p.js",
+        "/assets/exports-DZHwtqGV.js",
+        "/assets/index-D4gKh8uQ.js",
+        "/assets/util-BItJ9jjH.js",
+        "/assets/url-BdfB2X2I.js",
+        "/assets/index-DmrlziDQ.js",
+        "/assets/agent-Da0s42HO.js",
+        "/assets/SearchInput-CpLXKc5R.js",
+        "/assets/ActionMenu-B0SInGCU.js",
+        "/assets/useRequestUpgrade-kZSJ3jVd.js",
+        "/assets/AccountDisplay-CaHEnSuo.js",
+        "/assets/Avatar-DpYrQYMW.js",
+        "/assets/Pagination-9789P_0f.js",
+        "/assets/usePaginatedData-C-kEWfnb.js",
+        "/assets/openWithStackblitzAuth-BJTse5g-.js",
+        "/assets/index-cZFek6_Z.js",
+        "/assets/confetti.module-C_q81i21.js",
+        "/assets/QueryClientProvider-DkoqYnPh.js",
+        "/assets/useMutation-c67-KZ3G.js",
+        "/assets/mutation-BsnW6suF.js",
+        "/assets/designSystems-0roGHwMZ.js",
+        "/assets/mutationOptions-COwZFFQf.js",
+        "/assets/index-Dxp3dJsO.js",
+        "/assets/LoadingDots-xL9DzT5G.js",
+        "/assets/netlify-OCy-exnv.js",
+        "/assets/projects-wVH4hoHk.js",
+        "/assets/domains-CknlN0by.js",
+        "/assets/parse-domain-se2DPxNL.js",
+        "/assets/AccountSelectMenu-D8PVTBs8.js",
+        "/assets/Link-DNZOBwoO.js",
+        "/assets/animationVariants-DlIN6PaB.js",
+        "/assets/easings-DCeYFPt3.js",
+        "/assets/theme-BBWgZfR8.js",
+        "/assets/teamPlans-B-8REmtL.js",
+        "/assets/query-DS21chQw.js",
+        "/assets/ai-YD8iYOki.js",
+        "/assets/path-CTUSV0jZ.js",
+        "/assets/download-YVhCYn8w.js",
+        "/assets/Logo-CCP-SB3m.js",
+        "/assets/Header-CSkJT7Xq.js",
+        "/assets/login-DM6ewDvv.js",
+        "/assets/LightRaysCloud.client-BXU4jKxn.js",
+        "/assets/oauth-DTt-UpvP.js",
+        "/assets/BaseMenuDropdown-Bkt_LAIr.js",
+        "/assets/useProjectRename-DKdcTxcf.js",
+        "/assets/index-Bf1ZfVsz.js",
+        "/assets/formatDistanceToNow-B79Qfvan.js",
+        "/assets/constructNow-BCgnZ6h5.js",
+        "/assets/command--NRgap11.js",
+        "/assets/index-1ohzxeUa.js",
+        "/assets/use-reduced-motion-BzCsFsgZ.js",
+        "/assets/AccountSelector.client-B940-XYu.js",
+        "/assets/UpgradePlanDialogs-C8ILE7H0.js",
+        "/assets/UpdatePlanScreenDialog-B9WJZ43O.js",
+        "/assets/useFreeTrialVariant-eu2ZKt2X.js",
+        "/assets/growthbook-BUuT5Ui6.js",
+        "/assets/useActiveOrganization-BJP3EGnP.js",
+        "/assets/Sheet-1WanvgF2.js",
+        "/assets/useDashboardLayout-Dy4pr1TS.js",
+        "/assets/proctor-CcKeavi_.js",
+        "/assets/init-ref-BWO2zk9C.js",
+        "/assets/subscription-BKCS_SZP.js",
+        "/assets/useInitializeUserStore-CdKPYdT0.js",
+        "/assets/token-CJ6PMzu6.js"
+      ],
+      "css": [
+        "/assets/Empty-scVdpVyl.css",
+        "/assets/LightRaysCloud-DqVcXTCJ.css"
+      ]
+    },
+    "routes/_chat.~.$slug": {
+      "id": "routes/_chat.~.$slug",
+      "parentId": "routes/_chat",
+      "path": "~/:slug",
+      "hasAction": false,
+      "hasLoader": true,
+      "hasClientAction": false,
+      "hasClientLoader": false,
+      "hasErrorBoundary": false,
+      "module": "/assets/_chat.~._slug-BHo1HpG8.js",
+      "imports": [
+        "/assets/jsx-runtime-D3k-3Ml1.js",
+        "/assets/Empty-DWT0FOOQ.js",
+        "/assets/index-DODfV70h.js",
+        "/assets/client-only-DVXvCFBg.js",
+        "/assets/Chat.client-_vl9Osxb.js",
+        "/assets/constants-DI-FD5n3.js",
+        "/assets/useDashboardLayout-Dy4pr1TS.js",
+        "/assets/Logs.client-G9pz85uq.js",
+        "/assets/index-BoyuuWt_.js",
+        "/assets/agent-Da0s42HO.js",
+        "/assets/index-sqjwmDJQ.js",
+        "/assets/analytics-rZiKX2yU.js",
+        "/assets/index-DCrEXHIe.js",
+        "/assets/Markdown-DELFezAT.js",
+        "/assets/index-CtySX5EY.js",
+        "/assets/Toast-BH-M6BRh.js",
+        "/assets/domains-CknlN0by.js",
+        "/assets/prepare-body-Cy2GvBJj.js",
+        "/assets/sentry.client-CDEDpH-p.js",
+        "/assets/components-nD854hwf.js",
+        "/assets/meta-Ca8lYuTD.js",
+        "/assets/index-DDrYxKPG.js",
+        "/assets/bundle-mjs-Cr5F0Nzq.js",
+        "/assets/index-B3ghZ4VB.js",
+        "/assets/index-cZFek6_Z.js",
+        "/assets/index-D4gKh8uQ.js",
+        "/assets/stripIndents-DgnhF7jp.js",
+        "/assets/useFreeTrialVariant-eu2ZKt2X.js",
+        "/assets/growthbook-BUuT5Ui6.js",
+        "/assets/preload-helper-D-lGUHqZ.js",
+        "/assets/settings-Cx4k85PQ.js",
+        "/assets/SupabaseConfigurationDialog-B1PvzZE4.js",
+        "/assets/Alert-B-zXctBF.js",
+        "/assets/command--NRgap11.js",
+        "/assets/index-1ohzxeUa.js",
+        "/assets/classNames-DYWyrjPA.js",
+        "/assets/Link-DNZOBwoO.js",
+        "/assets/theme-BBWgZfR8.js",
+        "/assets/exports-DZHwtqGV.js",
+        "/assets/invariant-cZduZm4x.js",
+        "/assets/ai-YD8iYOki.js",
+        "/assets/util-BItJ9jjH.js",
+        "/assets/url-BdfB2X2I.js",
+        "/assets/index-DmrlziDQ.js",
+        "/assets/path-CTUSV0jZ.js",
+        "/assets/download-YVhCYn8w.js",
+        "/assets/deploy.client-DOYAGpwZ.js",
+        "/assets/support-DrMm_Mpo.js",
+        "/assets/useQuery-CfHdPgEr.js",
+        "/assets/QueryClientProvider-DkoqYnPh.js",
+        "/assets/query-DS21chQw.js",
+        "/assets/queryOptions-CPKgtTMW.js",
+        "/assets/useMutation-c67-KZ3G.js",
+        "/assets/mutation-BsnW6suF.js",
+        "/assets/csv-wviW-atM.js",
+        "/assets/useApplications-DVKA6iL3.js",
+        "/assets/withSpinner-BHxUHfmG.js",
+        "/assets/Header-CSkJT7Xq.js",
+        "/assets/login-DM6ewDvv.js",
+        "/assets/LightRaysCloud.client-BXU4jKxn.js",
+        "/assets/urls-BevC_3mn.js",
+        "/assets/LoadingDots-xL9DzT5G.js",
+        "/assets/oauth-DTt-UpvP.js",
+        "/assets/config-B1uc19iv.js",
+        "/assets/Logo-CCP-SB3m.js",
+        "/assets/Avatar-DpYrQYMW.js",
+        "/assets/BaseMenuDropdown-Bkt_LAIr.js",
+        "/assets/useProjectRename-DKdcTxcf.js",
+        "/assets/animationVariants-DlIN6PaB.js",
+        "/assets/easings-DCeYFPt3.js",
+        "/assets/LazyLoadWrapper-CPHfWYDK.js",
+        "/assets/version-history-DAIqwUUD.js",
+        "/assets/formatDistanceToNow-B79Qfvan.js",
+        "/assets/constructNow-BCgnZ6h5.js",
+        "/assets/format-BvKQmOqt.js",
+        "/assets/parseISO-0pTMtpEH.js",
+        "/assets/designSystemStepper-C02H0XUb.js",
+        "/assets/useDesignSystemDraft-DIjn9TFX.js",
+        "/assets/AccountDisplay-CaHEnSuo.js",
+        "/assets/AccountSelectMenu-D8PVTBs8.js",
+        "/assets/DesignSources-DItkB7NT.js",
+        "/assets/zod-DMmrsehd.js",
+        "/assets/index.esm-19XLpEWS.js",
+        "/assets/index-Vf0hnrKI.js",
+        "/assets/getDefaultOptions-CzLz1J76.js",
+        "/assets/TextArea-ByPJgije.js",
+        "/assets/init-ref-BWO2zk9C.js",
+        "/assets/ProgressBar-BzEiRa5e.js",
+        "/assets/proPlans-493S_ogC.js",
+        "/assets/team-Bu4dj9Lk.js",
+        "/assets/openWithStackblitzAuth-BJTse5g-.js",
+        "/assets/organizations-DXhWp4Nq.js",
+        "/assets/teamPlans-B-8REmtL.js",
+        "/assets/ActionMenu-B0SInGCU.js",
+        "/assets/confetti-Dm1DDdfp.js",
+        "/assets/confetti.module-C_q81i21.js",
+        "/assets/useDesignSystems-BJxY7HFj.js",
+        "/assets/designSystems-0roGHwMZ.js",
+        "/assets/mutationOptions-COwZFFQf.js",
+        "/assets/index-Dxp3dJsO.js",
+        "/assets/menu-CZS5y841.js",
+        "/assets/ConfirmationDialog.client-DmLC3HT6.js",
+        "/assets/Prompt-C1jQx_Ak.js",
+        "/assets/scroll-overflow-mask-5yWJojA_.js",
+        "/assets/useChatAgent-BCXuD9tI.js",
+        "/assets/index-CHtzgDOZ.js",
+        "/assets/Sheet-1WanvgF2.js",
+        "/assets/UpgradePlanDialogs-C8ILE7H0.js",
+        "/assets/UpdatePlanScreenDialog-B9WJZ43O.js",
+        "/assets/subscription-BKCS_SZP.js",
+        "/assets/tokens-stats-DDb66F-9.js",
+        "/assets/useSelectedDesignSystem-Cm0keBbP.js",
+        "/assets/mcp-known-servers-CRONK_wD.js",
+        "/assets/mcp-CAdcbiTp.js",
+        "/assets/persistentBanner-DKTUzQQW.js",
+        "/assets/selectors-D-17Nm-S.js",
+        "/assets/store-CqCJF8_3.js",
+        "/assets/ConnectToFigmaDialog-LEi9V8g_.js",
+        "/assets/useEnsureSkillsLoaded-qslGf8Lo.js",
+        "/assets/skills-CaW8SMM5.js",
+        "/assets/StripeLogo-BCIPyN8U.js",
+        "/assets/stripe-BGG0SiyX.js",
+        "/assets/useTokenRefresh-Bv6ly6lI.js",
+        "/assets/token-CJ6PMzu6.js",
+        "/assets/useActiveOrganization-BJP3EGnP.js",
+        "/assets/DiscordSupportModal-CPAFlHbx.js",
+        "/assets/AgentSwitchDialog-DhLAFr9J.js",
+        "/assets/utils-CG4H9ul7.js",
+        "/assets/ProjectGridSkeleton-bEMKIXXK.js",
+        "/assets/compare-Br3z3FUS-WhH4lFEs.js",
+        "/assets/SearchInput-CpLXKc5R.js",
+        "/assets/proctor-CcKeavi_.js",
+        "/assets/use-reduced-motion-BzCsFsgZ.js",
+        "/assets/differenceInDays-C-tFSNKW.js",
+        "/assets/isYesterday-7x0sAfug.js",
+        "/assets/addDays-CLPU7XP1.js",
+        "/assets/projects-wVH4hoHk.js",
+        "/assets/DeleteChatDialogContent-UhVfzwDP.js",
+        "/assets/netlify-OCy-exnv.js",
+        "/assets/TransferProjectDialogContent-Bs0kwJQm.js",
+        "/assets/useDuplicateProject.client-BAJg_Ebr.js",
+        "/assets/sso-BLIcEPk8.js",
+        "/assets/AllProjects-DNyamGkI.js",
+        "/assets/FiltersBar-BmOntGvX.js",
+        "/assets/useProjectsOwnerContext-Cekxv9hU.js",
+        "/assets/Pagination-9789P_0f.js",
+        "/assets/useTrackOnMount-Ck9hKoGZ.js",
+        "/assets/RecentProjects-DGeEDYah.js",
+        "/assets/useMediaQuery-CLRuDmhh.js",
+        "/assets/detectBrowser-BmCAl_Fx.js",
+        "/assets/ErrorBoundary-Bk2CFz_L.js",
+        "/assets/LightRays.client-DFo3H2WM.js",
+        "/assets/LightRaysCore-CgxuImFY.js",
+        "/assets/LightRays.module-fqG2JysI.js",
+        "/assets/node-DcxelEY0.js",
+        "/assets/date-binning-DcZCDsM0.js",
+        "/assets/isThisWeek-BA_WwS70.js",
+        "/assets/AccountSelector.client-B940-XYu.js",
+        "/assets/queryClient-BKxEGDeI.js",
+        "/assets/infiniteQueryBehavior-B7Bj9ojT.js",
+        "/assets/sheetNavigation-DDo3ru0E.js",
+        "/assets/usePaginatedData-C-kEWfnb.js",
+        "/assets/chart-CusxINHd.js",
+        "/assets/client-error-ChocH1kL.js",
+        "/assets/theme-D64Y4_Ez.js",
+        "/assets/unpublish-project-CK6iFALA.js",
+        "/assets/teamTemplates-Chr_tqrB.js",
+        "/assets/organizationMembers-Mpz570FX.js",
+        "/assets/organizations-Cw-ecPOS.js",
+        "/assets/useInfiniteQuery-BM7KanoJ.js",
+        "/assets/index-DsOSq0RY.js",
+        "/assets/breadcrumbs-CPvzTY_j.js",
+        "/assets/mcp-oauth-listener-DH8wCVn7.js",
+        "/assets/usePaymentIntentStatusMessage-CiyZSxj3.js",
+        "/assets/parse-domain-se2DPxNL.js",
+        "/assets/index-Bf1ZfVsz.js",
+        "/assets/UpgradeLink-RNrY753p.js"
+      ],
+      "css": [
+        "/assets/Empty-scVdpVyl.css",
+        "/assets/Chat-0qepX-_1.css",
+        "/assets/Markdown-D4TtTTqj.css",
+        "/assets/LightRaysCloud-DqVcXTCJ.css",
+        "/assets/Prompt-BAuldNfg.css",
+        "/assets/LightRays-apN2LHcc.css"
+      ]
+    },
+    "routes/_chat.~.$slug._index": {
+      "id": "routes/_chat.~.$slug._index",
+      "parentId": "routes/_chat.~.$slug",
+      "index": true,
+      "hasAction": false,
+      "hasLoader": false,
+      "hasClientAction": false,
+      "hasClientLoader": false,
+      "hasErrorBoundary": false,
+      "module": "/assets/_chat.~._slug._index-BzZyLDPk.js",
+      "imports": [],
+      "css": []
+    },
+    "routes/_chat._index": {
+      "id": "routes/_chat._index",
+      "parentId": "routes/_chat",
+      "index": true,
+      "hasAction": false,
+      "hasLoader": false,
+      "hasClientAction": false,
+      "hasClientLoader": false,
+      "hasErrorBoundary": false,
+      "module": "/assets/_chat._index-DrP-TQTy.js",
+      "imports": [
+        "/assets/jsx-runtime-D3k-3Ml1.js",
+        "/assets/index-pMXIufw0.js",
+        "/assets/client-only-DVXvCFBg.js",
+        "/assets/Chat.client-_vl9Osxb.js",
+        "/assets/constants-DI-FD5n3.js",
+        "/assets/index-DODfV70h.js",
+        "/assets/components-nD854hwf.js",
+        "/assets/index-CtySX5EY.js",
+        "/assets/index-DDrYxKPG.js",
+        "/assets/index-sqjwmDJQ.js",
+        "/assets/preload-helper-D-lGUHqZ.js",
+        "/assets/settings-Cx4k85PQ.js",
+        "/assets/analytics-rZiKX2yU.js",
+        "/assets/exports-DZHwtqGV.js",
+        "/assets/index-D4gKh8uQ.js",
+        "/assets/index-cZFek6_Z.js",
+        "/assets/Empty-DWT0FOOQ.js",
+        "/assets/bundle-mjs-Cr5F0Nzq.js",
+        "/assets/invariant-cZduZm4x.js",
+        "/assets/sentry.client-CDEDpH-p.js",
+        "/assets/Toast-BH-M6BRh.js",
+        "/assets/index-B3ghZ4VB.js",
+        "/assets/index-BoyuuWt_.js",
+        "/assets/ai-YD8iYOki.js",
+        "/assets/util-BItJ9jjH.js",
+        "/assets/url-BdfB2X2I.js",
+        "/assets/index-DmrlziDQ.js",
+        "/assets/path-CTUSV0jZ.js",
+        "/assets/download-YVhCYn8w.js",
+        "/assets/index-DCrEXHIe.js",
+        "/assets/stripIndents-DgnhF7jp.js",
+        "/assets/Markdown-DELFezAT.js",
+        "/assets/version-history-DAIqwUUD.js",
+        "/assets/theme-BBWgZfR8.js",
+        "/assets/classNames-DYWyrjPA.js",
+        "/assets/index-CHtzgDOZ.js",
+        "/assets/easings-DCeYFPt3.js",
+        "/assets/stripe-BGG0SiyX.js",
+        "/assets/withSpinner-BHxUHfmG.js",
+        "/assets/Link-DNZOBwoO.js",
+        "/assets/deploy.client-DOYAGpwZ.js",
+        "/assets/UpgradeLink-RNrY753p.js",
+        "/assets/team-Bu4dj9Lk.js",
+        "/assets/config-B1uc19iv.js",
+        "/assets/openWithStackblitzAuth-BJTse5g-.js",
+        "/assets/organizations-DXhWp4Nq.js",
+        "/assets/useFreeTrialVariant-eu2ZKt2X.js",
+        "/assets/growthbook-BUuT5Ui6.js",
+        "/assets/SupabaseConfigurationDialog-B1PvzZE4.js",
+        "/assets/Alert-B-zXctBF.js",
+        "/assets/command--NRgap11.js",
+        "/assets/index-1ohzxeUa.js",
+        "/assets/support-DrMm_Mpo.js",
+        "/assets/useQuery-CfHdPgEr.js",
+        "/assets/QueryClientProvider-DkoqYnPh.js",
+        "/assets/query-DS21chQw.js",
+        "/assets/queryOptions-CPKgtTMW.js",
+        "/assets/useMutation-c67-KZ3G.js",
+        "/assets/mutation-BsnW6suF.js",
+        "/assets/csv-wviW-atM.js",
+        "/assets/useApplications-DVKA6iL3.js",
+        "/assets/Header-CSkJT7Xq.js",
+        "/assets/login-DM6ewDvv.js",
+        "/assets/LightRaysCloud.client-BXU4jKxn.js",
+        "/assets/urls-BevC_3mn.js",
+        "/assets/LoadingDots-xL9DzT5G.js",
+        "/assets/oauth-DTt-UpvP.js",
+        "/assets/Logo-CCP-SB3m.js",
+        "/assets/Avatar-DpYrQYMW.js",
+        "/assets/BaseMenuDropdown-Bkt_LAIr.js",
+        "/assets/useProjectRename-DKdcTxcf.js",
+        "/assets/animationVariants-DlIN6PaB.js",
+        "/assets/LazyLoadWrapper-CPHfWYDK.js",
+        "/assets/formatDistanceToNow-B79Qfvan.js",
+        "/assets/constructNow-BCgnZ6h5.js",
+        "/assets/format-BvKQmOqt.js",
+        "/assets/parseISO-0pTMtpEH.js",
+        "/assets/designSystemStepper-C02H0XUb.js",
+        "/assets/useDesignSystemDraft-DIjn9TFX.js",
+        "/assets/AccountDisplay-CaHEnSuo.js",
+        "/assets/AccountSelectMenu-D8PVTBs8.js",
+        "/assets/DesignSources-DItkB7NT.js",
+        "/assets/zod-DMmrsehd.js",
+        "/assets/index.esm-19XLpEWS.js",
+        "/assets/index-Vf0hnrKI.js",
+        "/assets/getDefaultOptions-CzLz1J76.js",
+        "/assets/TextArea-ByPJgije.js",
+        "/assets/init-ref-BWO2zk9C.js",
+        "/assets/ProgressBar-BzEiRa5e.js",
+        "/assets/proPlans-493S_ogC.js",
+        "/assets/teamPlans-B-8REmtL.js",
+        "/assets/ActionMenu-B0SInGCU.js",
+        "/assets/confetti-Dm1DDdfp.js",
+        "/assets/confetti.module-C_q81i21.js",
+        "/assets/useDesignSystems-BJxY7HFj.js",
+        "/assets/designSystems-0roGHwMZ.js",
+        "/assets/mutationOptions-COwZFFQf.js",
+        "/assets/index-Dxp3dJsO.js",
+        "/assets/menu-CZS5y841.js",
+        "/assets/ConfirmationDialog.client-DmLC3HT6.js",
+        "/assets/Logs.client-G9pz85uq.js",
+        "/assets/parse-domain-se2DPxNL.js",
+        "/assets/Pagination-9789P_0f.js",
+        "/assets/usePaginatedData-C-kEWfnb.js",
+        "/assets/index-Bf1ZfVsz.js",
+        "/assets/Prompt-C1jQx_Ak.js",
+        "/assets/scroll-overflow-mask-5yWJojA_.js",
+        "/assets/useChatAgent-BCXuD9tI.js",
+        "/assets/agent-Da0s42HO.js",
+        "/assets/Sheet-1WanvgF2.js",
+        "/assets/UpgradePlanDialogs-C8ILE7H0.js",
+        "/assets/UpdatePlanScreenDialog-B9WJZ43O.js",
+        "/assets/subscription-BKCS_SZP.js",
+        "/assets/tokens-stats-DDb66F-9.js",
+        "/assets/useSelectedDesignSystem-Cm0keBbP.js",
+        "/assets/mcp-known-servers-CRONK_wD.js",
+        "/assets/mcp-CAdcbiTp.js",
+        "/assets/persistentBanner-DKTUzQQW.js",
+        "/assets/selectors-D-17Nm-S.js",
+        "/assets/store-CqCJF8_3.js",
+        "/assets/ConnectToFigmaDialog-LEi9V8g_.js",
+        "/assets/useEnsureSkillsLoaded-qslGf8Lo.js",
+        "/assets/skills-CaW8SMM5.js",
+        "/assets/StripeLogo-BCIPyN8U.js",
+        "/assets/useTokenRefresh-Bv6ly6lI.js",
+        "/assets/token-CJ6PMzu6.js",
+        "/assets/useActiveOrganization-BJP3EGnP.js",
+        "/assets/DiscordSupportModal-CPAFlHbx.js",
+        "/assets/AgentSwitchDialog-DhLAFr9J.js",
+        "/assets/utils-CG4H9ul7.js",
+        "/assets/ProjectGridSkeleton-bEMKIXXK.js",
+        "/assets/compare-Br3z3FUS-WhH4lFEs.js",
+        "/assets/SearchInput-CpLXKc5R.js",
+        "/assets/proctor-CcKeavi_.js",
+        "/assets/use-reduced-motion-BzCsFsgZ.js",
+        "/assets/differenceInDays-C-tFSNKW.js",
+        "/assets/isYesterday-7x0sAfug.js",
+        "/assets/addDays-CLPU7XP1.js",
+        "/assets/projects-wVH4hoHk.js",
+        "/assets/DeleteChatDialogContent-UhVfzwDP.js",
+        "/assets/netlify-OCy-exnv.js",
+        "/assets/domains-CknlN0by.js",
+        "/assets/TransferProjectDialogContent-Bs0kwJQm.js",
+        "/assets/useDuplicateProject.client-BAJg_Ebr.js",
+        "/assets/sso-BLIcEPk8.js",
+        "/assets/AllProjects-DNyamGkI.js",
+        "/assets/FiltersBar-BmOntGvX.js",
+        "/assets/useProjectsOwnerContext-Cekxv9hU.js",
+        "/assets/useTrackOnMount-Ck9hKoGZ.js",
+        "/assets/RecentProjects-DGeEDYah.js",
+        "/assets/useMediaQuery-CLRuDmhh.js",
+        "/assets/useDashboardLayout-Dy4pr1TS.js",
+        "/assets/detectBrowser-BmCAl_Fx.js",
+        "/assets/ErrorBoundary-Bk2CFz_L.js",
+        "/assets/LightRays.client-DFo3H2WM.js",
+        "/assets/LightRaysCore-CgxuImFY.js",
+        "/assets/LightRays.module-fqG2JysI.js",
+        "/assets/node-DcxelEY0.js",
+        "/assets/date-binning-DcZCDsM0.js",
+        "/assets/isThisWeek-BA_WwS70.js",
+        "/assets/AccountSelector.client-B940-XYu.js",
+        "/assets/queryClient-BKxEGDeI.js",
+        "/assets/infiniteQueryBehavior-B7Bj9ojT.js",
+        "/assets/sheetNavigation-DDo3ru0E.js",
+        "/assets/chart-CusxINHd.js",
+        "/assets/prepare-body-Cy2GvBJj.js",
+        "/assets/client-error-ChocH1kL.js",
+        "/assets/theme-D64Y4_Ez.js",
+        "/assets/unpublish-project-CK6iFALA.js",
+        "/assets/teamTemplates-Chr_tqrB.js",
+        "/assets/organizationMembers-Mpz570FX.js",
+        "/assets/organizations-Cw-ecPOS.js",
+        "/assets/useInfiniteQuery-BM7KanoJ.js",
+        "/assets/index-DsOSq0RY.js",
+        "/assets/breadcrumbs-CPvzTY_j.js",
+        "/assets/mcp-oauth-listener-DH8wCVn7.js",
+        "/assets/usePaymentIntentStatusMessage-CiyZSxj3.js"
+      ],
+      "css": [
+        "/assets/Chat-0qepX-_1.css",
+        "/assets/Empty-scVdpVyl.css",
+        "/assets/Markdown-D4TtTTqj.css",
+        "/assets/LightRaysCloud-DqVcXTCJ.css",
+        "/assets/Prompt-BAuldNfg.css",
+        "/assets/LightRays-apN2LHcc.css"
+      ]
+    },
+    "routes/$slug": {
+      "id": "routes/$slug",
+      "parentId": "root",
+      "path": ":slug",
+      "hasAction": false,
+      "hasLoader": true,
+      "hasClientAction": false,
+      "hasClientLoader": false,
+      "hasErrorBoundary": false,
+      "module": "/assets/_slug-CWP9FjFh.js",
+      "imports": [],
+      "css": []
+    }
+  },
+  "url": "/assets/manifest-c0a81644.js",
+  "version": "c0a81644"
+};
+window.__remixRouteModules = {"root":route0,"routes/_chat":route1,"routes/_chat.~.$slug":route2,"routes/_chat.~.$slug._index":route3};
+
+import("/assets/entry.client-CeiK1rCv.js");</script></body></html><!--$--><script>window.__remixContext.streamController.enqueue("[{\"_1\":2,\"_295\":-5,\"_296\":-5},\"loaderData\",{\"_3\":4,\"_123\":124,\"_250\":251,\"_294\":-5},\"root\",{\"_5\":-7,\"_6\":7,\"_8\":9,\"_112\":113,\"_114\":115,\"_116\":117,\"_118\":14,\"_119\":120,\"_121\":122},\"banner\",\"growthbookPayload\",{},\"user\",{\"_10\":11,\"_12\":-5,\"_13\":14,\"_15\":16,\"_17\":-5,\"_18\":19,\"_20\":21,\"_22\":23,\"_24\":25,\"_26\":-5,\"_27\":28,\"_35\":36,\"_68\":14,\"_69\":14,\"_70\":-5,\"_71\":72,\"_73\":74,\"_75\":-5,\"_76\":-5,\"_77\":21,\"_78\":23,\"_79\":21,\"_80\":81,\"_85\":86,\"_87\":-5,\"_88\":14,\"_89\":-5,\"_90\":14,\"_91\":92,\"_93\":94,\"_32\":95,\"_96\":-5,\"_97\":-5,\"_98\":99,\"_100\":101,\"_102\":-5,\"_103\":104,\"_106\":107},\"avatar\",\"https://stackblitz.com/avatars/M/319.svg\",\"bio\",\"canPurchaseDomain\",false,\"canSubscribe\",true,\"churnkeyAuthKey\",\"createdAt\",\"2026-01-14T22:31:55.161Z\",\"currentPlanTier\",0,\"email\",\"matorres1@arizona.edu\",\"expirableBoltTokenPurchases\",[],\"externalAccount\",\"externalAccounts\",[29],{\"_30\":31,\"_32\":-5,\"_33\":-5,\"_34\":14},\"provider\",\"google\",\"username\",\"uri\",\"needsReauthorization\",\"featureFlags\",{\"_37\":16,\"_38\":14,\"_39\":16,\"_40\":14,\"_41\":14,\"_42\":14,\"_43\":14,\"_44\":16,\"_45\":16,\"_46\":14,\"_47\":14,\"_48\":16,\"_49\":14,\"_50\":16,\"_51\":16,\"_52\":16,\"_53\":16,\"_54\":-7,\"_55\":16,\"_56\":-7,\"_57\":14,\"_58\":14,\"_59\":16,\"_60\":14,\"_61\":16,\"_62\":16,\"_63\":14,\"_64\":14,\"_65\":16,\"_66\":16,\"_67\":16},\"experimentalNode\",\"previewTunneling\",\"freeDomainPromo\",\"hackathon\",\"debugger\",\"boltDevtools\",\"browserTools\",\"figmaFrameImport\",\"teamTemplates\",\"importURL\",\"userSkills\",\"mcpServers\",\"jiraIntegration\",\"agentImageGeneration\",\"collaborationV2\",\"projectsDashboard\",\"designSystems\",\"prototypeHandoff\",\"tokenLedgerNoMigration\",\"teamsSetupRedesign\",\"usageBasedBilling\",\"ossModels\",\"sentimentCapture\",\"messageQueue\",\"blockNewV1Projects\",\"enhancePromptQs\",\"cancellationFlowV2\",\"v3Harness\",\"tokenLedger\",\"codeStorage\",\"proctor\",\"freeDomainPromoEligible\",\"freeDomainPromoUsed\",\"githubAppInstallation\",\"id\",\"8786143\",\"kind\",\"USER\",\"location\",\"membership\",\"membershipLevel\",\"name\",\"nextMembershipLevel\",\"onboardingSurveyResponse\",{\"_82\":83,\"_84\":-5},\"status\",\"finished\",\"surveyVersion\",\"roles\",[],\"site\",\"ssoRestricted\",\"stripeCustomerId\",\"teamsPlan\",\"tokenAllocations\",[],\"totalBoltTokenPurchases\",1000000,\"matorres1\",\"wcAPIMembership\",\"wcAPIStripeAccount\",\"organizations\",[],\"organizationInvites\",[],\"activeOrganizationId\",\"surveys\",{\"_105\":83},\"onboarding\",\"settings\",{\"_108\":109},\"featurePreviews\",{\"_110\":14,\"_111\":14},\"reasoning\",\"imageGeneration\",\"token\",\"krBOSYCQ3WunIR0t0YCl5qaxo50leEs-v7s06s_3Ixw\",\"serverTime\",\"2026-06-11T06:43:16.345Z\",\"country\",\"US\",\"isMobileExperience\",\"swk\",\"ta1kDK49qdEDEfd8KYxI37mW0GPkLKn1\",\"gbk\",\"sdk-ye5YC6vB6I5SoRX\",\"routes/_chat\",{\"_8\":125,\"_138\":139,\"_187\":188},{\"_10\":11,\"_12\":-5,\"_13\":14,\"_15\":16,\"_17\":-5,\"_18\":19,\"_20\":21,\"_22\":23,\"_24\":126,\"_26\":-5,\"_27\":127,\"_35\":129,\"_68\":14,\"_69\":14,\"_70\":-5,\"_71\":72,\"_73\":74,\"_75\":-5,\"_76\":-5,\"_77\":21,\"_78\":23,\"_79\":21,\"_80\":130,\"_85\":131,\"_87\":-5,\"_88\":14,\"_89\":-5,\"_90\":14,\"_91\":132,\"_93\":94,\"_32\":95,\"_96\":-5,\"_97\":-5,\"_98\":133,\"_100\":134,\"_102\":-5,\"_103\":135,\"_106\":136},[],[128],{\"_30\":31,\"_32\":-5,\"_33\":-5,\"_34\":14},{\"_37\":16,\"_38\":14,\"_39\":16,\"_40\":14,\"_41\":14,\"_42\":14,\"_43\":14,\"_44\":16,\"_45\":16,\"_46\":14,\"_47\":14,\"_48\":16,\"_49\":14,\"_50\":16,\"_51\":16,\"_52\":16,\"_53\":16,\"_55\":16,\"_57\":14,\"_58\":14,\"_59\":16,\"_60\":14,\"_61\":16,\"_62\":16,\"_63\":14,\"_64\":14,\"_65\":16,\"_66\":16,\"_67\":16},{\"_82\":83,\"_84\":-5},[],[],[],[],{\"_105\":83},{\"_108\":137},{\"_110\":14,\"_111\":14},\"tokenStats\",{\"_140\":-5,\"_141\":142,\"_143\":94,\"_144\":145,\"_149\":150,\"_156\":157,\"_158\":159,\"_160\":161,\"_170\":171,\"_172\":173,\"_174\":148,\"_175\":21,\"_176\":21,\"_177\":21,\"_178\":179,\"_185\":186},\"billingPeriod\",\"maxPerDay\",300000,\"maxPerMonth\",\"regularTokens\",{\"_146\":94,\"_147\":148},\"available\",\"used\",489434,\"regularTokenBreakdown\",[151],{\"_152\":153,\"_146\":94,\"_147\":148,\"_154\":155},\"expiresOn\",1782863999999,\"type\",\"active-month\",\"rewardTokens\",{\"_147\":21,\"_146\":21},\"rewardTokenBreakdown\",[],\"nextTier\",{\"_162\":163,\"_164\":165,\"_154\":169},\"level\",1,\"limits\",{\"_166\":167,\"_168\":167},\"perDay\",10000000,\"perMonth\",\"pro\",\"overflow\",{\"_146\":94,\"_147\":21},\"purchased\",{\"_146\":94,\"_147\":21},\"totalThisMonth\",\"totalToday\",\"totalThisMonthSonnet46\",\"totalTodaySonnet46\",\"referralTokens\",{\"_180\":181,\"_183\":184},\"free\",{\"_146\":21,\"_182\":21,\"_147\":21},\"rewardCount\",\"paid\",{\"_146\":21,\"_182\":21,\"_147\":21},\"specialTokens\",{\"_146\":21,\"_147\":21},\"publicDesignSystems\",[189,204,213,222,232,241],{\"_71\":190,\"_78\":191,\"_192\":193,\"_194\":195},\"e560d0e7-4fba-4857-a197-a03f50115e72\",\"Chakra\",\"logoUrl\",\"/api/design-systems/e560d0e7-4fba-4857-a197-a03f50115e72/files/logo.webp\",\"publicMetadata\",{\"_154\":196,\"_197\":198},\"open-source\",\"prompts\",[199],{\"_200\":201,\"_202\":203},\"text\",\"Build a movie streaming web app\",\"replayId\",\"abe042b0-1514-4f5f-999c-47611556dd5a\",{\"_71\":205,\"_78\":206,\"_192\":207,\"_194\":208},\"c780062a-25f0-4a60-bdaf-c5b27da476fb\",\"Material UI\",\"/api/design-systems/c780062a-25f0-4a60-bdaf-c5b27da476fb/files/logo.webp\",{\"_154\":196,\"_197\":209},[210],{\"_200\":211,\"_202\":212},\"Build a Google Drive dashboard\",\"cf113b81-bbe3-4168-b53f-7fa2696bceeb\",{\"_71\":214,\"_78\":215,\"_192\":216,\"_194\":217},\"24db67f1-2979-4ee4-8881-1cf620ecf1e9\",\"Shadcn\",\"/api/design-systems/24db67f1-2979-4ee4-8881-1cf620ecf1e9/files/logo.webp\",{\"_154\":196,\"_197\":218},[219],{\"_200\":220,\"_202\":221},\"Build an appointment booking landing page\",\"eb619f11-6227-41d2-a63e-f34d2f723546\",{\"_71\":223,\"_78\":224,\"_192\":225,\"_194\":226},\"8c0d5ecc-f2f4-486d-baee-8d50d61280ea\",\"Washington Post\",\"/api/design-systems/8c0d5ecc-f2f4-486d-baee-8d50d61280ea/files/logo.webp\",{\"_154\":227,\"_197\":228},\"corporate\",[229],{\"_200\":230,\"_202\":231},\"Build a news blog\",\"2f69f91d-24f2-452b-8619-f8a4c29d1889\",{\"_71\":233,\"_78\":234,\"_192\":235,\"_194\":236},\"c2cae65c-e390-4bba-989e-4ddf6f0be5ca\",\"AWS Cloudscape\",\"/api/design-systems/c2cae65c-e390-4bba-989e-4ddf6f0be5ca/files/logo.webp\",{\"_154\":227,\"_197\":237},[238],{\"_200\":239,\"_202\":240},\"Build a management dashboard for a database service\",\"a63d181f-7693-4862-b1c8-ad8f7244c7bb\",{\"_71\":242,\"_78\":243,\"_192\":244,\"_194\":245},\"96de9aa8-2543-4658-aef6-abda7df52e2f\",\"Porsche\",\"/api/design-systems/96de9aa8-2543-4658-aef6-abda7df52e2f/files/logo.webp\",{\"_154\":227,\"_197\":246},[247],{\"_200\":248,\"_202\":249},\"Build a landing page for the Porsche GT3 RS\",\"68fab858-6204-4f09-99b9-8371d504df2e\",\"routes/_chat.~.$slug\",{\"_252\":-7,\"_253\":254,\"_255\":256,\"_51\":14,\"_257\":258,\"_287\":288,\"_292\":-5,\"_293\":-5},\"github\",\"slug\",\"favicon.ico\",\"projectId\",\"null\",\"projectAccess\",{\"_259\":14,\"_260\":14,\"_261\":14,\"_262\":16,\"_263\":16,\"_264\":14,\"_265\":14,\"_266\":14,\"_267\":14,\"_268\":14,\"_269\":14,\"_270\":14,\"_271\":14,\"_272\":14,\"_273\":14,\"_274\":16,\"_275\":14,\"_276\":14,\"_277\":278,\"_285\":14,\"_286\":14},\"canAdministrate\",\"canChangeVisibility\",\"canEdit\",\"canFork\",\"canForkToPersonal\",\"canHostWithoutBadge\",\"canMakePrivate\",\"canManage\",\"canShare\",\"canTransfer\",\"canUpdateSettings\",\"canUploadFiles\",\"canUseCorsProxy\",\"canUseLocalhostAccess\",\"canUsePaidFeatures\",\"canView\",\"commercial\",\"currentUserIsOwner\",\"forkTargets\",[279],{\"_280\":281,\"_282\":16,\"_283\":284},\"action\",\"fork\",\"default\",\"target\",{\"_10\":11,\"_73\":74,\"_78\":95,\"_30\":-5,\"_253\":95},\"localhostAccessEnabled\",\"userIsParticipant\",\"projectInfo\",{\"_289\":-5,\"_71\":256,\"_253\":254,\"_290\":291},\"description\",\"title\",\"Favicon.Ico (duplicated)\",\"chatAgent\",\"chatModel\",\"routes/_chat.~.$slug._index\",\"actionData\",\"errors\"]\n");</script><!--$--><script>window.__remixContext.streamController.close();</script><!--/$--><!--/$-->

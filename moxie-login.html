@@ -6,13 +6,11 @@
 <link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
 <title>登录 · MOXIE</title>
 <meta name="description" content="登录 MOXIE，收藏工具、订阅周报、参与投票。中文 AI 工具的每日精选榜。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
+<script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
-<script src="moxie-supabase.js?v=20260526-01"></script>
-<script src="moxie-shared.js?v=20260526-01" defer></script>
+<script src="moxie-supabase.js?v=20260611-01"></script>
+<script src="moxie-shared.js?v=20260611-01" defer></script>
 
 <style>
   /* ── 登录页：双列 split layout ── */
@@ -354,7 +352,7 @@
 
     window.moxieWhenDBReady(async (db) => {
       if (!db) {
-        alert('Supabase 还没配置。打开 moxie-supabase.js?v=20260526-01 填 URL 和 anon key。');
+        alert('Supabase 还没配置。打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key。');
         location.reload(); return;
       }
       // 登录后回首页（带 ?welcome=1 显示欢迎 toast）· 必须用 canonical origin

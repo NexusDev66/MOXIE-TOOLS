@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
 <title>MOXIE · 管理后台</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
-<script src="moxie-supabase.js?v=20260526-01"></script>
+<script src="moxie-supabase.js?v=20260611-01"></script>
 
 <style>
   body { background: #FAFAFA; }
@@ -401,7 +399,7 @@ const State = { db: null, user: null, isAdmin: false, view: 'dashboard' };
 /* ═══════════════════ 启动 ═══════════════════ */
 window.moxieWhenDBReady(async (db) => {
   if (!db) {
-    showLogin('Supabase 还没配置。打开 moxie-supabase.js?v=20260526-01，把 URL 和 anon key 填进去后刷新页面。');
+    showLogin('Supabase 还没配置。打开 moxie-supabase.js?v=20260611-01，把 URL 和 anon key 填进去后刷新页面。');
     return;
   }
   State.db = db;

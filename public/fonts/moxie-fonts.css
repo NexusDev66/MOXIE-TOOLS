@@ -1,0 +1,40 @@
+/* MOXIE 自托管拉丁字族 · woff2 来自 @fontsource(npmmirror 下载,与站点同源加载）
+   覆盖全站所有页面用到的拉丁字族,替换被墙/极慢的 Google Fonts / loli 镜像。
+   中文(Noto Sans SC / Noto Serif SC)走系统(PingFang SC / 微软雅黑 / 宋体),不自托管巨大的 CJK 字体。
+   url() 相对本 CSS 所在目录(public/fonts/),无论哪个页面引用都能解析。 */
+
+/* ---------- Inter(工具页 / 详情页 正文) ---------- */
+@font-face{font-family:"Inter";font-style:normal;font-weight:300;font-display:swap;src:url("inter-latin-300-normal.woff2") format("woff2");}
+@font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url("inter-latin-400-normal.woff2") format("woff2");}
+@font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url("inter-latin-500-normal.woff2") format("woff2");}
+@font-face{font-family:"Inter";font-style:normal;font-weight:600;font-display:swap;src:url("inter-latin-600-normal.woff2") format("woff2");}
+@font-face{font-family:"Inter";font-style:normal;font-weight:700;font-display:swap;src:url("inter-latin-700-normal.woff2") format("woff2");}
+
+/* ---------- Geist(工具页 标题 / 数字) ---------- */
+@font-face{font-family:"Geist";font-style:normal;font-weight:400;font-display:swap;src:url("geist-sans-latin-400-normal.woff2") format("woff2");}
+@font-face{font-family:"Geist";font-style:normal;font-weight:500;font-display:swap;src:url("geist-sans-latin-500-normal.woff2") format("woff2");}
+@font-face{font-family:"Geist";font-style:normal;font-weight:600;font-display:swap;src:url("geist-sans-latin-600-normal.woff2") format("woff2");}
+@font-face{font-family:"Geist";font-style:normal;font-weight:700;font-display:swap;src:url("geist-sans-latin-700-normal.woff2") format("woff2");}
+
+/* ---------- Plus Jakarta Sans(榜单/首页 正文) ---------- */
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:400;font-display:swap;src:url("plus-jakarta-sans-latin-400-normal.woff2") format("woff2");}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:500;font-display:swap;src:url("plus-jakarta-sans-latin-500-normal.woff2") format("woff2");}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:600;font-display:swap;src:url("plus-jakarta-sans-latin-600-normal.woff2") format("woff2");}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:700;font-display:swap;src:url("plus-jakarta-sans-latin-700-normal.woff2") format("woff2");}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:800;font-display:swap;src:url("plus-jakarta-sans-latin-800-normal.woff2") format("woff2");}
+
+/* ---------- Outfit(榜单/首页 标题 + LOGO 字标) ---------- */
+@font-face{font-family:"Outfit";font-style:normal;font-weight:400;font-display:swap;src:url("outfit-latin-400-normal.woff2") format("woff2");}
+@font-face{font-family:"Outfit";font-style:normal;font-weight:500;font-display:swap;src:url("outfit-latin-500-normal.woff2") format("woff2");}
+@font-face{font-family:"Outfit";font-style:normal;font-weight:600;font-display:swap;src:url("outfit-latin-600-normal.woff2") format("woff2");}
+@font-face{font-family:"Outfit";font-style:normal;font-weight:700;font-display:swap;src:url("outfit-latin-700-normal.woff2") format("woff2");}
+@font-face{font-family:"Outfit";font-style:normal;font-weight:800;font-display:swap;src:url("outfit-latin-800-normal.woff2") format("woff2");}
+@font-face{font-family:"Outfit";font-style:normal;font-weight:900;font-display:swap;src:url("outfit-latin-900-normal.woff2") format("woff2");}
+
+/* ---------- JetBrains Mono(等宽) ---------- */
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url("jetbrains-mono-latin-400-normal.woff2") format("woff2");}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url("jetbrains-mono-latin-500-normal.woff2") format("woff2");}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:600;font-display:swap;src:url("jetbrains-mono-latin-600-normal.woff2") format("woff2");}
+
+/* ---------- VT323(复古等宽点缀) ---------- */
+@font-face{font-family:"VT323";font-style:normal;font-weight:400;font-display:swap;src:url("vt323-latin-400-normal.woff2") format("woff2");}

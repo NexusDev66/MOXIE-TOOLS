@@ -36,7 +36,8 @@ const MOXIE_SUPABASE_ANON = 'sb_publishable_QDAR-tJjJpV4jpeDOAt76w_xoEwfHma';
 (function () {
   if (window.supabase) { init(); return; }
   var s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  /* 自托管(同源)替换被墙/极慢的 jsdelivr;npmmirror 禁代理此包,故落本地 public/vendor */
+  s.src = '/public/vendor/supabase.min.js';
   s.onload = init;
   document.head.appendChild(s);
 

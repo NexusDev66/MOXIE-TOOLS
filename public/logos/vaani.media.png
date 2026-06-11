@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Favicon: the speech-bubbles cluster from the new lockup. The
+         full lockup is too wide for a 16×16 tab icon; the bubbles
+         alone read as a confident bright-red mark at any size. Both
+         standard favicon and iOS home-screen icon use the same asset. -->
+    <link rel="icon" type="image/svg+xml" href="/brand/vaani-bubbles.svg" />
+    <link rel="apple-touch-icon" href="/brand/vaani-bubbles.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Theme color hooks the URL bar (mobile Safari, Chrome on Android)
+         to the cream background. Avoids the jarring white flash on
+         first paint. -->
+    <meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#FF2828" media="(prefers-color-scheme: dark)" />
+
+    <title>VaaniStudio</title>
+    <meta name="description" content="Dub video into 40+ languages with cloned voices, scene-aware translation, and optional lip-sync. Built for creators, broadcasters, and studios." />
+
+    <!-- ────────────────────────────────────────────────────────────
+         Open Graph + Twitter — controls how the site previews when
+         pasted into iMessage, Slack, WhatsApp, X, LinkedIn, Discord,
+         etc. The OG image lives in /brand/og-image.png and is a
+         1200×630 PNG (the Facebook-mandated dimensions, every other
+         platform respects them too). Built once, served immutable.
+         ──────────────────────────────────────────────────────────── -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="Vaani" />
+    <meta property="og:title"       content="VaaniStudio" />
+    <meta property="og:description" content="Dub video into 40+ languages with cloned voices, scene-aware translation, and optional lip-sync." />
+    <meta property="og:url"         content="https://app2.vaani.media" />
+    <meta property="og:image"       content="https://app2.vaani.media/brand/og-image.png" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale"      content="en_US" />
+
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="VaaniStudio" />
+    <meta name="twitter:description" content="Dub video into 40+ languages with cloned voices and scene-aware translation." />
+    <meta name="twitter:image"       content="https://app2.vaani.media/brand/og-image.png" />
+
+    <!-- ────────────────────────────────────────────────────────────
+         Type stack.
+         Display: Bagnard (Sébastien Sanfilippo, OFL). Self-hosted.
+         Sans:    Bagnard Sans (same designer's companion). Self-hosted.
+                  Inter loads as a tested fallback for any glyph that
+                  Bagnard Sans doesn't cover (it's basic Latin only).
+         Mono:    JetBrains Mono — technical tags.
+         Indic:   Noto Sans <Script> for native rendering of Malayalam,
+                  Tamil, Telugu, Kannada, Bengali, Gujarati, Gurmukhi,
+                  Oriya, Devanagari (Hindi/Marathi/Sanskrit).
+         ──────────────────────────────────────────────────────────── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="/fonts/Bagnard.otf"     as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="/fonts/BagnardSans.otf" as="font" type="font/otf" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Pixelify+Sans:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Kalam:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Allura&display=swap"
+    />
+
+    <!-- Razorpay — same checkout script as v1, same backend. -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script type="module" crossorigin src="/assets/index-Bhan2cBJ.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-BYbx6iT9.js">
+    <link rel="modulepreload" crossorigin href="/assets/api-BRJ9Lu9Q.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DbOpAcW4.css">
+  </head>
+  <body class="bg-cream-100 text-ink-700 antialiased">
+    <div id="root"></div>
+  </body>
+</html>

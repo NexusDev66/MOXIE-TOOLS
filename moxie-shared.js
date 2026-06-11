@@ -3,10 +3,11 @@
   function injectVisitLink(row) {
     if (!row || row.classList.contains('featured-empty')) return;
     var img = row.querySelector('.plogo.has-img img, .top1-logo img');
-    if (!img || !img.src) return;
-    var match = img.src.match(/domain=([^&]+)/);
-    if (!match) return;
-    var domain = match[1];
+    if (!img) return;
+    var domain = img.getAttribute('data-domain')
+      || (img.src.match(/domain=([^&]+)/) || [])[1]
+      || (img.src.match(/ip3\/([^/]+)\.ico/) || [])[1];
+    if (!domain) return;
     var url = 'https://' + domain + '?ref=moxie';
     var anchor =
       row.querySelector('.ptop') ||
@@ -198,11 +199,13 @@
   function wireProductVisitButtons() {
     var hero = document.querySelector('.prod-hero, .product-hero, .pdetail-hero, body');
     if (!hero) return;
-    var img = document.querySelector('.product-hero img, .pdetail-logo img, .ptop-logo img, main img[src*="favicons"]');
+    var img = document.querySelector('.product-hero img, .pdetail-logo img, .ptop-logo img, main img[src*="favicons"], main img[src*="ip3/"], main img[data-domain]');
     if (!img) return;
-    var match = img.src.match(/domain=([^&]+)/);
-    if (!match) return;
-    var url = 'https://' + match[1] + '?ref=moxie';
+    var domain = img.getAttribute('data-domain')
+      || (img.src.match(/domain=([^&]+)/) || [])[1]
+      || (img.src.match(/ip3\/([^/]+)\.ico/) || [])[1];
+    if (!domain) return;
+    var url = 'https://' + domain + '?ref=moxie';
     document.querySelectorAll('a').forEach(function (a) {
       var txt = (a.textContent || '').trim();
       if (/访问产品/.test(txt) && (a.getAttribute('href') || '') === '#') {
@@ -319,7 +322,63 @@
     });
   }
 
+  /* ───────── logo 本地化 + 兜底
+     大陆访问:Google favicon(www.google.com/s2/favicons)被墙,运行时把这类 <img>
+     改写成自托管 /public/logos/<domain>.png(同源,GFW 绕开);取不到则首字母兜底。
+     覆盖静态 <img>、JS 模板、JS .src= 赋值(MutationObserver 接 src 变更),全站零页面改动。 ───────── */
+  function moxieLogoFallback(img) {
+    if (!img || img.dataset.logoFallback) return;
+    img.dataset.logoFallback = '1';
+    var box = img.parentElement;
+    var ch = ((img.getAttribute('alt') || '').trim().charAt(0) || '?').toUpperCase();
+    if (box && box.classList && box.classList.contains('plogo')) {
+      box.classList.remove('has-img');
+      box.textContent = ch;
+      box.style.fontWeight = '700';
+      box.style.fontSize = '14px';
+    } else {
+      img.src = 'data:image/svg+xml,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128">'
+        + '<rect width="128" height="128" rx="26" fill="#EFEDE7"/>'
+        + '<text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" '
+        + 'font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="62" font-weight="700" fill="#A89F8C">' + ch + '</text></svg>');
+    }
+  }
+  window.moxieLogoFallback = moxieLogoFallback;
+
+  function moxieLocalize(img) {
+    if (!img || img.tagName !== 'IMG') return;
+    var m = (img.getAttribute('src') || '').match(/s2\/favicons\?domain=([^&"']+)/);
+    if (!m) return;                       // 不是 Google favicon(含已本地化的)→ 跳过,天然防循环
+    var domain = decodeURIComponent(m[1]);
+    img.setAttribute('data-domain', domain);
+    if (!img.dataset.logoErrWired) { img.dataset.logoErrWired = '1'; img.onerror = function () { moxieLogoFallback(img); }; }
+    img.setAttribute('src', '/public/logos/' + domain + '.png');
+  }
+  function moxieLocalizeLogos(root) {
+    (root || document).querySelectorAll('img[src*="s2/favicons"]').forEach(moxieLocalize);
+  }
+  window.moxieLocalizeLogos = moxieLocalizeLogos;
+  try {
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        var mu = muts[i];
+        if (mu.type === 'attributes') { if (mu.target && mu.target.tagName === 'IMG') moxieLocalize(mu.target); }
+        else if (mu.addedNodes) {
+          for (var j = 0; j < mu.addedNodes.length; j++) {
+            var n = mu.addedNodes[j];
+            if (n.nodeType !== 1) continue;
+            if (n.tagName === 'IMG') moxieLocalize(n);
+            else if (n.querySelectorAll) n.querySelectorAll('img[src*="s2/favicons"]').forEach(moxieLocalize);
+          }
+        }
+      }
+    }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
+  } catch (e) {}
+  moxieLocalizeLogos();                    // 立即处理已在 DOM 里的静态 favicon,尽早取消 Google 请求
+
   function run() {
+    moxieLocalizeLogos();
     document.querySelectorAll('.prow, .top1-card, .pick-mini').forEach(injectVisitLink);
     highlightActiveNav();
     wireVotes();
