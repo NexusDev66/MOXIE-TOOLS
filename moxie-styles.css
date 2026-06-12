@@ -268,21 +268,22 @@
     content: "";
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: -20px;
     transform: translateY(-50%);
     width: 120px;
     height: 120px;
     background-image: var(--lg);
-    background-size: contain;
-    background-repeat: no-repeat;
+    background-size: cover;
     background-position: center;
-    filter: blur(7px);          /* 轻模糊:仍能看出图标轮廓 */
+    /* Toolify 同款:不模糊,靠遮罩从右上→左下渐隐,轮廓清晰但柔和 */
+    -webkit-mask-image: linear-gradient(225deg, #000, transparent 70%);
+    mask-image: linear-gradient(225deg, #000, transparent 70%);
     opacity: 0;
-    transition: opacity .35s ease;
+    transition: opacity .3s ease;
     z-index: 0;
     pointer-events: none;
   }
-  .prow:hover::before { opacity: 0.5; }
+  .prow:hover::before { opacity: 0.35; }
   .prow > *, .blog-card > * { position: relative; z-index: 1; }
 
   /* Magic UI BorderBeam 已移除 */
