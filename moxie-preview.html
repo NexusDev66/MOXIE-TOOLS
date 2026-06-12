@@ -437,19 +437,15 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
         .news-head-live{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#F53F3F;font-weight:600;margin-left:6px;vertical-align:middle}
         .news-head-live .d{width:6px;height:6px;border-radius:50%;background:#F53F3F;animation:npulse 1.6s infinite}
         @keyframes npulse{0%{box-shadow:0 0 0 0 rgba(245,63,63,.5)}70%{box-shadow:0 0 0 5px rgba(245,63,63,0)}100%{box-shadow:0 0 0 0 rgba(245,63,63,0)}}
-        .news-list{display:flex;flex-direction:column}
-        .news-item{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);text-decoration:none}
-        .news-item::before{content:'';flex-shrink:0;margin-top:6px;width:5px;height:5px;border-radius:50%;background:#F53F3F;opacity:.7}
-        .news-item:first-child{padding-top:0}
-        .news-item:last-child{border-bottom:0;padding-bottom:0}
-        .news-item:hover .news-title{color:var(--accent-d)}
-        .news-tag{flex-shrink:0;font-size:10px;color:var(--ink-3);font-weight:600;margin-top:1px}
-        .news-score{flex-shrink:0;font-family:var(--mono);font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:4px;margin-top:1px}
-        .news-score.s-high{background:var(--accent-soft);color:var(--accent-d)}
-        .news-score.s-mid{background:#E8F1FF;color:#2563EB}
-        .news-score.s-low{background:var(--bg-soft);color:var(--ink-2)}
-        .news-title{flex:1;font-size:12.5px;color:var(--ink);line-height:1.45}
-        .news-time{flex-shrink:0;font-size:10.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-top:1px}
+        /* Toolify「AI 新闻」编号榜格式 */
+        .news-rank{list-style:none;counter-reset:nr;margin:0;padding:0}
+        .news-rank li{counter-increment:nr;display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-2)}
+        .news-rank li:first-child{padding-top:0}
+        .news-rank li:last-child{border-bottom:0;padding-bottom:0}
+        .news-rank li::before{content:counter(nr);font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ink-3);flex-shrink:0;min-width:15px;margin-top:1px;text-align:center}
+        .news-rank li:nth-child(-n+3)::before{color:var(--accent-d)}
+        .news-rank a{font-size:12.5px;line-height:1.5;color:var(--ink-1);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .news-rank a:hover{color:var(--accent-d)}
       </style>
       <div class="assistant-card">
         <div class="assistant-eyebrow">
@@ -502,17 +498,16 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
 
       <div class="side-block">
         <div class="sec-label">
-          <span>每日 AI 快讯热闻 <span class="news-head-live"><span class="d"></span>实时</span></span>
-          <a href="moxie-news.html" class="all-link" style="font-size:11px">更多 →</a>
+          <span>🗞 AI 新闻</span>
+          <a href="moxie-news.html" class="all-link" style="font-size:11px">查看更多 →</a>
         </div>
-        <nav class="news-list" id="newsList">
-          <a class="news-item" href="#"><span class="news-tag">大模型</span><span class="news-title">OpenAI 据传下月发布新一代推理模型,主打 Agent 长任务</span><span class="news-time">1h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">编程</span><span class="news-title">Anthropic Claude 代码能力更新,SWE-bench 再创新高</span><span class="news-time">3h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">视频</span><span class="news-title">快手可灵上线 2.0,运动一致性大幅提升</span><span class="news-time">5h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">国产</span><span class="news-title">阿里通义千问开源新尺寸模型,中文长文更强</span><span class="news-time">7h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">融资</span><span class="news-title">某国产 Agent 公司完成新一轮融资,估值翻倍</span><span class="news-time">9h</span></a>
-          <a class="news-item" href="#"><span class="news-tag">政策</span><span class="news-title">多地出台 AIGC 内容标识新规,平台需显著标注</span><span class="news-time">12h</span></a>
-        </nav>
+        <ol class="news-rank" id="newsList">
+          <li><a href="#">OpenAI 据传下月发布新一代推理模型，主打 Agent 长任务</a></li>
+          <li><a href="#">Anthropic Claude 代码能力更新，SWE-bench 再创新高</a></li>
+          <li><a href="#">快手可灵上线 2.0，运动一致性大幅提升</a></li>
+          <li><a href="#">阿里通义千问开源新尺寸模型，中文长文更强</a></li>
+          <li><a href="#">多地出台 AIGC 内容标识新规，平台需显著标注</a></li>
+        </ol>
         <script>
           /* 快讯接真源:DB 就绪后读 moxie_news 渲染(cron 拉 RSS 写入);失败/空则保留占位并让占位可点搜索。 */
           (function(){
@@ -520,9 +515,9 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
             function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
             function rel(s){ if(!s) return ''; var d=new Date(s); if(isNaN(d)) return ''; var m=(Date.now()-d)/6e4; if(m<60) return Math.max(1,Math.round(m))+'分钟'; var h=m/60; if(h<24) return Math.round(h)+'h'; var dd=h/24; return Math.round(dd)+'d'; }
             function fallbackClickable(){
-              box.querySelectorAll('.news-item').forEach(function(a){
+              box.querySelectorAll('a').forEach(function(a){
                 if(a.getAttribute('href') && a.getAttribute('href')!=='#') return;
-                var t=(a.querySelector('.news-title')||{}).textContent||'';
+                var t=a.textContent||'';
                 a.href='https://www.bing.com/search?q='+encodeURIComponent(t.trim()); a.target='_blank'; a.rel='noopener';
               });
             }
@@ -533,18 +528,10 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
                 var res = await window.MoxieDB.news({ limit: 40 });
                 var items = res && res.data;
                 if (!items || !items.length) { fallbackClickable(); return; }
-                // 跟新闻中心一致:按重要性(score)排,取前 6 条
-                items = items.slice().sort(function(a,b){ return (b.score||0)-(a.score||0); }).slice(0, 6);
-                function scl(v){ return v==null?'s-low':(v>=7?'s-high':(v>=5.5?'s-mid':'s-low')); }
+                // Toolify「AI 新闻」格式:按重要性排的编号榜,取前 8 条(序号+标题)
+                items = items.slice().sort(function(a,b){ return (b.score||0)-(a.score||0); }).slice(0, 8);
                 box.innerHTML = items.map(function(n){
-                  var time = rel(n.published_at);
-                  var sc = (n.score!=null) ? '<span class="news-score '+scl(n.score)+'">'+Number(n.score).toFixed(1)+'</span>' : '';
-                  var cat = (n.category && n.category[0]) ? n.category[0] : (n.tag||n.source||'');
-                  return '<a class="news-item" href="/news/'+n.id+'">'
-                    + sc
-                    + '<span class="news-tag">'+esc(cat)+'</span>'
-                    + '<span class="news-title">'+esc(n.title)+'</span>'
-                    + '<span class="news-time">'+esc(time)+'</span></a>';
+                  return '<li><a href="/news/'+n.id+'">'+esc(n.title)+'</a></li>';
                 }).join('');
               } catch(e){ fallbackClickable(); }
             });
