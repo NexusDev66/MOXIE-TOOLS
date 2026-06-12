@@ -307,9 +307,7 @@ function buildNewsPage(n) {
 <meta property="og:type" content="article">
 <meta property="og:title" content="${esc(n.title)} · MOXIE">
 <meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${canonical}">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/moxie-styles.css?v=20260608-02">
+<meta property="og:url" content="${canonical}"><link rel="stylesheet" href="/moxie-styles.css?v=20260608-02">
 <script type="application/ld+json">${jsonLd(ld)}</script>
 <style>
   .nv{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center}
