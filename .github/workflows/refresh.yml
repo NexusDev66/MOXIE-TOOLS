@@ -71,3 +71,22 @@ jobs:
             git commit -m "chore(refresh): 每日重算权重 + 重渲染 + sitemap [skip ci]"
             git push
           fi
+
+      - name: 同步到 GitHub Pages 站(nexusdev66.github.io · 大陆可访问)
+        run: |
+          git clone --depth 1 "https://x-access-token:${{ secrets.PAGES_PAT }}@github.com/NexusDev66/nexusdev66.github.io.git" /tmp/pages
+          cp moxie-*.html moxie-styles.css moxie-shared.js moxie-supabase.js sitemap.xml robots.txt /tmp/pages/ 2>/dev/null || true
+          cp moxie-preview.html /tmp/pages/index.html
+          rm -rf /tmp/pages/public /tmp/pages/tools /tmp/pages/articles /tmp/pages/news
+          cp -r public tools articles news /tmp/pages/
+          touch /tmp/pages/.nojekyll
+          cd /tmp/pages
+          git config user.name "moxie-bot"
+          git config user.email "bot@latemai.local"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Pages 站无变化"
+          else
+            git commit -m "sync: 来自 moxie-main 每日刷新"
+            git push
+          fi
