@@ -1,0 +1,70 @@
+name: Weekly Enrich (详情内容重抓 + 重渲染 + 同步)
+
+# 每周重新抓产品官网 + 重生成 detail(点评/核心特点/价格)→ 重渲染 → 提交 → 同步到大陆 Pages 站。
+# 详情内容本质稳定,故每周一次即可(每日只更新排名/快讯,见 refresh.yml)。
+# 需 Secrets: SUPABASE_SERVICE_ROLE_KEY / DEEPSEEK_API_KEY / PAGES_PAT
+#    Variables: NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY / SITE_BASE_URL
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'   # 每周一 UTC 03:00 = 北京 11:00(错开 discover-weekly 02:00 / refresh 01:00)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      SITE_BASE_URL: ${{ vars.SITE_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 重抓官网 + 重生成详情(enrich-detail --fetch,抓不到的保留原值)
+        run: node cli/enrich-detail.js --fetch
+        continue-on-error: true
+
+      - name: 重渲染产品/文章页(prerender)
+        run: node cli/prerender.js
+
+      - name: 重生成 sitemap + robots
+        run: node cli/sitemap.js
+
+      - name: 有变化则提交
+        run: |
+          git config user.name "moxie-bot"
+          git config user.email "bot@latemai.local"
+          git add tools/ articles/ news/ sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "无变化,跳过提交"
+          else
+            git commit -m "chore(enrich): 每周详情重抓 + 重渲染 [skip ci]"
+            git push
+          fi
+
+      - name: 同步到 GitHub Pages 站(nexusdev66.github.io · 大陆可访问)
+        run: |
+          git clone --depth 1 "https://x-access-token:${{ secrets.PAGES_PAT }}@github.com/NexusDev66/nexusdev66.github.io.git" /tmp/pages
+          cp moxie-*.html moxie-styles.css moxie-shared.js moxie-supabase.js sitemap.xml robots.txt /tmp/pages/ 2>/dev/null || true
+          cp moxie-preview.html /tmp/pages/index.html
+          rm -rf /tmp/pages/public /tmp/pages/tools /tmp/pages/articles /tmp/pages/news
+          cp -r public tools articles news /tmp/pages/
+          touch /tmp/pages/.nojekyll
+          cd /tmp/pages
+          git config user.name "moxie-bot"
+          git config user.email "bot@latemai.local"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Pages 站无变化"
+          else
+            git commit -m "sync: 来自 moxie-main 每周详情更新"
+            git push
+          fi

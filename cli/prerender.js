@@ -167,6 +167,10 @@ function buildInfoList(p) {
     const d = new Date(p.created_at);
     if (!isNaN(d)) rows.push(['收录于', `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}`]);
   }
+  if (p.detail?.updated_at) {
+    const u = new Date(p.detail.updated_at);
+    if (!isNaN(u)) rows.push(['更新于', `${u.getFullYear()}.${String(u.getMonth() + 1).padStart(2, '0')}.${String(u.getDate()).padStart(2, '0')}`]);
+  }
   return '<div class="info-list">\n' +
     rows.map(([k, v]) => `            <div class="info-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('\n') +
     '\n          </div>';
