@@ -268,21 +268,21 @@
     content: "";
     position: absolute;
     top: 50%;
-    right: -10px;
+    right: 10px;
     transform: translateY(-50%);
-    width: 170px;
-    height: 170px;
+    width: 120px;
+    height: 120px;
     background-image: var(--lg);
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
-    border-radius: 50%;
-    filter: blur(38px);
+    filter: blur(7px);          /* 轻模糊:仍能看出图标轮廓 */
     opacity: 0;
     transition: opacity .35s ease;
     z-index: 0;
     pointer-events: none;
   }
-  .prow:hover::before { opacity: 0.45; }
+  .prow:hover::before { opacity: 0.5; }
   .prow > *, .blog-card > * { position: relative; z-index: 1; }
 
   /* Magic UI BorderBeam 已移除 */
