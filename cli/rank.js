@@ -90,7 +90,11 @@ async function main() {
 
   let n = 0;
   for (const s of scored) {
-    await sb(`/moxie_products?id=eq.${s.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { weight_score: s.parts.total } });
+    // 写回带重试:142 个 PATCH 里任一偶发失败(Supabase 5xx/限流)不该让整个 refresh 挂掉
+    for (let t = 1; ; t++) {
+      try { await sb(`/moxie_products?id=eq.${s.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { weight_score: s.parts.total } }); break; }
+      catch (e) { if (t >= 3) throw e; await new Promise((r) => setTimeout(r, 400 * t)); }
+    }
     n++;
   }
   console.log(`\n✓ 已更新 ${n} 个 weight_score。UI 按 weight_score 降序即生效。\n`);
