@@ -262,19 +262,27 @@
     transition: opacity .25s ease;
     z-index: 0;
   }
-  /* 列表行 hover:Toolify 同款右侧渐变光晕(蓝→紫→粉→桃),hover 淡入 */
+  /* 列表行 hover:Toolify 同款——工具自身 logo 的模糊放大版做右侧光晕(颜色随各 logo 而变) */
+  .prow { overflow: hidden; }
   .prow::before {
     content: "";
     position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(87deg, transparent 26%, rgba(72,124,248,0.10) 50%, rgba(141,103,234,0.12) 66%, rgba(194,142,240,0.13) 82%, rgba(239,154,143,0.15) 100%);
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+    width: 170px;
+    height: 170px;
+    background-image: var(--lg);
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    filter: blur(38px);
     opacity: 0;
-    transition: opacity .3s ease;
+    transition: opacity .35s ease;
     z-index: 0;
+    pointer-events: none;
   }
-  .prow:hover::before { opacity: 1; }
+  .prow:hover::before { opacity: 0.45; }
   .prow > *, .blog-card > * { position: relative; z-index: 1; }
 
   /* Magic UI BorderBeam 已移除 */

@@ -32,7 +32,7 @@
 
 <!-- MiSans ExtraLight · 小米开源中文超细体 (商用免费 · jsDelivr CDN 分块按需加载) -->
 <link rel="stylesheet" href="https://registry.npmmirror.com/misans-webfont/4.3.1/files/misans/misans-extralight/result.min.css">
-<link rel="stylesheet" href="moxie-styles.css?v=20260612-04">
+<link rel="stylesheet" href="moxie-styles.css?v=20260612-05">
 <script src="moxie-supabase.js?v=20260612-01"></script>
 <script src="moxie-shared.js?v=20260611-02" defer></script>
 <script>
@@ -1009,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
       return;
     }
     box.innerHTML = data.map((p, i) => `
-      <a class="prow" href="/tools/${encodeURIComponent(p.slug)}">
+      <a class="prow" href="/tools/${encodeURIComponent(p.slug)}" style="--lg:url('/public/logos/${p.domain}.png')">
         <span class="prank-cell"><span class="hash">#</span>${String(i+1).padStart(2,'0')}</span>
         <div class="plogo has-img"><img src="/public/logos/${p.domain}.png" data-domain="${p.domain}" alt="${escAttr(p.name)}" onerror="moxieLogoFallback(this)" /></div>
         <div class="pmain">
@@ -1056,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
 
     function renderRows(data) {
       box.innerHTML = data.map((p, i) => `
-        <a class="prow" href="/tools/${encodeURIComponent(p.slug)}">
+        <a class="prow" href="/tools/${encodeURIComponent(p.slug)}" style="--lg:url('/public/logos/${p.domain}.png')">
           <span class="prank-cell"><span class="hash">#</span>${String(i+1).padStart(2,'0')}</span>
           <div class="plogo has-img"><img src="/public/logos/${p.domain}.png" data-domain="${p.domain}" alt="${escAttr(p.name)}" onerror="moxieLogoFallback(this)" /></div>
           <div class="pmain">
@@ -1385,7 +1385,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
   var ALL = [];
   function esc(s){ return String(s==null?'':s).replace(/[<>&"']/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function rowHTML(p, i){
-    return '<a class="prow" href="/tools/' + encodeURIComponent(p.slug) + '">'
+    return '<a class="prow" style="--lg:url(/public/logos/' + p.domain + '.png)" href="/tools/' + encodeURIComponent(p.slug) + '">'
       + '<span class="prank-cell"><span class="hash">#</span>' + String(i+1).padStart(2,'0') + '</span>'
       + '<div class="plogo has-img"><img src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + esc(p.name) + '" onerror="moxieLogoFallback(this)"/></div>'
       + '<div class="pmain"><div class="ptop"><span class="pname">' + esc(p.name) + '</span>'
