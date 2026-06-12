@@ -24,6 +24,7 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
       SITE_BASE_URL: ${{ vars.SITE_BASE_URL }}
     steps:
       - uses: actions/checkout@v4
@@ -41,6 +42,10 @@ jobs:
 
       - name: 抓取每日 AI 快讯(RSS→moxie_news,源失败不阻塞)
         run: node cli/fetch-news.js
+        continue-on-error: true
+
+      - name: 快讯打分+分类+中文摘要(只处理新抓的,失败不阻塞)
+        run: node cli/score-news.js
         continue-on-error: true
 
       - name: 拉 Tranco 流量排名(权重真信号,失败不阻塞)

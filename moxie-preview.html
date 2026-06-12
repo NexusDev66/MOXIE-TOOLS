@@ -32,8 +32,8 @@
 
 <!-- MiSans ExtraLight · 小米开源中文超细体 (商用免费 · jsDelivr CDN 分块按需加载) -->
 <link rel="stylesheet" href="https://registry.npmmirror.com/misans-webfont/4.3.1/files/misans/misans-extralight/result.min.css">
-<link rel="stylesheet" href="moxie-styles.css?v=20260608-02">
-<script src="moxie-supabase.js?v=20260611-01"></script>
+<link rel="stylesheet" href="moxie-styles.css?v=20260612-03">
+<script src="moxie-supabase.js?v=20260612-01"></script>
 <script src="moxie-shared.js?v=20260611-02" defer></script>
 <script>
 /* 大陆 logo 兜底:工具 logo 图(DuckDuckGo icons,大陆可直连;个别取不到时)加载失败 → 换成首字母块,永不裂图。
@@ -444,6 +444,10 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
         .news-item:last-child{border-bottom:0;padding-bottom:0}
         .news-item:hover .news-title{color:var(--accent-d)}
         .news-tag{flex-shrink:0;font-size:10px;color:var(--ink-3);font-weight:600;margin-top:1px}
+        .news-score{flex-shrink:0;font-family:var(--mono);font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:4px;margin-top:1px}
+        .news-score.s-high{background:var(--accent-soft);color:var(--accent-d)}
+        .news-score.s-mid{background:#E8F1FF;color:#2563EB}
+        .news-score.s-low{background:var(--bg-soft);color:var(--ink-2)}
         .news-title{flex:1;font-size:12.5px;color:var(--ink);line-height:1.45}
         .news-time{flex-shrink:0;font-size:10.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-top:1px}
       </style>
@@ -526,13 +530,19 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
             window.moxieWhenDBReady(async function(db){
               try {
                 if (!db || !box || !window.MoxieDB || !window.MoxieDB.news) { fallbackClickable(); return; }
-                var res = await window.MoxieDB.news({ limit: 5 });
+                var res = await window.MoxieDB.news({ limit: 40 });
                 var items = res && res.data;
                 if (!items || !items.length) { fallbackClickable(); return; }
+                // 跟新闻中心一致:按重要性(score)排,取前 6 条
+                items = items.slice().sort(function(a,b){ return (b.score||0)-(a.score||0); }).slice(0, 6);
+                function scl(v){ return v==null?'s-low':(v>=7?'s-high':(v>=5.5?'s-mid':'s-low')); }
                 box.innerHTML = items.map(function(n){
                   var time = rel(n.published_at);
+                  var sc = (n.score!=null) ? '<span class="news-score '+scl(n.score)+'">'+Number(n.score).toFixed(1)+'</span>' : '';
+                  var cat = (n.category && n.category[0]) ? n.category[0] : (n.tag||n.source||'');
                   return '<a class="news-item" href="/news/'+n.id+'">'
-                    + '<span class="news-tag">'+esc(n.tag||n.source||'')+'</span>'
+                    + sc
+                    + '<span class="news-tag">'+esc(cat)+'</span>'
                     + '<span class="news-title">'+esc(n.title)+'</span>'
                     + '<span class="news-time">'+esc(time)+'</span></a>';
                 }).join('');
@@ -1000,7 +1010,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     if (!box) return;
     if (!db) {
       box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">
-        Supabase 还没配置 — 打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key
+        Supabase 还没配置 — 打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key
       </div>`;
       return;
     }
@@ -1021,8 +1031,8 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
             ${p.verified ? '<span class="verified-tag">子墨测过</span>' : ''}${domBadge(p)}
           </div>
           <div class="pdesc">${escHtml(p.tagline)}</div>
+          <div class="ptags">${(p.tags||[]).slice(0,3).map(t => `<span class="ptag">${escHtml(t)}</span>`).join('')}</div>
         </div>
-        <div class="ptags">${(p.tags||[]).slice(0,2).map(t => `<span class="ptag">${escHtml(t)}</span>`).join('')}</div>
         <span class="pprice">${escHtml(p.price_label || '免费')}</span>
         <div class="pvote" data-product-id="${p.id}"><span class="tri">▲</span><span class="num">${p.vote_count}</span></div>
       </a>
@@ -1068,8 +1078,8 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
               ${p.verified ? '<span class="verified-tag">子墨测过</span>' : ''}${domBadge(p)}
             </div>
             <div class="pdesc">${escHtml(p.tagline)}</div>
+            <div class="ptags">${(p.tags||[]).slice(0,3).map(t => `<span class="ptag">${escHtml(t)}</span>`).join('')}</div>
           </div>
-          <div class="ptags">${(p.tags||[]).slice(0,2).map(t => `<span class="ptag">${escHtml(t)}</span>`).join('')}</div>
           <span class="pprice">${escHtml(p.price_label || '免费')}</span>
           <div class="pvote" data-product-id="${p.id}"><span class="tri">▲</span><span class="num">${p.vote_count}</span></div>
         </a>
@@ -1393,8 +1403,8 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
       + '<div class="plogo has-img"><img src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + esc(p.name) + '" onerror="moxieLogoFallback(this)"/></div>'
       + '<div class="pmain"><div class="ptop"><span class="pname">' + esc(p.name) + '</span>'
       + (p.verified ? '<span class="verified-tag">子墨测过</span>' : '') + domBadge(p) + '</div>'
-      + '<div class="pdesc">' + esc(p.tagline) + '</div></div>'
-      + '<div class="ptags">' + (p.tags||[]).slice(0,2).map(function(t){ return '<span class="ptag">' + esc(t) + '</span>'; }).join('') + '</div>'
+      + '<div class="pdesc">' + esc(p.tagline) + '</div>'
+      + '<div class="ptags">' + (p.tags||[]).slice(0,3).map(function(t){ return '<span class="ptag">' + esc(t) + '</span>'; }).join('') + '</div></div>'
       + '<span class="pprice">' + esc(p.price_label || '免费') + '</span>'
       + '<div class="pvote" data-product-id="' + p.id + '"><span class="tri">▲</span><span class="num">' + p.vote_count + '</span></div>'
       + '</a>';

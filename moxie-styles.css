@@ -1772,7 +1772,7 @@
 
   .prow {
     display: grid;
-    grid-template-columns: 48px 40px 1fr 200px 80px 64px;
+    grid-template-columns: 48px 40px 1fr 80px 64px;
     gap: 16px;
     padding: 18px 0;
     border-bottom: 1px solid var(--line-3);
@@ -1780,10 +1780,11 @@
     transition: background .12s;
     align-items: center;
   }
-  /* 标签 pills (替换原底座列) */
+  /* 标签 #pills —— 移到描述正下方(Toolify 版式),左对齐 */
   .ptags {
     display: flex; flex-wrap: wrap; gap: 5px;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    margin-top: 7px;
   }
   .ptag {
     display: inline-block;
@@ -1795,12 +1796,11 @@
     white-space: nowrap;
     font-weight: 400;
   }
-  .ptag + .ptag::before {
-    content: "·";
+  .ptag::before {
+    content: "#";                              /* Toolify 风格 # 前缀 */
     color: var(--ink-3);
-    margin-right: 6px;
   }
-  .ptags { gap: 0; }
+  .ptags { gap: 7px; }
   .prow:hover { background: var(--bg-2); }
   .prank-cell {
     font-size: var(--text-xs);
@@ -1854,9 +1854,10 @@
     font-size: var(--text-sm);
     color: var(--ink-1);
     line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;            /* 最多 2 行,容纳更长描述 */
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     font-weight: 400;
   }
   .pbase {

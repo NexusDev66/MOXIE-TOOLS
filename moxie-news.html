@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
-<title>每日 AI 快讯热闻 · MOXIE</title>
+<title>AI 新闻中心 · MOXIE</title>
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
-<script src="moxie-supabase.js?v=20260611-01"></script>
+<script src="moxie-supabase.js?v=20260612-01"></script>
 <script src="moxie-shared.js?v=20260611-02" defer></script>
 <style>
   .blog-hero {
@@ -329,23 +329,82 @@
   </div>
 </header>
 
-<section class="blog-hero">
+<style>
+  /* ── AI 新闻中心(Toolify 同款版式)── */
+  .news-hero{padding:36px 0 8px}
+  .crumb{font-size:12.5px;color:var(--ink-2);margin-bottom:14px;display:flex;gap:8px;align-items:center}
+  .crumb a{color:var(--ink-2)} .crumb a:hover{color:var(--accent)} .crumb span{color:var(--ink-3)}
+  .news-hero h1{font-family:var(--display);font-size:var(--text-2xl);font-weight:800;letter-spacing:-.02em}
+  .news-sub{color:var(--ink-1);font-size:14px;line-height:1.7;margin-top:10px;max-width:680px}
+  .news-sub b{color:var(--accent-d);font-weight:700}
+  .news-layout{display:grid;grid-template-columns:1fr 300px;gap:40px;padding:20px 0 80px;align-items:start}
+  .news-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:18px}
+  .news-tabs{display:flex;gap:2px}
+  .ntab{font-size:14px;font-weight:600;color:var(--ink-2);padding:6px 12px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:.15s}
+  .ntab:hover{color:var(--ink)} .ntab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .news-controls{display:flex;gap:8px;flex-wrap:wrap}
+  .news-search,.news-select{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:7px 11px;background:#fff;color:var(--ink);font-family:var(--sans);outline:none}
+  .news-search:focus,.news-select:focus{border-color:var(--accent)}
+  .news-search{width:160px}
+  .news-card{display:block;padding:20px;border:1px solid var(--line);border-radius:var(--r-lg);margin-bottom:14px;text-decoration:none;color:inherit;transition:.16s;background:#fff}
+  .news-card:hover{border-color:var(--ink-3);box-shadow:var(--shadow);transform:translateY(-1px)}
+  .nc-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px}
+  .nc-score{font-family:var(--mono);font-weight:700;font-size:12px;padding:2px 7px;border-radius:6px;flex-shrink:0}
+  .nc-score.s-high{background:var(--accent-soft);color:var(--accent-d)}
+  .nc-score.s-mid{background:#E8F1FF;color:#2563EB}
+  .nc-score.s-low,.nc-score.s-none{background:var(--bg-soft);color:var(--ink-2)}
+  .nc-cat{font-size:11.5px;color:var(--ink-2);background:var(--bg-soft);border:1px solid var(--line-2);border-radius:5px;padding:2px 8px}
+  .nc-title{font-size:16px;font-weight:700;line-height:1.45;color:var(--ink);font-family:var(--display)}
+  .news-card:hover .nc-title{color:var(--accent)}
+  .nc-sum{font-size:13.5px;line-height:1.65;color:var(--ink-1);margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .nc-foot{display:flex;justify-content:space-between;gap:10px;margin-top:12px;font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .news-side{position:sticky;top:88px;display:flex;flex-direction:column;gap:18px}
+  .side-block{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:18px}
+  .side-block h3{font-size:14px;font-weight:700;margin-bottom:6px;font-family:var(--display)}
+  .rank-list{list-style:none;counter-reset:r;margin:0;padding:0}
+  .rank-list li{counter-increment:r;display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:13px;line-height:1.5}
+  .rank-list li:last-child{border-bottom:none}
+  .rank-list li::before{content:counter(r);color:var(--ink-3);font-family:var(--mono);font-weight:600;flex-shrink:0;min-width:14px}
+  .rank-list a{color:var(--ink-1);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .rank-list a:hover{color:var(--accent)}
+  .news-empty{padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px}
+  @media(max-width:900px){.news-layout{grid-template-columns:1fr;gap:0}.news-side{display:none}.news-search{width:130px}}
+</style>
+
+<section class="news-hero">
   <div class="container">
-    <div class="eyebrow">MOXIE 快讯</div>
-    <h1>每日 AI 快讯热闻</h1>
-    <p>实时聚合量子位、雷锋网等中文 AI 媒体,每天自动更新。点击直达原文。</p>
+    <nav class="crumb"><a href="moxie-preview.html">首页</a><span>›</span><span>AI 新闻中心</span></nav>
+    <h1>AI 新闻中心</h1>
+    <p class="news-sub">MOXIE 持续聚合并分析 AI 新闻,已收录 <b id="statTotal">—</b> 篇,标记 <b id="statImportant">—</b> 条重要报道(分数 ≥ 5.5)。从量子位、机器之心等可信来源聚合的最新 AI 资讯。</p>
   </div>
 </section>
 
 <div class="container">
-  <div class="blog-filter-row" id="newsFilter"></div>
-</div>
-
-<section class="blog-listing">
-  <div class="container" id="blogList">
-    <div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">加载快讯中…</div>
+  <div class="news-layout">
+    <div class="news-main">
+      <div class="news-toolbar">
+        <div class="news-tabs" id="newsTabs">
+          <button class="ntab active" data-range="day">每日</button>
+          <button class="ntab" data-range="week">每周</button>
+          <button class="ntab" data-range="month">每月</button>
+          <button class="ntab" data-range="year">每年</button>
+        </div>
+        <div class="news-controls">
+          <input id="newsSearch" class="news-search" type="text" placeholder="搜索新闻…">
+          <select id="newsSort" class="news-select"><option value="default">默认排序</option><option value="score">按分数</option><option value="time">按时间</option></select>
+          <select id="newsCat" class="news-select"><option value="">所有分类</option></select>
+        </div>
+      </div>
+      <div class="news-list" id="newsList"><div class="news-empty">加载新闻中…</div></div>
+    </div>
+    <aside class="news-side">
+      <div class="side-block">
+        <h3>🗞 AI 新闻 · 重要榜</h3>
+        <ol class="rank-list" id="newsRank"></ol>
+      </div>
+    </aside>
   </div>
-</section>
+</div>
 
 <footer>
   <div class="container">
@@ -424,55 +483,65 @@
   const tagClass = { '横评':'tag-review', '增长':'tag-growth', '手册':'tag-playbook', '选型':'tag-select' };
 
   window.moxieWhenDBReady(async (db) => {
-    const box = document.getElementById('blogList');
-    if (!db) { box.innerHTML = '<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>'; return; }
-    const { data, error } = await window.MoxieDB.news({ limit: 60 });
+    const listBox = document.getElementById('newsList');
+    if (!db) { listBox.innerHTML = '<div class="news-empty">Supabase 还没配置</div>'; return; }
+    const { data, error } = await window.MoxieDB.news({ limit: 200 });
     if (error || !data?.length) {
-      box.innerHTML = `<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">${error?'加载失败':'暂无快讯,稍后再来'}</div>`;
+      listBox.innerHTML = `<div class="news-empty">${error?'加载失败':'暂无新闻,稍后再来'}</div>`;
       return;
     }
-    function rel(s){ if(!s) return ''; const d=new Date(s); if(isNaN(d)) return ''; const m=(Date.now()-d)/6e4; if(m<60) return Math.max(1,Math.round(m))+'分钟前'; const h=m/60; if(h<24) return Math.round(h)+'小时前'; return Math.round(h/24)+'天前'; }
-    const css = `<style>
-      .blog-filter-row .cat-chip{cursor:pointer}
-      .news-feed{max-width:760px;margin:0 auto;display:flex;flex-direction:column}
-      .news-feed-item{display:flex;align-items:flex-start;gap:11px;padding:18px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
-      .news-feed-item:hover .nf-title{color:var(--accent)}
-      .nf-dot{flex-shrink:0;margin-top:7px;width:6px;height:6px;border-radius:50%;background:#F53F3F;opacity:.75}
-      .nf-body{flex:1;min-width:0}
-      .nf-top{display:flex;gap:8px;align-items:center;margin-bottom:5px}
-      .nf-tag{font-size:11px;color:#F53F3F;font-weight:600}
-      .nf-time{font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-      .nf-title{font-size:15.5px;line-height:1.5;color:var(--ink);font-weight:500}
-      .nf-sum{font-size:13px;line-height:1.65;color:var(--ink-2);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    </style>`;
-    // 来源筛选(真实计数 + 点击过滤)
-    const filterRow = document.getElementById('newsFilter');
-    const counts = {};
-    data.forEach(n => { const s = n.source || n.tag || '其他'; counts[s] = (counts[s] || 0) + 1; });
-    const sources = ['全部', ...Object.keys(counts)];
-    let active = '全部';
-    function renderList() {
-      const items = active === '全部' ? data : data.filter(n => (n.source || n.tag) === active);
-      box.innerHTML = css + `<div class="news-feed">` + items.map(n => `
-        <a class="news-feed-item" href="/news/${n.id}">
-          <span class="nf-dot"></span>
-          <div class="nf-body">
-            <div class="nf-top"><span class="nf-tag">${escH(n.tag||n.source||'')}</span><span class="nf-time">${escH(rel(n.published_at))}</span></div>
-            <div class="nf-title">${escH(n.title)}</div>
-            ${n.summary ? `<div class="nf-sum">${escH(n.summary)}</div>` : ''}
-          </div>
-        </a>`).join('') + `</div>`;
+    const all = data;
+    function rel(s){ if(!s) return ''; const d=new Date(s); if(isNaN(d)) return ''; const m=(Date.now()-d)/6e4; if(m<1) return '刚刚'; if(m<60) return Math.round(m)+'分钟前'; const h=m/60; if(h<24) return Math.round(h)+'小时前'; return Math.round(h/24)+'天前'; }
+    function scoreCls(v){ if(v==null) return 's-none'; if(v>=7) return 's-high'; if(v>=5.5) return 's-mid'; return 's-low'; }
+
+    // 头部统计:已收录 + 重要(≥5.5)
+    const important = all.filter(n => (n.score||0) >= 5.5).length;
+    document.getElementById('statTotal').textContent = all.length;
+    document.getElementById('statImportant').textContent = important;
+
+    // 右侧重要榜:按分数 Top 10
+    const ranked = [...all].sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,10);
+    document.getElementById('newsRank').innerHTML = ranked.map(n =>
+      `<li><a href="/news/${n.id}">${escH(n.summary_zh||n.title)}</a></li>`).join('');
+
+    // 分类下拉(来自真实数据)
+    const catSet = new Set(); all.forEach(n => (n.category||[]).forEach(c => catSet.add(c)));
+    const catSel = document.getElementById('newsCat');
+    [...catSet].forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; catSel.appendChild(o); });
+
+    // 状态 + 筛选
+    let range='day', sort='default', cat='', q='';
+    const RANGE_DAYS = { day:1, week:7, month:30, year:365 };
+    function apply(){
+      const cutoff = Date.now() - RANGE_DAYS[range]*864e5;
+      let list = all.filter(n => { const t = n.published_at? new Date(n.published_at).getTime():0; return !n.published_at || t>=cutoff; });
+      if (cat) list = list.filter(n => (n.category||[]).includes(cat));
+      if (q) { const k=q.toLowerCase(); list = list.filter(n => (n.title||'').toLowerCase().includes(k) || (n.summary_zh||n.summary||'').toLowerCase().includes(k)); }
+      if (sort==='score') list.sort((a,b)=>(b.score||0)-(a.score||0));
+      else if (sort==='time') list.sort((a,b)=> new Date(b.published_at||0)-new Date(a.published_at||0));
+      else list.sort((a,b)=>{ const s=(b.score||0)-(a.score||0); return s!==0 ? s : new Date(b.published_at||0)-new Date(a.published_at||0); });
+      render(list);
     }
-    function renderChips() {
-      if (!filterRow) return;
-      filterRow.innerHTML = sources.map(s => {
-        const cnt = s === '全部' ? data.length : counts[s];
-        return `<button class="cat-chip${s === active ? ' active' : ''}" data-src="${escH(s)}">${escH(s)} ${cnt}</button>`;
+    function render(list){
+      if(!list.length){ listBox.innerHTML='<div class="news-empty">该时间范围内暂无新闻</div>'; return; }
+      listBox.innerHTML = list.map(n => {
+        const sc = (n.score!=null) ? Number(n.score).toFixed(1) : null;
+        const badge = sc!=null ? `<span class="nc-score ${scoreCls(n.score)}">${sc}</span>` : '';
+        const cats = (n.category||[]).map(c=>`<span class="nc-cat">${escH(c)}</span>`).join('');
+        const sum = n.summary_zh || n.summary || '';
+        return `<a class="news-card" href="/news/${n.id}">
+          <div class="nc-top">${badge}${cats}</div>
+          <h3 class="nc-title">${escH(n.title)}</h3>
+          ${sum?`<p class="nc-sum">${escH(sum)}</p>`:''}
+          <div class="nc-foot"><span class="nc-src">1 个来源 · ${escH(n.source||n.tag||'')}</span><span class="nc-time">${escH(rel(n.published_at))}</span></div>
+        </a>`;
       }).join('');
-      filterRow.querySelectorAll('.cat-chip').forEach(b => b.addEventListener('click', () => { active = b.dataset.src; renderChips(); renderList(); }));
     }
-    renderChips();
-    renderList();
+    document.querySelectorAll('#newsTabs .ntab').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('#newsTabs .ntab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); range=b.dataset.range; apply(); }));
+    document.getElementById('newsSort').addEventListener('change',e=>{ sort=e.target.value; apply(); });
+    document.getElementById('newsCat').addEventListener('change',e=>{ cat=e.target.value; apply(); });
+    document.getElementById('newsSearch').addEventListener('input',e=>{ q=e.target.value.trim(); apply(); });
+    apply();
   });
 
   /* ──────────── Mega Menu (分类 ▾) ──────────── */

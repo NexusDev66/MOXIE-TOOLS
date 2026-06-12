@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260526-01">
-<script src="moxie-supabase.js?v=20260611-01"></script>
+<script src="moxie-supabase.js?v=20260612-01"></script>
 <script src="moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
@@ -352,7 +352,7 @@
 
     window.moxieWhenDBReady(async (db) => {
       if (!db) {
-        alert('Supabase 还没配置。打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key。');
+        alert('Supabase 还没配置。打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key。');
         location.reload(); return;
       }
       // 登录后回首页（带 ?welcome=1 显示欢迎 toast）· 必须用 canonical origin

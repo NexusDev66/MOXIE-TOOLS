@@ -164,7 +164,7 @@ window.MoxieDB = {
     opts = opts || {};
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
     return await window.moxieDB.from('moxie_news')
-      .select('id,title,url,source,tag,published_at,summary')
+      .select('id,title,url,source,tag,published_at,summary,score,category,summary_zh')
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(opts.limit || 8);
   },
