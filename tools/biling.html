@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
-<script src="/moxie-supabase.js?v=20260611-01"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260612-08">
+<script src="/moxie-supabase.js?v=20260612-01"></script>
 <script src="/moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
@@ -271,12 +271,12 @@
   }
 </style>
 <meta name="description" content="专注自媒体爆款内容生成的AI写作工具，可一键生成公众号长文与小红书标题，内置多种风格模板，无需复杂操作。">
-<link rel="canonical" href="https://www.latemai.com/tools/biling">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/biling">
 <meta property="og:type" content="website">
 <meta property="og:title" content="笔灵 · MOXIE">
 <meta property="og:description" content="专注自媒体爆款内容生成的AI写作工具，可一键生成公众号长文与小红书标题，内置多种风格模板，无需复杂操作。">
-<meta property="og:url" content="https://www.latemai.com/tools/biling">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"笔灵","description":"专注自媒体爆款内容生成的AI写作工具，可一键生成公众号长文与小红书标题，内置多种风格模板，无需复杂操作。","url":"https://www.latemai.com/tools/biling","applicationCategory":"AI 写作","operatingSystem":"Web"}</script>
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/biling">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"笔灵","description":"专注自媒体爆款内容生成的AI写作工具，可一键生成公众号长文与小红书标题，内置多种风格模板，无需复杂操作。","url":"https://moxie-main-shiyan.vercel.app/tools/biling","applicationCategory":"AI 写作","operatingSystem":"Web"}</script>
 </head>
 <body>
 
@@ -466,8 +466,8 @@
         <div class="prod-section">
           <h2>同类替代</h2>
           <div class="alt-grid">
+            <a href="/tools/notion-ai" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/notion.so.png" alt="Notion AI"></div><div class="alt-card-name">Notion AI</div></div><div class="alt-card-desc">Notion 内置的 AI 写作与总结助手,在笔记和工作流中直接生成内容、提炼要点,并支持自定义 AI Agent 跨应</div></a>
             <a href="/tools/gamma" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/gamma.app.png" alt="Gamma"></div><div class="alt-card-name">Gamma</div></div><div class="alt-card-desc">AI驱动的演示文稿、网页和文档生成工具，通过自然语言描述即可快速创建专业级内容，支持实时协作与模板自定义。</div></a>
-            <a href="/tools/grammarly" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/grammarly.com.png" alt="Grammarly"></div><div class="alt-card-name">Grammarly</div></div><div class="alt-card-desc">老牌英文语法检查与润色工具，提供AI驱动的写作辅助与文本生成，支持跨应用和网站实时优化。</div></a>
             <a href="/tools/xiezuocat" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/xiezuocat.com.png" alt="秘塔写作猫"></div><div class="alt-card-name">秘塔写作猫</div></div><div class="alt-card-desc">专注中文写作的AI助手，提供智能校对、改写润色与查重功能，精准识别语法错误与用词问题，提升文本质量。</div></a>
           </div>
         </div>
@@ -644,7 +644,7 @@
   window.moxieWhenDBReady(async (db) => {
     if (!db) {
       document.getElementById('phName').textContent = '数据库未配置';
-      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key';
       return;
     }
     const slug = "biling";

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
+<title>CVPR 2026 模型适应性研究盘点：从保留旧知识，到适应真实世界 · MOXIE 快讯</title>
+<meta name="description" content="稳定性，正在成为大模型落地的关键命题。 作者丨郑佳美 编辑丨马晓宁 当 AI 模型从“单次完成任务”走向真实世界部署时，真正的挑战不再只是参数规模和单点性能，而是模型能否在变化中保持稳定。它要在持续出现的新类别中不遗忘旧知识，要从大规模真实数据中获得更强的泛化能力，要在多客户端、数据分布不断变化的环">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/news/606">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CVPR 2026 模型适应性研究盘点：从保留旧知识，到适应真实世界 · MOXIE">
+<meta property="og:description" content="稳定性，正在成为大模型落地的关键命题。 作者丨郑佳美 编辑丨马晓宁 当 AI 模型从“单次完成任务”走向真实世界部署时，真正的挑战不再只是参数规模和单点性能，而是模型能否在变化中保持稳定。它要在持续出现的新类别中不遗忘旧知识，要从大规模真实数据中获得更强的泛化能力，要在多客户端、数据分布不断变化的环">
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/news/606"><link rel="stylesheet" href="/moxie-styles.css?v=20260608-02">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"CVPR 2026 模型适应性研究盘点：从保留旧知识，到适应真实世界","description":"稳定性，正在成为大模型落地的关键命题。 作者丨郑佳美 编辑丨马晓宁 当 AI 模型从“单次完成任务”走向真实世界部署时，真正的挑战不再只是参数规模和单点性能，而是模型能否在变化中保持稳定。它要在持续出现的新类别中不遗忘旧知识，要从大规模真实数据中获得更强的泛化能力，要在多客户端、数据分布不断变化的环境下继续学习，也要把图像、视频和 3D 等不同视觉经验组织成统一理解。这种变化也体现在 CVPR 2026 的相关研究趋势中。越来越多工作不再只追求某个单一任务上的性能提升，而是更关注模型在长期学习、真实数据、分布变化和多模态协同中的稳定性与适应能力。换句话说，模型不仅要“会做”，还要能在复杂环境中","datePublished":"2026-06-12T06:25:00+00:00","author":{"@type":"Organization","name":"雷锋网"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/news/606"}}</script>
+<style>
+  .nv{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+  .nv .container{display:flex;align-items:center;justify-content:space-between}
+  .nv a.brand{font-weight:600;color:var(--ink);text-decoration:none;font-size:16px}
+  .ni-wrap{max-width:720px;margin:0 auto;padding:56px 20px 90px}
+  .ni-meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-3);margin-bottom:16px}
+  .ni-src{color:#F53F3F;font-weight:600}
+  .ni-wrap h1{font-size:28px;line-height:1.45;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin-bottom:22px}
+  .ni-sum{font-size:15.5px;line-height:1.9;color:var(--ink-1);background:var(--bg-soft);border-radius:12px;padding:20px 22px;margin-bottom:28px}
+  .ni-sum.empty{color:var(--ink-3)}
+  .ni-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .ni-orig{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:11px 22px;border-radius:9999px;font-size:14px;font-weight:500}
+  .ni-orig:hover{background:var(--accent-d)}
+  .ni-back{color:var(--ink-2);text-decoration:none;font-size:13px}
+  .ni-back:hover{color:var(--accent)}
+  .ni-note{margin-top:30px;font-size:12px;color:var(--ink-3);line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<nav class="nv"><div class="container">
+  <a class="brand" href="/">MOXIE</a>
+  <a class="ni-back" href="/moxie-news">← 全部快讯</a>
+</div></nav>
+<div class="ni-wrap">
+  <div class="ni-meta"><span class="ni-src">雷锋网</span><span>·</span><span>2026.06.12</span><span>·</span><span>AI 快讯</span></div>
+  <h1>CVPR 2026 模型适应性研究盘点：从保留旧知识，到适应真实世界</h1>
+  <div class="ni-sum">稳定性，正在成为大模型落地的关键命题。 作者丨郑佳美 编辑丨马晓宁 当 AI 模型从“单次完成任务”走向真实世界部署时，真正的挑战不再只是参数规模和单点性能，而是模型能否在变化中保持稳定。它要在持续出现的新类别中不遗忘旧知识，要从大规模真实数据中获得更强的泛化能力，要在多客户端、数据分布不断变化的环境下继续学习，也要把图像、视频和 3D 等不同视觉经验组织成统一理解。这种变化也体现在 CVPR 2026 的相关研究趋势中。越来越多工作不再只追求某个单一任务上的性能提升，而是更关注模型在长期学习、真实数据、分布变化和多模态协同中的稳定性与适应能力。换句话说，模型不仅要“会做”，还要能在复杂环境中</div>
+  <div class="ni-actions"><a class="ni-orig" href="https://www.leiphone.com/category/ai/9x05Sw5uY0RhgEdO.html" target="_blank" rel="noopener">阅读原文 ↗</a><a class="ni-back" href="/moxie-news">← 全部快讯</a></div>
+  <div class="ni-note">摘要来自来源媒体(雷锋网)的公开 RSS,版权归原作者。MOXIE 仅做聚合索引,完整内容请以原文为准。</div>
+</div>
+</body>
+</html>

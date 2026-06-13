@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
-<script src="/moxie-supabase.js?v=20260611-01"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260612-08">
+<script src="/moxie-supabase.js?v=20260612-01"></script>
 <script src="/moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
@@ -271,12 +271,12 @@
   }
 </style>
 <meta name="description" content="字节跳动推出的AI编程IDE，集成Claude模型，国内直连可用，对标Cursor提升编码效率。">
-<link rel="canonical" href="https://www.latemai.com/tools/trae">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/trae">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Trae · MOXIE">
 <meta property="og:description" content="字节跳动推出的AI编程IDE，集成Claude模型，国内直连可用，对标Cursor提升编码效率。">
-<meta property="og:url" content="https://www.latemai.com/tools/trae">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Trae","description":"字节跳动推出的AI编程IDE，集成Claude模型，国内直连可用，对标Cursor提升编码效率。","url":"https://www.latemai.com/tools/trae","applicationCategory":"AI 编程","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/trae">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Trae","description":"字节跳动推出的AI编程IDE，集成Claude模型，国内直连可用，对标Cursor提升编码效率。","url":"https://moxie-main-shiyan.vercel.app/tools/trae","applicationCategory":"AI 编程","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 
@@ -468,7 +468,7 @@
           <div class="alt-grid">
             <a href="/tools/cursor" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/cursor.com.png" alt="Cursor"></div><div class="alt-card-name">Cursor</div></div><div class="alt-card-desc">集成 Claude 与 GPT 双引擎的 AI 编程 IDE，通过自然语言指令自动生成和修改代码，支持上下文感知的智能补</div></a>
             <a href="/tools/github-copilot" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/github.com.png" alt="GitHub Copilot"></div><div class="alt-card-name">GitHub Copilot</div></div><div class="alt-card-desc">微软 GitHub 推出的 AI 编程助手，基于 OpenAI 模型在 IDE 中实时生成代码建议与补全，支持多种编辑器</div></a>
-            <a href="/tools/windsurf" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/windsurf.com.png" alt="Windsurf"></div><div class="alt-card-name">Windsurf</div></div><div class="alt-card-desc">Codeium 出品的 AI 原生 IDE，集成智能代码补全与对话式编程，支持本地与云端代理协同，提升开发效率。</div></a>
+            <a href="/tools/bolt" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/bolt.new.png" alt="Bolt"></div><div class="alt-card-name">Bolt</div></div><div class="alt-card-desc">浏览器内全栈AI编程工具，通过自然语言描述直接生成并部署网站与应用，无需本地环境，支持实时预览与迭代。</div></a>
           </div>
         </div>
 
@@ -644,7 +644,7 @@
   window.moxieWhenDBReady(async (db) => {
     if (!db) {
       document.getElementById('phName').textContent = '数据库未配置';
-      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key';
       return;
     }
     const slug = "trae";
