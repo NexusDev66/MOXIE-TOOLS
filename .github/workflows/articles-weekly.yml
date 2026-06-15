@@ -1,0 +1,54 @@
+name: Weekly Articles (gen-articles)
+
+# 每周自动生成 SEO 文章:按周轮换模板(横评/选型/手册/增长),对全部分类各生成一篇并发布。
+# gen-articles 幂等:同 slug 已是非 draft 则跳过,不会重复/覆盖。
+# 只写库(moxie_articles published);烤成 articles/<slug>.html + sitemap + 同步大陆站,
+# 都交给每日 Daily Refresh(次日 01:00 UTC)自动完成,故本 workflow 不重复部署逻辑。
+#
+# 需仓库 Settings → Actions 配:
+#   Secrets:  SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY
+#   Variables: NEXT_PUBLIC_SUPABASE_URL
+
+on:
+  schedule:
+    - cron: '0 2 * * 2'   # 每周二 UTC 02:00 = 北京 10:00(早于次日 refresh)
+  workflow_dispatch:
+    inputs:
+      template:
+        description: '模板(留空则按周轮换):compare|pick|guide|growth'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 检查配置
+        run: |
+          if [ -z "$NEXT_PUBLIC_SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ] || [ -z "$DEEPSEEK_API_KEY" ]; then
+            echo "::error::缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / DEEPSEEK_API_KEY"
+            exit 1
+          fi
+
+      - name: 生成本周文章(按周轮换模板)
+        run: |
+          TPL="${{ github.event.inputs.template }}"
+          if [ -z "$TPL" ]; then
+            TPLS=(compare pick guide growth)
+            WK=$(date -u +%V)
+            TPL=${TPLS[$((10#$WK % 4))]}
+          fi
+          echo "本周模板:$TPL"
+          node cli/gen-articles.js --all --template "$TPL" --publish
