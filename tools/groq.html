@@ -459,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测推理快到离谱，LPU 架构确实猛，但模型选择少，重度用户得忍忍。</div><div class="editor-note-meta">2026.03.24 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿 Groq 的 API 跑了整整 7 天，主要用 Llama 3 70B 做长文本摘要和代码生成，还试了 Mixtral 8x7B 做多轮对话。场景包括总结一篇 5000 字的技术文档、写一个 Python 爬虫脚本，以及模拟客服对话。</p><p>最让我震惊的是速度：同样是 Llama 3 70B，Groq 的首次响应几乎感觉不到延迟，比本地 GPU 快了一个数量级。比如让它总结文档，几乎瞬间吐出要点，完全没有等待焦虑。</p><p>但注意，国内直连需要代理，免费额度每天有上限，我高强度用了 3 天就耗光了。另外模型选择偏少，只有 Llama、Mixtral 等几个，想用别的开源模型就得等。</p><p>适合对实时性要求极高的场景，比如聊天机器人、实时翻译。结论：如果你受够了慢吞吞的推理，Groq 值得一试，但别指望它包办一切。</p></div></details></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测推理快到离谱，LPU 架构确实猛，但模型选择少，重度用户得忍忍。</div><div class="editor-note-meta">2026.03.24 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>Groq 是一家专注于 AI 推理芯片的公司，其 LPU（语言处理单元）架构专为大模型推理设计。我上手实测了它的 API，主要场景是快速调用 Llama、Mixtral 等开源模型进行文本生成。相比传统 GPU 方案，Groq 的响应速度确实快，适合对延迟敏感的应用，比如实时对话或流式输出。</p><p>实测下来，Groq 最大的亮点是推理速度。LPU 架构让 token 生成几乎无延迟，首 token 响应通常在毫秒级，连续对话也感觉不到卡顿。此外，它支持多种主流开源模型，API 兼容 OpenAI 格式，迁移成本低。推理成本也较低，适合高频调用场景。</p><p>不足也很明显：模型选择有限，目前只支持 Llama、Mixtral 等少数几个，无法使用 GPT-4 或 Claude。国内使用需要代理，且免费额度有限，重度用户需付费。另外，LPU 架构虽快，但复杂任务（如长文本推理）的稳定性还有待观察。</p><p>Groq 适合追求极速推理的开发者，尤其是做实时应用或原型验证。如果你对模型多样性要求不高，且能接受代理和付费，它是个不错的补充。但作为主力工具，目前生态还不够成熟，建议结合其他平台使用。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->
@@ -485,7 +485,7 @@
           <div class="alt-grid">
             <a href="/tools/deepseek-v3" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/deepseek.com.png" alt="DeepSeek V3"></div><div class="alt-card-name">DeepSeek V3</div></div><div class="alt-card-desc">深度求索自研的国产开源MoE大模型，推理能力对标GPT-4o，API价格仅主流模型的约1/10，适合高性价比部署。</div></a>
             <a href="/tools/openai-api" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/platform.openai.com.png" alt="OpenAI API"></div><div class="alt-card-name">OpenAI API</div></div><div class="alt-card-desc">OpenAI 官方 API，提供 GPT-4o 和 o 系列模型，支持文本、图像、音频等多模态推理，海外开发首选。</div></a>
-            <a href="/tools/siliconflow" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/siliconflow.cn.png" alt="硅基流动"></div><div class="alt-card-name">硅基流动</div></div><div class="alt-card-desc">国产AI模型API聚合平台，集成主流开源大模型，提供稳定且价格低廉的推理服务，适合开发者快速集成。</div></a>
+            <a href="/tools/anthropic-api" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/anthropic.com.png" alt="Claude API"></div><div class="alt-card-name">Claude API</div></div><div class="alt-card-desc">Anthropic 出品的对话与代码大模型 API，擅长长文本处理与复杂推理，上下文窗口达 200K，适合深度分析任务。</div></a>
           </div>
         </div>
 

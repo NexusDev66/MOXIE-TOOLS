@@ -459,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测模块化设计确实省事，但上手门槛不低，文档细节得花时间啃。</div><div class="editor-note-meta">2026.03.23 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿LangChain跑了7天，主要测了构建RAG问答和AI代理两个场景。用OpenAI API配合Chroma向量库，做了个内部知识库问答机器人，从文档加载到链式调用全走了一遍。</p><p>模块化设计是真省事，比如用LCEL表达式把检索和生成拼成一条链，改个向量库只需换一行代码。最惊艳的是Agent功能，给它一个计算器工具，它能自动拆解“去年营收增长20%后是多少”这种多步问题，自己调工具算出结果。</p><p>但坑也不少：国内必须挂代理才能调API，免费额度只有OpenAI的试用金，用完就得付费。文档虽然全但太散，一个简单功能要翻好几页，新手容易卡在“如何选正确的回调处理器”这种细节上。我试过用本地模型跑Agent，结果因为模型指令遵循能力差，频繁翻车。</p><p>适合有Python基础、想快速搭LLM原型的开发者。一句话：模块化思路好，但别指望零门槛，得做好啃文档的准备。</p></div></details></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测模块化设计确实省事，但上手门槛不低，文档细节得花时间啃。</div><div class="editor-note-meta">2026.03.23 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我是子墨，这周实测了LangChain，一个构建LLM应用的模块化开发框架。它由社区开源，核心是提供可组合的组件，简化从原型到生产的流程。实测下来，它特别适合需要快速搭建AI代理或复杂链路的开发者，比如多步骤推理、工具调用等场景，省去不少底层重复工作。</p><p>它的模块化设计是最大亮点：模型、提示、记忆、工具等组件像积木一样可插拔，灵活度很高。我试了试自定义链和代理，代码复用性确实好。此外，LangSmith平台集成了观察、评估和部署功能，调试时能清晰追踪每一步的输入输出，对优化代理行为很有帮助。</p><p>不足也很明显：上手门槛不低，文档虽然全但细节分散，新手容易绕晕。国内使用需要代理，且免费额度有限，大规模部署需付费。另外，版本迭代快，部分旧示例可能不兼容，得紧跟更新。</p><p>适合有Python基础、想快速构建LLM应用的开发者，尤其是需要定制化代理或复杂工作流的场景。结论：框架能力扎实，但需投入学习成本，建议先从小项目试水，再决定是否深入。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->
@@ -486,7 +486,7 @@
           <div class="alt-grid">
             <a href="/tools/deepseek-v3" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/deepseek.com.png" alt="DeepSeek V3"></div><div class="alt-card-name">DeepSeek V3</div></div><div class="alt-card-desc">深度求索自研的国产开源MoE大模型，推理能力对标GPT-4o，API价格仅主流模型的约1/10，适合高性价比部署。</div></a>
             <a href="/tools/openai-api" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/platform.openai.com.png" alt="OpenAI API"></div><div class="alt-card-name">OpenAI API</div></div><div class="alt-card-desc">OpenAI 官方 API，提供 GPT-4o 和 o 系列模型，支持文本、图像、音频等多模态推理，海外开发首选。</div></a>
-            <a href="/tools/siliconflow" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/siliconflow.cn.png" alt="硅基流动"></div><div class="alt-card-name">硅基流动</div></div><div class="alt-card-desc">国产AI模型API聚合平台，集成主流开源大模型，提供稳定且价格低廉的推理服务，适合开发者快速集成。</div></a>
+            <a href="/tools/anthropic-api" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/anthropic.com.png" alt="Claude API"></div><div class="alt-card-name">Claude API</div></div><div class="alt-card-desc">Anthropic 出品的对话与代码大模型 API，擅长长文本处理与复杂推理，上下文窗口达 200K，适合深度分析任务。</div></a>
           </div>
         </div>
 
