@@ -68,6 +68,10 @@ jobs:
       - name: 重算权重(rank)
         run: node cli/rank.js
 
+      - name: 生成文章封面(补缺,无 API 成本)
+        run: node cli/gen-covers.js
+        continue-on-error: true
+
       - name: 重渲染产品/文章页(prerender)
         run: node cli/prerender.js
 
@@ -82,7 +86,7 @@ jobs:
         run: |
           git config user.name "moxie-bot"
           git config user.email "bot@latemai.local"
-          git add tools/ articles/ news/ sitemap.xml robots.txt
+          git add tools/ articles/ news/ public/covers/ sitemap.xml robots.txt
           if git diff --cached --quiet; then
             echo "无变化,跳过提交"
           else
