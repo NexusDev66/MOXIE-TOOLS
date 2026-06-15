@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name "moxie-bot"
           git config user.email "bot@latemai.local"
-          git add tools/ articles/ news/ sitemap.xml robots.txt
+          git add tools/ articles/ news/ public/covers/ sitemap.xml robots.txt
           if git diff --cached --quiet; then
             echo "无变化,跳过提交"
           else
@@ -53,7 +53,7 @@ jobs:
       - name: 同步到 GitHub Pages 站(nexusdev66.github.io · 大陆可访问)
         run: |
           git clone --depth 1 "https://x-access-token:${{ secrets.PAGES_PAT }}@github.com/NexusDev66/nexusdev66.github.io.git" /tmp/pages
-          cp moxie-*.html moxie-styles.css moxie-shared.js moxie-supabase.js sitemap.xml robots.txt /tmp/pages/ 2>/dev/null || true
+          cp moxie-*.html moxie-styles.css moxie-shared.js moxie-supabase.js sitemap.xml robots.txt 5e9f4171e1f9473b239b0b0b698d5585.txt /tmp/pages/ 2>/dev/null || true
           cp moxie-preview.html /tmp/pages/index.html
           rm -rf /tmp/pages/public /tmp/pages/tools /tmp/pages/articles /tmp/pages/news
           cp -r public tools articles news /tmp/pages/
