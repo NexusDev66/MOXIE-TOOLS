@@ -40,7 +40,7 @@ function jsonLd(obj) {
 }
 
 async function fetchPublishedProducts() {
-  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,domestic_available,created_at,detail,category_id,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
+  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,domestic_available,verified,created_at,detail,category_id,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
   const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
   if (!res.ok) throw new Error(`读取产品失败 ${res.status}: ${await res.text()}`);
   return res.json();
@@ -130,9 +130,16 @@ function bakeDetailSections(html, p, ctx, checks) {
     if (re.test(html)) html = html.replace(re, block);
     else if (checks) checks.push(`⚠ 未找到[${comment}]`);
   }
-  // 点评(原"子墨评测")
+  // 点评(原"子墨评测"):头部 = 测试天数(仅 verified 显示),底部 = 发布日期 + 署名
   const review = (d.review || p.tagline || '').trim();
-  sec('子墨评测', '核心特点', `          <h2>子墨测评</h2>\n          <div class="editor-note"><div class="editor-note-quote">${esc(review)}</div></div>`);
+  const days = Number(d.test_days) || 0;
+  const rdate = String(d.review_date || d.updated_at || '').slice(0, 10).replace(/-/g, '.');
+  const noteHead = `<div class="editor-note-head">EDITOR'S NOTE${days ? ` · 测试 ${days} 天` : ''}</div>`;
+  const metaBits = [];
+  if (rdate) metaBits.push(`${esc(rdate)} 发布`);
+  metaBits.push(p.verified ? '子墨 亲测' : '子墨 整理');
+  const noteMeta = `<div class="editor-note-meta">${metaBits.join(' · ')}</div>`;
+  sec('子墨评测', '核心特点', `          <h2>子墨测评</h2>\n          <div class="editor-note">${noteHead}<div class="editor-note-quote">${esc(review)}</div>${noteMeta}</div>`);
   // 核心特点
   const feats = Array.isArray(d.features) ? d.features : [];
   const featInner = feats.length

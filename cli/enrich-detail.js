@@ -102,7 +102,7 @@ async function main() {
       if (!detail.features.length) { console.log(`  · ${p.name} → 无特点,跳过`); tally.fail++; continue; }
       if (DRY_RUN) { console.log(`  ✓[dry]${site ? '[官网]' : ''} ${p.name}: ${detail.features.map((f) => f.t).join('/')} | ${detail.review.slice(0, 20)}…`); tally.ok++; if (site) tally.grounded++; continue; }
       // 盖 detail.updated_at 时间戳:只在详情真正重生成时更新,不被每日 rank 写 weight_score 干扰
-      await sb(`/moxie_products?id=eq.${p.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { detail: { ...detail, updated_at: new Date().toISOString() } } });
+      await sb(`/moxie_products?id=eq.${p.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { detail: { ...(p.detail || {}), ...detail, updated_at: new Date().toISOString() } } });
       console.log(`  ✓${site ? '[官网]' : ''} ${p.name}(${detail.features.length} 特点)`);
       tally.ok++; if (site) tally.grounded++;
     } catch (e) { console.log(`  · ${p.name} → 失败(${e.message})`); tally.fail++; }
