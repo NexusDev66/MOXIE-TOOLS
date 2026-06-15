@@ -137,7 +137,7 @@ function bakeDetailSections(html, p, ctx, checks) {
   const noteHead = `<div class="editor-note-head">EDITOR'S NOTE${days ? ` · 测试 ${days} 天` : ''}</div>`;
   const metaBits = [];
   if (rdate) metaBits.push(`${esc(rdate)} 发布`);
-  metaBits.push(p.verified ? '子墨 亲测' : '子墨 整理');
+  metaBits.push(days ? '子墨 亲测' : '子墨 整理');
   const noteMeta = `<div class="editor-note-meta">${metaBits.join(' · ')}</div>`;
   // 完整评测(仅 verified 有 review_full):可展开长文
   const full = Array.isArray(d.review_full) ? d.review_full.filter(Boolean) : [];

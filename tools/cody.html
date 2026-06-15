@@ -459,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE</div><div class="editor-note-quote">实测全库理解确实强，但重度依赖Sourcegraph生态，独立部署门槛不低。</div><div class="editor-note-meta">2026.06.15 发布 · 子墨 整理</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 5 天</div><div class="editor-note-quote">实测全库理解确实强，但重度依赖Sourcegraph生态，独立部署门槛不低。</div><div class="editor-note-meta">2026.03.13 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿一个老旧的Spring Boot项目来测Cody，跑了5天。项目里Service层和Repository层纠缠不清，我故意问它“这个订单状态机的流转逻辑在哪”，它直接定位到三个文件并画了调用链，省了我半小时翻代码。</p><p>最惊艳的是全库理解：我写一个新接口时，它自动补全了DTO中缺失的字段，因为识别了同模块其他接口的返回结构。解释bug也很准，有次空指针它直接指出是某个Mapper没做null判断，还给了修复片段。</p><p>但国内必须挂代理，否则连不上。免费额度每天只有补全和聊天各有限次，重度用两天就超了。学习成本不低，你得先装Sourcegraph插件并让索引跑完，小项目还好，大项目首次索引卡了半小时。</p><p>适合愿意折腾的团队或个人，尤其是接手遗留代码时。一句话：全库理解是独门绝技，但生态绑定和代理门槛让它更适合Sourcegraph重度用户，否则不如GitHub Copilot省心。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

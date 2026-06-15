@@ -459,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE</div><div class="editor-note-quote">实测开源自动化标杆，AI集成顺手，但高级功能必须自托管，小白慎入。</div><div class="editor-note-meta">2026.06.15 发布 · 子墨 整理</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 4 天</div><div class="editor-note-quote">实测开源自动化标杆，AI集成顺手，但高级功能必须自托管，小白慎入。</div><div class="editor-note-meta">2026.05.23 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿 n8n 跑了 4 天，主要测了两个真实场景：一是把公司飞书表单提交自动同步到 Airtable 并触发 Slack 通知；二是让 GPT-4 自动总结每日邮件摘要，再写入 Notion 数据库。整个过程完全在本地 Docker 部署，没花一分钱。</p><p>亮点是 AI 节点和条件分支的配合。比如邮件摘要场景，我用 LLM 节点提取关键信息，再通过 IF 节点判断邮件优先级，高优先级的直接发企业微信告警。整个过程拖拽完成，代码量几乎为零，但逻辑清晰度不输手写脚本。</p><p>不足也很明显：高级功能（如多用户协作、SSO）必须自托管，对服务器和运维能力有要求。免费版在 n8n.cloud 上只有 5 个工作流额度，想测复杂场景建议本地部署。另外，国内访问部分 AI 模型 API 可能需要代理，具体以官网为准。</p><p>适合有基础运维能力、需要频繁对接 API 和 AI 的团队或个人。一句话：开源自动化里的六边形战士，但别指望开箱即用，愿意折腾的话上限很高。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

@@ -459,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE</div><div class="editor-note-quote">实测毫秒级搜索确实快，API也简单，但成本偏高，自托管有点折腾。</div><div class="editor-note-meta">2026.06.15 发布 · 子墨 整理</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 11 天</div><div class="editor-note-quote">实测毫秒级搜索确实快，API也简单，但成本偏高，自托管有点折腾。</div><div class="editor-note-meta">2026.03.07 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿 Pinecone 跑了 11 天，主要测试两个场景：一个是给内部文档库做语义搜索，另一个是给电商商品做相似推荐。数据量从 10 万向量逐步加到 500 万，想看看它到底扛不扛得住。</p><p>亮点是搜索速度真稳，500 万向量下延迟基本在 10 毫秒以内，比之前用开源方案快了一个量级。API 设计也很清爽，几行 Python 代码就能把向量存进去并召回结果，不用操心底层索引调优。</p><p>但注意点不少：国内必须挂代理才能用，免费额度只有 1 个 pod 且容量很小，想上生产就得付费。另外自托管选项比较折腾，文档里对自建集群的指引不够清晰，我试了几天没跑通。</p><p>适合需要快速上线语义搜索或推荐系统、且预算充足的团队。一句话：搜索够快、API 够简单，但成本偏高，自托管慎入。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

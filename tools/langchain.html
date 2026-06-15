@@ -459,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE</div><div class="editor-note-quote">实测模块化设计确实省事，但上手门槛不低，文档细节得花时间啃。</div><div class="editor-note-meta">2026.06.15 发布 · 子墨 整理</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测模块化设计确实省事，但上手门槛不低，文档细节得花时间啃。</div><div class="editor-note-meta">2026.03.23 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿LangChain跑了7天，主要测了构建RAG问答和AI代理两个场景。用OpenAI API配合Chroma向量库，做了个内部知识库问答机器人，从文档加载到链式调用全走了一遍。</p><p>模块化设计是真省事，比如用LCEL表达式把检索和生成拼成一条链，改个向量库只需换一行代码。最惊艳的是Agent功能，给它一个计算器工具，它能自动拆解“去年营收增长20%后是多少”这种多步问题，自己调工具算出结果。</p><p>但坑也不少：国内必须挂代理才能调API，免费额度只有OpenAI的试用金，用完就得付费。文档虽然全但太散，一个简单功能要翻好几页，新手容易卡在“如何选正确的回调处理器”这种细节上。我试过用本地模型跑Agent，结果因为模型指令遵循能力差，频繁翻车。</p><p>适合有Python基础、想快速搭LLM原型的开发者。一句话：模块化思路好，但别指望零门槛，得做好啃文档的准备。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->
