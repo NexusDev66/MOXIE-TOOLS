@@ -1,7 +1,8 @@
-name: Weekly Discover (Product Hunt 新锐 → pending)
+name: Weekly Discover (海外 PH + 国产 curated → pending)
 
-# Phase 3 · 每周从 Product Hunt 发现新锐 AI 工具 → DeepSeek 中文化补全 → 闸门去重 → 写 moxie_products(status=pending)。
-# 只入 pending,不自动发布;人工极简 QA 后 promote 成 published。
+# Phase 3 · 每周发现新锐 AI 工具 → DeepSeek 中文化补全 → 闸门去重 → 写 moxie_products(status=pending)。
+# 海外侧:Product Hunt;国产侧:discover-domestic 的 curated 种子(v1 教训:国产自动爬=灰产)。
+# 入 pending 后由 refresh.yml 的 promote-candidates(完善度达标自动上架)闭环上线。
 #
 # 需仓库 Secrets:SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY、PH_CLIENT_ID、PH_CLIENT_SECRET
 #        Variables:NEXT_PUBLIC_SUPABASE_URL
@@ -25,5 +26,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: 发现新锐 → pending
+      - name: 海外新锐发现(Product Hunt)→ pending
         run: node cli/discover-tools.js --limit 20 --days 7
+        continue-on-error: true
+
+      - name: 国产新锐发现(curated 种子)→ pending
+        run: node cli/discover-domestic.js
