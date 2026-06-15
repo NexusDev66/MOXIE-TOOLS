@@ -144,6 +144,24 @@
     font-family: var(--mono);
     letter-spacing: 0.04em;
   }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
 
   /* Feature list */
   .feat-list {
@@ -441,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 4 天</div><div class="editor-note-quote">实测物理感和连贯性确实强，6秒视频质量高，但时长固定是短板。</div><div class="editor-note-meta">2026.05.20 发布 · 子墨 亲测</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 4 天</div><div class="editor-note-quote">实测物理感和连贯性确实强，6秒视频质量高，但时长固定是短板。</div><div class="editor-note-meta">2026.05.20 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>拿到海螺AI视频工具的第一天，我就用“一只猫从窗台跳下，落地后回头”这个经典场景来测。连续试了4天，每天生成10多个视频，覆盖运动、自然、人物动作等不同题材，为的就是摸清它的真实水平。</p><p>最让我意外的是物理感。比如我输入“篮球从斜坡滚下，碰到石头弹起”，生成视频中篮球的滚动轨迹和碰撞反弹都极其自然，没有那种AI常见的“漂移感”。另一个例子是“风吹动书页”，纸张的翻动节奏和褶皱变化非常细腻，连贯性明显优于同类工具。</p><p>不过它也有明显短板：时长固定6秒，无法延长或分段控制。想生成更复杂的叙事场景，只能靠后期拼接。另外，免费额度有限，每天大概能生成十几次，用完后需要订阅。国内可直接使用，无需代理，这点倒是方便。</p><p>适合需要快速产出短视频素材的创作者，比如做产品展示、动态封面或社交媒体片段。如果你追求物理真实感和连贯性，它值得一试；但若需要长视频或精细控制，建议搭配其他工具。结论：6秒内，它是我用过最稳的文生视频工具。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

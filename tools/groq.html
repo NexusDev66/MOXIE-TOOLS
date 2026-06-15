@@ -144,6 +144,24 @@
     font-family: var(--mono);
     letter-spacing: 0.04em;
   }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
 
   /* Feature list */
   .feat-list {

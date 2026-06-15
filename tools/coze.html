@@ -144,6 +144,24 @@
     font-family: var(--mono);
     letter-spacing: 0.04em;
   }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
 
   /* Feature list */
   .feat-list {
@@ -441,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 6 天</div><div class="editor-note-quote">实测工作流+知识库集成很顺手，国内直接能用是最大优势，但复杂场景逻辑得自己多调试。</div><div class="editor-note-meta">2026.06.03 发布 · 子墨 亲测</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 6 天</div><div class="editor-note-quote">实测工作流+知识库集成很顺手，国内直接能用是最大优势，但复杂场景逻辑得自己多调试。</div><div class="editor-note-meta">2026.06.03 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿 Coze 测了 6 天，主要用来搭一个自动写周报的 Bot。先建了一个工作流，把钉钉聊天记录导出成文本，丢进知识库做 RAG，再让 Bot 按模板生成周报。整个过程没写一行代码，靠拖拽节点完成，上手挺快。</p><p>亮点是知识库集成很顺，我上传了 20 份历史周报，Bot 能自动总结本周重点，还能引用具体项目进度。比如我输入“本周完成 A 模块开发”，它直接生成“A 模块开发完成，进度 100%，待测试”，比我手动写省了 10 分钟。</p><p>不足是复杂逻辑容易翻车。我试了多条件分支，比如“如果任务超时则提醒”，结果 Bot 有时不触发，得反复调试节点顺序。另外免费额度够用，但高频调用可能受限，以官网为准。国内直接连，不用代理，这点好评。</p><p>适合想快速搭个自动化助手、又不会写代码的职场人。结论：Coze 是当前国内零门槛 Bot 平台里最顺手的一个，但别指望它搞定太复杂的业务逻辑。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

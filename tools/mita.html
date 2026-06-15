@@ -144,6 +144,24 @@
     font-family: var(--mono);
     letter-spacing: 0.04em;
   }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
 
   /* Feature list */
   .feat-list {
@@ -441,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 4 天</div><div class="editor-note-quote">实测中文搜索无广告，学术调研直接给结构化答案+来源，信息很准。但搜娱乐类内容明显不如通用引擎。</div><div class="editor-note-meta">2026.05.29 发布 · 子墨 亲测</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 4 天</div><div class="editor-note-quote">实测中文搜索无广告，学术调研直接给结构化答案+来源，信息很准。但搜娱乐类内容明显不如通用引擎。</div><div class="editor-note-meta">2026.05.29 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我花了4天时间，把秘塔搜索当成主力搜索引擎来用。主要场景是写一份关于‘AI在医疗影像中的应用’的调研报告，每天搜5-6个学术问题，同时对比了百度、必应和谷歌的结果。</p><p>最让我惊艳的是它的结构化答案。搜‘最新肺癌CT识别模型’，它直接给出3个模型名称、论文年份和准确率对比表格，每个数据都带PubMed或arXiv链接。不像百度那样塞满广告，也不像谷歌需要自己翻页找摘要。</p><p>不足也很明显：搜‘2024年热门电影’这种娱乐内容，结果少且陈旧，不如通用引擎。另外，虽然国内可直接用且免费，但免费额度有限——每天大概30次搜索后会被限速，得等第二天恢复。学术场景够用，但高频使用需注意。</p><p>适合需要精准学术信息的研究生、分析师或记者，尤其是做中文文献调研时。一句话：如果你受够了广告和低质内容，秘塔搜索是学术调研的‘清流’，但别指望它帮你找娱乐八卦。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

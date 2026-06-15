@@ -144,6 +144,24 @@
     font-family: var(--mono);
     letter-spacing: 0.04em;
   }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
 
   /* Feature list */
   .feat-list {
@@ -441,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 5 天</div><div class="editor-note-quote">实测200万字上下文确实能一口气读完大部头，深度问答很准；但多模态识别偏弱，图片细节容易漏。</div><div class="editor-note-meta">2026.06.05 发布 · 子墨 亲测</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 5 天</div><div class="editor-note-quote">实测200万字上下文确实能一口气读完大部头，深度问答很准；但多模态识别偏弱，图片细节容易漏。</div><div class="editor-note-meta">2026.06.05 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>拿到Kimi后，我连测了5天，主要拿它处理两件事：一是把《三体》三部曲的PDF全文丢进去，问它“叶文洁的动机演变”；二是让它从一份50页的行业研报里提取所有数据表格并总结趋势。</p><p>最让我意外的是长上下文能力。问《三体》动机时，它直接引用了第三部结尾的细节，逻辑链条完整，没出现早期AI那种“忘记前文”的毛病。研报表格提取也准，连页脚注释都抓到了。</p><p>但不足也明显。让它识别一张带手写备注的合同照片时，漏掉了几个数字，多模态理解确实偏弱。另外，建站功能我试了，生成的设计感不错，但后端逻辑稍复杂，适合有基础的用户。</p><p>适合需要深度处理长文档的研究者、分析师或学生。如果你常读大部头或做报告整理，Kimi值得一试；但若主要做图片识别，建议搭配其他工具。结论：长文本处理是它的硬实力，其他功能锦上添花。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

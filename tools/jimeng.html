@@ -144,6 +144,24 @@
     font-family: var(--mono);
     letter-spacing: 0.04em;
   }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
 
   /* Feature list */
   .feat-list {
@@ -441,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 5 天</div><div class="editor-note-quote">实测即梦文生图国内最稳，社区灵感多，但视频生成质量还有提升空间。</div><div class="editor-note-meta">2026.05.22 发布 · 子墨 亲测</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 5 天</div><div class="editor-note-quote">实测即梦文生图国内最稳，社区灵感多，但视频生成质量还有提升空间。</div><div class="editor-note-meta">2026.05.22 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>我拿即梦测了5天，主要跑文生图和文生视频。先用它生成几张产品海报图，再试了试把静态照片转成动态短片。社区里翻了不少作品找灵感，整体上手挺顺。</p><p>文生图是真稳，国内用着不卡。比如我输“赛博朋克街景，霓虹灯，雨天”，出的图光影和细节都准，构图也干净，比不少平台强。社区里有人分享“水墨风山水”，直接拿来改描述再生成，效率很高。</p><p>不足是视频生成质量还有差距，动态复杂场景容易崩，比如“奔跑的狗”尾巴糊成一片。免费额度够用几天，但高清视频要订阅，国内直连没问题。</p><p>适合想快速出图的设计师和内容创作者，视频功能慎用。结论：文生图国内最稳，视频等优化，社区值得逛。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->

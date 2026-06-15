@@ -139,7 +139,12 @@ function bakeDetailSections(html, p, ctx, checks) {
   if (rdate) metaBits.push(`${esc(rdate)} 发布`);
   metaBits.push(p.verified ? '子墨 亲测' : '子墨 整理');
   const noteMeta = `<div class="editor-note-meta">${metaBits.join(' · ')}</div>`;
-  sec('子墨评测', '核心特点', `          <h2>子墨测评</h2>\n          <div class="editor-note">${noteHead}<div class="editor-note-quote">${esc(review)}</div>${noteMeta}</div>`);
+  // 完整评测(仅 verified 有 review_full):可展开长文
+  const full = Array.isArray(d.review_full) ? d.review_full.filter(Boolean) : [];
+  const fullBlock = full.length
+    ? `<details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body">${full.map((t) => `<p>${esc(t)}</p>`).join('')}</div></details>`
+    : '';
+  sec('子墨评测', '核心特点', `          <h2>子墨测评</h2>\n          <div class="editor-note">${noteHead}<div class="editor-note-quote">${esc(review)}</div>${noteMeta}${fullBlock}</div>`);
   // 核心特点
   const feats = Array.isArray(d.features) ? d.features : [];
   const featInner = feats.length

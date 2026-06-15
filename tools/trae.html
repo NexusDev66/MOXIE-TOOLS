@@ -144,6 +144,24 @@
     font-family: var(--mono);
     letter-spacing: 0.04em;
   }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
 
   /* Feature list */
   .feat-list {
@@ -441,7 +459,7 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 8 天</div><div class="editor-note-quote">实测Claude模型国内直连，编程效率确实比Cursor顺手，但功能深度还有差距。</div><div class="editor-note-meta">2026.05.27 发布 · 子墨 亲测</div></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 8 天</div><div class="editor-note-quote">实测Claude模型国内直连，编程效率确实比Cursor顺手，但功能深度还有差距。</div><div class="editor-note-meta">2026.05.27 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>拿到Trae后，我直接拿一个真实项目来测：用Python写一个自动整理桌面文件的脚本，带GUI界面。连续测了8天，每天写几段代码，模拟日常开发场景。</p><p>最让我惊喜的是Claude模型国内直连，完全不用折腾网络。写GUI时，我描述需求“加个文件拖拽区域”，它直接生成完整Tkinter代码，还自动处理了拖拽事件和路径获取，省了我半小时查文档。</p><p>不过注意，免费额度有每日限制，高强度使用可能不够。另外，复杂重构任务容易翻车，比如我让它把脚本改成异步版本，它生成了但有几处逻辑错误，得手动调。功能深度比Cursor稍弱。</p><p>适合想在国内直连用AI编程的开发者，尤其轻度到中度编码任务。结论：免费能用，但别指望它替代专业IDE的深度能力。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->
