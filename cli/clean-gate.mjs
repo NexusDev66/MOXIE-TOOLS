@@ -81,6 +81,21 @@ export function gate(c) {
   return { verdict: score >= REJECT_AT ? 'reject' : 'pass', score, reasons };
 }
 
+/**
+ * 入口预过滤(扫描入库时用)—— 只看域名/名字,不依赖 og,绝不误杀正常工具。
+ * 只硬拒最强垃圾信号:① 目录/聚合站域名;② 灰产高发 TLD(.cab/.sbs/.top/.click…)。
+ * 其余(伪品牌名等)留给后续完整 gate(有 og 接地)判,避免冤枉 Grammarly 这类真品牌。
+ * @param {string} _name(保留,暂未用)@param {string} domain
+ * @returns {{reject:boolean, reason:string}}
+ */
+export function prefilter(_name, domain) {
+  const root = String(domain || '').toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+  if (!root || !root.includes('.')) return { reject: true, reason: '无有效域名' };
+  if (AGGREGATOR_DOMAINS.some((a) => root === a || root.endsWith('.' + a))) return { reject: true, reason: '目录/聚合站' };
+  if (GRAY_TLD.test(root)) return { reject: true, reason: '灰产高发TLD' };
+  return { reject: false, reason: '' };
+}
+
 // ────────────────────────── 回归测试 fixture ──────────────────────────
 // 每条带 expect 期望值;main() 断言,任一不符即 exit 1(可当回归测试用)。
 /** @typedef {Candidate & {expect:'pass'|'reject'}} FixtureRow */

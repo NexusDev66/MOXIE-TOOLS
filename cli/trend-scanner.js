@@ -19,6 +19,7 @@ import { uaForKey } from './scanner-lib/ua-pool.js';
 import { throttle } from './scanner-lib/rate-limit.js';
 import { recordFailure, recordSuccess, sendFeishuAlert, FEISHU_FAIL_THRESHOLD } from './scanner-lib/feishu.js';
 import { extractProductLinks } from './scanner-lib/html-extract.js';
+import { prefilter } from './clean-gate.mjs';
 
 const SUPABASE_URL = 'https://sqvohgcwzhhsvkmyesvs.supabase.co';
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -42,24 +43,19 @@ const runId = (() => {
 console.log(`\n🛰  MOXIE Trend Scanner · run ${runId}${DRY_RUN ? ' [DRY-RUN]' : ''}\n`);
 
 // ───── Sources ─────
+// 【方向纠偏 2026-06-15】latemai 是中文 AI 工具站,旧版全是海外独立开发者/SaaS 发布站
+// (launch.cab/neeed/fazier…)→ 抓出 306 灰产杂牌,毫无价值。改为以中文 AI 工具导航为主,
+// 仅保留 ProductHunt 作为全球 AI 新品信号。入库前再过 prefilter + 完整 gate + AI 层。
+// 【需核实】下列站点的 robots 许可与可抓性,上线首跑后按真实产出调整;抓不到/被禁的替换。
 const SOURCES = [
-  // P0 真 RSS · 这一波直接接
-  { site: 'launch.cab',         type: 'rss', url: 'https://api.launch.cab/v1/rss/weekly' },
-  { site: 'marketingdb.live',   type: 'rss', url: 'https://marketingdb.live/feed.xml' },
-  { site: 'neeed.directory',    type: 'rss', url: 'https://neeed.directory/feed.xml' },
-  { site: 'producthunt.com',    type: 'rss', url: 'https://www.producthunt.com/feed' },
+  // 全球 AI 新品信号(真 RSS)
+  { site: 'producthunt.com',    type: 'rss',  url: 'https://www.producthunt.com/feed' },
 
-  // ───── P1 · 8 个 HTML 站（T4 MOXIE-16）·robots 校验 + UA 池 + 1s 限速 ─────
-  // 选择依据：信号最强的 8 个目录站（首页能抓到外链产品官网）
-  // 哪 8 个待邓晖最终确认；先按这组起步
-  { site: 'fazier.com',         type: 'html', url: 'https://fazier.com/' },
-  { site: 'uneed.best',         type: 'html', url: 'https://www.uneed.best/' },
-  { site: 'peerpush.net',       type: 'html', url: 'https://peerpush.net/' },
-  { site: 'toolfolio.io',       type: 'html', url: 'https://toolfolio.io/' },
-  { site: 'foundrlist.com',     type: 'html', url: 'https://foundrlist.com/' },
-  { site: 'trustmrr.com',       type: 'html', url: 'https://trustmrr.com/' },
-  { site: 'confettisaas.com',   type: 'html', url: 'https://confettisaas.com/' },
-  { site: 'microlaunch.net',    type: 'html', url: 'https://microlaunch.net/' },
+  // 中文 AI 工具导航(HTML;robots 校验 + UA 池 + 1s 限速由合规层保证)
+  { site: 'ai-bot.cn',          type: 'html', url: 'https://ai-bot.cn/' },          // AI 工具集(国内最大之一)
+  { site: 'hao.ai-bot.cn',      type: 'html', url: 'https://hao.ai-bot.cn/' },      // AI 工具集·导航
+  { site: 'www.aigc.cn',        type: 'html', url: 'https://www.aigc.cn/' },        // AIGC 工具导航
+  { site: 'www.toolpedia.cn',   type: 'html', url: 'https://www.toolpedia.cn/' },   // 中文 AI 工具百科
 ];
 
 // ───── helpers ─────
@@ -245,9 +241,14 @@ async function upsertCandidates(items, sourceSite, runId) {
   }
   let newCands = 0;
   let newSrcs = 0;
+  let prefiltered = 0;
   for (const it of items) {
     const domain = domainOf(it.url);
     if (!domain) continue;
+
+    // 入口预过滤:目录站域名 / 灰产 TLD 直接丢,别堆进候选表(根因:旧版没过闸 → 306 灰产)
+    const pf = prefilter(it.title || '', domain);
+    if (pf.reject) { prefiltered++; continue; }
 
     // 1. upsert candidate by product_key (跨站 dedupe 的真 key)
     const candidate = await sb(`/moxie_trend_candidates?on_conflict=product_key`, {
@@ -283,7 +284,8 @@ async function upsertCandidates(items, sourceSite, runId) {
       // ignore unique constraint，可能这个候选 × 这个站已经记录过
     }
   }
-  return { newCands, newSrcs };
+  if (prefiltered) console.log(`    (预过滤丢弃 ${prefiltered} 条目录站/灰产)`);
+  return { newCands, newSrcs, prefiltered };
 }
 
 // ───── main ─────
