@@ -21,6 +21,8 @@ const DRY_RUN = process.argv.includes('--dry-run');
 // 人工甄选的国产新锐(确信真实,未收录)。要扩源往这加。
 // slug 必填(中文名 slugify 会变垃圾,故显式给英文 slug)。
 const SEEDS = [
+  { name: '魔搭社区', domain: 'modelscope.cn', slug: 'modelscope' },   // 阿里达摩院 模型开源社区
+  { name: '书生·浦语 InternLM', domain: 'internlm.org', slug: 'internlm' }, // 上海 AI 实验室 开源大模型
   { name: '跃问', domain: 'yuewen.cn', slug: 'yuewen' },              // 阶跃星辰
   { name: '讯飞星火', domain: 'xinghuo.xfyun.cn', slug: 'xinghuo' },  // 科大讯飞
   { name: '百川大模型', domain: 'baichuan-ai.com', slug: 'baichuan' },// 百川智能
