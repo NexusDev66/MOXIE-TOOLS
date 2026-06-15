@@ -138,6 +138,29 @@
   }
   .cat-tile:hover .cat-tile-arrow { color: var(--accent); gap: 6px; }
 
+  /* ── 高级动效:滚动渐入(错峰)+ 悬停升级 + 数字滚动 ── */
+  @media (prefers-reduced-motion: no-preference) {
+    .cats-group-head, .cat-tile { opacity: 0; transform: translateY(18px); }
+    .reveal-in {
+      opacity: 1 !important; transform: none !important;
+      transition: opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1);
+    }
+  }
+  .cat-tile { position: relative; overflow: hidden;
+    transition: transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s cubic-bezier(.22,.61,.36,1); }
+  .cat-tile::before {
+    content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent), #f0a98e);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .4s cubic-bezier(.22,.61,.36,1);
+  }
+  .cat-tile:hover { transform: translateY(-6px);
+    box-shadow: 0 4px 10px rgba(29,33,41,.06), 0 20px 44px rgba(29,33,41,.11); }
+  .cat-tile:hover::before { transform: scaleX(1); }
+  .cat-tile-arrow { transition: color .2s, transform .3s cubic-bezier(.22,.61,.36,1); }
+  .cat-tile:hover .cat-tile-arrow { transform: translateX(5px); }
+  .cat-tile-cnt, .cats-group-head .count, .cats-hero .cu { font-variant-numeric: tabular-nums; }
+
   /* 底部 submit CTA */
   .cats-cta {
     margin-top: 64px;
@@ -252,8 +275,8 @@
 
 <section class="cats-hero">
   <div class="container">
-    <span class="eyebrow"><span class="live-dot"></span>全部分类 · 24 个</span>
-    <h1>找你的 AI 工具，从<span class="accent"> 24 个分类</span>开始</h1>
+    <span class="eyebrow"><span class="live-dot"></span>全部分类 · <span class="cu">24</span> 个</span>
+    <h1>找你的 AI 工具，从<span class="accent"> <span class="cu">24</span> 个分类</span>开始</h1>
     <p>按场景、按底座、按用户群三种维度组织。每个分类都是编辑团队亲测过的工具集合。</p>
   </div>
 </section>
@@ -314,6 +337,24 @@
   };
   function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
 
+  // 数字滚动增长(三次缓出);尊重 prefers-reduced-motion
+  const MX_REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function mxCountUp(el){
+    const m = (el.textContent || '').match(/\d+/); if (!m) return;
+    const target = +m[0], suffix = el.textContent.replace(/\d+/, '');
+    if (MX_REDUCE) { el.textContent = target + suffix; return; }
+    const dur = 900; let t0 = null;
+    el.textContent = '0' + suffix;
+    requestAnimationFrame(function tick(t){
+      if (t0 === null) t0 = t;
+      const k = Math.min(1, (t - t0) / dur);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + suffix;
+      if (k < 1) requestAnimationFrame(tick);
+    });
+  }
+  // hero 数字首屏直接滚
+  document.querySelectorAll('.cats-hero .cu').forEach(mxCountUp);
+
   window.moxieWhenDBReady(async (db) => {
     const box = document.getElementById('catsGroups');
     if (!box) return;
@@ -371,6 +412,28 @@
           </div>
         </div>`;
     }).join('');
+
+    // 滚动渐入(错峰)+ 数字滚动:卡片/分组进视口才显现
+    const items = [].slice.call(box.querySelectorAll('.cats-group-head, .cat-tile'));
+    if (MX_REDUCE) {
+      items.forEach(e => e.classList.add('reveal-in'));
+    } else {
+      box.querySelectorAll('.cats-grid').forEach(grid => {
+        [].slice.call(grid.children).forEach((c, i) => { c.style.transitionDelay = (i * 55) + 'ms'; });
+      });
+      const io = new IntersectionObserver((ents) => {
+        ents.forEach(e => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('reveal-in');
+          const cnt = e.target.classList.contains('cat-tile')
+            ? e.target.querySelector('.cat-tile-cnt')
+            : e.target.querySelector('.count');
+          if (cnt) mxCountUp(cnt);
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      items.forEach(e => io.observe(e));
+    }
   });
 </script>
 </body>
