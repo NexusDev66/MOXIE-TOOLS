@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
-<script src="/moxie-supabase.js?v=20260611-01"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260612-08">
+<script src="/moxie-supabase.js?v=20260612-01"></script>
 <script src="/moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
@@ -440,8 +440,8 @@
 
         <!-- 子墨评测 -->
         <div class="prod-section">
-          <h2>点评</h2>
-          <div class="editor-note"><div class="editor-note-quote">直接给出答案而非链接，理解复杂查询是核心优势，但信息来源透明度待提升。</div></div>
+          <h2>子墨测评</h2>
+          <div class="editor-note"><div class="editor-note-quote">实测理解复杂问题很准，直接给答案省时间，但信息来源透明度确实不够，得自己留意。</div></div>
         </div>
 
         <!-- 核心特点 -->
@@ -468,7 +468,7 @@
           <div class="alt-grid">
             <a href="/tools/mita" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/metaso.cn.png" alt="秘塔搜索"></div><div class="alt-card-name">秘塔搜索</div></div><div class="alt-card-desc">无广告的中文AI搜索引擎，专注学术与调研场景，直接给出结构化答案并附来源链接，信息精准可靠。</div></a>
             <a href="/tools/perplexity" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/perplexity.ai.png" alt="Perplexity"></div><div class="alt-card-name">Perplexity</div></div><div class="alt-card-desc">AI搜索标杆，实时联网检索并整合多源信息，回答带引用溯源，确保结果准确可信。</div></a>
-            <a href="/tools/tiangong" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/tiangong.cn.png" alt="天工 AI 搜索"></div><div class="alt-card-name">天工 AI 搜索</div></div><div class="alt-card-desc">昆仑万维自研的AI搜索引擎，通过自然语言对话获取实时信息，支持多轮追问与溯源，国内可直接使用。</div></a>
+            <a href="/tools/360ai" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/so.com.png" alt="360 AI 搜索"></div><div class="alt-card-name">360 AI 搜索</div></div><div class="alt-card-desc">360推出的AI搜索引擎，整合全网信息并智能提炼答案，支持多轮对话与追问，国内直接使用无需代理。</div></a>
           </div>
         </div>
 
@@ -500,7 +500,7 @@
             <div class="info-row"><span class="k">价格</span><span class="v">免费</span></div>
             <div class="info-row"><span class="k">国内可用</span><span class="v">✓ 国内直连</span></div>
             <div class="info-row"><span class="k">收录于</span><span class="v">2026.06</span></div>
-            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.12</span></div>
+            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.15</span></div>
           </div>
         </div>
 
@@ -644,7 +644,7 @@
   window.moxieWhenDBReady(async (db) => {
     if (!db) {
       document.getElementById('phName').textContent = '数据库未配置';
-      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key';
       return;
     }
     const slug = "nami-ai";

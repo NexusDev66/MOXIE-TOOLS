@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
-<script src="/moxie-supabase.js?v=20260611-01"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260612-08">
+<script src="/moxie-supabase.js?v=20260612-01"></script>
 <script src="/moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
@@ -440,8 +440,8 @@
 
         <!-- 子墨评测 -->
         <div class="prod-section">
-          <h2>点评</h2>
-          <div class="editor-note"><div class="editor-note-quote">企业AI部署的可靠选择，隐私安全是核心优势，但生态和模型丰富度不及OpenAI。</div></div>
+          <h2>子墨测评</h2>
+          <div class="editor-note"><div class="editor-note-quote">实测企业级部署确实稳，隐私安全没话说，但模型选择少，生态不如OpenAI丰富。</div></div>
         </div>
 
         <!-- 核心特点 -->
@@ -468,7 +468,7 @@
           <div class="alt-grid">
             <a href="/tools/deepseek-v3" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/deepseek.com.png" alt="DeepSeek V3"></div><div class="alt-card-name">DeepSeek V3</div></div><div class="alt-card-desc">深度求索自研的国产开源MoE大模型，推理能力对标GPT-4o，API价格仅主流模型的约1/10，适合高性价比部署。</div></a>
             <a href="/tools/openai-api" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/platform.openai.com.png" alt="OpenAI API"></div><div class="alt-card-name">OpenAI API</div></div><div class="alt-card-desc">OpenAI 官方 API，提供 GPT-4o 和 o 系列模型，支持文本、图像、音频等多模态推理，海外开发首选。</div></a>
-            <a href="/tools/siliconflow" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/siliconflow.cn.png" alt="硅基流动"></div><div class="alt-card-name">硅基流动</div></div><div class="alt-card-desc">国产AI模型API聚合平台，集成主流开源大模型，提供稳定且价格低廉的推理服务，适合开发者快速集成。</div></a>
+            <a href="/tools/minimax" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/minimaxi.com.png" alt="MiniMax"></div><div class="alt-card-name">MiniMax</div></div><div class="alt-card-desc">MiniMax 是海螺 AI 背后的国产大模型，在语音合成与长文本处理上表现突出，支持多模态交互，API 价格亲民。</div></a>
           </div>
         </div>
 
@@ -500,7 +500,7 @@
             <div class="info-row"><span class="k">价格</span><span class="v">付费</span></div>
             <div class="info-row"><span class="k">国内可用</span><span class="v">⚠ 需代理</span></div>
             <div class="info-row"><span class="k">收录于</span><span class="v">2026.06</span></div>
-            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.12</span></div>
+            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.15</span></div>
           </div>
         </div>
 
@@ -644,7 +644,7 @@
   window.moxieWhenDBReady(async (db) => {
     if (!db) {
       document.getElementById('phName').textContent = '数据库未配置';
-      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key';
       return;
     }
     const slug = "cohere";

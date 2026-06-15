@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
-<script src="/moxie-supabase.js?v=20260611-01"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260612-08">
+<script src="/moxie-supabase.js?v=20260612-01"></script>
 <script src="/moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
@@ -440,8 +440,8 @@
 
         <!-- 子墨评测 -->
         <div class="prod-section">
-          <h2>点评</h2>
-          <div class="editor-note"><div class="editor-note-quote">国内可用的视频生成标杆，画面连贯性突出，但复杂场景细节仍有提升空间。</div></div>
+          <h2>子墨测评</h2>
+          <div class="editor-note"><div class="editor-note-quote">实测画面连贯性在国内算第一梯队，免费试用很良心，但复杂场景细节偶尔崩。</div></div>
         </div>
 
         <!-- 核心特点 -->
@@ -468,7 +468,7 @@
           <div class="alt-grid">
             <a href="/tools/jimeng" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/jimeng.jianying.com.png" alt="即梦"></div><div class="alt-card-name">即梦</div></div><div class="alt-card-desc">字节跳动旗下AI创作平台，提供文生图与文生视频功能，社区驱动灵感，国内可直接使用。</div></a>
             <a href="/tools/hailuo" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/hailuoai.com.png" alt="海螺"></div><div class="alt-card-name">海螺</div></div><div class="alt-card-desc">MiniMax 自研的 AI 文生视频工具，通过文字描述生成 6 秒高质量视频，物理感与连贯性突出，国内可直接使用。</div></a>
-            <a href="/tools/heygen" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/heygen.com.png" alt="HeyGen"></div><div class="alt-card-name">HeyGen</div></div><div class="alt-card-desc">AI 数字人视频生成平台，通过文本、图片或音频快速创建带旁白、字幕和动画的完整视频，支持多语言口播。</div></a>
+            <a href="/tools/runway" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/runwayml.com.png" alt="Runway"></div><div class="alt-card-name">Runway</div></div><div class="alt-card-desc">海外老牌AI视频生成与编辑平台，通过文字、图片生成高质量视频，并提供专业级视频编辑工具，核心优势在于对世界模型的模拟与理</div></a>
           </div>
         </div>
 
@@ -500,7 +500,7 @@
             <div class="info-row"><span class="k">价格</span><span class="v">免费+按量</span></div>
             <div class="info-row"><span class="k">国内可用</span><span class="v">✓ 国内直连</span></div>
             <div class="info-row"><span class="k">收录于</span><span class="v">2026.06</span></div>
-            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.12</span></div>
+            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.15</span></div>
           </div>
         </div>
 
@@ -644,7 +644,7 @@
   window.moxieWhenDBReady(async (db) => {
     if (!db) {
       document.getElementById('phName').textContent = '数据库未配置';
-      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key';
       return;
     }
     const slug = "kling";

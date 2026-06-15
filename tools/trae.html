@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="/moxie-styles.css?v=20260526-01">
-<script src="/moxie-supabase.js?v=20260611-01"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260612-08">
+<script src="/moxie-supabase.js?v=20260612-01"></script>
 <script src="/moxie-shared.js?v=20260611-02" defer></script>
 
 <style>
@@ -440,8 +440,8 @@
 
         <!-- 子墨评测 -->
         <div class="prod-section">
-          <h2>点评</h2>
-          <div class="editor-note"><div class="editor-note-quote">字节版Cursor，Claude模型直连是最大卖点，国内可用但功能深度待验证。</div></div>
+          <h2>子墨测评</h2>
+          <div class="editor-note"><div class="editor-note-quote">实测Claude模型国内直连，编程效率确实比Cursor顺手，但功能深度还有差距。</div></div>
         </div>
 
         <!-- 核心特点 -->
@@ -468,7 +468,7 @@
           <div class="alt-grid">
             <a href="/tools/cursor" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/cursor.com.png" alt="Cursor"></div><div class="alt-card-name">Cursor</div></div><div class="alt-card-desc">集成 Claude 与 GPT 双引擎的 AI 编程 IDE，通过自然语言指令自动生成和修改代码，支持上下文感知的智能补</div></a>
             <a href="/tools/github-copilot" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/github.com.png" alt="GitHub Copilot"></div><div class="alt-card-name">GitHub Copilot</div></div><div class="alt-card-desc">微软 GitHub 推出的 AI 编程助手，基于 OpenAI 模型在 IDE 中实时生成代码建议与补全，支持多种编辑器</div></a>
-            <a href="/tools/windsurf" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/windsurf.com.png" alt="Windsurf"></div><div class="alt-card-name">Windsurf</div></div><div class="alt-card-desc">Codeium 出品的 AI 原生 IDE，集成智能代码补全与对话式编程，支持本地与云端代理协同，提升开发效率。</div></a>
+            <a href="/tools/claude-code" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/claude.com.png" alt="Claude Code"></div><div class="alt-card-name">Claude Code</div></div><div class="alt-card-desc">Anthropic 推出的 AI 编程助手，在终端中通过自然语言指令直接编写、调试和重构代码，深度集成开发环境。</div></a>
           </div>
         </div>
 
@@ -500,7 +500,7 @@
             <div class="info-row"><span class="k">价格</span><span class="v">免费</span></div>
             <div class="info-row"><span class="k">国内可用</span><span class="v">✓ 国内直连</span></div>
             <div class="info-row"><span class="k">收录于</span><span class="v">2026.06</span></div>
-            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.12</span></div>
+            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.15</span></div>
           </div>
         </div>
 
@@ -644,7 +644,7 @@
   window.moxieWhenDBReady(async (db) => {
     if (!db) {
       document.getElementById('phName').textContent = '数据库未配置';
-      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260611-01 填 URL 和 anon key';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key';
       return;
     }
     const slug = "trae";

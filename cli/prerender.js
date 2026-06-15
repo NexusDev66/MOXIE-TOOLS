@@ -132,7 +132,7 @@ function bakeDetailSections(html, p, ctx, checks) {
   }
   // 点评(原"子墨评测")
   const review = (d.review || p.tagline || '').trim();
-  sec('子墨评测', '核心特点', `          <h2>点评</h2>\n          <div class="editor-note"><div class="editor-note-quote">${esc(review)}</div></div>`);
+  sec('子墨评测', '核心特点', `          <h2>子墨测评</h2>\n          <div class="editor-note"><div class="editor-note-quote">${esc(review)}</div></div>`);
   // 核心特点
   const feats = Array.isArray(d.features) ? d.features : [];
   const featInner = feats.length
