@@ -397,10 +397,8 @@
           </div>
           <div class="cats-grid">
             ${groups[g].map(c => {
-              // 各组都跳精选页(不跳主页):aigc 用自有页;其余组复用 moxie-models.html?group=;都读 ?cat= 预选
-              const href = g === 'aigc'
-                ? `moxie-aigc.html?cat=${encodeURIComponent(c.slug)}`
-                : `moxie-models.html?group=${encodeURIComponent(g)}&cat=${encodeURIComponent(c.slug)}`;
+              // 各组统一跳精选页 moxie-models.html?group=<组>&cat=<分类>(可点 tab + 预选,不跳主页)
+              const href = `moxie-models.html?group=${encodeURIComponent(g)}&cat=${encodeURIComponent(c.slug)}`;
               return `
                 <a href="${href}" class="cat-tile">
                   <div class="cat-tile-head">
