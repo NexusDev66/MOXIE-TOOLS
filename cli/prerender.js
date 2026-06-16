@@ -329,6 +329,15 @@ function buildNewsPage(n) {
   .nv{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center}
   .nv .container{display:flex;align-items:center;justify-content:space-between}
   .nv a.brand{font-weight:600;color:var(--ink);text-decoration:none;font-size:16px}
+  .nv-links{display:flex;align-items:center;gap:22px}
+  .nv-links a{color:var(--ink-1);text-decoration:none;font-size:13.5px}
+  .nv-links a:hover{color:var(--accent)}
+  .ni-foot{border-top:1px solid var(--line);margin-top:48px}
+  .ni-foot .container{display:flex;align-items:center;justify-content:space-between;min-height:64px;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--ink-3)}
+  .ni-foot a{font-size:12.5px;color:var(--ink-3);text-decoration:none}
+  .ni-foot-links{display:flex;gap:18px}
+  .ni-foot-links a:hover{color:var(--accent)}
+  @media(max-width:640px){.nv-links a:not(.ni-back){display:none}}
   .ni-wrap{max-width:720px;margin:0 auto;padding:56px 20px 90px}
   .ni-meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-3);margin-bottom:16px}
   .ni-src{color:#F53F3F;font-weight:600}
@@ -345,8 +354,14 @@ function buildNewsPage(n) {
 </head>
 <body>
 <nav class="nv"><div class="container">
-  <a class="brand" href="/">MOXIE</a>
-  <a class="ni-back" href="/moxie-news">← 全部快讯</a>
+  <a class="brand" href="/moxie-preview.html">MOXIE</a>
+  <div class="nv-links">
+    <a href="/moxie-preview.html">榜单</a>
+    <a href="/moxie-business.html">商业落地</a>
+    <a href="/moxie-categories.html">分类</a>
+    <a href="/moxie-blog.html">文章</a>
+    <a class="ni-back" href="/moxie-news.html">← 全部快讯</a>
+  </div>
 </div></nav>
 <div class="ni-wrap">
   <div class="ni-meta"><span class="ni-src">${esc(src)}</span><span>·</span><span>${esc(date)}</span><span>·</span><span>AI 快讯</span></div>
@@ -355,6 +370,10 @@ function buildNewsPage(n) {
   <div class="ni-actions"><a class="ni-orig" href="${esc(n.url)}" target="_blank" rel="noopener">阅读原文 ↗</a><a class="ni-back" href="/moxie-news">← 全部快讯</a></div>
   <div class="ni-note">摘要来自来源媒体(${esc(src)})的公开 RSS,版权归原作者。MOXIE 仅做聚合索引,完整内容请以原文为准。</div>
 </div>
+<footer class="ni-foot"><div class="container">
+  <span>© 2024 — 2026 MOXIE · AI 选型决策平台</span>
+  <div class="ni-foot-links"><a href="/moxie-preview.html">榜单</a><a href="/moxie-categories.html">分类</a><a href="/moxie-blog.html">文章</a><a href="/moxie-news.html">快讯</a><a href="/moxie-about.html">关于</a></div>
+</div></footer>
 </body>
 </html>`;
 }
