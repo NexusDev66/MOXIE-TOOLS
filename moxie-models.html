@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
+<title>模型 / 平台 · MOXIE</title>
+<link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
+<script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
+<script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="moxie-styles.css?v=20260612-08">
+<script src="moxie-supabase.js?v=20260612-01"></script>
+<script src="moxie-shared.js?v=20260611-02" defer></script>
+<style>
+  .cat-hero { padding: 64px 0 32px; }
+  .cat-hero .eyebrow { font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 600; margin-bottom: 14px; }
+  .cat-hero h1 { font-size: 32px; font-weight: 500; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 12px; }
+  .cat-hero p { font-size: 14px; color: var(--ink-1); line-height: 1.7; max-width: 720px; }
+  .cat-hero-stats { display: flex; gap: 36px; margin-top: 24px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+  .cat-hero-stats b { color: var(--ink); }
+
+  .aigc-tabs { display: flex; gap: 8px; padding: 24px 0; flex-wrap: wrap; }
+  .aigc-tab { padding: 8px 14px; border-radius: var(--r-pill); font-size: 12.5px; color: var(--ink-1); background: var(--bg-soft); border: 0; }
+  .aigc-tab.active { background: var(--accent-soft); color: var(--accent-d); font-weight: 500; }
+  .aigc-tab .cnt { color: var(--ink-3); font-family: var(--mono); margin-left: 4px; }
+  .aigc-tab.active .cnt { color: var(--accent); }
+
+  .aigc-body { padding: 48px 0 80px; }
+  .aigc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .aigc-card { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 24px; transition: all .15s; cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+  .aigc-card:hover { border-color: var(--ink-3); background: var(--bg-soft); }
+  .aigc-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .aigc-card-logo { width: 44px; height: 44px; background: white; border: 1px solid var(--line); border-radius: 10px; padding: 6px; overflow: hidden; flex-shrink: 0; }
+  .aigc-card-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .aigc-card-name { font-size: 16px; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+  .aigc-card-url { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+  .aigc-card-desc { font-size: 13px; color: var(--ink-1); line-height: 1.6; margin-bottom: 16px; flex-grow: 1; }
+  .aigc-card-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid var(--line-2); font-size: 11.5px; color: var(--ink-2); }
+  .aigc-card-foot .price { font-family: var(--mono); }
+  .aigc-card-foot .votes { color: var(--accent); font-weight: 500; }
+
+  @media (max-width: 900px) { .aigc-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="moxie-preview.html" class="brand-logo"><img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24"></a>
+    <nav class="nav-center">
+      <a href="moxie-preview.html">榜单</a>
+      <a href="moxie-business.html">商业落地</a>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="moxie-blog.html">文章</a>
+      
+    </nav>
+    <div class="top-actions">
+      <a href="#" class="cmd-trigger"><i data-lucide="search" style="width:14px;height:14px;color:var(--ink-3);"></i><span class="label">搜索产品 / maker / tag…</span></a>
+      <a href="moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="moxie-login.html" class="btn-accent" id="loginBtn">登录</a>
+    </div>
+  </div>
+</header>
+
+<section class="cat-hero">
+  <div class="container">
+    <div class="eyebrow">模型 / 平台 · 底座</div>
+    <h1>AI 模型与平台精选</h1>
+    <p>给产品 / 技术 / RAG 落地团队 · 大模型 · AI 助手 · RAG 知识库 · AI Agent · 工作流 / Bot</p>
+    <div class="cat-hero-stats">
+      <span><b id="statTotal">—</b> 款收录</span>
+      <span><b id="statCat">—</b> 类底座场景</span>
+      <span>编辑团队按真实可用性甄选</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="aigc-tabs" id="modelTabs">
+    <button class="aigc-tab active">加载中…</button>
+  </div>
+</div>
+
+<section class="aigc-body">
+  <div class="container">
+    <div class="aigc-grid" id="aigcGrid">
+      <div style="grid-column:1/-1;padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">加载中…</div>
+    </div>
+
+    <div class="show-all"><a href="moxie-categories.html" class="btn-show">查看全部分类 →</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand"><a href="moxie-preview.html" class="brand-logo"><img src="public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="117" height="28"></a><p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p><div class="meta-line"><span class="live-dot"></span>MOXIE · BUILD 2026.05.23 · 3,847 TOOLS</div></div>
+      <div class="fcol"><h4>发现</h4><a href="moxie-preview.html">今日上新</a><a href="moxie-business.html">商业落地</a><div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
+              <ul>
+                <li><a href="moxie-aigc.html"><span>AI 写作</span><span class="cnt">42</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 图像</span><span class="cnt">58</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 视频</span><span class="cnt">36</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 音乐</span><span class="cnt">14</span></a></li>
+                <li><a href="moxie-aigc.html"><span>AI 数字人</span><span class="cnt">10</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>大模型</span><span class="cnt">32</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 助手</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
+                <li><a href="moxie-business.html"><span>AI Agent</span><span class="cnt">19</span></a></li>
+                <li><a href="moxie-business.html"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
+                <li><a href="moxie-business.html"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
+              </ul>
+            </div>
+            <div class="mega-col">
+              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
+              <ul>
+                <li><a href="moxie-preview.html"><span>AI 编程</span><span class="cnt">41</span></a></li>
+                <li><a href="moxie-preview.html"><span>AI 搜索</span><span class="cnt">18</span></a></li>
+                <li><a href="moxie-preview.html"><span>翻译</span><span class="cnt">12</span></a></li>
+                <li><a href="moxie-preview.html"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
+                <li><a href="moxie-preview.html"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
+                <li><a href="moxie-preview.html"><span>数据分析</span><span class="cnt">16</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega-foot">
+            <a href="moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div><a href="moxie-blog.html">文章</a></div>
+      <div class="fcol"><h4>产品</h4><a href="moxie-preview.html?chat=open">MOXIE 助手</a><span class="planned">提示词订阅 <span class="tag">规划中</span></span><span class="planned">AI 花销追踪 <span class="tag">规划中</span></span></div>
+      <div class="fcol"><h4>资源</h4><a href="moxie-about.html">关于我们</a><a href="moxie-about.html#faq">FAQ</a></div>
+      <div class="fcol"><h4>合作</h4><a href="moxie-submit.html">提交产品</a><a href="moxie-pricing.html">商务合作</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2024 — 2026 MOXIE</span><div class="right"><a href="moxie-privacy.html">隐私政策</a><a href="moxie-terms.html">服务条款</a><a href="moxie-about.html">联系我们</a></div></div>
+  </div>
+</footer>
+
+<script>
+  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  if (window.lucide) lucide.createIcons();
+  /* ── 模型/平台 组:动态可点分类 tab + 卡片网格 ── */
+  function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  window.moxieWhenDBReady(async (db) => {
+    const grid = document.getElementById('aigcGrid');
+    const tabsEl = document.getElementById('modelTabs');
+    if (!db) { grid.innerHTML = `<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>`; return; }
+
+    const { data: cats } = await db.from('moxie_categories').select('id, slug, name').eq('group_name', 'platform').order('sort_order', { ascending: true });
+    const list = cats || [];
+    if (!list.length) { grid.innerHTML = `<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink-3);font-size:13px;">没有平台分类</div>`; return; }
+    const ids = list.map(c => c.id);
+
+    const { data: all } = await window.MoxieDB.products({ categoryIds: ids, limit: 300 });
+    const prods = all || [];
+    const cnt = {}; prods.forEach(p => { cnt[p.category_id] = (cnt[p.category_id]||0)+1; });
+    const idBySlug = {}; list.forEach(c => idBySlug[c.slug] = c.id);
+
+    const st1 = document.getElementById('statTotal'); if (st1) st1.textContent = prods.length;
+    const st2 = document.getElementById('statCat'); if (st2) st2.textContent = list.filter(c=>cnt[c.id]).length;
+
+    function card(p){ return `
+      <a href="moxie-product.html?slug=${encodeURIComponent(p.slug)}" class="aigc-card">
+        <div class="aigc-card-head">
+          <div class="aigc-card-logo"><img src="/public/logos/${p.domain}.png" alt=""></div>
+          <div><div class="aigc-card-name">${escH(p.name)}</div><div class="aigc-card-url">${escH(p.domain)}</div></div>
+        </div>
+        <div class="aigc-card-desc">${escH(p.tagline)}</div>
+        <div class="aigc-card-foot"><span class="price">${escH(p.price_label || '免费')}</span><span class="votes">▲ ${p.vote_count}</span></div>
+      </a>`; }
+
+    function render(catId){
+      const arr = (catId === 'all' ? prods : prods.filter(p => p.category_id === catId))
+        .slice().sort((a,b)=> (b.vote_count||0)-(a.vote_count||0));
+      grid.innerHTML = arr.length ? arr.map(card).join('')
+        : `<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink-3);font-size:13px;">该分类暂无工具</div>`;
+    }
+
+    const tabs = [{ id:'all', name:'全部', n: prods.length }].concat(list.filter(c=>cnt[c.id]).map(c=>({id:c.id, name:c.name, n:cnt[c.id]})));
+    tabsEl.innerHTML = tabs.map((t,i)=>`<button class="aigc-tab${i===0?' active':''}" data-cat="${t.id}">${escH(t.name)} <span class="cnt">${t.n}</span></button>`).join('');
+    tabsEl.querySelectorAll('.aigc-tab').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        tabsEl.querySelectorAll('.aigc-tab').forEach(x=>x.classList.toggle('active', x===b));
+        const v = b.dataset.cat;
+        render(v === 'all' ? 'all' : Number(v));
+      });
+    });
+
+    // ?cat=<slug> 深链:从分类页点进来时预选该分类
+    const catSlug = new URLSearchParams(location.search).get('cat');
+    const startId = (catSlug && idBySlug[catSlug]) ? idBySlug[catSlug] : 'all';
+    if (startId !== 'all') tabsEl.querySelectorAll('.aigc-tab').forEach(x=>x.classList.toggle('active', x.dataset.cat === String(startId)));
+    render(startId);
+  });
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>

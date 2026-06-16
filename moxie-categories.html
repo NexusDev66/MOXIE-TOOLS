@@ -397,8 +397,8 @@
           </div>
           <div class="cats-grid">
             ${groups[g].map(c => {
-              // 统一跳主榜(moxie-preview.html 读 ?cat=<slug> 自动选中该分类榜单)
-              const dest = 'moxie-preview.html';
+              // 按分组跳对应精选页(都读 ?cat=<slug> 预选该分类);devtool 归到主榜
+              const dest = g === 'aigc' ? 'moxie-aigc.html' : g === 'platform' ? 'moxie-models.html' : 'moxie-preview.html';
               return `
                 <a href="${dest}?cat=${encodeURIComponent(c.slug)}" class="cat-tile">
                   <div class="cat-tile-head">
