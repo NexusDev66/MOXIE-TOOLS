@@ -177,10 +177,10 @@
         <div class="filter-block">
           <h4>价格</h4>
           <div class="filter-list">
-            <div class="filter-item">¥0-99/月 <span class="cnt">12</span></div>
-            <div class="filter-item">¥100-499/月 <span class="cnt">19</span></div>
-            <div class="filter-item">¥500-2000/月 <span class="cnt">21</span></div>
-            <div class="filter-item">企业定制 <span class="cnt">15</span></div>
+            <div class="filter-item">免费 / 含免费 <span class="cnt">54</span></div>
+            <div class="filter-item">订阅 / 会员 <span class="cnt">40</span></div>
+            <div class="filter-item">按量计费 <span class="cnt">5</span></div>
+            <div class="filter-item">企业 / 邀请制 <span class="cnt">2</span></div>
           </div>
         </div>
       </aside>
@@ -301,10 +301,10 @@
       '私有化部署': p => /私有|本地|部署|开源|self|on-?prem/.test(_bzTxt(p)),
     },
     '价格': {
-      '¥0-99/月': p => /免费/.test(p.price_label||'') || (_bzYuan(p) !== null && _bzYuan(p) < 100),
-      '¥100-499/月': p => { const v=_bzYuan(p); return v!==null && v>=100 && v<500; },
-      '¥500-2000/月': p => { const v=_bzYuan(p); return v!==null && v>=500 && v<=2000; },
-      '企业定制': p => /企业|邀请|定制/.test(p.price_label||''),
+      '免费 / 含免费': p => /免费/.test(p.price_label||''),
+      '订阅 / 会员': p => /订阅|会员|付费|\/月|[¥￥$]/.test(p.price_label||''),
+      '按量计费': p => /按量/.test(p.price_label||''),
+      '企业 / 邀请制': p => /企业|邀请|定制/.test(p.price_label||''),
     },
   };
 
