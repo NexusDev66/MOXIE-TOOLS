@@ -13,6 +13,16 @@
 <script src="moxie-shared.js?v=20260611-02" defer></script>
 <style>
   .cat-hero { padding: 64px 0 32px; }
+  .cat-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--ink-2); text-decoration: none;
+    padding: 6px 14px 6px 11px; border-radius: 100px;
+    border: 1px solid var(--line); background: var(--bg);
+    margin-bottom: 22px; transition: all .2s cubic-bezier(.22,.61,.36,1);
+  }
+  .cat-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .cat-back:hover { color: var(--accent); border-color: var(--accent-soft); background: var(--accent-soft); }
+  .cat-back:hover .arr { transform: translateX(-3px); }
   .cat-hero .eyebrow { font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 600; margin-bottom: 14px; }
   .cat-hero h1 { font-size: 32px; font-weight: 500; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 12px; }
   .cat-hero p { font-size: 14px; color: var(--ink-1); line-height: 1.7; max-width: 720px; }
@@ -110,6 +120,7 @@
 
 <section class="cat-hero">
   <div class="container">
+    <a href="moxie-categories.html" class="cat-back"><span class="arr">←</span> 返回全部分类</a>
     <div class="eyebrow" id="heroEyebrow">模型 / 平台 · 底座</div>
     <h1 id="heroTitle">AI 模型与平台精选</h1>
     <p id="heroDesc">给产品 / 技术 / RAG 落地团队 · 大模型 · AI 助手 · RAG 知识库 · AI Agent · 工作流 / Bot</p>
