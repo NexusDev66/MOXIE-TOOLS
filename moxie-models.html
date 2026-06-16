@@ -110,9 +110,9 @@
 
 <section class="cat-hero">
   <div class="container">
-    <div class="eyebrow">模型 / 平台 · 底座</div>
-    <h1>AI 模型与平台精选</h1>
-    <p>给产品 / 技术 / RAG 落地团队 · 大模型 · AI 助手 · RAG 知识库 · AI Agent · 工作流 / Bot</p>
+    <div class="eyebrow" id="heroEyebrow">模型 / 平台 · 底座</div>
+    <h1 id="heroTitle">AI 模型与平台精选</h1>
+    <p id="heroDesc">给产品 / 技术 / RAG 落地团队 · 大模型 · AI 助手 · RAG 知识库 · AI Agent · 工作流 / Bot</p>
     <div class="cat-hero-stats">
       <span><b id="statTotal">—</b> 款收录</span>
       <span><b id="statCat">—</b> 类底座场景</span>
@@ -204,12 +204,25 @@
   /* ── 模型/平台 组:动态可点分类 tab + 卡片网格 ── */
   function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
 
+  // 一套页面服务多个分组:?group=platform|devtool|aigc
+  const GROUP_META = {
+    platform: { eyebrow: '模型 / 平台 · 底座', title: 'AI 模型与平台精选', desc: '给产品 / 技术 / RAG 落地团队 · 大模型 · AI 助手 · RAG 知识库 · AI Agent · 工作流 / Bot', doc: '模型 / 平台 · MOXIE' },
+    devtool:  { eyebrow: '开发者 / 效率 · 工具', title: 'AI 开发者效率工具精选', desc: '给独立开发者 / 工程团队 · AI 编程 · AI 搜索 · 翻译 · 办公协作 · 数据分析', doc: '开发者 / 效率 · MOXIE' },
+    aigc:     { eyebrow: 'AIGC · 创作工具', title: 'AI 创作工具精选', desc: '面向内容创作者 / 设计师 / 视频博主 / 营销人员 · AI 写作 · 图像 · 视频 · 语音', doc: 'AIGC 创作 · MOXIE' },
+  };
+  const GROUP = new URLSearchParams(location.search).get('group') || 'platform';
+  (function(){
+    const m = GROUP_META[GROUP] || GROUP_META.platform;
+    const set = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t; };
+    set('heroEyebrow', m.eyebrow); set('heroTitle', m.title); set('heroDesc', m.desc); document.title = m.doc;
+  })();
+
   window.moxieWhenDBReady(async (db) => {
     const grid = document.getElementById('aigcGrid');
     const tabsEl = document.getElementById('modelTabs');
     if (!db) { grid.innerHTML = `<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>`; return; }
 
-    const { data: cats } = await db.from('moxie_categories').select('id, slug, name').eq('group_name', 'platform').order('sort_order', { ascending: true });
+    const { data: cats } = await db.from('moxie_categories').select('id, slug, name').eq('group_name', GROUP).order('sort_order', { ascending: true });
     const list = cats || [];
     if (!list.length) { grid.innerHTML = `<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--ink-3);font-size:13px;">没有平台分类</div>`; return; }
     const ids = list.map(c => c.id);
