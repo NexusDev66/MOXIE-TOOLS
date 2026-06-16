@@ -1461,6 +1461,16 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
           show(v === 'all' ? 'all' : Number(v));
         });
       });
+      // 深链:?cat=<slug> 自动选中对应分类榜单(从分类页点进来)
+      var _catSlug = new URLSearchParams(location.search).get('cat');
+      if (_catSlug) {
+        var _hit = cats.filter(function(c){ return c.slug === _catSlug; })[0];
+        if (_hit && cnt[_hit.id]) {
+          bar.querySelectorAll('.cat-chip').forEach(function(x){ x.classList.toggle('active', x.dataset.cat === String(_hit.id)); });
+          show(_hit.id);
+          if (bar.scrollIntoView) bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     });
   });
 })();
