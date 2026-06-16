@@ -164,7 +164,7 @@
   /* ── 质感升级 v2:环境光 + 分组色 + 卡片辉光 ── */
   body {
     background:
-      radial-gradient(880px 360px at 50% -130px, color-mix(in srgb, var(--accent) 13%, transparent), transparent 72%),
+      radial-gradient(880px 360px at 50% -130px, color-mix(in srgb, var(--accent) 7%, transparent), transparent 72%),
       var(--bg);
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -181,8 +181,8 @@
   }
   .cats-group-head .count {
     padding: 3px 11px; border-radius: 100px;
-    background: color-mix(in srgb, var(--c, var(--accent)) 13%, transparent);
-    color: var(--c, var(--accent));
+    background: color-mix(in srgb, var(--c, var(--accent)) 9%, transparent);
+    color: color-mix(in srgb, var(--c, var(--accent)) 72%, var(--ink-2));
   }
 
   /* 卡片:分类色点 + 计数胶囊 + 彩色辉光悬停 */
@@ -190,14 +190,14 @@
   .cat-tile::before { background: linear-gradient(90deg, var(--c, var(--accent)), color-mix(in srgb, var(--c, var(--accent)) 38%, #fff)); }
   .cat-tile:hover {
     transform: translateY(-6px);
-    border-color: color-mix(in srgb, var(--c, var(--accent)) 35%, var(--line));
-    box-shadow: 0 4px 10px rgba(29,33,41,.05), 0 22px 48px -12px color-mix(in srgb, var(--c, var(--accent)) 40%, transparent);
+    border-color: color-mix(in srgb, var(--c, var(--accent)) 22%, var(--line));
+    box-shadow: 0 4px 10px rgba(29,33,41,.05), 0 20px 44px -14px color-mix(in srgb, var(--c, var(--accent)) 22%, transparent);
   }
   .cat-tile-head { align-items: center; gap: 10px; }
   .cat-dot {
-    width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0;
+    width: 8px; height: 8px; border-radius: 3px; flex-shrink: 0;
     background: var(--c, var(--accent));
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--c, var(--accent)) 15%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--c, var(--accent)) 10%, transparent);
     transition: transform .3s cubic-bezier(.22,.61,.36,1);
   }
   .cat-tile:hover .cat-dot { transform: scale(1.2) rotate(45deg); }
@@ -432,7 +432,7 @@
       sumByGroup[g] = groups[g].reduce((s, c) => s + (countByCat[c.id] || 0), 0);
     });
 
-    const GCOLOR = { platform: '#6366f1', aigc: '#e0703f', devtool: '#10b981' };
+    const GCOLOR = { platform: '#9aa6f6', aigc: '#f0a589', devtool: '#5fd3ab' };
     box.innerHTML = Object.keys(groups).map(g => {
       const label = GROUP_LABEL[g] || { title: g, desc: '', submitType: '' };
       const col = GCOLOR[g] || 'var(--accent)';
