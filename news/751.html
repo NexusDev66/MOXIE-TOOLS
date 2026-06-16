@@ -6,12 +6,12 @@
 <link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
 <title>从最优传输角度训练奖励模型：让 RLHF 学会「忽略错误偏好」丨ICML 2026 · MOXIE 快讯</title>
 <meta name="description" content="SelectiveRM：从点对点拟合噪声偏好，转向带选择机制的分布对齐，重构奖励模型的训练目标。作者丨潘黎铖 在大语言模型对齐研究中，一个看似自然、却值得重新审视的问题长期存在：一方面，RLHF、RLAIF、GRPO等方法不断推动模型对齐能力演进；另一方面，奖励模型训练阶段却普遍默认一个前提——收集">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/news/751">
+<link rel="canonical" href="https://www.latemai.com/news/751">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从最优传输角度训练奖励模型：让 RLHF 学会「忽略错误偏好」丨ICML 2026 · MOXIE">
 <meta property="og:description" content="SelectiveRM：从点对点拟合噪声偏好，转向带选择机制的分布对齐，重构奖励模型的训练目标。作者丨潘黎铖 在大语言模型对齐研究中，一个看似自然、却值得重新审视的问题长期存在：一方面，RLHF、RLAIF、GRPO等方法不断推动模型对齐能力演进；另一方面，奖励模型训练阶段却普遍默认一个前提——收集">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/news/751"><link rel="stylesheet" href="/moxie-styles.css?v=20260608-02">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"从最优传输角度训练奖励模型：让 RLHF 学会「忽略错误偏好」丨ICML 2026","description":"SelectiveRM：从点对点拟合噪声偏好，转向带选择机制的分布对齐，重构奖励模型的训练目标。作者丨潘黎铖 在大语言模型对齐研究中，一个看似自然、却值得重新审视的问题长期存在：一方面，RLHF、RLAIF、GRPO等方法不断推动模型对齐能力演进；另一方面，奖励模型训练阶段却普遍默认一个前提——收集到的偏好标注能够准确反映真实人类偏好。但现实并非如此。无论是人工标注、众包反馈，还是LLM-as-a-Judge，偏好数据都不可避免地包含噪声：标注疲劳、主观分歧、随机失误、模型幻觉，都可能让“观测偏好”偏离“真实偏好”。这使得奖励模型训练面临一个根本问题：如果监督信号本身并不可靠，那么模型究竟应该","datePublished":"2026-06-15T07:39:00+00:00","author":{"@type":"Organization","name":"雷锋网"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/news/751"}}</script>
+<meta property="og:url" content="https://www.latemai.com/news/751"><link rel="stylesheet" href="/moxie-styles.css?v=20260608-02">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"从最优传输角度训练奖励模型：让 RLHF 学会「忽略错误偏好」丨ICML 2026","description":"SelectiveRM：从点对点拟合噪声偏好，转向带选择机制的分布对齐，重构奖励模型的训练目标。作者丨潘黎铖 在大语言模型对齐研究中，一个看似自然、却值得重新审视的问题长期存在：一方面，RLHF、RLAIF、GRPO等方法不断推动模型对齐能力演进；另一方面，奖励模型训练阶段却普遍默认一个前提——收集到的偏好标注能够准确反映真实人类偏好。但现实并非如此。无论是人工标注、众包反馈，还是LLM-as-a-Judge，偏好数据都不可避免地包含噪声：标注疲劳、主观分歧、随机失误、模型幻觉，都可能让“观测偏好”偏离“真实偏好”。这使得奖励模型训练面临一个根本问题：如果监督信号本身并不可靠，那么模型究竟应该","datePublished":"2026-06-15T07:39:00+00:00","author":{"@type":"Organization","name":"雷锋网"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.latemai.com/news/751"}}</script>
 <style>
   .nv{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center}
   .nv .container{display:flex;align-items:center;justify-content:space-between}

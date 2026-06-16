@@ -83,7 +83,8 @@ async function main() {
   console.log(`\n🧹 详情页 AI 清洗${DRY_RUN ? ' [DRY-RUN]' : ''}${FORCE ? ' [FORCE]' : ''}\n`);
   const cats = await sb('/moxie_categories?select=id,name');
   const catName = Object.fromEntries(cats.map((c) => [c.id, c.name]));
-  let q = '/moxie_products?status=eq.published&select=id,name,domain,tagline,description,price_label,domestic_available,category_id,detail&order=weight_score.desc';
+  // 含 pending:新规则下 pending 必须先 enrich(填 detail)才能被 promote 上架,否则卡死
+  let q = '/moxie_products?status=in.(published,pending)&select=id,name,domain,tagline,description,price_label,domestic_available,category_id,detail&order=weight_score.desc';
   if (LIMIT) q += `&limit=${LIMIT}`;
   const prods = await sb(q);
   // --fetch:遍历全部,抓到官网摘要才重生成(grounding);否则按是否缺 detail 决定

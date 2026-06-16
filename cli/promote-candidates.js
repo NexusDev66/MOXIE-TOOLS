@@ -47,10 +47,14 @@ async function main() {
   const pend = await sb('/moxie_products?status=eq.pending&select=id,name,slug,domain,tagline,tags,description,price_label,domestic_available,category_id,detail&order=created_at.desc&limit=500');
   if (!pend.length) { console.log('无 pending 候选,跳过'); return; }
 
-  const scored = pend.map((p) => ({ p, score: completeness(p) })).sort((a, b) => b.score - a.score);
-  const pass = scored.filter((x) => x.score >= THRESHOLD).slice(0, LIMIT);
+  // 上架硬条件:已 AI 清洗(有 detail.features)——保证 "published ⟺ 已清洗",杜绝 thin 工具上线
+  const cleaned = (p) => !!(p.detail && Array.isArray(p.detail.features) && p.detail.features.length);
+  const scored = pend.map((p) => ({ p, score: completeness(p), ready: cleaned(p) })).sort((a, b) => b.score - a.score);
+  const pass = scored.filter((x) => x.ready && x.score >= THRESHOLD).slice(0, LIMIT);
   const low = scored.filter((x) => x.score < THRESHOLD);
-  console.log(`pending ${pend.length} · 达标 ${scored.filter((x) => x.score >= THRESHOLD).length}(本次上架 ${pass.length})· 不达标留审 ${low.length}\n`);
+  const waitClean = scored.filter((x) => x.score >= THRESHOLD && !x.ready);
+  console.log(`pending ${pend.length} · 达标且已清洗 ${scored.filter((x) => x.ready && x.score >= THRESHOLD).length}(本次上架 ${pass.length})· 达标待清洗 ${waitClean.length}(等 enrich)· 不达标留审 ${low.length}\n`);
+  if (waitClean.length) console.log(`待清洗(完善度够但无 detail,本轮不上架):` + waitClean.slice(0, 10).map((x) => x.p.name).join('、') + (waitClean.length > 10 ? ' …' : '') + '\n');
 
   let ok = 0;
   for (const { p, score } of pass) {
