@@ -47,8 +47,9 @@
   .cat-side .filter-list { display: flex; flex-direction: column; }
   .cat-side .filter-item { padding: 8px 0; font-size: 12.5px; color: var(--ink-1); border-bottom: 1px solid var(--line-2); display: flex; justify-content: space-between; }
   .cat-side .filter-item.active { color: var(--accent); font-weight: 500; }
-  .cat-side .filter-item { cursor: pointer; user-select: none; transition: color .15s; }
+  .cat-side .filter-item { cursor: pointer; user-select: none; transition: color .15s, opacity .15s; }
   .cat-side .filter-item:hover { color: var(--accent); }
+  .cat-side .filter-item.is-empty { opacity: .32; cursor: default; pointer-events: none; }
   .cat-side .filter-item .cnt { color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
   @media (max-width: 900px) {
     .cat-layout { grid-template-columns: 1fr; }
@@ -188,14 +189,14 @@
       <div>
         <div class="prod-list" style="border:1px solid var(--line);border-radius:8px;background:var(--bg);">
           <div class="list-header">
-            <span>#</span><span></span><span>产品 / 描述</span><span class="ar">场景</span><span class="ar">价格</span><span class="ar">投票</span>
+            <span>#</span><span></span><span>产品 / 描述 <em id="bizResultCount" style="font-style:normal;color:var(--ink-3);font-weight:400;margin-left:6px;"></em></span><span class="ar">场景</span><span class="ar">价格</span><span class="ar">投票</span>
           </div>
           <div id="bizRows">
             <div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">加载中…</div>
           </div>
         </div>
 
-        <div class="show-all"><a href="moxie-categories.html" class="btn-show">查看全部 67 款</a></div>
+        <div class="show-all"><a href="moxie-categories.html" class="btn-show" id="bizShowAll">查看全部分类</a></div>
       </div>
 
     </div>
@@ -318,8 +319,44 @@
       return fn ? fn(p) : true;
     }));
   }
+  /* 分面计数：某项的数字 = 在「其它分组当前选中」前提下，再选这一项会剩多少 */
+  function bizCountFor(grp, label){
+    const own = BIZ_PRED[grp] && BIZ_PRED[grp][label];
+    return BIZ_ALL.filter(p =>
+      Object.keys(BIZ_STATE).every(g => {
+        if (g === grp) return true;
+        const sel = BIZ_STATE[g];
+        if (!sel) return true;
+        const f = BIZ_PRED[g][sel];
+        return f ? f(p) : true;
+      }) && (label === '全部' ? true : (own ? own(p) : true))
+    ).length;
+  }
+  function updateBizCounts(){
+    document.querySelectorAll('.cat-side .filter-block').forEach(block => {
+      const h4 = block.querySelector('h4');
+      if (!h4) return;
+      const grp = h4.textContent.trim();
+      if (!(grp in BIZ_STATE)) return;
+      block.querySelectorAll('.filter-item').forEach(item => {
+        const label = _bzLabel(item);
+        const n = bizCountFor(grp, label);
+        const cnt = item.querySelector('.cnt');
+        if (cnt) cnt.textContent = n;
+        /* 0 结果的项灰掉禁点（当前选中项 / 全部 永不禁用，留出退出口） */
+        const keep = item.classList.contains('active') || label === '全部';
+        item.classList.toggle('is-empty', n === 0 && !keep);
+      });
+    });
+  }
   function renderBiz(list){
     const box = document.getElementById('bizRows');
+    /* 结果数提示 + 真实计数 */
+    const em = document.getElementById('bizResultCount');
+    if (em) em.textContent = `· ${list.length} 款`;
+    const showAll = document.getElementById('bizShowAll');
+    if (showAll) showAll.textContent = `查看全部 ${BIZ_ALL.length} 款分类`;
+    updateBizCounts();
     if (!list.length){
       box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">该筛选下暂无产品 · 换个条件试试</div>`;
       return;
