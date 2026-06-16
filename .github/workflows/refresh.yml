@@ -94,7 +94,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "无变化,跳过提交"
           else
-            git commit -m "chore(refresh): 每日重算权重 + 重渲染 + sitemap [skip ci]"
+            git commit -m "chore(refresh): 每日重算权重 + 重渲染 + sitemap"
             git push
           fi
 
