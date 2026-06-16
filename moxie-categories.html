@@ -161,6 +161,53 @@
   .cat-tile:hover .cat-tile-arrow { transform: translateX(5px); }
   .cat-tile-cnt, .cats-group-head .count, .cats-hero .cu { font-variant-numeric: tabular-nums; }
 
+  /* ── 质感升级 v2:环境光 + 分组色 + 卡片辉光 ── */
+  body {
+    background:
+      radial-gradient(880px 360px at 50% -130px, color-mix(in srgb, var(--accent) 13%, transparent), transparent 72%),
+      var(--bg);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cats-hero .eyebrow, .cats-hero h1, .cats-hero p { opacity: 0; transform: translateY(14px); animation: heroIn .7s cubic-bezier(.22,.61,.36,1) forwards; }
+    .cats-hero h1 { animation-delay: .07s; } .cats-hero p { animation-delay: .15s; }
+  }
+  @keyframes heroIn { to { opacity: 1; transform: none; } }
+  .cats-hero .eyebrow { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+  /* 分组标题:彩色竖条 + 计数胶囊 */
+  .cats-group-head::before {
+    content: ""; width: 4px; height: 20px; border-radius: 3px; align-self: center;
+    background: linear-gradient(var(--c, var(--accent)), color-mix(in srgb, var(--c, var(--accent)) 50%, #fff));
+  }
+  .cats-group-head .count {
+    padding: 3px 11px; border-radius: 100px;
+    background: color-mix(in srgb, var(--c, var(--accent)) 13%, transparent);
+    color: var(--c, var(--accent));
+  }
+
+  /* 卡片:分类色点 + 计数胶囊 + 彩色辉光悬停 */
+  .cat-tile { border: 1px solid var(--line); }
+  .cat-tile::before { background: linear-gradient(90deg, var(--c, var(--accent)), color-mix(in srgb, var(--c, var(--accent)) 38%, #fff)); }
+  .cat-tile:hover {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--c, var(--accent)) 35%, var(--line));
+    box-shadow: 0 4px 10px rgba(29,33,41,.05), 0 22px 48px -12px color-mix(in srgb, var(--c, var(--accent)) 40%, transparent);
+  }
+  .cat-tile-head { align-items: center; gap: 10px; }
+  .cat-dot {
+    width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0;
+    background: var(--c, var(--accent));
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--c, var(--accent)) 15%, transparent);
+    transition: transform .3s cubic-bezier(.22,.61,.36,1);
+  }
+  .cat-tile:hover .cat-dot { transform: scale(1.2) rotate(45deg); }
+  .cat-tile-name { flex: 1; }
+  .cat-tile-cnt {
+    padding: 2px 9px; border-radius: 100px; background: var(--bg-soft);
+    color: var(--ink-2); font-size: 11.5px;
+  }
+  .cat-tile-cnt i { font-style: normal; opacity: .5; margin-left: 1px; }
+
   /* 底部 submit CTA */
   .cats-cta {
     margin-top: 64px;
@@ -385,11 +432,13 @@
       sumByGroup[g] = groups[g].reduce((s, c) => s + (countByCat[c.id] || 0), 0);
     });
 
+    const GCOLOR = { platform: '#6366f1', aigc: '#e0703f', devtool: '#10b981' };
     box.innerHTML = Object.keys(groups).map(g => {
       const label = GROUP_LABEL[g] || { title: g, desc: '', submitType: '' };
+      const col = GCOLOR[g] || 'var(--accent)';
       return `
         <div class="cats-group">
-          <div class="cats-group-head">
+          <div class="cats-group-head" style="--c:${col}">
             <h2>${escH(label.title)}</h2>
             <span class="count">${sumByGroup[g]} 款</span>
             <span class="desc">${escH(label.desc)}</span>
@@ -400,10 +449,11 @@
               // 各组统一跳精选页 moxie-models.html?group=<组>&cat=<分类>(可点 tab + 预选,不跳主页)
               const href = `moxie-models.html?group=${encodeURIComponent(g)}&cat=${encodeURIComponent(c.slug)}`;
               return `
-                <a href="${href}" class="cat-tile">
+                <a href="${href}" class="cat-tile" style="--c:${col}">
                   <div class="cat-tile-head">
+                    <span class="cat-dot"></span>
                     <span class="cat-tile-name">${escH(c.name)}</span>
-                    <span class="cat-tile-cnt">${countByCat[c.id] || 0} 款</span>
+                    <span class="cat-tile-cnt">${countByCat[c.id] || 0}<i>款</i></span>
                   </div>
                   <div class="cat-tile-desc">${escH(c.description || '')}</div>
                   <span class="cat-tile-arrow">查看分类 →</span>
