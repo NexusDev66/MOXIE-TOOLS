@@ -47,6 +47,8 @@
   .cat-side .filter-list { display: flex; flex-direction: column; }
   .cat-side .filter-item { padding: 8px 0; font-size: 12.5px; color: var(--ink-1); border-bottom: 1px solid var(--line-2); display: flex; justify-content: space-between; }
   .cat-side .filter-item.active { color: var(--accent); font-weight: 500; }
+  .cat-side .filter-item { cursor: pointer; user-select: none; transition: color .15s; }
+  .cat-side .filter-item:hover { color: var(--accent); }
   .cat-side .filter-item .cnt { color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
   @media (max-width: 900px) {
     .cat-layout { grid-template-columns: 1fr; }
@@ -267,27 +269,62 @@
   /* business filter-item · 假交互（真过滤未实现）— 见 Phase 3c */
   function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
 
-  /* ── 拉 platform 组下的产品（RAG/Agent/工作流/客服 etc） ── */
-  window.moxieWhenDBReady(async (db) => {
+  /* ── 商业落地：真实数据 + 可点击筛选（原 UI 不变，仅加交互/过滤） ── */
+  let BIZ_ALL = [];
+  /* 各分组当前选中的标签（null = 不筛该组） */
+  const BIZ_STATE = { '场景': null, '团队规模': null, '数据合规': null, '价格': null };
+
+  const _bzTxt = p => `${p.name||''} ${p.tagline||''} ${(p.tags||[]).join(' ')}`.toLowerCase();
+  const _bzYuan = p => { const m = String(p.price_label||'').match(/[¥￥$]\s*(\d+)/); return m ? +m[1] : null; };
+
+  /* 标签 → 真实字段/分类/文本的判定（best-effort，全部基于库里真实数据） */
+  const BIZ_PRED = {
+    '场景': {
+      '全部': () => true,
+      'RAG 知识库': p => (p.moxie_categories && p.moxie_categories.slug === 'rag'),
+      'AI 客服': p => /客服|对话|助手|chat|坐席|工单/.test(_bzTxt(p)),
+      '销售 SDR': p => /sdr|销售|营销|获客|外呼|线索|crm/.test(_bzTxt(p)),
+      '流程自动化': p => (p.moxie_categories && p.moxie_categories.slug === 'workflow') || /工作流|自动化|流程|\bbot\b|agent|编排/.test(_bzTxt(p)),
+      '数据分析': p => /数据|分析|\bbi\b|报表|表格|洞察|excel/.test(_bzTxt(p)),
+      '合规审计': p => /合规|审计|安全|隐私|权限|管控|脱敏/.test(_bzTxt(p)),
+    },
+    '团队规模': {
+      '10 人以下': p => /免费/.test(p.price_label||''),
+      '10-100 人': p => /订阅|付费|会员|\/月|[¥￥$]/.test(p.price_label||''),
+      '100-500 人': p => /付费|按量|企业/.test(p.price_label||''),
+      '500+ 人': p => /企业|邀请|定制/.test(p.price_label||''),
+    },
+    '数据合规': {
+      '数据不出境': p => p.domestic_available === true || p.data_overseas === false,
+      '国际通用': p => p.data_overseas === true,
+      '私有化部署': p => /私有|本地|部署|开源|self|on-?prem/.test(_bzTxt(p)),
+    },
+    '价格': {
+      '¥0-99/月': p => /免费/.test(p.price_label||'') || (_bzYuan(p) !== null && _bzYuan(p) < 100),
+      '¥100-499/月': p => { const v=_bzYuan(p); return v!==null && v>=100 && v<500; },
+      '¥500-2000/月': p => { const v=_bzYuan(p); return v!==null && v>=500 && v<=2000; },
+      '企业定制': p => /企业|邀请|定制/.test(p.price_label||''),
+    },
+  };
+
+  function _bzLabel(item){
+    return Array.from(item.childNodes).filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
+  }
+  function bizFilter(){
+    return BIZ_ALL.filter(p => Object.keys(BIZ_STATE).every(grp => {
+      const sel = BIZ_STATE[grp];
+      if (!sel) return true;
+      const fn = BIZ_PRED[grp] && BIZ_PRED[grp][sel];
+      return fn ? fn(p) : true;
+    }));
+  }
+  function renderBiz(list){
     const box = document.getElementById('bizRows');
-    if (!db) {
-      box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>`;
+    if (!list.length){
+      box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">该筛选下暂无产品 · 换个条件试试</div>`;
       return;
     }
-    const { data: cats } = await db.from('moxie_categories').select('id').eq('group_name', 'platform');
-    const ids = (cats || []).map(c => c.id);
-    if (!ids.length) {
-      box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">没有商业落地分类</div>`;
-      return;
-    }
-    const catSlug = new URLSearchParams(location.search).get('cat');
-    const opts = catSlug ? { categorySlug: catSlug, limit: 60 } : { categoryIds: ids, limit: 60 };
-    const { data, error } = await window.MoxieDB.products(opts);
-    if (error || !data?.length) {
-      box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">${error?'加载失败':'暂无产品'}</div>`;
-      return;
-    }
-    box.innerHTML = data.map((p, i) => `
+    box.innerHTML = list.map((p, i) => `
       <a class="prow${p.featured?' premium':''}" href="moxie-product.html?slug=${encodeURIComponent(p.slug)}" style="text-decoration:none;color:inherit;">
         <span class="prank-cell"><span class="hash">#</span>${String(i+1).padStart(2,'0')}</span>
         <div class="plogo has-img"><img src="/public/logos/${p.domain}.png" alt=""></div>
@@ -304,6 +341,65 @@
       </a>
     `).join('');
     if (window.MoxieRewire) window.MoxieRewire();
+  }
+
+  /* 点击交互：分组内单选，再点取消（场景回到「全部」） */
+  (function(){
+    const side = document.querySelector('.cat-side');
+    if (!side) return;
+    side.addEventListener('click', (e) => {
+      const item = e.target.closest('.filter-item');
+      if (!item || !side.contains(item)) return;
+      const block = item.closest('.filter-block');
+      const grp = block.querySelector('h4').textContent.trim();
+      if (!(grp in BIZ_STATE)) return;
+      const label = _bzLabel(item);
+      const allItem = Array.from(block.querySelectorAll('.filter-item')).find(x => _bzLabel(x) === '全部');
+      const wasActive = item.classList.contains('active');
+      block.querySelectorAll('.filter-item').forEach(x => x.classList.remove('active'));
+      if (label === '全部') {
+        BIZ_STATE[grp] = null; item.classList.add('active');
+      } else if (wasActive) {
+        BIZ_STATE[grp] = null; if (allItem) allItem.classList.add('active');
+      } else {
+        BIZ_STATE[grp] = label; item.classList.add('active');
+      }
+      if (BIZ_ALL.length) renderBiz(bizFilter());
+    });
+  })();
+
+  window.moxieWhenDBReady(async (db) => {
+    const box = document.getElementById('bizRows');
+    if (!db) {
+      box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>`;
+      return;
+    }
+    const { data: cats } = await db.from('moxie_categories').select('id').eq('group_name', 'platform');
+    const ids = (cats || []).map(c => c.id);
+    if (!ids.length) {
+      box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">没有商业落地分类</div>`;
+      return;
+    }
+    const { data, error } = await window.MoxieDB.products({ categoryIds: ids, limit: 200 });
+    if (error || !data?.length) {
+      box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">${error?'加载失败':'暂无产品'}</div>`;
+      return;
+    }
+    BIZ_ALL = data;
+    /* ?cat= 深链：预选对应场景 */
+    const catSlug = new URLSearchParams(location.search).get('cat');
+    if (catSlug) {
+      const map = { rag: 'RAG 知识库', workflow: '流程自动化' };
+      const lbl = map[catSlug];
+      if (lbl) {
+        const sceneBlock = Array.from(document.querySelectorAll('.filter-block')).find(b => b.querySelector('h4') && b.querySelector('h4').textContent.trim() === '场景');
+        if (sceneBlock) {
+          const hit = Array.from(sceneBlock.querySelectorAll('.filter-item')).find(x => _bzLabel(x) === lbl);
+          if (hit) { sceneBlock.querySelectorAll('.filter-item').forEach(x => x.classList.remove('active')); hit.classList.add('active'); BIZ_STATE['场景'] = lbl; }
+        }
+      }
+    }
+    renderBiz(bizFilter());
   });
 
   /* ──────────── Mega Menu (分类 ▾) ──────────── */
