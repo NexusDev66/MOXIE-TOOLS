@@ -41,7 +41,7 @@ jobs:
       - name: 有变化则提交
         run: |
           git config user.name "moxie-bot"
-          git config user.email "bot@latemai.local"
+          git config user.email "507577406@qq.com"
           git add tools/ articles/ news/ public/covers/ sitemap.xml robots.txt
           if git diff --cached --quiet; then
             echo "无变化,跳过提交"
