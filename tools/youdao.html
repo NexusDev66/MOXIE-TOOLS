@@ -26,6 +26,10 @@
   .prod-breadcrumb a { color: var(--ink-2); }
   .prod-breadcrumb a:hover { color: var(--accent); }
   .prod-breadcrumb .sep { color: var(--ink-3); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
 
   .prod-hero-main {
     display: grid;
@@ -289,12 +293,12 @@
   }
 </style>
 <meta name="description" content="网易有道旗下AI学习办公工具集，集成翻译、词典、云笔记等，AI赋能语言学习与文档处理，国内直接使用。">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/youdao">
+<link rel="canonical" href="https://www.latemai.com/tools/youdao">
 <meta property="og:type" content="website">
 <meta property="og:title" content="网易有道 · MOXIE">
 <meta property="og:description" content="网易有道旗下AI学习办公工具集，集成翻译、词典、云笔记等，AI赋能语言学习与文档处理，国内直接使用。">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/youdao">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"网易有道","description":"网易有道旗下AI学习办公工具集，集成翻译、词典、云笔记等，AI赋能语言学习与文档处理，国内直接使用。","url":"https://moxie-main-shiyan.vercel.app/tools/youdao","applicationCategory":"AI 助手","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<meta property="og:url" content="https://www.latemai.com/tools/youdao">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"网易有道","description":"网易有道旗下AI学习办公工具集，集成翻译、词典、云笔记等，AI赋能语言学习与文档处理，国内直接使用。","url":"https://www.latemai.com/tools/youdao","applicationCategory":"AI 助手","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 
@@ -372,6 +376,7 @@
 <section class="prod-hero">
   <div class="container">
     <div class="prod-breadcrumb">
+      <a href="/moxie-preview.html" class="bk-back" onclick="if(history.length>1){history.back();return false;}"><span class="arr">←</span> 返回</a>
       <a href="/moxie-preview.html">榜单</a>
       <span class="sep">/</span>
       <div class="nav-mega" id="navMega">

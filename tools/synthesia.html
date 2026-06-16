@@ -26,6 +26,10 @@
   .prod-breadcrumb a { color: var(--ink-2); }
   .prod-breadcrumb a:hover { color: var(--accent); }
   .prod-breadcrumb .sep { color: var(--ink-3); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
 
   .prod-hero-main {
     display: grid;
@@ -289,12 +293,12 @@
   }
 </style>
 <meta name="description" content="企业级AI视频生成平台，输入文本即可创建虚拟主播讲解视频，支持多语言和定制形象，无需真人演员和摄影设备。">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/synthesia">
+<link rel="canonical" href="https://www.latemai.com/tools/synthesia">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Synthesia · MOXIE">
 <meta property="og:description" content="企业级AI视频生成平台，输入文本即可创建虚拟主播讲解视频，支持多语言和定制形象，无需真人演员和摄影设备。">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/synthesia">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Synthesia","description":"企业级AI视频生成平台，输入文本即可创建虚拟主播讲解视频，支持多语言和定制形象，无需真人演员和摄影设备。","url":"https://moxie-main-shiyan.vercel.app/tools/synthesia","applicationCategory":"AI 视频","operatingSystem":"Web"}</script>
+<meta property="og:url" content="https://www.latemai.com/tools/synthesia">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Synthesia","description":"企业级AI视频生成平台，输入文本即可创建虚拟主播讲解视频，支持多语言和定制形象，无需真人演员和摄影设备。","url":"https://www.latemai.com/tools/synthesia","applicationCategory":"AI 视频","operatingSystem":"Web"}</script>
 </head>
 <body>
 
@@ -372,6 +376,7 @@
 <section class="prod-hero">
   <div class="container">
     <div class="prod-breadcrumb">
+      <a href="/moxie-preview.html" class="bk-back" onclick="if(history.length>1){history.back();return false;}"><span class="arr">←</span> 返回</a>
       <a href="/moxie-preview.html">榜单</a>
       <span class="sep">/</span>
       <div class="nav-mega" id="navMega">

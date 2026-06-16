@@ -26,6 +26,10 @@
   .prod-breadcrumb a { color: var(--ink-2); }
   .prod-breadcrumb a:hover { color: var(--accent); }
   .prod-breadcrumb .sep { color: var(--ink-3); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
 
   .prod-hero-main {
     display: grid;
@@ -289,12 +293,12 @@
   }
 </style>
 <meta name="description" content="Adobe 官方推出的生成式 AI 工具，支持文生图、创意填充等，与 Photoshop 等软件深度集成，提供 30+ ">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/firefly">
+<link rel="canonical" href="https://www.latemai.com/tools/firefly">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Adobe Firefly · MOXIE">
 <meta property="og:description" content="Adobe 官方推出的生成式 AI 工具，支持文生图、创意填充等，与 Photoshop 等软件深度集成，提供 30+ ">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/firefly">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Adobe Firefly","description":"Adobe 官方推出的生成式 AI 工具，支持文生图、创意填充等，与 Photoshop 等软件深度集成，提供 30+ ","url":"https://moxie-main-shiyan.vercel.app/tools/firefly","applicationCategory":"AI 图像","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<meta property="og:url" content="https://www.latemai.com/tools/firefly">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Adobe Firefly","description":"Adobe 官方推出的生成式 AI 工具，支持文生图、创意填充等，与 Photoshop 等软件深度集成，提供 30+ ","url":"https://www.latemai.com/tools/firefly","applicationCategory":"AI 图像","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 
@@ -372,6 +376,7 @@
 <section class="prod-hero">
   <div class="container">
     <div class="prod-breadcrumb">
+      <a href="/moxie-preview.html" class="bk-back" onclick="if(history.length>1){history.back();return false;}"><span class="arr">←</span> 返回</a>
       <a href="/moxie-preview.html">榜单</a>
       <span class="sep">/</span>
       <div class="nav-mega" id="navMega">

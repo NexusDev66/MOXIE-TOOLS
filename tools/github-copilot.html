@@ -26,6 +26,10 @@
   .prod-breadcrumb a { color: var(--ink-2); }
   .prod-breadcrumb a:hover { color: var(--accent); }
   .prod-breadcrumb .sep { color: var(--ink-3); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
 
   .prod-hero-main {
     display: grid;
@@ -289,12 +293,12 @@
   }
 </style>
 <meta name="description" content="微软 GitHub 推出的 AI 编程助手，基于 OpenAI 模型在 IDE 中实时生成代码建议与补全，支持多种编辑器">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/github-copilot">
+<link rel="canonical" href="https://www.latemai.com/tools/github-copilot">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GitHub Copilot · MOXIE">
 <meta property="og:description" content="微软 GitHub 推出的 AI 编程助手，基于 OpenAI 模型在 IDE 中实时生成代码建议与补全，支持多种编辑器">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/github-copilot">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"GitHub Copilot","description":"微软 GitHub 推出的 AI 编程助手，基于 OpenAI 模型在 IDE 中实时生成代码建议与补全，支持多种编辑器","url":"https://moxie-main-shiyan.vercel.app/tools/github-copilot","applicationCategory":"AI 编程","operatingSystem":"Web"}</script>
+<meta property="og:url" content="https://www.latemai.com/tools/github-copilot">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"GitHub Copilot","description":"微软 GitHub 推出的 AI 编程助手，基于 OpenAI 模型在 IDE 中实时生成代码建议与补全，支持多种编辑器","url":"https://www.latemai.com/tools/github-copilot","applicationCategory":"AI 编程","operatingSystem":"Web"}</script>
 </head>
 <body>
 
@@ -372,6 +376,7 @@
 <section class="prod-hero">
   <div class="container">
     <div class="prod-breadcrumb">
+      <a href="/moxie-preview.html" class="bk-back" onclick="if(history.length>1){history.back();return false;}"><span class="arr">←</span> 返回</a>
       <a href="/moxie-preview.html">榜单</a>
       <span class="sep">/</span>
       <div class="nav-mega" id="navMega">

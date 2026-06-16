@@ -14,9 +14,13 @@
 <style>
   /* ── Hero with cover image ── */
   .art-hero { padding: 32px 0 0; }
-  .art-breadcrumb { font-size: 12px; color: var(--ink-3); margin-bottom: 24px; display: flex; gap: 8px; }
+  .art-breadcrumb { font-size: 12px; color: var(--ink-3); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
   .art-breadcrumb a { color: var(--ink-2); }
   .art-breadcrumb a:hover { color: var(--accent); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
 
   .art-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 32px; }
   .art-meta-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.06em; }
@@ -200,12 +204,12 @@
   }
 </style>
 <meta name="description" content="面对 GenSpark、Devin、Manus 三款 AI Agent，如何根据预算和场景选择？本文从功能、价格、可用性等角度提供清晰决策建议。">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/articles/genspark-devin-manus-pick">
+<link rel="canonical" href="https://www.latemai.com/articles/genspark-devin-manus-pick">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GenSpark 怎么选？与 Devin、Manus 对比选型指南 · MOXIE">
 <meta property="og:description" content="面对 GenSpark、Devin、Manus 三款 AI Agent，如何根据预算和场景选择？本文从功能、价格、可用性等角度提供清晰决策建议。">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/genspark-devin-manus-pick">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"GenSpark 怎么选？与 Devin、Manus 对比选型指南","description":"面对 GenSpark、Devin、Manus 三款 AI Agent，如何根据预算和场景选择？本文从功能、价格、可用性等角度提供清晰决策建议。","image":["/public/covers/genspark-devin-manus-pick.svg"],"datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/genspark-devin-manus-pick"}}</script>
+<meta property="og:url" content="https://www.latemai.com/articles/genspark-devin-manus-pick">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"GenSpark 怎么选？与 Devin、Manus 对比选型指南","description":"面对 GenSpark、Devin、Manus 三款 AI Agent，如何根据预算和场景选择？本文从功能、价格、可用性等角度提供清晰决策建议。","image":["/public/covers/genspark-devin-manus-pick.svg"],"datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.latemai.com/articles/genspark-devin-manus-pick"}}</script>
 </head>
 <body>
 
@@ -276,6 +280,7 @@
 <section class="art-hero">
   <div class="container">
     <div class="art-breadcrumb">
+      <a href="/moxie-blog.html" class="bk-back" onclick="if(history.length>1){history.back();return false;}"><span class="arr">←</span> 返回</a>
       <a href="/moxie-preview.html">首页</a> /
       <a href="/moxie-blog.html">文章</a> /
       <span>REVIEW</span>
