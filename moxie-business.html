@@ -43,14 +43,42 @@
   .cat-body { padding: 40px 0 80px; }
   .cat-layout { display: grid; grid-template-columns: 220px 1fr; gap: 40px; }
   .cat-side .filter-block { margin-bottom: 28px; }
-  .cat-side h4 { font-size: 11px; color: var(--ink-2); letter-spacing: 0.06em; margin-bottom: 12px; font-weight: 500; }
-  .cat-side .filter-list { display: flex; flex-direction: column; }
-  .cat-side .filter-item { padding: 8px 0; font-size: 12.5px; color: var(--ink-1); border-bottom: 1px solid var(--line-2); display: flex; justify-content: space-between; }
-  .cat-side .filter-item.active { color: var(--accent); font-weight: 500; }
-  .cat-side .filter-item { cursor: pointer; user-select: none; transition: color .15s, opacity .15s; }
-  .cat-side .filter-item:hover { color: var(--accent); }
+  .cat-side h4 { font-size: 11px; color: var(--ink-2); letter-spacing: 0.06em; margin-bottom: 12px; font-weight: 500; padding-left: 10px; }
+  .cat-side .filter-list { display: flex; flex-direction: column; gap: 1px; }
+  .cat-side .filter-item {
+    position: relative;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    color: var(--ink-1);
+    border-bottom: 1px solid var(--line-2);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: color .18s ease, background .18s ease, font-weight .18s ease, opacity .15s;
+  }
+  .cat-side .filter-item:hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); border-bottom-color: transparent; }
+  /* 选中高亮：accent 柔色胶囊 + 左侧色条 + 字重提亮 */
+  .cat-side .filter-item.active {
+    color: var(--accent);
+    font-weight: 600;
+    background: color-mix(in srgb, var(--accent) 13%, transparent);
+    border-bottom-color: transparent;
+  }
+  .cat-side .filter-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 15px;
+    background: var(--accent);
+    border-radius: 0 3px 3px 0;
+  }
+  .cat-side .filter-item.active .cnt { color: var(--accent); }
   .cat-side .filter-item.is-empty { opacity: .32; cursor: default; pointer-events: none; }
-  .cat-side .filter-item .cnt { color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
+  .cat-side .filter-item .cnt { color: var(--ink-3); font-family: var(--mono); font-size: 11px; transition: color .18s ease; }
   @media (max-width: 900px) {
     .cat-layout { grid-template-columns: 1fr; }
   }
