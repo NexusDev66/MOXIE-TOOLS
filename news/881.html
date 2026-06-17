@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
+<title>ICML 2026：从输入输出样例中自动生成程序——强化学习为大模型Programming-By-Example任务提供推理过程监督 · MOXIE 快讯</title>
+<meta name="description" content="ICML 2026PRM-PBE方法示意图尽管大语言模型在代码生成和程序推理任务中取得了显著进展，但其在Programming-by-Example（PBE）任务中的表现仍受到明显限制。PBE要求模型仅根据输入输出样例推断潜在程序逻辑，并合成能够满足所有样例的程序。现有LLM方法通常依赖输入到输出的">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/news/881">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICML 2026：从输入输出样例中自动生成程序——强化学习为大模型Programming-By-Example任务提供推理过程监督 · MOXIE">
+<meta property="og:description" content="ICML 2026PRM-PBE方法示意图尽管大语言模型在代码生成和程序推理任务中取得了显著进展，但其在Programming-by-Example（PBE）任务中的表现仍受到明显限制。PBE要求模型仅根据输入输出样例推断潜在程序逻辑，并合成能够满足所有样例的程序。现有LLM方法通常依赖输入到输出的">
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/news/881"><link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"ICML 2026：从输入输出样例中自动生成程序——强化学习为大模型Programming-By-Example任务提供推理过程监督","description":"ICML 2026PRM-PBE方法示意图尽管大语言模型在代码生成和程序推理任务中取得了显著进展，但其在Programming-by-Example（PBE）任务中的表现仍受到明显限制。PBE要求模型仅根据输入输出样例推断潜在程序逻辑，并合成能够满足所有样例的程序。现有LLM方法通常依赖输入到输出的直接映射，或借助Chain-of-Thought、执行反馈、监督微调等方式增强推理能力。然而，这类方法缺乏对中间推理过程的细粒度监督，容易生成只满足部分样例的shortcut程序，或在复杂逻辑归纳场景下偏离真实意图。近日，北京大学、京东、华东师范大学、实验室联合研究团队围绕 LLM在PBE场景中缺乏","datePublished":"2026-06-16T05:47:00+00:00","author":{"@type":"Organization","name":"雷锋网"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/news/881"}}</script>
+<style>
+  .nv{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+  .nv .container{display:flex;align-items:center;justify-content:space-between}
+  .nv a.brand{font-weight:600;color:var(--ink);text-decoration:none;font-size:16px}
+  .nv-links{display:flex;align-items:center;gap:22px}
+  .nv-links a{color:var(--ink-1);text-decoration:none;font-size:13.5px}
+  .nv-links a:hover{color:var(--accent)}
+  .ni-foot{border-top:1px solid var(--line);margin-top:48px}
+  .ni-foot .container{display:flex;align-items:center;justify-content:space-between;min-height:64px;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--ink-3)}
+  .ni-foot a{font-size:12.5px;color:var(--ink-3);text-decoration:none}
+  .ni-foot-links{display:flex;gap:18px}
+  .ni-foot-links a:hover{color:var(--accent)}
+  @media(max-width:640px){.nv-links a:not(.ni-back){display:none}}
+  .ni-wrap{max-width:720px;margin:0 auto;padding:56px 20px 90px}
+  .ni-meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-3);margin-bottom:16px}
+  .ni-src{color:#F53F3F;font-weight:600}
+  .ni-wrap h1{font-size:28px;line-height:1.45;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin-bottom:22px}
+  .ni-sum{font-size:15.5px;line-height:1.9;color:var(--ink-1);background:var(--bg-soft);border-radius:12px;padding:20px 22px;margin-bottom:28px}
+  .ni-sum.empty{color:var(--ink-3)}
+  .ni-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .ni-orig{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:11px 22px;border-radius:9999px;font-size:14px;font-weight:500}
+  .ni-orig:hover{background:var(--accent-d)}
+  .ni-back{color:var(--ink-2);text-decoration:none;font-size:13px}
+  .ni-back:hover{color:var(--accent)}
+  .ni-note{margin-top:30px;font-size:12px;color:var(--ink-3);line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<nav class="nv"><div class="container">
+  <a class="brand" href="/moxie-preview.html">MOXIE</a>
+  <div class="nv-links">
+    <a href="/moxie-preview.html">榜单</a>
+    <a href="/moxie-business.html">商业落地</a>
+    <a href="/moxie-categories.html">分类</a>
+    <a href="/moxie-blog.html">文章</a>
+    <a class="ni-back" href="/moxie-news.html">← 全部快讯</a>
+  </div>
+</div></nav>
+<div class="ni-wrap">
+  <div class="ni-meta"><span class="ni-src">雷锋网</span><span>·</span><span>2026.06.16</span><span>·</span><span>AI 快讯</span></div>
+  <h1>ICML 2026：从输入输出样例中自动生成程序——强化学习为大模型Programming-By-Example任务提供推理过程监督</h1>
+  <div class="ni-sum">ICML 2026PRM-PBE方法示意图尽管大语言模型在代码生成和程序推理任务中取得了显著进展，但其在Programming-by-Example（PBE）任务中的表现仍受到明显限制。PBE要求模型仅根据输入输出样例推断潜在程序逻辑，并合成能够满足所有样例的程序。现有LLM方法通常依赖输入到输出的直接映射，或借助Chain-of-Thought、执行反馈、监督微调等方式增强推理能力。然而，这类方法缺乏对中间推理过程的细粒度监督，容易生成只满足部分样例的shortcut程序，或在复杂逻辑归纳场景下偏离真实意图。近日，北京大学、京东、华东师范大学、实验室联合研究团队围绕 LLM在PBE场景中缺乏</div>
+  <div class="ni-actions"><a class="ni-orig" href="https://www.leiphone.com/category/private/z1LrlGd5bucicch2.html" target="_blank" rel="noopener">阅读原文 ↗</a><a class="ni-back" href="/moxie-news">← 全部快讯</a></div>
+  <div class="ni-note">摘要来自来源媒体(雷锋网)的公开 RSS,版权归原作者。MOXIE 仅做聚合索引,完整内容请以原文为准。</div>
+</div>
+<footer class="ni-foot"><div class="container">
+  <span>© 2024 — 2026 MOXIE · AI 选型决策平台</span>
+  <div class="ni-foot-links"><a href="/moxie-preview.html">榜单</a><a href="/moxie-categories.html">分类</a><a href="/moxie-blog.html">文章</a><a href="/moxie-news.html">快讯</a><a href="/moxie-about.html">关于</a></div>
+</div></footer>
+</body>
+</html>
