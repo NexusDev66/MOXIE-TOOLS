@@ -1402,15 +1402,15 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
   /* 时间档 + 分类 共用一个渲染:不同时间档用不同「新鲜度半衰期」重排榜单 */
   var CUR_CAT = 'all';
   var CUR_RANGE = '今日';
-  var RANGE_HL = { '今日': 7, '本周': 20, '本月': 50, '年榜': 0 }; // 人气衰减半衰期(天);0=不衰减(纯累计人气)
+  /* 今日=综合精选(weight_score 权重榜) · 年榜=纯累计票数 · 本周/本月=人气按年龄衰减过渡 */
   function scoreRange(p){
-    var hl = RANGE_HL[CUR_RANGE]; if (hl === undefined) hl = 0;
-    var pop = Math.log10((p.vote_count || 0) + 1) * 20;          // 累计人气(票数)
+    var pop = Math.log10((p.vote_count || 0) + 1) * 20;          // 累计人气(票数,对数)
     var bonus = (p.verified ? 6 : 0) + (p.featured ? 5 : 0);     // 子墨测过 / 精选
+    if (CUR_RANGE === '年榜') return (p.vote_count || 0);        // 纯累计票数:全时人气总榜
+    if (CUR_RANGE === '今日') return (p.weight_score != null ? p.weight_score : pop + bonus); // 综合权重榜(质量+新鲜度+精选)
+    var hl = CUR_RANGE === '本周' ? 14 : 45;                     // 本周/本月:人气按年龄衰减,窗越宽半衰期越长
     var age = p.created_at ? (Date.now() - new Date(p.created_at).getTime()) / 864e5 : 9999;
-    // 人气按年龄衰减:档越靠"今日"半衰期越短 → 近期热度高的靠前;年榜不衰减 → 全时累计人气
-    var decay = hl > 0 ? Math.exp(-Math.max(0, age) / hl) : 1;
-    return pop * decay + bonus;
+    return pop * Math.exp(-Math.max(0, age) / hl) + bonus;
   }
   function show(catId){
     CUR_CAT = catId;
