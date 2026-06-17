@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="moxie-styles.css?v=20260612-08">
+<link rel="stylesheet" href="moxie-styles.css?v=20260617-01">
 <script src="moxie-supabase.js?v=20260612-01"></script>
 <script src="moxie-shared.js?v=20260611-02" defer></script>
 
@@ -699,9 +699,12 @@
 </footer>
 
 <script>
-  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-  function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
+  /* 减少动效偏好下不启用 Lenis 平滑滚动 */
+  if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }
   if (window.lucide) lucide.createIcons();
 
   // 投票
