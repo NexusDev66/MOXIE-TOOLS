@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 /**
- * 「子墨测过」= 每个分类按 weight_score 前 N 名(默认 10),其余清掉 verified。
+ * 「子墨测过」累计制:把每个分类按 weight_score 前 N 名(默认 10)的产品标 verified。
+ *   · 默认 add-only —— 只补还没标的;测过的累计保留,掉出前十也不摘徽章。
+ *   · --prune —— 额外把"非前 N 且已 verified"的清掉(仅用于一次性重置基线,日常别用)。
  *
  * 徽章(子墨测过)全站读 p.verified:列表/详情/首页计数客户端实时读库即时生效;
  * 静态评测块由当趟 prerender 重烤。幂等可重跑——只 PATCH 需要变的那些。
  *
- * 跑法:node --env-file=.env.local cli/verified-rank.js [--top 10] [--dry-run]
+ * 跑法:node --env-file=.env.local cli/verified-rank.js [--top 10] [--prune] [--dry-run]
  * 需 env:NEXT_PUBLIC_SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY。
  * 建议跑在 rank.js 之后(用最新 weight_score 定名次)。
  */
@@ -15,6 +17,7 @@ const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABAS
 function arg(n, d) { const i = process.argv.indexOf(`--${n}`); return i >= 0 && process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : d; }
 const TOP = Number(arg('top', '10')) || 10;
 const DRY = process.argv.includes('--dry-run');
+const PRUNE = process.argv.includes('--prune');
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY(.env.local)'); process.exit(1); }
 
 async function sb(path, opts = {}) {
@@ -43,15 +46,15 @@ async function main() {
     arr.forEach((p, i) => {
       const want = i < TOP;
       if (want && !p.verified) toTrue.push(p);
-      if (!want && p.verified) toFalse.push(p);
+      if (PRUNE && !want && p.verified) toFalse.push(p); // 仅 --prune 才降级
     });
     rows.push(`  ${(catName[cid] || ('cat ' + cid)).padEnd(12)} ${String(arr.length).padStart(3)} 款 → 保留前 ${keep}`);
   }
 
   rows.sort();
   console.log(rows.join('\n'));
-  const keptTotal = ps.length - toFalse.length - (ps.filter((p) => !p.verified).length - toTrue.length);
-  console.log(`\n分类 ${Object.keys(byCat).length} · 需 -verified ${toFalse.length} · 需 +verified ${toTrue.length} · 完成后 verified 总数 ≈ ${ps.filter((p) => p.verified).length - toFalse.length + toTrue.length}`);
+  const nowVer = ps.filter((p) => p.verified).length;
+  console.log(`\n模式 ${PRUNE ? 'PRUNE(增+减)' : 'add-only(只增不减)'} · 分类 ${Object.keys(byCat).length} · +verified ${toTrue.length}${PRUNE ? ` · -verified ${toFalse.length}` : ''} · verified 总数 ${nowVer} → ${nowVer + toTrue.length - toFalse.length}`);
 
   if (DRY) { console.log('\n[dry] 不写库'); return; }
 

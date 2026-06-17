@@ -56,21 +56,16 @@ jobs:
         run: node cli/extract-voices.js
         continue-on-error: true
 
-      - name: 子墨测过 每周晋升 2-3 款(仅周一,失败不阻塞)
-        run: |
-          if [ "$(date -u +%u)" = "1" ]; then
-            node cli/promote-verified.js
-          else
-            echo "非周一,跳过子墨测过晋升"
-          fi
-        continue-on-error: true
-
       - name: 候选自动上架(完善度达标的 pending → published,直连DB,失败不阻塞)
         run: node cli/promote-candidates.js
         continue-on-error: true
 
       - name: 重算权重(rank)
         run: node cli/rank.js
+
+      - name: 子墨测过 收口(每分类前10,只增不减·累计)
+        run: node cli/verified-rank.js
+        continue-on-error: true
 
       - name: 生成文章封面(补缺,无 API 成本)
         run: node cli/gen-covers.js
