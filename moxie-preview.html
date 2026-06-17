@@ -1399,11 +1399,25 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
       + '<div class="pvote" data-product-id="' + p.id + '"><span class="tri">▲</span><span class="num">' + p.vote_count + '</span></div>'
       + '</a>';
   }
+  /* 时间档 + 分类 共用一个渲染:不同时间档用不同「新鲜度半衰期」重排榜单 */
+  var CUR_CAT = 'all';
+  var CUR_RANGE = '今日';
+  var RANGE_HL = { '今日': 7, '本周': 20, '本月': 50, '年榜': 0 }; // 人气衰减半衰期(天);0=不衰减(纯累计人气)
+  function scoreRange(p){
+    var hl = RANGE_HL[CUR_RANGE]; if (hl === undefined) hl = 0;
+    var pop = Math.log10((p.vote_count || 0) + 1) * 20;          // 累计人气(票数)
+    var bonus = (p.verified ? 6 : 0) + (p.featured ? 5 : 0);     // 子墨测过 / 精选
+    var age = p.created_at ? (Date.now() - new Date(p.created_at).getTime()) / 864e5 : 9999;
+    // 人气按年龄衰减:档越靠"今日"半衰期越短 → 近期热度高的靠前;年榜不衰减 → 全时累计人气
+    var decay = hl > 0 ? Math.exp(-Math.max(0, age) / hl) : 1;
+    return pop * decay + bonus;
+  }
   function show(catId){
+    CUR_CAT = catId;
     var box = document.getElementById('prodList'); if (!box) return;
-    var list = catId === 'all'
-      ? ALL.slice(0, 12)
-      : ALL.filter(function(p){ return p.category_id === catId; }).sort(function(a, b){ return (b.vote_count||0) - (a.vote_count||0); });
+    var pool = (catId === 'all') ? ALL.slice() : ALL.filter(function(p){ return p.category_id === catId; });
+    pool.sort(function(a, b){ return scoreRange(b) - scoreRange(a); });
+    var list = pool.slice(0, 12);
     box.innerHTML = list.length ? list.map(rowHTML).join('')
       : '<div style="padding:40px 0;text-align:center;color:var(--ink-3);font-size:13px;">该分类暂无工具</div>';
     if (window.MoxieRewire) window.MoxieRewire();
@@ -1464,6 +1478,20 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
           show(v === 'all' ? 'all' : Number(v));
         });
       });
+
+      // 时间档:今日/本周/本月/年榜 → 不同新鲜度权重重排(根据榜单 + 时间生成,随日期自动递增)
+      var tabEls = document.querySelectorAll('#today-list .center-top .tabs .tab');
+      tabEls.forEach(function(t){
+        t.addEventListener('click', function(e){
+          e.preventDefault();
+          tabEls.forEach(function(x){ x.classList.toggle('active', x === t); });
+          CUR_RANGE = (t.textContent || '').trim();
+          show(CUR_CAT);
+        });
+      });
+      // 初始按当前档(今日)渲染主榜
+      show('all');
+
       // 深链:?cat=<slug> 自动选中对应分类榜单(从分类页点进来)
       var _catSlug = new URLSearchParams(location.search).get('cat');
       if (_catSlug) {
