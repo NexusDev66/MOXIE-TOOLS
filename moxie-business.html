@@ -399,7 +399,7 @@
       return;
     }
     box.innerHTML = list.map((p, i) => `
-      <a class="prow${p.featured?' premium':''}" href="moxie-product.html?slug=${encodeURIComponent(p.slug)}" style="text-decoration:none;color:inherit;">
+      <a class="prow${p.featured?' premium':''}" href="/tools/${encodeURIComponent(p.slug)}" style="text-decoration:none;color:inherit;">
         <span class="prank-cell"><span class="hash">#</span>${String(i+1).padStart(2,'0')}</span>
         <div class="plogo has-img"><img src="/public/logos/${p.domain}.png" alt=""></div>
         <div class="pmain">

@@ -247,7 +247,7 @@
     const st2 = document.getElementById('statCat'); if (st2) st2.textContent = list.filter(c=>cnt[c.id]).length;
 
     function card(p){ return `
-      <a href="moxie-product.html?slug=${encodeURIComponent(p.slug)}" class="aigc-card">
+      <a href="/tools/${encodeURIComponent(p.slug)}" class="aigc-card">
         <div class="aigc-card-head">
           <div class="aigc-card-logo"><img src="/public/logos/${p.domain}.png" alt=""></div>
           <div><div class="aigc-card-name">${escH(p.name)}</div><div class="aigc-card-url">${escH(p.domain)}</div></div>
