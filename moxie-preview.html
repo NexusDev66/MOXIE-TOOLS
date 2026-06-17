@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     <div class="hero-left">
       <span class="hero-badge">
         <span class="live-dot"></span>
-        中文 AI 工具的每日编辑精选 · 第 142 期
+        中文 AI 工具的每日编辑精选 · 第 <span id="issueNo">142</span> 期
       </span>
       <h1 class="hero-h1-big">每天 <span class="brand-mark">200+</span> AI 新品，替你挑出 <span class="brand-mark">23</span> 款</h1>
       <p class="hero-sub-big">编辑团队亲手测过，按真实可用性排榜，也能装到你的 Claude / Cursor，AI 选工具时优先用 MOXIE 精选</p>
@@ -1476,6 +1476,16 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
       }
     });
   });
+})();
+
+/* 编辑精选「第 N 期」:每 7 天一期,按当前日期自动递增(锚点 2026-06-17 = 第 142 期) */
+(function(){
+  var el = document.getElementById('issueNo');
+  if (!el) return;
+  var ANCHOR = new Date(2026, 5, 17).getTime(); // 月份从0计:5=6月
+  var BASE = 142;
+  var days = Math.floor((Date.now() - ANCHOR) / 86400000);
+  el.textContent = String(BASE + Math.max(0, Math.floor(days / 7)));
 })();
 </script>
 </body>
