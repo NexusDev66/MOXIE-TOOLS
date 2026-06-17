@@ -1254,7 +1254,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     }
     const matchPcts = [97, 89, 82];
     const cardsHtml = results.map((r, i) => `
-      <div class="product-card" data-href="moxie-product.html">
+      <div class="product-card" data-href="/tools/${encodeURIComponent(r.slug)}">
         <img src="/public/logos/${r.domain}.png" data-domain="${r.domain}" alt="${r.name}" onerror="moxieLogoFallback(this)">
         <div class="pc-info">
           <div class="pc-name">${escapeHtml(r.name)}</div>
