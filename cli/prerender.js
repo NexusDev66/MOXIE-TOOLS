@@ -130,21 +130,31 @@ function bakeDetailSections(html, p, ctx, checks) {
     if (re.test(html)) html = html.replace(re, block);
     else if (checks) checks.push(`⚠ 未找到[${comment}]`);
   }
-  // 点评(原"子墨评测"):头部 = 测试天数(仅 verified 显示),底部 = 发布日期 + 署名
-  const review = (d.review || p.tagline || '').trim();
-  const days = Number(d.test_days) || 0;
-  const rdate = String(d.review_date || d.updated_at || '').slice(0, 10).replace(/-/g, '.');
-  const noteHead = `<div class="editor-note-head">EDITOR'S NOTE${days ? ` · 测试 ${days} 天` : ''}</div>`;
-  const metaBits = [];
-  if (rdate) metaBits.push(`${esc(rdate)} 发布`);
-  metaBits.push(days ? '子墨 亲测' : '子墨 整理');
-  const noteMeta = `<div class="editor-note-meta">${metaBits.join(' · ')}</div>`;
-  // 完整评测(仅 verified 有 review_full):可展开长文
-  const full = Array.isArray(d.review_full) ? d.review_full.filter(Boolean) : [];
-  const fullBlock = full.length
-    ? `<details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body">${full.map((t) => `<p>${esc(t)}</p>`).join('')}</div></details>`
-    : '';
-  sec('子墨评测', '核心特点', `          <h2>子墨测评</h2>\n          <div class="editor-note">${noteHead}<div class="editor-note-quote">${esc(review)}</div>${noteMeta}${fullBlock}</div>`);
+  // 评价块:子墨测过(verified) → 「子墨测评」(实测短评+测试天数+亲测+完整评测长文)
+  //          其余 → 「风评」(客观综合风评,非第一人称、不冒充实测、无完整评测)
+  if (p.verified) {
+    const review = (d.review || p.tagline || '').trim();
+    const days = Number(d.test_days) || 0;
+    const rdate = String(d.review_date || d.updated_at || '').slice(0, 10).replace(/-/g, '.');
+    const noteHead = `<div class="editor-note-head">EDITOR'S NOTE${days ? ` · 测试 ${days} 天` : ''}</div>`;
+    const metaBits = [];
+    if (rdate) metaBits.push(`${esc(rdate)} 发布`);
+    metaBits.push(days ? '子墨 亲测' : '子墨 整理');
+    const noteMeta = `<div class="editor-note-meta">${metaBits.join(' · ')}</div>`;
+    const full = Array.isArray(d.review_full) ? d.review_full.filter(Boolean) : [];
+    const fullBlock = full.length
+      ? `<details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body">${full.map((t) => `<p>${esc(t)}</p>`).join('')}</div></details>`
+      : '';
+    sec('子墨评测', '核心特点', `          <h2>子墨测评</h2>\n          <div class="editor-note">${noteHead}<div class="editor-note-quote">${esc(review)}</div>${noteMeta}${fullBlock}</div>`);
+  } else {
+    // 风评:优先用 detail.fengping(gen-fengping 生成的客观风评);缺则退回产品简介
+    const fp = Array.isArray(d.fengping) ? d.fengping.filter(Boolean) : [];
+    const paras = fp.length ? fp : [(p.tagline || '').trim()].filter(Boolean);
+    const body = paras.map((t) => `<div class="editor-note-quote">${esc(t)}</div>`).join('');
+    const head = `<div class="editor-note-head">综合风评</div>`;
+    const meta = `<div class="editor-note-meta">综合公开信息整理 · 暂未列入子墨实测</div>`;
+    sec('子墨评测', '核心特点', `          <h2>风评</h2>\n          <div class="editor-note">${head}${body}${meta}</div>`);
+  }
   // 核心特点
   const feats = Array.isArray(d.features) ? d.features : [];
   const featInner = feats.length
