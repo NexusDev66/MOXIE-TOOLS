@@ -113,6 +113,44 @@
   .btn-oauth.oauth-github:hover { background: #2E3441; border-color: #2E3441; }
   .btn-oauth[disabled] { opacity: .6; cursor: wait; }
 
+  /* ── 邮箱密码表单 ── */
+  .auth-form { display: flex; flex-direction: column; gap: 14px; margin-bottom: 12px; }
+  .auth-field { display: flex; flex-direction: column; gap: 6px; }
+  .auth-field label { font-size: 12px; color: var(--ink-2); font-weight: 500; }
+  .auth-field input {
+    height: 46px; padding: 0 14px;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .auth-field input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .btn-primary-auth {
+    height: 48px; width: 100%;
+    background: var(--accent); color: #fff;
+    border: 0; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background .15s;
+  }
+  .btn-primary-auth:hover { background: var(--accent-d); }
+  .btn-primary-auth[disabled] { opacity: .6; cursor: wait; }
+  .auth-msg { font-size: 12.5px; line-height: 1.5; }
+  .auth-msg.err { color: #C5221F; }
+  .auth-msg.ok { color: #137333; }
+  .auth-msg:empty { display: none; }
+  .auth-toggle { font-size: 12.5px; color: var(--ink-2); text-align: center; margin-bottom: 18px; }
+  .auth-toggle a { color: var(--accent); font-weight: 500; }
+  .auth-toggle a:hover { text-decoration: underline; }
+  .auth-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 4px 0 16px; color: var(--ink-3); font-size: 12px;
+  }
+  .auth-divider::before, .auth-divider::after {
+    content: ""; flex: 1; height: 1px; background: var(--line);
+  }
+
   /* ── 法律小字 ── */
   .legal {
     margin-top: 18px;
@@ -269,7 +307,24 @@
     <main class="form-wrap">
       <div class="form-eyebrow">登录或注册</div>
       <h1>欢迎回到 MOXIE</h1>
-      <p class="sub">一键登录，自动创建账号——无需邮箱密码，无需邮件验证</p>
+      <p class="sub">用邮箱密码登录，或注册一个新账号。</p>
+
+      <form class="auth-form" id="authForm" autocomplete="on">
+        <div class="auth-field">
+          <label for="authEmail">邮箱</label>
+          <input type="email" id="authEmail" name="email" autocomplete="username" placeholder="you@example.com" required>
+        </div>
+        <div class="auth-field">
+          <label for="authPassword">密码</label>
+          <input type="password" id="authPassword" name="password" autocomplete="current-password" placeholder="至少 6 位" required minlength="6">
+        </div>
+        <div class="auth-msg" id="authMsg"></div>
+        <button type="submit" class="btn-primary-auth" id="authSubmit">登录</button>
+      </form>
+
+      <p class="auth-toggle" id="authToggle">还没有账号？<a href="#" id="authSwitch">注册一个</a></p>
+
+      <div class="auth-divider"><span>或</span></div>
 
       <div class="oauth-stack">
         <button type="button" class="btn-oauth oauth-google" onclick="handleOAuth('google')">
@@ -364,6 +419,75 @@
       if (error) { alert('登录失败：' + error.message); location.reload(); }
     });
   }
+
+  /* ── 邮箱密码 登录 / 注册 ── */
+  var authMode = 'login'; // 'login' | 'signup'
+  var authForm = document.getElementById('authForm');
+  var authSubmit = document.getElementById('authSubmit');
+  var authMsg = document.getElementById('authMsg');
+
+  function showMsg(text, kind) { authMsg.textContent = text; authMsg.className = 'auth-msg ' + (kind || ''); }
+  function resetSubmit() { authSubmit.disabled = false; authSubmit.textContent = authMode === 'login' ? '登录' : '注册'; }
+  function translateAuthErr(m) {
+    m = m || '出错了';
+    if (/Invalid login credentials/i.test(m)) return '邮箱或密码不对';
+    if (/already registered|already been registered|already exists/i.test(m)) return '该邮箱已注册，请直接登录';
+    if (/Password should be at least/i.test(m)) return '密码太短（至少 6 位）';
+    if (/invalid.*email|email.*invalid|valid email/i.test(m)) return '邮箱格式不对';
+    if (/signups?\s*(not allowed|disabled|are disabled)/i.test(m)) return '注册暂时关闭，请联系管理员';
+    if (/Email not confirmed/i.test(m)) return '邮箱还没验证，请先点确认邮件里的链接';
+    return m;
+  }
+  function setAuthMode(mode) {
+    authMode = mode;
+    authSubmit.textContent = mode === 'login' ? '登录' : '注册';
+    document.getElementById('authToggle').innerHTML = mode === 'login'
+      ? '还没有账号？<a href="#" id="authSwitch">注册一个</a>'
+      : '已有账号？<a href="#" id="authSwitch">去登录</a>';
+    document.getElementById('authPassword').setAttribute('autocomplete', mode === 'login' ? 'current-password' : 'new-password');
+    showMsg('', '');
+    bindSwitch();
+  }
+  function bindSwitch() {
+    var s = document.getElementById('authSwitch');
+    if (s) s.addEventListener('click', function (e) {
+      e.preventDefault();
+      setAuthMode(authMode === 'login' ? 'signup' : 'login');
+    });
+  }
+  bindSwitch();
+
+  authForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('authEmail').value.trim();
+    var password = document.getElementById('authPassword').value;
+    if (!email || password.length < 6) { showMsg('请填写邮箱和至少 6 位密码', 'err'); return; }
+    authSubmit.disabled = true;
+    authSubmit.textContent = authMode === 'login' ? '登录中…' : '注册中…';
+    window.moxieWhenDBReady(async function (db) {
+      if (!db) { showMsg('数据库未就绪，稍后重试', 'err'); resetSubmit(); return; }
+      try {
+        if (authMode === 'login') {
+          var r = await db.auth.signInWithPassword({ email: email, password: password });
+          if (r.error) throw r.error;
+          location.href = 'moxie-preview.html?welcome=1';
+        } else {
+          var redirectTo = moxieCanonicalOrigin() + '/moxie-preview.html?welcome=1';
+          var r2 = await db.auth.signUp({ email: email, password: password, options: { emailRedirectTo: redirectTo } });
+          if (r2.error) throw r2.error;
+          if (r2.data && r2.data.session) {
+            location.href = 'moxie-preview.html?welcome=1';          // 邮箱确认已关 → 直接登录
+          } else {
+            showMsg('注册成功！确认邮件已发到 ' + email + '，点邮件里的链接后即可登录。', 'ok');
+            resetSubmit();
+          }
+        }
+      } catch (err) {
+        showMsg(translateAuthErr(err && err.message), 'err');
+        resetSubmit();
+      }
+    });
+  });
 
   /* 如果已登录直接跳首页 */
   window.moxieWhenDBReady(async (db) => {
