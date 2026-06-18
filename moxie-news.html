@@ -349,6 +349,8 @@
   .news-search{width:160px}
   .news-card{display:block;padding:20px;border:1px solid var(--line);border-radius:var(--r-lg);margin-bottom:14px;text-decoration:none;color:inherit;transition:.16s;background:#fff}
   .news-card:hover{border-color:var(--ink-3);box-shadow:var(--shadow);transform:translateY(-1px)}
+  .news-card.nc-flash{border-color:var(--accent);box-shadow:0 0 0 3px rgba(245,63,63,.18);animation:ncflash 1.2s ease-out 2}
+  @keyframes ncflash{0%{box-shadow:0 0 0 4px rgba(245,63,63,.35)}100%{box-shadow:0 0 0 3px rgba(245,63,63,0)}}
   .nc-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:9px}
   .nc-score{font-family:var(--mono);font-weight:700;font-size:12px;padding:2px 7px;border-radius:6px;flex-shrink:0}
   .nc-score.s-high{background:var(--accent-soft);color:var(--accent-d)}
@@ -534,7 +536,7 @@
         const badge = sc!=null ? `<span class="nc-score ${scoreCls(n.score)}">${sc}</span>` : '';
         const cats = (n.category||[]).map(c=>`<span class="nc-cat">${escH(c)}</span>`).join('');
         const sum = n.summary_zh || n.summary || '';
-        return `<a class="news-card" href="${escH(n.url||'#')}" target="_blank" rel="noopener">
+        return `<a class="news-card" id="n${n.id}" href="${escH(n.url||'#')}" target="_blank" rel="noopener">
           <div class="nc-top">${badge}${cats}</div>
           <h3 class="nc-title">${escH(n.title)}</h3>
           ${sum?`<p class="nc-sum">${escH(sum)}</p>`:''}
@@ -547,6 +549,17 @@
     document.getElementById('newsCat').addEventListener('change',e=>{ cat=e.target.value; apply(); });
     document.getElementById('newsSearch').addEventListener('input',e=>{ q=e.target.value.trim(); apply(); });
     apply();
+
+    // 从首页「AI 新闻」点进来:#n<id> → 滚动到对应卡片并高亮(被时间筛选挡掉则放宽到全部再找)
+    function focusFromHash(){
+      const h = (location.hash||'').replace('#','');
+      if(!/^n\d+$/.test(h)) return;
+      let el = document.getElementById(h);
+      if(!el){ range='year'; document.querySelectorAll('#newsTabs .ntab').forEach(x=>x.classList.toggle('active', x.dataset.range==='year')); apply(); el = document.getElementById(h); }
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('nc-flash'); setTimeout(()=>el.classList.remove('nc-flash'), 2600); }
+    }
+    focusFromHash();
+    window.addEventListener('hashchange', focusFromHash);
   });
 
   /* ──────────── Mega Menu (分类 ▾) ──────────── */
