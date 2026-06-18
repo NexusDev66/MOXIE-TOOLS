@@ -1460,9 +1460,9 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
           var s=Math.floor(Date.now()/864e5)%POOL.length; vs=[]; for(var k=0;k<5;k++) vs.push(POOL[(s+k)%POOL.length]);
         }
         pl2.innerHTML = vs.map(function(v){
-          var href = v.news_id ? ('/news/'+v.news_id) : ('https://www.bing.com/search?q='+encodeURIComponent((v.person||'')+' '+v.take));
-          var ext = v.news_id ? '' : ' target="_blank" rel="noopener"';
-          return '<a class="post-item" href="'+href+'"'+ext+' style="text-decoration:none;color:inherit;display:block;">'
+          // 发言统一指向新闻中心:具体 news_id 常悬空(对应快讯已轮替/未预渲染)→ /news/<id> 会 404,进新闻中心永远 200。
+          var href = '/moxie-news.html';
+          return '<a class="post-item" href="'+href+'" style="text-decoration:none;color:inherit;display:block;">'
             + '<div class="post-head"><div class="post-av">'+esc((v.person||' ')[0])+'</div><div><div class="post-name">'+esc(v.person)+'</div></div><span class="post-time">· '+esc(v.role||'')+'</span></div>'
             + '<div class="post-title">'+esc(v.take)+'</div></a>';
         }).join('');
