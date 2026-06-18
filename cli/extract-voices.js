@@ -18,6 +18,10 @@ function arg(n, d) { const i = process.argv.indexOf(`--${n}`); return i >= 0 && 
 const SEED = process.argv.includes('--seed');
 const LIMIT = Number(arg('limit', '40')) || 40;
 const DRY_RUN = process.argv.includes('--dry-run');
+const RESET = process.argv.includes('--reset');                 // 清掉所有抽取的发言(news_id 非空),种子保留
+const ROTATE_DAYS = Number(arg('rotate-days', '45')) || 45;     // 抽取发言保鲜期:超期的清掉(种子不受影响)
+
+const normTake = (s) => String(s || '').replace(/[^一-龥a-zA-Z0-9]/g, '').toLowerCase();
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 SUPABASE 配置'); process.exit(1); }
 
@@ -51,11 +55,22 @@ const SEEDS = [
   { person: '比尔·盖茨', role: '微软 创始人', take: 'AI 是继 PC、互联网之后最重要的技术变革。', importance: 4 },
 ];
 
-const SYS = `你从 AI 快讯里抽取「某位知名人物对 AI 的明确观点/表态/疑问」。严格要求:
-1. 只在快讯确实点名了某位知名人物(企业家/科学家/学者)并给出其观点时才抽取;产品发布、公司动态、没有具名人物观点的,一律不抽。
-2. take 必须忠实转述快讯内容,绝不编造、不夸大、不杜撰原话。
-3. importance 1-5:人物越知名、观点越重要给越高。
-只输出 JSON 数组,每个元素 {i, person, role, take, importance};i 是输入快讯的序号。没有可抽的就输出 []。不要输出 JSON 以外内容。`;
+const SYS = `你从 AI 快讯里抽取「知名人物对 AI 技术 / 行业的实质观点」。极严格,宁缺毋滥。
+
+【只抽这一类】真正的 AI 观点:对 AI 技术路线、行业趋势、研究方向、能力边界、风险 / 治理、商业判断的明确表态、预测或疑问。
+
+【以下一律跳过,绝不抽】
+- 人事变动:某人卸任 / 上任 / 离职 / 接任(是公司新闻,不是观点)。
+- 个人 / 八卦 / 调侃:财富排名、首富、穿着、敲钟、生活、玩笑(如"成为首富""敲钟穿皮衣""集体穿绿鞋")。
+- 公司动态:成立公司、融资、发布产品、业绩数字(除非其中明确含该人对 AI 的判断)。
+- 残缺引用:快讯没完整给出此人具体观点的,宁可不抽,绝不写"未完整引用""那句…"之类残句。
+- 与 AI 无关的话题(电池、纯硬件、政策本身等),除非直接是对 AI 的看法。
+
+【要求】
+- take 必须是该人对 AI 的一句完整、清晰、能独立成立的观点,忠实转述,不编造不夸大不杜撰原话。
+- 同一事件 / 同一人只抽最完整的一条,不要近义重复。
+- importance 1-5;拿不准它算不算"对 AI 的实质观点",就不抽。
+只输出 JSON 数组,每个元素 {i, person, role, take, importance};i 是输入快讯序号。没有可抽的输出 []。不要输出 JSON 以外内容。`;
 
 async function callLLM(messages) {
   const res = await fetch('https://api.deepseek.com/chat/completions', {
@@ -86,21 +101,59 @@ async function doExtract() {
   const arr = await callLLM([{ role: 'system', content: SYS }, { role: 'user', content: '快讯列表:\n' + block }]);
   if (!Array.isArray(arr) || !arr.length) { console.log('本批未抽到具名人物观点。'); return; }
 
-  const rows = arr.map((v) => {
+  // 安全网:即便 LLM 漏判,这些八卦/人事/残句关键词一律不收
+  const JUNK = /敲钟|皮衣|绿鞋|首富|万亿|未婚妻|卸任|上任|接任|离职|未完整|那句|穿着|龙虾/;
+
+  let rows = arr.map((v) => {
     const n = news[v.i];
     if (!n || !v.person || !v.take) return null;
     return { person: String(v.person).slice(0, 40), role: String(v.role || '').slice(0, 40), take: String(v.take).slice(0, 120), importance: Math.max(1, Math.min(5, Number(v.importance) || 3)), news_id: n.id, published_at: n.published_at };
-  }).filter(Boolean).filter((r) => r.importance >= 3 && !/未具名|无名|匿名/.test(r.person));
+  }).filter(Boolean)
+    .filter((r) => r.importance >= 3 && !/未具名|无名|匿名/.test(r.person))
+    .filter((r) => normTake(r.take).length >= 8 && !JUNK.test(r.take));   // 太短/含八卦关键词 → 丢
 
-  console.log(`抽到 ${rows.length} 条:`);
+  // 批内去重:同一人 + 同一快讯 只留最完整(take 最长)的一条
+  const best = new Map();
+  for (const r of rows) {
+    const k = r.person + '|' + r.news_id;
+    if (!best.has(k) || r.take.length > best.get(k).take.length) best.set(k, r);
+  }
+  rows = [...best.values()];
+
+  // 跨已有去重:同一人 + 同一快讯 或 同一人 + 近似措辞 已存在的,跳过
+  const existing = await sb('/moxie_voices?select=person,take,news_id&news_id=not.is.null');
+  const seenPN = new Set((existing || []).map((e) => e.person + '|' + e.news_id));
+  const seenPT = new Set((existing || []).map((e) => e.person + '|' + normTake(e.take)));
+  rows = rows.filter((r) => !seenPN.has(r.person + '|' + r.news_id) && !seenPT.has(r.person + '|' + normTake(r.take)));
+
+  console.log(`清洗+去重后入池 ${rows.length} 条:`);
   rows.forEach((r) => console.log(`  [${r.importance}] ${r.person}(${r.role}): ${r.take.slice(0, 30)} → /news/${r.news_id}`));
   if (DRY_RUN || !rows.length) return;
   await sb('/moxie_voices?on_conflict=person,take', { method: 'POST', prefer: 'return=minimal,resolution=ignore-duplicates', body: rows });
   console.log(`✓ 入池(去重后)`);
 }
 
+/** 清理:--reset 清掉全部抽取发言(种子保留);否则轮换删除超 ROTATE_DAYS 天的抽取发言 */
+async function cleanupVoices() {
+  if (RESET) {
+    const doomed = await sb('/moxie_voices?select=id,person,take&news_id=not.is.null') || [];
+    console.log(`\n🧹 --reset:删除全部抽取发言(种子 evergreen 保留)共 ${doomed.length} 条${DRY_RUN ? ' [DRY-RUN 不实删]' : ''}`);
+    doomed.forEach((r) => console.log(`   - id${r.id} ${r.person}: ${String(r.take).slice(0, 30)}`));
+    if (!DRY_RUN && doomed.length) await sb('/moxie_voices?news_id=not.is.null', { method: 'DELETE', prefer: 'return=minimal' });
+    return;
+  }
+  const cutoff = new Date(Date.now() - ROTATE_DAYS * 864e5).toISOString();
+  const old = await sb(`/moxie_voices?select=id&news_id=not.is.null&published_at=lt.${cutoff}`) || [];
+  if (old.length) {
+    console.log(`🧹 轮换:删除 ${old.length} 条超 ${ROTATE_DAYS} 天的抽取发言${DRY_RUN ? ' [DRY-RUN 不实删]' : ''}`);
+    if (!DRY_RUN) await sb(`/moxie_voices?news_id=not.is.null&published_at=lt.${cutoff}`, { method: 'DELETE', prefer: 'return=minimal' });
+  }
+}
+
 async function main() {
   if (SEED) { await doSeed(); return; }
+  await cleanupVoices();                                  // 先清理(reset / 轮换)
+  if (RESET && !DEEPSEEK_API_KEY) return;                 // 纯 reset 无 key 也行(只删不抽)
   if (!DEEPSEEK_API_KEY) { console.error('❌ 缺 DEEPSEEK_API_KEY(抽取模式需要)'); process.exit(1); }
   await doExtract();
 }
