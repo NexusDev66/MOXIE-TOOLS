@@ -47,14 +47,21 @@ async function main() {
   const pend = await sb('/moxie_products?status=eq.pending&select=id,name,slug,domain,tagline,tags,description,price_label,domestic_available,category_id,detail&order=created_at.desc&limit=500');
   if (!pend.length) { console.log('无 pending 候选,跳过'); return; }
 
+  // 反灰产末闸:复用发现层的 clean-gate.prefilter(只查域名:目录/聚合站 + 灰产 TLD,零误杀真工具)。
+  // 保证"灰产域名永不被自动上架",不依赖上游发现一定干净——加源(如 T13)后仍守得住。
+  const { prefilter } = await import('./clean-gate.mjs');
+  const domainClean = (p) => !prefilter(p.name || '', p.domain || '').reject;
+
   // 上架硬条件:已 AI 清洗(有 detail.features)——保证 "published ⟺ 已清洗",杜绝 thin 工具上线
   const cleaned = (p) => !!(p.detail && Array.isArray(p.detail.features) && p.detail.features.length);
-  const scored = pend.map((p) => ({ p, score: completeness(p), ready: cleaned(p) })).sort((a, b) => b.score - a.score);
-  const pass = scored.filter((x) => x.ready && x.score >= THRESHOLD).slice(0, LIMIT);
+  const scored = pend.map((p) => ({ p, score: completeness(p), ready: cleaned(p), clean: domainClean(p) })).sort((a, b) => b.score - a.score);
+  const pass = scored.filter((x) => x.ready && x.clean && x.score >= THRESHOLD).slice(0, LIMIT);
   const low = scored.filter((x) => x.score < THRESHOLD);
-  const waitClean = scored.filter((x) => x.score >= THRESHOLD && !x.ready);
-  console.log(`pending ${pend.length} · 达标且已清洗 ${scored.filter((x) => x.ready && x.score >= THRESHOLD).length}(本次上架 ${pass.length})· 达标待清洗 ${waitClean.length}(等 enrich)· 不达标留审 ${low.length}\n`);
+  const waitClean = scored.filter((x) => x.score >= THRESHOLD && x.clean && !x.ready);
+  const grayBlocked = scored.filter((x) => x.ready && x.score >= THRESHOLD && !x.clean);
+  console.log(`pending ${pend.length} · 达标且已清洗 ${scored.filter((x) => x.ready && x.clean && x.score >= THRESHOLD).length}(本次上架 ${pass.length})· 达标待清洗 ${waitClean.length}(等 enrich)· 不达标留审 ${low.length}\n`);
   if (waitClean.length) console.log(`待清洗(完善度够但无 detail,本轮不上架):` + waitClean.slice(0, 10).map((x) => x.p.name).join('、') + (waitClean.length > 10 ? ' …' : '') + '\n');
+  if (grayBlocked.length) console.log(`⛔ 灰产末闸拦下(达标但域名是目录站/灰产 TLD,留 pending 不上架):` + grayBlocked.map((x) => `${x.p.name}(${x.p.domain})`).join('、') + '\n');
 
   let ok = 0;
   for (const { p, score } of pass) {
