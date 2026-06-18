@@ -47,6 +47,13 @@ node --env-file=.env.prod cli/_backup.js   # 见步骤末:可临时用 curl 导 
 
 ## 3. 应用 schema 迁移(补 detail / weight_score / traffic_jsonb / news 列)
 
+**3.0 先体检,别盲迁**:跑 schema 对比,自动列出生产库缺的表/列 + 补齐 SQL(只读,不改库):
+```bash
+# .env.local 里加 PROD_SUPABASE_URL + PROD_SERVICE_ROLE_KEY(肖总给的生产 key)后:
+node --env-file=.env.local cli/check-prod-schema.mjs
+```
+它会以**沙盒 schema 为基线**,逐表 diff 生产库,输出「缺哪些列 + `alter table ... add column` SQL」,并提示 OpenAPI 看不到、需人工确认的点(domain UNIQUE / status 取值 / RLS / 触发器 search_path / jsonb 类型)。先按它的报告补齐,再走下面的迁移。
+
 - 方式一(推荐):`supabase link` 到生产项目后 `supabase db push`
 - 方式二:在生产库 SQL Editor 直接执行 `supabase/migrations/20260615120000_latemai_pipeline_align.sql`
 - 若生产库还缺 `moxie_news / moxie_voices / moxie_trend_candidates` 等**整表**,把 `supabase/migrations/` 下对应迁移一并执行。
@@ -135,9 +142,11 @@ node cli/indexnow.js                                # 提交 URL 给搜索引擎
 
 ---
 
-## 待我补的小脚本(权限到位后,均 <30 行,复用现成逻辑)
-- `cli/clean-candidates.js`:批量筛 306 候选(prefilter+gate)
-- `cli/_backup.js`:导出生产库关键表 JSON(动手前备份)
+## 迁移弹药(脚本状态)
+- ✅ `cli/check-prod-schema.mjs`:迁移前 schema 体检(沙盒 vs 生产 diff + 补齐 SQL)— **已就绪**
+- ✅ `cli/clean-candidates.js`:批量筛灰产候选(prefilter+gate 标 rejected)— **已就绪**
+- ✅ `cli/promote-candidates.js`:自动上架已加反灰产末闸(prefilter 拦目录站/灰产 TLD)— **已就绪**
+- ⬜ `cli/_backup.js`:导出生产库关键表 JSON(动手前备份)— 占位,迁移前我补全(<30 行)
 
 ## 可选决策(你定)
 - **是否把沙盒已精修的内容迁到生产**:沙盒有 142 款(含完整 AI 清洗 + 权重 + 封面),生产只有 12。可只清洗这 12,也可把沙盒里真实中文 AI 工具的成品内容迁过去(我写一次性迁移脚本,按 domain 对齐、不覆盖人工字段)。
