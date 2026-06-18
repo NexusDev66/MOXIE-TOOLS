@@ -22,9 +22,16 @@ if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE
 // 已在 GitHub Actions 实测可达 + 新鲜 + AI 相关:量子位(~10/天)、雷锋网(~20/天)。
 // 排除:Solidot/36氪/IT之家(非 AI 科技/消费,量大会污染)、InfoQ(返回 2019 旧内容)、
 //       机器之心 RSSHub(403)、品玩(405)。需要更多 AI 源用 NEWS_FEEDS 加(逗号分隔 url|来源名)。
+// 源说明:中文源(量子位/雷锋网)在 GitHub Actions 网络可达(本地常拉不到,属正常)。
+// 官方一手 AI 实验室源已实测可达 + 纯 AI 内容,英文标题由 score-news 翻成中文标题入库。
+// 已评估排除:Google AI 博客(混大量公司公关稿)、TechCrunch/MIT(媒体,含非 AI 商业噪音);
+//             Meta AI(404)、Anthropic(无公开 RSS)、Mistral(404)、机器之心(连不上)、Stability(非标准 RSS)。
 const DEFAULT_FEEDS = [
   'https://www.qbitai.com/feed|量子位',
   'https://www.leiphone.com/feed|雷锋网',
+  'https://openai.com/news/rss.xml|OpenAI',
+  'https://deepmind.google/blog/rss.xml|Google DeepMind',
+  'https://huggingface.co/blog/feed.xml|Hugging Face',
 ];
 const FEEDS = (process.env.NEWS_FEEDS
   ? process.env.NEWS_FEEDS.split(',')

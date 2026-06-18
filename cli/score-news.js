@@ -33,7 +33,7 @@ async function sb(path, opts = {}) {
 }
 
 const CATS = ['模型发布', '科技巨头', '融资并购', '应用落地', '研究突破', '硬件芯片', '政策监管', '开源', '行业动态', '安全伦理'];
-const SYS = `你是 AI 行业新闻编辑。对给定的一条 AI 新闻,做三件事:
+const SYS = `你是 AI 行业新闻编辑。对给定的一条 AI 新闻,做四件事:
 1. score:重要性评分 0-10(一位小数)。标准:
    - 8.5-10:重大(头部公司重磅发布 / 重大技术突破 / 大额融资并购 / 重要政策法规)
    - 5.5-8.4:重要(值得关注的产品发布、模型更新、明确的行业进展)
@@ -42,7 +42,8 @@ const SYS = `你是 AI 行业新闻编辑。对给定的一条 AI 新闻,做三�
    客观评估,不虚高,不凑分。
 2. category:从【${CATS.join('、')}】里选 1-3 个最贴合的(只能用这些词,原样照抄)。
 3. summary_zh:一句话中文摘要,客观说清这条新闻讲了什么(≤60字),不夸张不营销;若原文是英文则翻译归纳。
-只输出 JSON:{"score":7.5,"category":["模型发布","开源"],"summary_zh":"…"},不要输出 JSON 以外内容。`;
+4. title_zh:简洁、准确的中文标题(≤30字),保留专有名词原文(如 GPT-5、Gemini、Claude、Sora、OpenAI);若标题本就是中文,原样返回不改。
+只输出 JSON:{"score":7.5,"category":["模型发布","开源"],"summary_zh":"…","title_zh":"…"},不要输出 JSON 以外内容。`;
 
 async function gen(n) {
   const user = `标题:${n.title}\n来源:${n.source || n.tag || '未知'}\n原文摘要:${(n.summary || '(无)').slice(0, 500)}\n按系统要求输出 JSON。`;
@@ -61,7 +62,8 @@ async function gen(n) {
   score = Math.max(0, Math.min(10, Math.round(score * 10) / 10));
   const category = Array.isArray(o.category) ? o.category.filter((c) => CATS.includes(c)).slice(0, 3) : [];
   const summary_zh = String(o.summary_zh || '').replace(/\s+/g, ' ').trim().slice(0, 80);
-  return { score, category, summary_zh };
+  const title_zh = String(o.title_zh || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+  return { score, category, summary_zh, title_zh };
 }
 
 async function main() {
@@ -75,12 +77,16 @@ async function main() {
   const tally = { ok: 0, fail: 0, important: 0 };
   for (const n of news) {
     try {
-      const { score, category, summary_zh } = await gen(n);
+      const { score, category, summary_zh, title_zh } = await gen(n);
+      // 英文标题 → 就地换成中文标题(让新闻流保持中文);本就中文的不动
+      const needZh = title_zh && !/[一-龥]/.test(n.title);
       const flag = score >= 5.5 ? '🔴' : '  ';
-      console.log(`  ${flag} [${score.toFixed(1)}] ${category.join('/')} · ${n.title.slice(0, 36)}`);
+      console.log(`  ${flag} [${score.toFixed(1)}] ${category.join('/')} · ${(needZh ? '【译】' + title_zh : n.title).slice(0, 36)}`);
       if (score >= 5.5) tally.important++;
       if (!DRY_RUN) {
-        await sb(`/moxie_news?id=eq.${n.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { score, category, summary_zh } });
+        const patch = { score, category, summary_zh };
+        if (needZh) patch.title = title_zh;
+        await sb(`/moxie_news?id=eq.${n.id}`, { method: 'PATCH', prefer: 'return=minimal', body: patch });
       }
       tally.ok++;
     } catch (e) { console.log(`  · ${n.title.slice(0, 30)} → 失败(${e.message})`); tally.fail++; }
