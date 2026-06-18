@@ -11,7 +11,7 @@
  * 部署/canonical 域名:env SITE_BASE_URL(默认 https://www.latemai.com)。
  */
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync, existsSync } from 'node:fs';
 import { orphansToPrune } from './lib.mjs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -305,90 +305,6 @@ function buildAside(a, toc, ctx) {
   return blocks.join('\n');
 }
 
-async function fetchNews() {
-  const url = `${SUPABASE_URL}/rest/v1/moxie_news?select=id,title,url,source,tag,published_at,summary&order=published_at.desc.nullslast&limit=200`;
-  const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
-  if (!res.ok) throw new Error(`读取快讯失败 ${res.status}: ${await res.text()}`);
-  return res.json();
-}
-
-/** 快讯详情:预渲染静态页(内容烤入,不依赖现场请求) */
-function buildNewsPage(n) {
-  const canonical = `${SITE_BASE}/news/${n.id}`;
-  const src = n.source || n.tag || '';
-  const sum = (n.summary || '').trim();
-  const d = n.published_at ? new Date(n.published_at) : null;
-  const date = d && !isNaN(d) ? `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}` : '';
-  const desc = (sum || n.title).slice(0, 150);
-  const ld = { '@context': 'https://schema.org', '@type': 'NewsArticle', headline: n.title, ...(sum ? { description: sum } : {}), ...(n.published_at ? { datePublished: n.published_at } : {}), author: { '@type': 'Organization', name: src }, publisher: { '@type': 'Organization', name: 'MOXIE' }, mainEntityOfPage: { '@type': 'WebPage', '@id': canonical } };
-  return `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
-<title>${esc(n.title)} · MOXIE 快讯</title>
-<meta name="description" content="${esc(desc)}">
-<link rel="canonical" href="${canonical}">
-<meta property="og:type" content="article">
-<meta property="og:title" content="${esc(n.title)} · MOXIE">
-<meta property="og:description" content="${esc(desc)}">
-<meta property="og:url" content="${canonical}"><link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
-<script type="application/ld+json">${jsonLd(ld)}</script>
-<style>
-  .nv{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center}
-  .nv .container{display:flex;align-items:center;justify-content:space-between}
-  .nv a.brand{font-weight:600;color:var(--ink);text-decoration:none;font-size:16px}
-  .nv-links{display:flex;align-items:center;gap:22px}
-  .nv-links a{color:var(--ink-1);text-decoration:none;font-size:13.5px}
-  .nv-links a:hover{color:var(--accent)}
-  .ni-foot{border-top:1px solid var(--line);margin-top:48px}
-  .ni-foot .container{display:flex;align-items:center;justify-content:space-between;min-height:64px;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--ink-3)}
-  .ni-foot a{font-size:12.5px;color:var(--ink-3);text-decoration:none}
-  .ni-foot-links{display:flex;gap:18px}
-  .ni-foot-links a:hover{color:var(--accent)}
-  @media(max-width:640px){.nv-links a:not(.ni-back){display:none}}
-  .ni-wrap{max-width:720px;margin:0 auto;padding:56px 20px 90px}
-  .ni-meta{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-3);margin-bottom:16px}
-  .ni-src{color:#F53F3F;font-weight:600}
-  .ni-wrap h1{font-size:28px;line-height:1.45;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin-bottom:22px}
-  .ni-sum{font-size:15.5px;line-height:1.9;color:var(--ink-1);background:var(--bg-soft);border-radius:12px;padding:20px 22px;margin-bottom:28px}
-  .ni-sum.empty{color:var(--ink-3)}
-  .ni-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-  .ni-orig{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:11px 22px;border-radius:9999px;font-size:14px;font-weight:500}
-  .ni-orig:hover{background:var(--accent-d)}
-  .ni-back{color:var(--ink-2);text-decoration:none;font-size:13px}
-  .ni-back:hover{color:var(--accent)}
-  .ni-note{margin-top:30px;font-size:12px;color:var(--ink-3);line-height:1.7;border-top:1px solid var(--line);padding-top:16px}
-</style>
-</head>
-<body>
-<nav class="nv"><div class="container">
-  <a class="brand" href="/moxie-preview.html">MOXIE</a>
-  <div class="nv-links">
-    <a href="/moxie-preview.html">榜单</a>
-    <a href="/moxie-business.html">商业落地</a>
-    <a href="/moxie-categories.html">分类</a>
-    <a href="/moxie-blog.html">文章</a>
-    <a href="/moxie-news.html">新闻</a>
-    <a class="ni-back" href="/moxie-news.html">← 全部快讯</a>
-  </div>
-</div></nav>
-<div class="ni-wrap">
-  <div class="ni-meta"><span class="ni-src">${esc(src)}</span><span>·</span><span>${esc(date)}</span><span>·</span><span>AI 快讯</span></div>
-  <h1>${esc(n.title)}</h1>
-  <div class="ni-sum${sum ? '' : ' empty'}">${sum ? esc(sum) : '本条快讯暂无摘要,点下方阅读原文。'}</div>
-  <div class="ni-actions"><a class="ni-orig" href="${esc(n.url)}" target="_blank" rel="noopener">阅读原文 ↗</a><a class="ni-back" href="/moxie-news">← 全部快讯</a></div>
-  <div class="ni-note">摘要来自来源媒体(${esc(src)})的公开 RSS,版权归原作者。MOXIE 仅做聚合索引,完整内容请以原文为准。</div>
-</div>
-<footer class="ni-foot"><div class="container">
-  <span>© 2024 — 2026 MOXIE · AI 选型决策平台</span>
-  <div class="ni-foot-links"><a href="/moxie-preview.html">榜单</a><a href="/moxie-categories.html">分类</a><a href="/moxie-blog.html">文章</a><a href="/moxie-news.html">快讯</a><a href="/moxie-about.html">关于</a></div>
-</div></footer>
-</body>
-</html>`;
-}
-
 async function main() {
   console.log(`\n🖨  Phase 1.1/1.3 预渲染 · base=${SITE_BASE}\n`);
   const warned = new Set();
@@ -434,18 +350,9 @@ async function main() {
   }
   console.log(`✓ 文章页 ${an} → articles/<slug>.html`);
 
-  // 快讯页(预渲染静态页)。先清旧 → 写当前。
-  // 炸站下限保护:fetchNews 返回空(200 空读/库异常)时**绝不清空**,保留现有 news 页;
-  // 否则配合 refresh.yml 的 `git add news/` 会把整类 news 删光 + 提交 + 部署。
-  const news = await fetchNews();
-  if (news.length === 0) {
-    console.warn('⚠ 快讯读取为空,跳过 news 重渲染(保留现有页,防空读删光全站 news)');
-  } else {
-    rmSync(OUT_NEWS, { recursive: true, force: true });
-    mkdirSync(OUT_NEWS, { recursive: true });
-    for (const n of news) writeFileSync(join(OUT_NEWS, `${n.id}.html`), buildNewsPage(n), 'utf8');
-    console.log(`✓ 快讯页 ${news.length} → news/<id>.html`);
-  }
+  // 快讯不再生成独立详情页(/news/<id>):内容只是 RSS 摘要 + 外链,薄页无价值且曾致 404。
+  // 新闻中心列表(moxie-news.html)直接外链原文。旧 news/ 目录如仍存在,顺手清掉。
+  if (existsSync(OUT_NEWS)) { rmSync(OUT_NEWS, { recursive: true, force: true }); console.log('✓ 已移除旧快讯详情页目录 news/'); }
 
   if (warned.size) console.log('   模板替换告警:', [...warned].join(' '));
   console.log('');

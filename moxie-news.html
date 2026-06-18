@@ -507,7 +507,7 @@
     // 右侧重要榜:按分数 Top 10
     const ranked = [...all].sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,10);
     document.getElementById('newsRank').innerHTML = ranked.map(n =>
-      `<li><a href="/news/${n.id}">${escH(n.summary_zh||n.title)}</a></li>`).join('');
+      `<li><a href="${escH(n.url||'#')}" target="_blank" rel="noopener">${escH(n.summary_zh||n.title)}</a></li>`).join('');
 
     // 分类下拉(来自真实数据)
     const catSet = new Set(); all.forEach(n => (n.category||[]).forEach(c => catSet.add(c)));
@@ -534,7 +534,7 @@
         const badge = sc!=null ? `<span class="nc-score ${scoreCls(n.score)}">${sc}</span>` : '';
         const cats = (n.category||[]).map(c=>`<span class="nc-cat">${escH(c)}</span>`).join('');
         const sum = n.summary_zh || n.summary || '';
-        return `<a class="news-card" href="/news/${n.id}">
+        return `<a class="news-card" href="${escH(n.url||'#')}" target="_blank" rel="noopener">
           <div class="nc-top">${badge}${cats}</div>
           <h3 class="nc-title">${escH(n.title)}</h3>
           ${sum?`<p class="nc-sum">${escH(sum)}</p>`:''}

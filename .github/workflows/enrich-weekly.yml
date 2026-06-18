@@ -42,7 +42,8 @@ jobs:
         run: |
           git config user.name "moxie-bot"
           git config user.email "507577406@qq.com"
-          git add tools/ articles/ news/ public/covers/ sitemap.xml robots.txt
+          git rm -r --quiet --ignore-unmatch news/ 2>/dev/null || true   # /news/<id> 详情页已取消,清掉旧目录
+          git add tools/ articles/ public/covers/ sitemap.xml robots.txt
           if git diff --cached --quiet; then
             echo "无变化,跳过提交"
           else
@@ -59,7 +60,7 @@ jobs:
           cp moxie-*.html moxie-styles.css moxie-shared.js moxie-supabase.js sitemap.xml robots.txt 5e9f4171e1f9473b239b0b0b698d5585.txt /tmp/pages/ 2>/dev/null || true
           cp moxie-preview.html /tmp/pages/index.html
           rm -rf /tmp/pages/public /tmp/pages/tools /tmp/pages/articles /tmp/pages/news
-          cp -r public tools articles news /tmp/pages/
+          cp -r public tools articles /tmp/pages/
           touch /tmp/pages/.nojekyll
           cd /tmp/pages
           git config user.name "moxie-bot"

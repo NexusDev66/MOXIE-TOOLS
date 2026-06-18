@@ -532,7 +532,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
                 // Toolify「AI 新闻」格式:按重要性排的编号榜,取前 8 条(序号+标题)
                 items = items.slice().sort(function(a,b){ return (b.score||0)-(a.score||0); }).slice(0, 8);
                 box.innerHTML = items.map(function(n){
-                  return '<li><a href="/news/'+n.id+'">'+esc(n.title)+'</a></li>';
+                  return '<li><a href="'+esc(n.url||'#')+'" target="_blank" rel="noopener">'+esc(n.title)+'</a></li>';
                 }).join('');
               } catch(e){ fallbackClickable(); }
             });
