@@ -370,6 +370,7 @@ function buildNewsPage(n) {
     <a href="/moxie-business.html">商业落地</a>
     <a href="/moxie-categories.html">分类</a>
     <a href="/moxie-blog.html">文章</a>
+    <a href="/moxie-news.html">新闻</a>
     <a class="ni-back" href="/moxie-news.html">← 全部快讯</a>
   </div>
 </div></nav>
