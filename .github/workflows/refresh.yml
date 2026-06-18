@@ -26,6 +26,8 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
       SITE_BASE_URL: ${{ vars.SITE_BASE_URL }}
+      PH_CLIENT_ID: ${{ secrets.PH_CLIENT_ID }}            # Product Hunt 发现用(没配则发现步骤跳过)
+      PH_CLIENT_SECRET: ${{ secrets.PH_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
@@ -54,6 +56,14 @@ jobs:
 
       - name: 抽取名人观点(快讯→moxie_voices,失败不阻塞)
         run: node cli/extract-voices.js
+        continue-on-error: true
+
+      - name: 发现海外新锐 AI 工具(Product Hunt 近7天高票 → pending,失败不阻塞)
+        run: node cli/discover-tools.js --limit 40 --days 7
+        continue-on-error: true
+
+      - name: 新候选详情清洗(给无 detail 的 pending 补 features,达标才能被上架,失败不阻塞)
+        run: node cli/enrich-detail.js
         continue-on-error: true
 
       - name: 候选自动上架(完善度达标的 pending → published,直连DB,失败不阻塞)
