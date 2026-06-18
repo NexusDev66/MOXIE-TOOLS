@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
 <script src="/moxie-supabase.js?v=20260612-01"></script>
-<script src="/moxie-shared.js?v=20260611-02" defer></script>
+<script src="/moxie-shared.js?v=20260618-01" defer></script>
 
 <style>
   /* 产品详情页特有样式 */
@@ -293,12 +293,12 @@
   }
 </style>
 <meta name="description" content="xAI 开发的 AI 对话助手，支持实时联网获取信息、生成图像、编写代码，以幽默风格和深度上下文理解见长。">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/grok">
+<link rel="canonical" href="https://www.latemai.com/tools/grok">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Grok · MOXIE">
 <meta property="og:description" content="xAI 开发的 AI 对话助手，支持实时联网获取信息、生成图像、编写代码，以幽默风格和深度上下文理解见长。">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/grok">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Grok","description":"xAI 开发的 AI 对话助手，支持实时联网获取信息、生成图像、编写代码，以幽默风格和深度上下文理解见长。","url":"https://moxie-main-shiyan.vercel.app/tools/grok","applicationCategory":"AI 助手","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<meta property="og:url" content="https://www.latemai.com/tools/grok">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Grok","description":"xAI 开发的 AI 对话助手，支持实时联网获取信息、生成图像、编写代码，以幽默风格和深度上下文理解见长。","url":"https://www.latemai.com/tools/grok","applicationCategory":"AI 助手","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 
@@ -317,43 +317,9 @@
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="mega-menu">
-          <div class="mega-grid">
-            <div class="mega-col">
-              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-writing"><span>AI 写作</span><span class="cnt">42</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-image"><span>AI 图像</span><span class="cnt">58</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-video"><span>AI 视频</span><span class="cnt">36</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 音乐</span><span class="cnt">14</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 数字人</span><span class="cnt">10</span></a></li>
-              </ul>
-            </div>
-            <div class="mega-col">
-              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=llm"><span>大模型</span><span class="cnt">32</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=ai-assistant"><span>AI 助手</span><span class="cnt">28</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=rag"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=agent"><span>AI Agent</span><span class="cnt">19</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=workflow"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
-                <li><a href="/moxie-models.html?group=platform"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
-              </ul>
-            </div>
-            <div class="mega-col">
-              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=devtool&amp;cat=ai-coding"><span>AI 编程</span><span class="cnt">41</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool&amp;cat=ai-search"><span>AI 搜索</span><span class="cnt">18</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>翻译</span><span class="cnt">12</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>数据分析</span><span class="cnt">16</span></a></li>
-              </ul>
-            </div>
-          </div>
+          <div class="mega-grid" data-mega-grid></div>
           <div class="mega-foot">
-            <a href="/moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
             <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
           </div>
         </div>
@@ -385,43 +351,9 @@
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="mega-menu">
-          <div class="mega-grid">
-            <div class="mega-col">
-              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-writing"><span>AI 写作</span><span class="cnt">42</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-image"><span>AI 图像</span><span class="cnt">58</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-video"><span>AI 视频</span><span class="cnt">36</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 音乐</span><span class="cnt">14</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 数字人</span><span class="cnt">10</span></a></li>
-              </ul>
-            </div>
-            <div class="mega-col">
-              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=llm"><span>大模型</span><span class="cnt">32</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=ai-assistant"><span>AI 助手</span><span class="cnt">28</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=rag"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=agent"><span>AI Agent</span><span class="cnt">19</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=workflow"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
-                <li><a href="/moxie-models.html?group=platform"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
-              </ul>
-            </div>
-            <div class="mega-col">
-              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=devtool&amp;cat=ai-coding"><span>AI 编程</span><span class="cnt">41</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool&amp;cat=ai-search"><span>AI 搜索</span><span class="cnt">18</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>翻译</span><span class="cnt">12</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>数据分析</span><span class="cnt">16</span></a></li>
-              </ul>
-            </div>
-          </div>
+          <div class="mega-grid" data-mega-grid></div>
           <div class="mega-foot">
-            <a href="/moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
             <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
           </div>
         </div>
@@ -571,43 +503,9 @@
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="mega-menu">
-          <div class="mega-grid">
-            <div class="mega-col">
-              <h4>AIGC 创作 <span class="h4-tag">184</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-writing"><span>AI 写作</span><span class="cnt">42</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-image"><span>AI 图像</span><span class="cnt">58</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc&amp;cat=ai-video"><span>AI 视频</span><span class="cnt">36</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 语音 / 配音</span><span class="cnt">24</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 音乐</span><span class="cnt">14</span></a></li>
-                <li><a href="/moxie-models.html?group=aigc"><span>AI 数字人</span><span class="cnt">10</span></a></li>
-              </ul>
-            </div>
-            <div class="mega-col">
-              <h4>模型 / 平台 <span class="h4-tag">125</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=llm"><span>大模型</span><span class="cnt">32</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=ai-assistant"><span>AI 助手</span><span class="cnt">28</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=rag"><span>RAG 知识库</span><span class="cnt">28</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=agent"><span>AI Agent</span><span class="cnt">19</span></a></li>
-                <li><a href="/moxie-models.html?group=platform&amp;cat=workflow"><span>工作流 / Bot</span><span class="cnt">25</span></a></li>
-                <li><a href="/moxie-models.html?group=platform"><span>客服 / SDR</span><span class="cnt">14</span></a></li>
-              </ul>
-            </div>
-            <div class="mega-col">
-              <h4>开发者 / 效率 <span class="h4-tag">156</span></h4>
-              <ul>
-                <li><a href="/moxie-models.html?group=devtool&amp;cat=ai-coding"><span>AI 编程</span><span class="cnt">41</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool&amp;cat=ai-search"><span>AI 搜索</span><span class="cnt">18</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>翻译</span><span class="cnt">12</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>Chrome 扩展</span><span class="cnt">38</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>办公 / 协作</span><span class="cnt">22</span></a></li>
-                <li><a href="/moxie-models.html?group=devtool"><span>数据分析</span><span class="cnt">16</span></a></li>
-              </ul>
-            </div>
-          </div>
+          <div class="mega-grid" data-mega-grid></div>
           <div class="mega-foot">
-            <a href="/moxie-categories.html" class="all-link">查看全部 24 个分类 →</a>
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
             <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
           </div>
         </div>

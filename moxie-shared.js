@@ -380,6 +380,42 @@
   } catch (e) {}
   moxieLocalizeLogos();                    // 立即处理已在 DOM 里的静态 favicon,尽早取消 Google 请求
 
+  /* ───────── 分类 ▾ 下拉菜单:从数据库动态渲染(真实分类 + 真实计数) ─────────
+     HTML 里 .mega-grid 是空容器(data-mega-grid),静态页不再写死任何分类/数字,
+     避免编造的占位分类与假计数(SEO 也看不到假数)。在此按真实库填充。 */
+  function wireMegaMenus() {
+    var grids = document.querySelectorAll('[data-mega-grid]');
+    if (!grids.length || typeof window.moxieWhenDBReady !== 'function') return;
+    var LABEL = { aigc: 'AIGC 创作', platform: '模型 / 平台', devtool: '开发者 / 效率' };
+    var ORDER = ['aigc', 'platform', 'devtool'];
+    window.moxieWhenDBReady(async function (db) {
+      if (!db || !window.MoxieDB) return;
+      try {
+        var r1 = await window.MoxieDB.categories();
+        var cats = (r1 && r1.data) || [];
+        if (!cats.length) return;
+        var r2 = await db.from('moxie_products').select('category_id').eq('status', 'published');
+        var cnt = {};
+        ((r2 && r2.data) || []).forEach(function (p) { if (p.category_id != null) cnt[p.category_id] = (cnt[p.category_id] || 0) + 1; });
+        var groups = {};
+        cats.forEach(function (c) { (groups[c.group_name] = groups[c.group_name] || []).push(c); });
+        var keys = ORDER.filter(function (k) { return groups[k]; })
+          .concat(Object.keys(groups).filter(function (k) { return ORDER.indexOf(k) < 0; }));
+        var html = keys.map(function (g) {
+          var list = groups[g];
+          var sum = list.reduce(function (s, c) { return s + (cnt[c.id] || 0); }, 0);
+          var items = list.map(function (c) {
+            var href = '/moxie-models.html?group=' + encodeURIComponent(g) + '&cat=' + encodeURIComponent(c.slug);
+            return '<li><a href="' + href + '"><span>' + escHtml(c.name) + '</span><span class="cnt">' + (cnt[c.id] || 0) + '</span></a></li>';
+          }).join('');
+          return '<div class="mega-col"><h4>' + escHtml(LABEL[g] || g || '其他') + ' <span class="h4-tag">' + sum + '</span></h4><ul>' + items + '</ul></div>';
+        }).join('');
+        grids.forEach(function (el) { el.innerHTML = html; });
+        document.querySelectorAll('[data-mega-all]').forEach(function (a) { a.textContent = '查看全部 ' + cats.length + ' 个分类 →'; });
+      } catch (e) {}
+    });
+  }
+
   function run() {
     moxieLocalizeLogos();
     document.querySelectorAll('.prow, .top1-card, .pick-mini').forEach(injectVisitLink);
@@ -390,6 +426,7 @@
     wireArticleToc();
     wireProductVisitButtons();
     wireUserMenu();
+    wireMegaMenus();
   }
 
   if (document.readyState === 'loading') {

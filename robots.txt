@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://moxie-main-shiyan.vercel.app/sitemap.xml
+Sitemap: https://www.latemai.com/sitemap.xml
