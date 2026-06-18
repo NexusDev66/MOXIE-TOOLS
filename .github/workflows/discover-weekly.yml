@@ -1,10 +1,12 @@
-name: Weekly Discover (海外 PH + 国产 curated → pending)
+name: Weekly Discover (国产 curated 种子 → pending)
 
-# Phase 3 · 每周发现新锐 AI 工具 → DeepSeek 中文化补全 → 闸门去重 → 写 moxie_products(status=pending)。
-# 海外侧:Product Hunt;国产侧:discover-domestic 的 curated 种子(v1 教训:国产自动爬=灰产)。
-# 入 pending 后由 refresh.yml 的 promote-candidates(完善度达标自动上架)闭环上线。
+# Phase 3 · 每周发现国产新锐 AI 工具:discover-domestic 的 curated 种子(v1 教训:国产自动爬=灰产,只走人工维护清单)。
+# → DeepSeek 中文化补全 → 闸门去重 → 写 moxie_products(status=pending)→ refresh.yml 的 promote 闭环上线。
 #
-# 需仓库 Secrets:SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY、PH_CLIENT_ID、PH_CLIENT_SECRET
+# 注:海外 Product Hunt + Hacker News 发现已并入每日 refresh.yml(日更,见其 discover-tools/discover-hn 步骤),
+#     这里不再跑 PH(避免周一与日更重复双跑)。国产种子是人工清单、变化慢,周更即可。
+#
+# 需仓库 Secrets:SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY
 #        Variables:NEXT_PUBLIC_SUPABASE_URL
 
 on:
@@ -19,16 +21,10 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-      PH_CLIENT_ID: ${{ secrets.PH_CLIENT_ID }}
-      PH_CLIENT_SECRET: ${{ secrets.PH_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: 海外新锐发现(Product Hunt)→ pending
-        run: node cli/discover-tools.js --limit 20 --days 7
-        continue-on-error: true
-
       - name: 国产新锐发现(curated 种子)→ pending
         run: node cli/discover-domestic.js
