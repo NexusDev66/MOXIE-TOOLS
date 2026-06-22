@@ -29,10 +29,25 @@ if (!DEEPSEEK_API_KEY) { console.error('❌ 缺 DEEPSEEK_API_KEY'); process.exit
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36';
 
 // 站点配置(已实测两个标杆;加新站照此填:productRe = 工具详情页 URL 特征,strip = 从 og:title 去掉的站名后缀)
-// strip:把 og:title 清洗成干净工具名(各站标题模板不同)
+// 通用标题清洗:去「Discover/Meet/Introducing 前缀」+「on/is now on/| / - / — + 站名 后缀」,各站没单独 strip 时用它
+function genStrip(t, host) {
+  const brand = (host.split('.')[0] || '').replace(/[^a-z0-9]/gi, '');
+  let s = String(t || '').replace(/^\s*(discover|meet|introducing)\s+/i, '');
+  // 这些目录 og:title 多为 "Name | tagline" / "Name — tagline" / "Name | Live" → 取第一个分隔符前作名字
+  s = s.split(/\s+[|–—]\s+|\s+-\s+/)[0];
+  if (brand) s = s.replace(new RegExp('\\s*(?:is now on|now on|on)\\s*' + brand + '\\b.*$', 'i'), '');
+  return s.trim();
+}
+
+// 站点配置(sitemap 为主)。productRe = 工具详情页 URL 特征;strip 不填则用 genStrip。
 const SITES = [
   { name: 'Microlaunch', host: 'microlaunch.net', sitemap: 'https://microlaunch.net/sitemap.xml', productRe: /microlaunch\.net\/p\/[^/?#]+$/i, strip: (t) => t.replace(/\s+is now on Microlaunch.*$/i, '') },
   { name: 'Uneed', host: 'uneed.best', sitemap: 'https://uneed.best/sitemap.xml', productRe: /uneed\.best\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/^\s*discover\s+/i, '').replace(/\s+on uneed.*$/i, '') },
+  { name: 'Foundrlist', host: 'foundrlist.com', sitemap: 'https://foundrlist.com/sitemap.xml', productRe: /foundrlist\.com\/product\/[^/?#]+$/i },
+  { name: 'SaaSCity', host: 'saascity.io', sitemap: 'https://saascity.io/sitemap.xml', productRe: /saascity\.io\/live\/[^/?#]+$/i },
+  { name: 'MarketingDB', host: 'marketingdb.live', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i },
+  // 已探测但未纳入:trustmrr(/startup/ 7787 条但几乎无 AI)、showmeyour(无 AI)、shipstry(productRe 未命中)、
+  // fazier/agentwork/confettisaas/launch.cab 等(无可用 sitemap,数据在 __NEXT_DATA__/首页 JS,后续按需特殊处理)
 ];
 
 // 抽真实域名时要跳过的:社交/平台/CDN/聚合站自身 + 这些聚合站常见的"网络/页脚"外链(非工具本身)
@@ -130,7 +145,7 @@ async function main() {
       let html;
       try { html = await get(e.loc, 14000); } catch { tally.fail++; continue; }
       const rawTitle = decodeEnt(pickMeta(html, 'og:title'));
-      const name = (typeof site.strip === 'function' ? site.strip(rawTitle) : rawTitle.replace(site.strip, '')).trim().slice(0, 60);
+      const name = (site.strip ? (typeof site.strip === 'function' ? site.strip(rawTitle) : rawTitle.replace(site.strip, '')) : genStrip(rawTitle, site.host)).trim().slice(0, 60);
       const og = decodeEnt(pickMeta(html, 'og:description')).slice(0, 400);
       // 通用 launch 站多数非 AI:标题+简介无 AI 信号先跳过,省 DeepSeek
       if (!AI_HINT.test(`${name} ${og}`)) { tally.notai = (tally.notai || 0) + 1; continue; }
