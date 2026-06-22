@@ -397,6 +397,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
 
       <style>
         .cat-bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+        #catBar{display:none}   /* 关闭榜单上方的分类筛选条(保留时间档 + 榜单渲染) */
         .cat-chip{padding:6px 13px;border:1px solid var(--line);background:var(--bg);border-radius:9999px;font-size:13px;color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s;white-space:nowrap}
         .cat-chip:hover{border-color:var(--accent);color:var(--ink)}
         .cat-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
