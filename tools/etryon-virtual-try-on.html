@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
-<title>Stable Diffusion · MOXIE</title>
+<title>Etryon Virtual Try-On · MOXIE</title>
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
@@ -292,13 +292,13 @@
     .alt-grid { grid-template-columns: 1fr; }
   }
 </style>
-<meta name="description" content="Stability AI 出品的开源文本到图像生成模型，通过文字描述生成高质量图像，支持多种风格与定制化，适用于创意设计">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/stable-diffusion">
+<meta name="description" content="AI虚拟试穿，提升服装购物体验">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/etryon-virtual-try-on">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Stable Diffusion · MOXIE">
-<meta property="og:description" content="Stability AI 出品的开源文本到图像生成模型，通过文字描述生成高质量图像，支持多种风格与定制化，适用于创意设计">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/stable-diffusion">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Stable Diffusion","description":"Stability AI 出品的开源文本到图像生成模型，通过文字描述生成高质量图像，支持多种风格与定制化，适用于创意设计","url":"https://moxie-main-shiyan.vercel.app/tools/stable-diffusion","applicationCategory":"AI 图像","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<meta property="og:title" content="Etryon Virtual Try-On · MOXIE">
+<meta property="og:description" content="AI虚拟试穿，提升服装购物体验">
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/etryon-virtual-try-on">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Etryon Virtual Try-On","description":"AI虚拟试穿，提升服装购物体验","url":"https://moxie-main-shiyan.vercel.app/tools/etryon-virtual-try-on","applicationCategory":"AI 图像","operatingSystem":"Web"}</script>
 </head>
 <body>
 
@@ -361,23 +361,23 @@
         </div>
       </div>
       <span class="sep">/</span>
-      <span>Stable Diffusion</span>
+      <span>Etryon Virtual Try-On</span>
     </div>
 
     <div class="prod-hero-main">
       <div class="prod-hero-logo">
-        <img id="phLogo" src="/public/logos/stability.ai.png" alt="" onerror="moxieLogoFallback&&moxieLogoFallback(this)">
+        <img id="phLogo" src="/public/logos/etryon.ai.png" alt="" onerror="moxieLogoFallback&&moxieLogoFallback(this)">
       </div>
       <div class="prod-hero-info">
         <div class="prod-hero-name">
-          <h1 id="phName">Stable Diffusion</h1>
-          <span class="prod-hero-url" id="phUrl">stability.ai</span>
+          <h1 id="phName">Etryon Virtual Try-On</h1>
+          <span class="prod-hero-url" id="phUrl">etryon.ai</span>
         </div>
-        <p class="prod-hero-desc" id="phDesc">Stability AI 出品的开源文本到图像生成模型，通过文字描述生成高质量图像，支持多种风格与定制化，适用于创意设计</p>
+        <p class="prod-hero-desc" id="phDesc">AI虚拟试穿，提升服装购物体验</p>
         <div class="prod-hero-tags" id="phTags"></div>
       </div>
       <div class="prod-hero-actions">
-        <a id="phVisit" href="https://stability.ai?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-accent-lg" style="padding: 12px 24px; font-size: 14px;">访问产品 ↗</a>
+        <a id="phVisit" href="https://etryon.ai?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-accent-lg" style="padding: 12px 24px; font-size: 14px;">访问产品 ↗</a>
         <div class="prod-vote-big" id="prodVote">
           <div class="tri">▲</div>
           <div class="num" id="phVoteNum">0</div>
@@ -397,26 +397,25 @@
 
         <!-- 子墨评测 -->
         <div class="prod-section">
-          <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 12 天</div><div class="editor-note-quote">实测生成图像质量高，风格多样，但国内需代理。注意模型较大，需一定硬件配置。</div><div class="editor-note-meta">2026.03.17 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>这次实测的是Stability AI出品的开源文生图模型Stable Diffusion。它完全开源，可自由定制，适合创意设计、艺术创作等场景。用下来，它最擅长的是根据文字描述生成高质量图像，支持多种艺术风格，社区生态非常丰富。</p><p>实测亮点在于开源带来的高度可定制性：你可以自由修改模型、训练LoRA，甚至部署到本地。文本生成图像的质量很高，尤其在写实和概念艺术风格上表现出色。社区提供了大量预训练模型和插件，扩展性极强。</p><p>不足也很明显：本地部署对显卡要求高，至少需要6GB以上显存的NVIDIA显卡，新手配置环境容易卡壳。国内使用需代理才能访问官方资源。免费版有在线Demo，但功能受限，生成速度慢。</p><p>适合有技术基础的设计师和AI爱好者，能折腾本地部署的话可玩性极高。新手建议先试在线版体验效果。结论：开源文生图标杆，生态强大，但门槛不低，按需选择。</p></div></details></div>
+          <h2>风评</h2>
+          <div class="editor-note"><div class="editor-note-head">综合风评</div><div class="editor-note-quote">Etryon Virtual Try-On 是一款专注于服装电商场景的 AI 虚拟试穿工具，由 Etryon 公司开发。其核心功能是通过 AI 技术生成用户在线预览服装穿着效果的图像，旨在帮助消费者在购买前更直观地判断服装的合身度与风格，从而提升购物决策效率。该工具主要面向服装电商平台，可集成至产品页面，作为提升用户体验的辅助功能。</div><div class="editor-note-quote">该工具适合服装电商卖家或平台运营者，用于优化商品展示、降低退货率。选型时需注意：其国内可用性尚不明确，且具体定价模式（如免费额度或订阅制）需以官网为准。此外，虚拟试穿效果受服装款式、图片质量等因素影响，实际应用前建议进行小范围测试以评估适配性。</div><div class="editor-note-meta">综合公开信息整理 · 暂未列入子墨实测</div></div>
         </div>
 
         <!-- 核心特点 -->
         <div class="prod-section">
           <h2>核心特点</h2>
           <div class="feat-list">
-            <div class="feat-item"><span class="n">01</span><span class="t"><strong>开源模型</strong> ── 完全开源，可自由使用和修改。</span></div>
-            <div class="feat-item"><span class="n">02</span><span class="t"><strong>高质量生成</strong> ── 根据文字描述生成逼真图像。</span></div>
-            <div class="feat-item"><span class="n">03</span><span class="t"><strong>多风格支持</strong> ── 支持多种艺术风格和定制化。</span></div>
-            <div class="feat-item"><span class="n">04</span><span class="t"><strong>创意设计</strong> ── 广泛应用于创意设计与艺术创作。</span></div>
+            <div class="feat-item"><span class="n">01</span><span class="t"><strong>虚拟试穿</strong> ── AI驱动，在线预览服装穿着效果。</span></div>
+            <div class="feat-item"><span class="n">02</span><span class="t"><strong>提升决策</strong> ── 帮助用户快速判断合身与风格。</span></div>
+            <div class="feat-item"><span class="n">03</span><span class="t"><strong>电商集成</strong> ── 适用于服装产品页面，无缝嵌入。</span></div>
           </div>
         </div>
 
         <!-- 价格 -->
         <div class="prod-section">
           <h2>价格</h2>
-          <div class="info-list"><div class="info-row"><span class="k">定价模式</span><span class="v">免费+付费</span></div></div>
-          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">提供免费版本，付费版有更多功能。具体价格以官网为准。</p>
+          <div class="info-list"><div class="info-row"><span class="k">定价模式</span><span class="v">不详</span></div></div>
+          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">提供免费额度，订阅制付费，具体以官网为准。</p>
         </div>
 
         <!-- 替代品 -->
@@ -454,15 +453,15 @@
           <div class="sec-label"><span>产品信息</span></div>
           <div class="info-list">
             <div class="info-row"><span class="k">分类</span><span class="v">AI 图像</span></div>
-            <div class="info-row"><span class="k">价格</span><span class="v">免费+付费</span></div>
-            <div class="info-row"><span class="k">国内可用</span><span class="v">⚠ 需代理</span></div>
+            <div class="info-row"><span class="k">价格</span><span class="v">不详</span></div>
+            <div class="info-row"><span class="k">国内可用</span><span class="v">— 不详</span></div>
             <div class="info-row"><span class="k">收录于</span><span class="v">2026.06</span></div>
             <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.22</span></div>
           </div>
         </div>
 
         <div class="side-block">
-          <a href="https://stability.ai?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">访问产品官网 ↗</a>
+          <a href="https://etryon.ai?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">访问产品官网 ↗</a>
           <a href="#" class="btn-block ghost" id="favBtn">收藏</a>
           <a href="#" class="btn-block ghost" id="reportBtn">举报问题</a>
         </div>
@@ -573,7 +572,7 @@
       document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260618-02 填 URL 和 anon key';
       return;
     }
-    const slug = "stable-diffusion";
+    const slug = "etryon-virtual-try-on";
     const { data: p, error } = await window.MoxieDB.productBySlug(slug);
     if (error || !p) {
       document.getElementById('phName').textContent = '产品不存在';
