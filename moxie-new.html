@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="public/moxie-mark.png?v=20260525-01">
-<title>文章 · MOXIE</title>
+<title>上新 · MOXIE · 每日新收录 AI 工具</title>
+<meta name="description" content="MOXIE 每天自动发现并收录新上线的 AI 工具,按上架时间倒序。">
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
@@ -32,6 +33,14 @@
   .blog-filter-row .cat-chip.active:hover { background: var(--accent-soft); color: var(--accent-d); }
 
   .blog-listing { padding: 0 0 80px; }
+  /* ── 上新流 ── */
+  .nf-day { display:flex; align-items:baseline; gap:12px; margin:36px 0 14px; padding-bottom:10px; border-bottom:1px solid var(--line); }
+  .nf-day:first-child { margin-top:8px; }
+  .nf-day-label { font-size:15px; font-weight:600; color:var(--ink); letter-spacing:-0.01em; }
+  .nf-day-cnt { font-family:var(--mono); font-size:12px; color:var(--accent); }
+  .nf-rows { display:flex; flex-direction:column; }
+  .nf-time { font-size:11px; color:var(--ink-3); font-family:var(--mono); white-space:nowrap; text-align:left; }
+  .nf-new { display:inline-block; background:var(--accent); color:#fff; font-size:10px; font-weight:700; letter-spacing:.04em; padding:2px 7px; border-radius:5px; }
 
   /* ── 封面（图片 + 分类色调 overlay） ── */
   .cover {
@@ -299,9 +308,9 @@
 
 <section class="blog-hero">
   <div class="container">
-    <div class="eyebrow">MOXIE 文章</div>
-    <h1>中文 AI 工具的深度内容</h1>
-    <p>横评 / 手册 / 增长 / 选型。每周一篇，编辑团队亲自写，不卖课不绕弯。</p>
+    <div class="eyebrow">MOXIE 上新 · LAUNCHES</div>
+    <h1>每日新收录的 AI 工具</h1>
+    <p>系统每隔几小时自动发现全球新上线的 AI 工具，清洗中文化后按上架时间倒序呈现。最新的永远在最上面。</p>
   </div>
 </section>
 
@@ -356,114 +365,43 @@
   }
   if (window.lucide) lucide.createIcons();
 
-  /* ── 拉文章列表 ── */
+  /* ── 上新流:按收录时间倒序,日期分组(像 uneed/microlaunch) ── */
   function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
-  function fmtDate(s){ if(!s) return ''; const d=new Date(s); return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`; }
-  const tagClass = { '横评':'tag-review', '增长':'tag-growth', '手册':'tag-playbook', '选型':'tag-select' };
+  function escAttr(s){ return escH(s); }
+  function relTime(s){ const d=new Date(s); if(isNaN(d)) return ''; const m=(Date.now()-d)/6e4; if(m<60) return '刚刚'; const h=m/60; if(h<24) return Math.round(h)+' 小时前'; return Math.round(h/24)+' 天前'; }
+  function dayKey(s){ const d=new Date(s); if(isNaN(d)) return 'x'; return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function dayLabel(s){ const d=new Date(s); if(isNaN(d)) return '未知'; const n=new Date(); const t=new Date(n.getFullYear(),n.getMonth(),n.getDate()); const diff=Math.round((t-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5); if(diff<=0) return '今天'; if(diff===1) return '昨天'; if(diff<7) return diff+' 天前'; return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0'); }
+  function domBadge(p){ var d=p&&p.domestic_available; if(d==='是') return '<span class="pdom pdom-yes">直连</span>'; if(d==='需代理') return '<span class="pdom pdom-proxy">需代理</span>'; if(d==='否') return '<span class="pdom pdom-no">不可用</span>'; return ''; }
 
   window.moxieWhenDBReady(async (db) => {
     const box = document.getElementById('blogList');
-    if (!db) { box.innerHTML = '<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>'; return; }
-    const { data, error } = await window.MoxieDB.articles({ limit: 30 });
-    if (error || !data?.length) {
-      box.innerHTML = `<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">${error?'加载失败':'还没有文章。去 admin 后台发布一篇'}</div>`;
-      return;
-    }
-    // 分类筛选(真实计数 + 点击过滤)
-    const filterRow = document.getElementById('blogFilter');
-    const counts = {};
-    data.forEach(a => { const c = a.category || '其他'; counts[c] = (counts[c] || 0) + 1; });
-    const cats = ['全部', ...Object.keys(counts)];
-    let active = '全部';
-    function renderChips() {
-      if (!filterRow) return;
-      filterRow.innerHTML = cats.map(c => { const n = c === '全部' ? data.length : counts[c]; return `<button class="cat-chip${c === active ? ' active' : ''}" data-cat="${escH(c)}">${escH(c)} ${n}</button>`; }).join('');
-      filterRow.querySelectorAll('.cat-chip').forEach(b => b.addEventListener('click', () => { active = b.dataset.cat; renderChips(); renderArticles(); }));
-    }
-    function renderArticles() {
-    // 第 1 篇大封面 / 后续 3-column grid / 再后续 wide / 剩下紧凑列表
-    const list = active === '全部' ? data : data.filter(a => (a.category || '其他') === active);
-    const [feat, ...rest] = list;
-    const grid3 = rest.slice(0, 3);
-    const wide = rest.slice(3, 4)[0];
-    const grid3b = rest.slice(4, 7);
-    const tail = rest.slice(7);
-
+    if (!box) return;
+    const filterRow = document.getElementById('blogFilter'); if (filterRow) filterRow.style.display = 'none';
+    const { data, error } = await window.MoxieDB.products({ orderBy: 'created_at', limit: 150 });
+    if (error || !data || !data.length) { box.innerHTML = '<div style="padding:80px 0;text-align:center;color:var(--ink-3);font-size:13px;">' + (error ? '加载失败' : '暂无数据') + '</div>'; return; }
+    const groups = []; const idx = {};
+    data.forEach(p => { const k = dayKey(p.created_at); if (idx[k] === undefined) { idx[k] = groups.length; groups.push({ label: dayLabel(p.created_at), items: [] }); } groups[idx[k]].items.push(p); });
+    const NEW_MS = 48 * 3600 * 1000;
     let html = '';
-    // Hero featured
-    if (feat) {
-      html += `
-        <a href="moxie-article.html?slug=${encodeURIComponent(feat.slug)}" class="blog-feat" style="text-decoration:none;">
-          <div class="cover ${tagClass[feat.category]||'tag-review'}">
-            ${feat.cover_url ? `<img class="cover-img" src="${escH(feat.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
-            <span class="feat-eyebrow">${escH(feat.category)} · ${feat.read_minutes||5} 分钟</span>
-            <h2 class="feat-title">${escH(feat.title)}</h2>
-          </div>
-          <div class="blog-feat-info">
-            <div class="meta">${fmtDate(feat.published_at)}</div>
-            <h2>${escH(feat.title)}</h2>
-            <p>${escH(feat.excerpt||'')}</p>
-            <span class="read">阅读全文 →</span>
-          </div>
-        </a>`;
-    }
-    // 3-column
-    if (grid3.length) {
-      html += `<div class="blog-grid-3">` + grid3.map(a => `
-        <a href="moxie-article.html?slug=${encodeURIComponent(a.slug)}" class="img-card" style="text-decoration:none;">
-          <div class="cover ${tagClass[a.category]||'tag-review'}">
-            ${a.cover_url ? `<img class="cover-img" src="${escH(a.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
-          </div>
-          <div class="img-card-body">
-            <div class="meta"><span class="tag">${escH(a.category)}</span>· ${fmtDate(a.published_at)} · ${a.read_minutes||5} 分钟</div>
-            <h3>${escH(a.title)}</h3>
-            <p>${escH(a.excerpt||'')}</p>
-          </div>
-        </a>`).join('') + `</div>`;
-    }
-    // wide
-    if (wide) {
-      html += `
-        <a href="moxie-article.html?slug=${encodeURIComponent(wide.slug)}" class="blog-wide" style="text-decoration:none;">
-          <div class="cover ${tagClass[wide.category]||'tag-review'}">
-            ${wide.cover_url ? `<img class="cover-img" src="${escH(wide.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
-          </div>
-          <div class="wide-info">
-            <div class="meta"><span class="tag">${escH(wide.category)}</span>· ${fmtDate(wide.published_at)} · ${wide.read_minutes||5} 分钟</div>
-            <h2>${escH(wide.title)}</h2>
-            <p>${escH(wide.excerpt||'')}</p>
-            <span class="read">阅读全文 →</span>
-          </div>
-        </a>`;
-    }
-    // 3-column 2
-    if (grid3b.length) {
-      html += `<div class="blog-grid-3">` + grid3b.map(a => `
-        <a href="moxie-article.html?slug=${encodeURIComponent(a.slug)}" class="img-card" style="text-decoration:none;">
-          <div class="cover ${tagClass[a.category]||'tag-review'}">
-            ${a.cover_url ? `<img class="cover-img" src="${escH(a.cover_url)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">` : ''}
-          </div>
-          <div class="img-card-body">
-            <div class="meta"><span class="tag">${escH(a.category)}</span>· ${fmtDate(a.published_at)} · ${a.read_minutes||5} 分钟</div>
-            <h3>${escH(a.title)}</h3>
-            <p>${escH(a.excerpt||'')}</p>
-          </div>
-        </a>`).join('') + `</div>`;
-    }
-    // 紧凑列表
-    if (tail.length) {
-      html += `<div class="blog-list-title">─── 更早的文章 ───</div>`;
-      html += `<div class="blog-list">` + tail.map(a => `
-        <a href="moxie-article.html?slug=${encodeURIComponent(a.slug)}" class="blog-list-item" style="text-decoration:none;color:inherit;">
-          <span class="li-tag">${escH(a.category)}</span>
-          <span class="li-title">${escH(a.title)}</span>
-          <span class="li-meta">${fmtDate(a.published_at)} · ${a.read_minutes||5}m</span>
-        </a>`).join('') + `</div>`;
-    }
+    groups.forEach(g => {
+      html += '<div class="nf-day"><span class="nf-day-label">' + escH(g.label) + '</span><span class="nf-day-cnt">' + g.items.length + ' 款上新</span></div>';
+      html += '<div class="nf-rows">' + g.items.map(p => {
+        const isNew = (Date.now() - new Date(p.created_at)) < NEW_MS;
+        const timeCell = isNew ? '<span class="nf-new">NEW</span>' : escH(relTime(p.created_at));
+        return '<a class="prow" href="/tools/' + encodeURIComponent(p.slug) + '" style="--lg:url(\'/public/logos/' + p.domain + '.png\')">'
+          + '<span class="prank-cell nf-time">' + timeCell + '</span>'
+          + '<div class="plogo has-img"><img src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + escAttr(p.name) + '" onerror="moxieLogoFallback(this)" /></div>'
+          + '<div class="pmain"><div class="ptop"><span class="pname">' + escH(p.name) + '</span>' + (p.verified ? '<span class="verified-tag">子墨测过</span>' : '') + domBadge(p) + '</div>'
+          + '<div class="pdesc">' + escH(p.tagline || '') + '</div>'
+          + '<div class="ptags">' + (p.tags || []).slice(0, 3).map(t => '<span class="ptag">' + escH(t) + '</span>').join('') + '</div></div>'
+          + '<span class="pprice">' + escH(p.price_label || '免费') + '</span>'
+          + '<div class="pvote" data-product-id="' + p.id + '"><span class="tri">▲</span><span class="num">' + (p.vote_count || 0) + '</span></div>'
+          + '</a>';
+      }).join('') + '</div>';
+    });
     box.innerHTML = html;
-    }
-    renderChips();
-    renderArticles();
+    if (window.lucide) lucide.createIcons();
+    if (window.MoxieRewire) window.MoxieRewire();
   });
 
   /* ──────────── Mega Menu (分类 ▾) ──────────── */

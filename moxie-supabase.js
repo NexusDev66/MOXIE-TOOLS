@@ -116,7 +116,12 @@ window.MoxieDB = {
       if (opts.categorySlug) list = list.filter(function (p) { return p.moxie_categories && p.moxie_categories.slug === opts.categorySlug; });
       if (opts.categoryIds) list = list.filter(function (p) { return opts.categoryIds.indexOf(p.category_id) >= 0; });
       if (opts.featured) list = list.filter(function (p) { return p.featured === true; });
-      list = moxieSortDesc(list, opts.orderBy || 'weight_score');
+      var key = opts.orderBy || 'weight_score';
+      if (key === 'created_at' || key === 'updated_at' || key === 'published_at') {
+        list = list.slice().sort(function (a, b) { return new Date(b[key] || 0) - new Date(a[key] || 0); });
+      } else {
+        list = moxieSortDesc(list, key);
+      }
       return { data: list.slice(0, opts.limit || 24), error: null };
     }
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };

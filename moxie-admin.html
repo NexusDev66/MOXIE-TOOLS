@@ -7,7 +7,7 @@
 <title>MOXIE · 管理后台</title>
 <link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
 <link rel="stylesheet" href="moxie-styles.css?v=20260617-01">
-<script src="moxie-supabase.js?v=20260618-01"></script>
+<script src="moxie-supabase.js?v=20260618-02"></script>
 
 <style>
   body { background: #FAFAFA; }
@@ -399,7 +399,7 @@ const State = { db: null, user: null, isAdmin: false, view: 'dashboard' };
 /* ═══════════════════ 启动 ═══════════════════ */
 window.moxieWhenDBReady(async (db) => {
   if (!db) {
-    showLogin('Supabase 还没配置。打开 moxie-supabase.js?v=20260618-01，把 URL 和 anon key 填进去后刷新页面。');
+    showLogin('Supabase 还没配置。打开 moxie-supabase.js?v=20260618-02，把 URL 和 anon key 填进去后刷新页面。');
     return;
   }
   State.db = db;

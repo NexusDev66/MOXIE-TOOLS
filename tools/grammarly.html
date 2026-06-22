@@ -9,7 +9,7 @@
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
-<script src="/moxie-supabase.js?v=20260618-01"></script>
+<script src="/moxie-supabase.js?v=20260618-02"></script>
 <script src="/moxie-shared.js?v=20260618-02" defer></script>
 
 <style>
@@ -310,6 +310,7 @@
     </a>
     <nav class="nav-center">
       <a href="/moxie-preview.html">榜单</a>
+      <a href="/moxie-new.html">上新</a>
       <a href="/moxie-business.html">商业落地</a>
       <div class="nav-mega" id="navMega">
         <button class="nav-mega-trigger" type="button">
@@ -344,6 +345,7 @@
   <div class="container">
     <div class="prod-breadcrumb">
       <a href="/moxie-preview.html">榜单</a>
+      <a href="/moxie-new.html">上新</a>
       <span class="sep">/</span>
       <div class="nav-mega" id="navMega">
         <button class="nav-mega-trigger" type="button">
@@ -495,7 +497,7 @@
       </div>
       <div class="fcol">
         <h4>发现</h4>
-        <a href="/moxie-preview.html">今日上新</a>
+        <a href="/moxie-new.html">今日上新</a>
         <a href="/moxie-business.html">商业落地</a>
         <div class="nav-mega" id="navMega">
         <button class="nav-mega-trigger" type="button">
@@ -568,7 +570,7 @@
   window.moxieWhenDBReady(async (db) => {
     if (!db) {
       document.getElementById('phName').textContent = '数据库未配置';
-      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260618-01 填 URL 和 anon key';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260618-02 填 URL 和 anon key';
       return;
     }
     const slug = "grammarly";
