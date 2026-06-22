@@ -32,6 +32,10 @@ jobs:
         run: node cli/enrich-detail.js --fetch
         continue-on-error: true
 
+      - name: 生成同源数据快照(public/data/snapshot.json · 大陆免连 Supabase 看数据)
+        run: node cli/snapshot.js
+        continue-on-error: true
+
       - name: 重渲染产品/文章页(prerender)
         run: node cli/prerender.js
 

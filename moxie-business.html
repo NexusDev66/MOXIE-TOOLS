@@ -9,8 +9,8 @@
 <script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260617-01">
-<script src="moxie-supabase.js?v=20260612-01"></script>
-<script src="moxie-shared.js?v=20260618-01" defer></script>
+<script src="moxie-supabase.js?v=20260618-01"></script>
+<script src="moxie-shared.js?v=20260618-02" defer></script>
 <style>
   .cat-hero { padding: 64px 0 32px; }
   .cat-hero .eyebrow { font-size: 11px; color: var(--accent); letter-spacing: 0.12em; font-weight: 600; margin-bottom: 14px; }
@@ -393,8 +393,8 @@
       box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">Supabase 还没配置</div>`;
       return;
     }
-    const { data: cats } = await db.from('moxie_categories').select('id').eq('group_name', 'platform');
-    const ids = (cats || []).map(c => c.id);
+    const { data: allCats } = await window.MoxieDB.categories();   // 走快照,国内可达
+    const ids = (allCats || []).filter(c => c.group_name === 'platform').map(c => c.id);
     if (!ids.length) {
       box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">没有商业落地分类</div>`;
       return;

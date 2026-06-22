@@ -394,7 +394,8 @@
         var r1 = await window.MoxieDB.categories();
         var cats = (r1 && r1.data) || [];
         if (!cats.length) return;
-        var r2 = await db.from('moxie_products').select('category_id').eq('status', 'published');
+        // 走 MoxieDB(优先同源快照,国内可达);不直连 Supabase,避免大陆拉不到导致菜单空
+        var r2 = await window.MoxieDB.products({ limit: 2000 });
         var cnt = {};
         ((r2 && r2.data) || []).forEach(function (p) { if (p.category_id != null) cnt[p.category_id] = (cnt[p.category_id] || 0) + 1; });
         var groups = {};

@@ -84,6 +84,23 @@ window.moxieWhenDBReady = function (cb) {
   window.addEventListener('moxie-db-ready', function () { cb(window.moxieDB); }, { once: true });
 };
 
+/* ───────── 同源数据快照(大陆访问救星)─────────
+   构建时 cli/snapshot.js 把列表数据导成同源 /public/data/snapshot.json。
+   读取层**优先读快照**(同源、国内秒开),读不到再回退实时 Supabase(*.supabase.co,国内常连不上)。
+   懒加载:首次有读方法调用时才 fetch;写操作(投票/登录)仍走实时 Supabase。 */
+var __moxieSnapPromise;
+function moxieSnap() {
+  if (__moxieSnapPromise === undefined) {
+    __moxieSnapPromise = fetch('/public/data/snapshot.json', { cache: 'default' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+  }
+  return __moxieSnapPromise;
+}
+function moxieSortDesc(list, key) {
+  return list.slice().sort(function (a, b) { return (b[key] || 0) - (a[key] || 0); });
+}
+
 /* ═════════════════════════════════════════════
    MoxieDB · 公开站统一数据访问层
    所有公开页 fetch 数据走这里，方便后续换接口
@@ -92,6 +109,16 @@ window.MoxieDB = {
   /* ---------- 产品 ---------- */
   async products(opts) {
     opts = opts || {};
+    // 优先快照
+    var s = await moxieSnap();
+    if (s && s.products) {
+      var list = s.products.slice();
+      if (opts.categorySlug) list = list.filter(function (p) { return p.moxie_categories && p.moxie_categories.slug === opts.categorySlug; });
+      if (opts.categoryIds) list = list.filter(function (p) { return opts.categoryIds.indexOf(p.category_id) >= 0; });
+      if (opts.featured) list = list.filter(function (p) { return p.featured === true; });
+      list = moxieSortDesc(list, opts.orderBy || 'weight_score');
+      return { data: list.slice(0, opts.limit || 24), error: null };
+    }
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
     let q = window.moxieDB.from('moxie_products')
       .select('*, moxie_categories(id, name, slug, group_name)')
@@ -115,8 +142,18 @@ window.MoxieDB = {
   },
   async searchProducts(q, opts) {
     opts = opts || {};
+    const term0 = String(q || '').trim();
+    var s = await moxieSnap();
+    if (s && s.products) {
+      if (!term0) return { data: [], error: null };
+      var k = term0.toLowerCase();
+      var hit = s.products.filter(function (p) {
+        return ['name', 'tagline', 'slug', 'domain'].some(function (f) { return String(p[f] || '').toLowerCase().indexOf(k) >= 0; });
+      });
+      return { data: moxieSortDesc(hit, 'vote_count').slice(0, opts.limit || 24), error: null };
+    }
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
-    const term = String(q || '').trim();
+    const term = term0;
     if (!term) return { data: [], error: null };
     const esc = term.replace(/[%,()]/g, ' ');
     const like = `%${esc}%`;
@@ -139,6 +176,8 @@ window.MoxieDB = {
 
   /* ---------- 分类 ---------- */
   async categories() {
+    var s = await moxieSnap();
+    if (s && s.categories) return { data: s.categories, error: null };
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
     return await window.moxieDB.from('moxie_categories')
       .select('*').order('sort_order', { ascending: true });
@@ -147,6 +186,13 @@ window.MoxieDB = {
   /* ---------- 文章 ---------- */
   async articles(opts) {
     opts = opts || {};
+    var s = await moxieSnap();
+    if (s && s.articles) {
+      var list = s.articles.slice();
+      if (opts.category) list = list.filter(function (a) { return a.category === opts.category; });
+      list.sort(function (a, b) { return new Date(b.published_at || 0) - new Date(a.published_at || 0); });
+      return { data: list.slice(0, opts.limit || 30), error: null };
+    }
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
     let q = window.moxieDB.from('moxie_articles').select('*').eq('status', 'published');
     if (opts.category) q = q.eq('category', opts.category);
@@ -162,6 +208,8 @@ window.MoxieDB = {
   /* ---------- 每日 AI 快讯(cron 拉 RSS 写入)---------- */
   async news(opts) {
     opts = opts || {};
+    var s = await moxieSnap();
+    if (s && s.news) return { data: s.news.slice(0, opts.limit || 8), error: null };
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
     return await window.moxieDB.from('moxie_news')
       .select('id,title,url,source,tag,published_at,summary,score,category,summary_zh')
@@ -177,6 +225,8 @@ window.MoxieDB = {
   /* ---------- AI 业界热议(名人观点,evergreen + 每日抽取)---------- */
   async voices(opts) {
     opts = opts || {};
+    var s = await moxieSnap();
+    if (s && s.voices) return { data: s.voices.slice(0, opts.limit || 5), error: null };
     if (!window.moxieDB) return { data: [], error: 'db-not-ready' };
     return await window.moxieDB.from('moxie_voices')
       .select('person,role,take,importance,news_id,published_at')

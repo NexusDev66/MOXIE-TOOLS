@@ -33,8 +33,8 @@
 <!-- MiSans ExtraLight · 小米开源中文超细体 (商用免费 · jsDelivr CDN 分块按需加载) -->
 <link rel="stylesheet" href="https://registry.npmmirror.com/misans-webfont/4.3.1/files/misans/misans-extralight/result.min.css">
 <link rel="stylesheet" href="moxie-styles.css?v=20260617-01">
-<script src="moxie-supabase.js?v=20260612-01"></script>
-<script src="moxie-shared.js?v=20260618-01" defer></script>
+<script src="moxie-supabase.js?v=20260618-01"></script>
+<script src="moxie-shared.js?v=20260618-02" defer></script>
 <script>
 /* 大陆 logo 兜底:工具 logo 图(DuckDuckGo icons,大陆可直连;个别取不到时)加载失败 → 换成首字母块,永不裂图。
    主触发:每个 <img> 上的 onerror="moxieLogoFallback(this)";备份:全局 capture 监听。 */
@@ -933,7 +933,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     if (!box) return;
     if (!db) {
       box.innerHTML = `<div style="padding:60px 0;text-align:center;color:var(--ink-3);font-size:13px;">
-        Supabase 还没配置 — 打开 moxie-supabase.js?v=20260612-01 填 URL 和 anon key
+        Supabase 还没配置 — 打开 moxie-supabase.js?v=20260618-01 填 URL 和 anon key
       </div>`;
       return;
     }
@@ -1373,12 +1373,12 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
       if(tick){ var one = catRank.map(function(c){ return '<span class="ticker-item"><span class="dot"></span>'+esc(c.name)+' <span class="time">· '+c.n+' 款</span></span>'; }).join(''); tick.innerHTML = one+one; }
       var tl = document.getElementById('trendList');
       if(tl){ tl.innerHTML = catRank.slice(0,5).map(function(c,i){ return '<div class="trend-item"><span class="t-rank">'+String(i+1).padStart(2,'0')+'</span><span class="t-name">'+esc(c.name)+'</span><span class="t-delta">'+c.n+' 款</span></div>'; }).join(''); }
-      db.from('moxie_products').select('name,slug,domain,tagline,vote_count,verified').eq('status','published').eq('featured',true).order('weight_score',{ascending:false}).limit(3).then(function(fr){
+      window.MoxieDB.products({ featured:true, orderBy:'weight_score', limit:3 }).then(function(fr){
         var pl=document.getElementById('pickList'), fp=(fr&&fr.data)||[];
         if(pl&&fp.length){ pl.innerHTML = fp.map(function(p){ return '<a class="pick-mini" href="/tools/'+esc(p.slug)+'" style="text-decoration:none;color:inherit;"><div class="ptitle"><span class="name">'+esc(p.name)+'</span>'+(p.verified?'<span class="verified-tag">子墨测过</span>':'')+'</div><div class="quote">'+esc(p.tagline||'')+'</div><div class="meta"><span>'+esc(p.domain)+'</span><span class="upv">▲ '+(p.vote_count||0)+'</span></div></a>'; }).join(''); }
       });
       // AI 业界热议 = moxie_voices(名人观点:evergreen 种子 + 每日从快讯抽取,按重要度+日期排序);兜底静态池
-      db.from('moxie_voices').select('person,role,take,news_id').order('importance',{ascending:false}).order('published_at',{ascending:false,nullsFirst:false}).limit(5).then(function(vr){
+      window.MoxieDB.voices({ limit:5 }).then(function(vr){
         var pl2=document.getElementById('postList'); if(!pl2) return;
         var vs=(vr&&vr.data)||[];
         if(!vs.length){
