@@ -130,10 +130,10 @@
     <h1>面向企业的 AI 选型</h1>
     <p>面向 50-5000 人企业团队 · 按场景 / 合规性 / 数据出境 / 价格透明度筛选</p>
     <div class="cat-hero-stats">
-      <span><b>67</b> 款收录</span>
-      <span><b>32</b> 款国内直连</span>
-      <span><b>5</b> 类场景</span>
-      <span><b>本月新增 8</b></span>
+      <span><b id="bizStatRec">—</b> 款收录</span>
+      <span><b id="bizStatDom">—</b> 款国内直连</span>
+      <span><b id="bizStatScene">—</b> 类场景</span>
+      <span><b id="bizStatNew">本月新增 —</b></span>
     </div>
   </div>
 </section>
@@ -406,6 +406,18 @@
       return;
     }
     BIZ_ALL = data;
+    /* hero 统计:真实数据(与列表/主页同步,不写死) */
+    (function(){
+      const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+      const dom = data.filter(p => p.domestic_available === '是').length;
+      const scenes = new Set(data.map(p => p.category_id).filter(Boolean)).size;
+      const m0 = new Date(); const monStart = new Date(m0.getFullYear(), m0.getMonth(), 1).getTime();
+      const fresh = data.filter(p => p.created_at && new Date(p.created_at).getTime() >= monStart).length;
+      set('bizStatRec', data.length);
+      set('bizStatDom', dom);
+      set('bizStatScene', scenes);
+      set('bizStatNew', '本月新增 ' + fresh);
+    })();
     /* ?cat= 深链：预选对应场景 */
     const catSlug = new URLSearchParams(location.search).get('cat');
     if (catSlug) {
