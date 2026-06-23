@@ -1,0 +1,31 @@
+name: Discover Toolify (Playwright · Cloudflare 实测)
+
+# 独立任务:用 Playwright 真浏览器过 Toolify 的 Cloudflare,抓最新工具 → pending。
+# 不进 6 小时主循环(重 + 不保准)。每天一次;主要先实测 Actions 能不能过 Cloudflare。
+# 需 Secrets:SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY  Variables:NEXT_PUBLIC_SUPABASE_URL
+
+on:
+  schedule:
+    - cron: '0 4 * * *'   # 每天 UTC 04:00 = 北京 12:00(错开主循环)
+  workflow_dispatch:
+
+jobs:
+  toolify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 装 Playwright + Chromium(--no-save 不动项目 package.json)
+        run: |
+          npm i playwright --no-save
+          npx playwright install --with-deps chromium
+      - name: 跑 Toolify 抓取(会明确打印过没过 Cloudflare,失败不阻塞)
+        run: node cli/discover-toolify.js --limit 30
+        continue-on-error: true
