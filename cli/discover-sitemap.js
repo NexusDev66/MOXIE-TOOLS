@@ -61,6 +61,21 @@ const SITES = [
   { name: 'Futurepedia', host: 'futurepedia.io', sitemap: 'https://www.futurepedia.io/sitemap_tools.xml', productRe: /futurepedia\.io\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/\s+(AI\s+)?Reviews?\b[:\s].*$/i, '').trim() },
   { name: 'Foundrlist', host: 'foundrlist.com', sitemap: 'https://foundrlist.com/sitemap.xml', productRe: /foundrlist\.com\/product\/[^/?#]+$/i },
   { name: 'SaaSCity', host: 'saascity.io', sitemap: 'https://saascity.io/sitemap.xml', productRe: /saascity\.io\/live\/[^/?#]+$/i },
+  // turbo0:纯 AI 工具目录(3000+ 条)。"访问官网"是联盟跳转链(pxf.io),通用就近抓会抓成姊妹站 hunt0.com;
+  // 真域名在 RSC 数据块的 domain 字段里(turbo0 自存的 traffic/dr 统计,转义引号),取最高频非自家域名即真官网
+  {
+    name: 'turbo0', host: 'turbo0.com', sitemap: 'https://turbo0.com/sitemap.xml',
+    productRe: /turbo0\.com\/item\/[^/?#]+$/i,
+    resolveDomain(slug, html) {
+      const tally = {};
+      for (const m of (html || '').matchAll(/\\"domain\\":\\"([^"\\]+)/gi)) {
+        const d = m[1].replace(/^www\./i, '').toLowerCase();
+        if (!d || /^(turbo0|hunt0)\.com$/.test(d)) continue;
+        tally[d] = (tally[d] || 0) + 1;
+      }
+      return Object.entries(tally).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+    },
+  },
   // MarketingDB 有官方 RSS(唯一一个):直接读 /feed.xml(它自维护的"New Launches"列表,比猜 sitemap 稳、自带发布时间);取不到再退回 sitemap
   { name: 'MarketingDB', host: 'marketingdb.live', feed: 'https://marketingdb.live/feed.xml', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i },
   // 已探测但未纳入:trustmrr(/startup/ 7787 条但几乎无 AI)、showmeyour(无 AI)、shipstry(productRe 未命中)、
@@ -181,7 +196,7 @@ async function main() {
       // 通用 launch 站多数非 AI:标题+简介无 AI 信号先跳过,省 DeepSeek
       if (!AI_HINT.test(`${name} ${og}`)) { tally.notai = (tally.notai || 0) + 1; continue; }
       const slug = (e.loc.match(/\/([^/?#]+)\/?$/) || [])[1] || '';
-      const domain = site.resolveDomain ? await site.resolveDomain(slug) : extractDomain(html, site.host, slug);
+      const domain = site.resolveDomain ? await site.resolveDomain(slug, html) : extractDomain(html, site.host, slug);
       if (!name || !domain) { tally.nodomain++; continue; }
       if (rejected.has(domain)) { tally.rejected++; continue; }
       if (known.has(domain)) { tally.dup++; continue; }
