@@ -172,28 +172,6 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     </div>
   </div>
 
-  <!-- 最新上新 strip(每隔几小时自动收录的新品,按上架时间倒序) -->
-  <style>
-    .upnew-strip{margin-top:28px}
-    .upnew-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-    .upnew-head .l{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:var(--ink)}
-    .upnew-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(245,63,63,.14)}
-    .upnew-sub{font-size:12px;font-weight:400;color:var(--ink-3)}
-    .upnew-all{font-size:13px;color:var(--accent);text-decoration:none;white-space:nowrap}
-    .upnew-all:hover{text-decoration:underline}
-    .upnew-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-    .upnew-card{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;transition:.15s}
-    .upnew-card:hover{border-color:var(--ink-3);box-shadow:var(--shadow);transform:translateY(-2px)}
-    .upnew-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .upnew-logo{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:#fff;padding:5px;object-fit:contain}
-    .upnew-new{font-size:10px;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--accent);padding:2px 7px;border-radius:5px}
-    .upnew-time{font-size:11px;color:var(--ink-3);font-family:var(--mono)}
-    .upnew-name{font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:4px}
-    .upnew-tag{font-size:12px;color:var(--ink-2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
-    @media(max-width:900px){.upnew-cards{grid-template-columns:repeat(2,1fr)}}
-  </style>
-  <div class="container upnew-strip" id="upnewStrip" style="position:relative;z-index:1;display:none;"></div>
-
   <!-- 实时活动 ticker -->
   <div class="container" style="position: relative; z-index: 1; margin-top: 24px;">
     <div class="live-ticker">
@@ -388,6 +366,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
           <a class="tab">本周</a>
           <a class="tab">本月</a>
           <a class="tab">年榜</a>
+          <a class="tab">最新</a>
         </div>
         <div class="countdown-chip inline">
           <span class="cd-pulse"></span>
@@ -406,6 +385,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
         .pdom-yes{color:#00875A;background:rgba(0,180,42,.1)}
         .pdom-proxy{color:#C25100;background:rgba(255,125,0,.1)}
         .pdom-no{color:#86909C;background:rgba(134,144,156,.12)}
+        .prow-new{display:inline-block;margin-left:8px;font-size:10px;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--accent);padding:1px 6px;border-radius:5px;vertical-align:middle}
         /* 榜单前 5 名名次高亮:前 3 强调橙、4-5 浅一档 */
         .prod-list .prow:nth-child(-n+5) .prank-cell{color:var(--accent);font-weight:700}
         .prod-list .prow:nth-child(-n+3) .prank-cell{font-size:14px}
@@ -992,28 +972,6 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     if (window.MoxieRewire) window.MoxieRewire();
   });
 
-  /* ──────────── 最新上新 strip(按上架时间倒序的最新 4 款) ──────────── */
-  window.moxieWhenDBReady(async () => {
-    const strip = document.getElementById('upnewStrip');
-    if (!strip) return;
-    const { data } = await window.MoxieDB.products({ orderBy: 'created_at', limit: 4 });
-    if (!data || !data.length) return;
-    const rel = (s) => { const d = new Date(s); if (isNaN(d)) return ''; const m = (Date.now() - d) / 6e4; if (m < 60) return '刚刚'; const h = m / 60; if (h < 24) return Math.round(h) + ' 小时前'; return Math.round(h / 24) + ' 天前'; };
-    const NEW_MS = 48 * 3600 * 1000;
-    strip.innerHTML =
-      '<div class="upnew-head"><div class="l"><span class="upnew-dot"></span>最新上新 <span class="upnew-sub">每隔几小时自动收录</span></div>'
-      + '<a class="upnew-all" href="moxie-new.html">查看全部上新 →</a></div>'
-      + '<div class="upnew-cards">' + data.map((p) => {
-        const isNew = (Date.now() - new Date(p.created_at)) < NEW_MS;
-        return '<a class="upnew-card" href="/tools/' + encodeURIComponent(p.slug) + '">'
-          + '<div class="upnew-card-top"><img class="upnew-logo" src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + escAttr(p.name) + '" onerror="moxieLogoFallback(this)" />'
-          + (isNew ? '<span class="upnew-new">NEW</span>' : '<span class="upnew-time">' + escHtml(rel(p.created_at)) + '</span>') + '</div>'
-          + '<div class="upnew-name">' + escHtml(p.name) + '</div>'
-          + '<div class="upnew-tag">' + escHtml(p.tagline || '') + '</div></a>';
-      }).join('') + '</div>';
-    strip.style.display = '';
-  });
-
   function escHtml(s) { return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
   function escAttr(s) { return escHtml(s); }
   // 国内可用小标(列表用):是→直连 / 需代理 / 否→不可用;不详不显示
@@ -1371,6 +1329,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
       + '<span class="prank-cell"><span class="hash">#</span>' + String(i+1).padStart(2,'0') + '</span>'
       + '<div class="plogo has-img"><img src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + esc(p.name) + '" onerror="moxieLogoFallback(this)"/></div>'
       + '<div class="pmain"><div class="ptop"><span class="pname">' + esc(p.name) + '</span>'
+      + ((p.created_at && (Date.now()-new Date(p.created_at)) < 1.728e8) ? '<span class="prow-new">NEW</span>' : '')
       + (p.verified ? '<span class="verified-tag">子墨测过</span>' : '') + domBadge(p) + '</div>'
       + '<div class="pdesc">' + esc(p.tagline) + '</div>'
       + '<div class="ptags">' + (p.tags||[]).slice(0,3).map(function(t){ return '<span class="ptag">' + esc(t) + '</span>'; }).join('') + '</div></div>'
@@ -1395,7 +1354,8 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     CUR_CAT = catId;
     var box = document.getElementById('prodList'); if (!box) return;
     var pool = (catId === 'all') ? ALL.slice() : ALL.filter(function(p){ return p.category_id === catId; });
-    pool.sort(function(a, b){ return scoreRange(b) - scoreRange(a); });
+    if (CUR_RANGE === '最新') pool.sort(function(a,b){ return new Date(b.created_at||0) - new Date(a.created_at||0); });
+    else pool.sort(function(a, b){ return scoreRange(b) - scoreRange(a); });
     var list = pool.slice(0, 12);
     box.innerHTML = list.length ? list.map(rowHTML).join('')
       : '<div style="padding:40px 0;text-align:center;color:var(--ink-3);font-size:13px;">该分类暂无工具</div>';
