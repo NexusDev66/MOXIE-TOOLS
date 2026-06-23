@@ -57,6 +57,8 @@ const SITES = [
       } catch { return null; }
     },
   },
+  // Futurepedia:大型 AI 目录,工具页 SSR(og 在静态 HTML),工具清单在 sitemap_tools.xml;真域名靠 slug 匹配外链
+  { name: 'Futurepedia', host: 'futurepedia.io', sitemap: 'https://www.futurepedia.io/sitemap_tools.xml', productRe: /futurepedia\.io\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/\s+(AI\s+)?Reviews?\b[:\s].*$/i, '').trim() },
   { name: 'Foundrlist', host: 'foundrlist.com', sitemap: 'https://foundrlist.com/sitemap.xml', productRe: /foundrlist\.com\/product\/[^/?#]+$/i },
   { name: 'SaaSCity', host: 'saascity.io', sitemap: 'https://saascity.io/sitemap.xml', productRe: /saascity\.io\/live\/[^/?#]+$/i },
   { name: 'MarketingDB', host: 'marketingdb.live', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i },
@@ -65,7 +67,7 @@ const SITES = [
 ];
 
 // 抽真实域名时要跳过的:社交/平台/CDN/聚合站自身 + 这些聚合站常见的"网络/页脚"外链(非工具本身)
-const SKIP_HOST = /(^|\.)(twitter\.com|x\.com|facebook\.com|linkedin\.com|youtube\.com|youtu\.be|instagram\.com|github\.com|producthunt\.com|t\.me|discord\.gg|discord\.com|reddit\.com|medium\.com|gravatar\.com|googleapis\.com|gstatic\.com|cloudflare\.com|cdn\.|google\.com|apple\.com|microsoft\.com|layers\.com|passionfroot\.me|stimpack\.io|buymeacoffee\.com|gumroad\.com)$/i;
+const SKIP_HOST = /(^|\.)(twitter\.com|x\.com|facebook\.com|linkedin\.com|youtube\.com|youtu\.be|instagram\.com|tiktok\.com|github\.com|producthunt\.com|t\.me|discord\.gg|discord\.com|reddit\.com|medium\.com|gravatar\.com|googleapis\.com|gstatic\.com|cloudflare\.com|cdn\.|google\.com|apple\.com|microsoft\.com|layers\.com|passionfroot\.me|stimpack\.io|buymeacoffee\.com|gumroad\.com|pxf\.io|sjv\.io|bit\.ly|pvdbkr\.com|clickhubspot\.com|anrdoezrs\.net|dpbolvw\.net|sjv\.com|go2cloud\.org|impact\.com)$/i;
 
 // 标题/简介里有这些信号才认为可能是 AI 工具(省 DeepSeek:这些是通用 launch 站,多数非 AI 先筛掉)
 const AI_HINT = /\b(ai|a\.i\.|gpt|llm|llms|genai|gen-?ai|agent|agents|agentic|chatbot|chat bot|copilot|assistant|prompt|prompts|rag|diffusion|generative|neural|machine learning|deep learning|\bml\b|transformer|embedding|multimodal|text-to-|speech-to-|image generation|stable diffusion|claude|gemini|mistral|ollama|whisper|sora|语言模型|大模型|智能体|生成式)\b/i;
