@@ -956,7 +956,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
             <span class="pname">${escHtml(p.name)}</span>
             ${p.verified ? '<span class="verified-tag">子墨测过</span>' : ''}${domBadge(p)}
           </div>
-          <div class="pdesc">${escHtml(p.tagline)}</div>
+          <div class="pdesc">${escHtml(shortDesc(p.tagline))}</div>
           <div class="ptags">${(p.tags||[]).slice(0,3).map(t => `<span class="ptag">${escHtml(t)}</span>`).join('')}</div>
         </div>
         <span class="pprice">${escHtml(p.price_label || '免费')}</span>
@@ -972,6 +972,8 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
   });
 
   function escHtml(s) { return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+  // 榜单只显示一句话重点:取第一小句(太短则补一句),完整描述在详情页
+  function shortDesc(s){ s=String(s||'').trim(); var p=s.split(/[，。；、;]/).filter(Boolean); if(!p.length) return s; var o=p[0]; if(o.length<10&&p[1]) o+='，'+p[1]; return o; }
   function escAttr(s) { return escHtml(s); }
   // 国内可用小标(列表用):是→直连 / 需代理 / 否→不可用;不详不显示
   function domBadge(p) {
@@ -1003,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
               <span class="pname">${escHtml(p.name)}</span>
               ${p.verified ? '<span class="verified-tag">子墨测过</span>' : ''}${domBadge(p)}
             </div>
-            <div class="pdesc">${escHtml(p.tagline)}</div>
+            <div class="pdesc">${escHtml(shortDesc(p.tagline))}</div>
             <div class="ptags">${(p.tags||[]).slice(0,3).map(t => `<span class="ptag">${escHtml(t)}</span>`).join('')}</div>
           </div>
           <span class="pprice">${escHtml(p.price_label || '免费')}</span>
@@ -1323,6 +1325,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
 (function () {
   var ALL = [];
   function esc(s){ return String(s==null?'':s).replace(/[<>&"']/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function shortDesc(s){ s=String(s||'').trim(); var p=s.split(/[，。；、;]/).filter(Boolean); if(!p.length) return s; var o=p[0]; if(o.length<10&&p[1]) o+='，'+p[1]; return o; }
   function rowHTML(p, i){
     return '<a class="prow" style="--lg:url(/public/logos/' + p.domain + '.png)" href="/tools/' + encodeURIComponent(p.slug) + '">'
       + '<span class="prank-cell"><span class="hash">#</span>' + String(i+1).padStart(2,'0') + '</span>'
@@ -1330,7 +1333,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
       + '<div class="pmain"><div class="ptop"><span class="pname">' + esc(p.name) + '</span>'
       + ((p.created_at && (Date.now()-new Date(p.created_at)) < 1.728e8) ? '<span class="prow-new">NEW</span>' : '')
       + (p.verified ? '<span class="verified-tag">子墨测过</span>' : '') + domBadge(p) + '</div>'
-      + '<div class="pdesc">' + esc(p.tagline) + '</div>'
+      + '<div class="pdesc">' + esc(shortDesc(p.tagline)) + '</div>'
       + '<div class="ptags">' + (p.tags||[]).slice(0,3).map(function(t){ return '<span class="ptag">' + esc(t) + '</span>'; }).join('') + '</div></div>'
       + '<span class="pprice">' + esc(p.price_label || '免费') + '</span>'
       + '<div class="pvote" data-product-id="' + p.id + '"><span class="tri">▲</span><span class="num">' + p.vote_count + '</span></div>'

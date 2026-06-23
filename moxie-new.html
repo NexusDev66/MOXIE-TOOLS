@@ -367,6 +367,7 @@
 
   /* ── 上新流:按收录时间倒序,日期分组(像 uneed/microlaunch) ── */
   function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+  function shortDesc(s){ s=String(s||'').trim(); var p=s.split(/[，。；、;]/).filter(Boolean); if(!p.length) return s; var o=p[0]; if(o.length<10&&p[1]) o+='，'+p[1]; return o; }
   function escAttr(s){ return escH(s); }
   function relTime(s){ const d=new Date(s); if(isNaN(d)) return ''; const m=(Date.now()-d)/6e4; if(m<60) return '刚刚'; const h=m/60; if(h<24) return Math.round(h)+' 小时前'; return Math.round(h/24)+' 天前'; }
   function dayKey(s){ const d=new Date(s); if(isNaN(d)) return 'x'; return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
@@ -392,7 +393,7 @@
           + '<span class="prank-cell nf-time">' + timeCell + '</span>'
           + '<div class="plogo has-img"><img src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + escAttr(p.name) + '" onerror="moxieLogoFallback(this)" /></div>'
           + '<div class="pmain"><div class="ptop"><span class="pname">' + escH(p.name) + '</span>' + (p.verified ? '<span class="verified-tag">子墨测过</span>' : '') + domBadge(p) + '</div>'
-          + '<div class="pdesc">' + escH(p.tagline || '') + '</div>'
+          + '<div class="pdesc">' + escH(shortDesc(p.tagline || '')) + '</div>'
           + '<div class="ptags">' + (p.tags || []).slice(0, 3).map(t => '<span class="ptag">' + escH(t) + '</span>').join('') + '</div></div>'
           + '<span class="pprice">' + escH(p.price_label || '免费') + '</span>'
           + '<div class="pvote" data-product-id="' + p.id + '"><span class="tri">▲</span><span class="num">' + (p.vote_count || 0) + '</span></div>'
