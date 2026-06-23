@@ -81,6 +81,12 @@ async function getLogo(domain) {
     if (icon) tries.push(icon);
   } catch {}
   tries.push(`https://${domain}/apple-touch-icon.png`, `https://${domain}/favicon.ico`);
+  // 兜底图标服务(聚合 Google/Clearbit/DDG/favicon;构建时抓 + 自托管 → 大陆安全)。最大化命中率。
+  tries.push(
+    `https://unavatar.io/${domain}?fallback=false`,
+    `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+    `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+  );
   for (const u of tries) {
     try { const buf = await fetchBuf(u); if (buf.length > 70 && isImage(buf)) return buf; } catch {}
   }
