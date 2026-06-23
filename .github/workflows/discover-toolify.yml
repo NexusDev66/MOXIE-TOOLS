@@ -5,9 +5,8 @@ name: Discover Toolify (Playwright · Cloudflare 实测)
 # 需 Secrets:SUPABASE_SERVICE_ROLE_KEY、DEEPSEEK_API_KEY  Variables:NEXT_PUBLIC_SUPABASE_URL
 
 on:
-  schedule:
-    - cron: '0 4 * * *'   # 每天 UTC 04:00 = 北京 12:00(错开主循环)
-  workflow_dispatch:
+  workflow_dispatch:   # 仅手动:实测证明 Actions 数据中心 IP 过不了 Toolify 的 Cloudflare,不挂定时空跑
+  # 注:cli/discover-toolify.js 这套脚本在「住宅 IP」机器上能过 CF(实测真浏览器通过)→ 用于本地定时(方案①)
 
 jobs:
   toolify:
