@@ -396,8 +396,11 @@
         if (!cats.length) return;
         // 走 MoxieDB(优先同源快照,国内可达);不直连 Supabase,避免大陆拉不到导致菜单空
         var r2 = await window.MoxieDB.products({ limit: 2000 });
+        var prods2 = (r2 && r2.data) || [];
         var cnt = {};
-        ((r2 && r2.data) || []).forEach(function (p) { if (p.category_id != null) cnt[p.category_id] = (cnt[p.category_id] || 0) + 1; });
+        prods2.forEach(function (p) { if (p.category_id != null) cnt[p.category_id] = (cnt[p.category_id] || 0) + 1; });
+        // 全站「收录总数」实时同步:填所有 .js-tool-count(页脚 / 登录页等),不再写死 3,847
+        if (prods2.length) document.querySelectorAll('.js-tool-count').forEach(function (e) { e.textContent = prods2.length; });
         var groups = {};
         cats.forEach(function (c) { (groups[c.group_name] = groups[c.group_name] || []).push(c); });
         var keys = ORDER.filter(function (k) { return groups[k]; })
