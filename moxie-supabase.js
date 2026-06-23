@@ -84,6 +84,24 @@ window.moxieWhenDBReady = function (cb) {
   window.addEventListener('moxie-db-ready', function () { cb(window.moxieDB); }, { once: true });
 };
 
+/* ───────── logo 兜底(提前定义,修首屏图标竞态)─────────
+   列表 <img onerror="moxieLogoFallback(this)"> 没本地图时显首字母。原函数在 shared.js(defer),
+   首屏列表渲染/图片报错时它可能还没加载 → 兜底字母丢失(刷新才正常)。本文件非 defer、渲染前必执行,
+   在此先定义,保证 onerror 触发时一定可用。shared.js 后面会用同逻辑覆盖,行为一致。 */
+window.moxieLogoFallback = window.moxieLogoFallback || function (img) {
+  if (!img || img.dataset.logoFallback) return;
+  img.dataset.logoFallback = '1';
+  var box = img.parentElement;
+  var ch = ((img.getAttribute('alt') || '').trim().charAt(0) || '?').toUpperCase();
+  if (box && box.classList && box.classList.contains('plogo')) {
+    box.classList.remove('has-img'); box.textContent = ch; box.style.fontWeight = '700'; box.style.fontSize = '14px';
+  } else {
+    img.src = 'data:image/svg+xml,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="128" height="128" rx="26" fill="#EFEDE7"/>'
+      + '<text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="62" font-weight="700" fill="#A89F8C">' + ch + '</text></svg>');
+  }
+};
+
 /* ───────── 同源数据快照(大陆访问救星)─────────
    构建时 cli/snapshot.js 把列表数据导成同源 /public/data/snapshot.json。
    读取层**优先读快照**(同源、国内秒开),读不到再回退实时 Supabase(*.supabase.co,国内常连不上)。
