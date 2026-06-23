@@ -61,7 +61,8 @@ const SITES = [
   { name: 'Futurepedia', host: 'futurepedia.io', sitemap: 'https://www.futurepedia.io/sitemap_tools.xml', productRe: /futurepedia\.io\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/\s+(AI\s+)?Reviews?\b[:\s].*$/i, '').trim() },
   { name: 'Foundrlist', host: 'foundrlist.com', sitemap: 'https://foundrlist.com/sitemap.xml', productRe: /foundrlist\.com\/product\/[^/?#]+$/i },
   { name: 'SaaSCity', host: 'saascity.io', sitemap: 'https://saascity.io/sitemap.xml', productRe: /saascity\.io\/live\/[^/?#]+$/i },
-  { name: 'MarketingDB', host: 'marketingdb.live', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i },
+  // MarketingDB 有官方 RSS(唯一一个):直接读 /feed.xml(它自维护的"New Launches"列表,比猜 sitemap 稳、自带发布时间);取不到再退回 sitemap
+  { name: 'MarketingDB', host: 'marketingdb.live', feed: 'https://marketingdb.live/feed.xml', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i },
   // 已探测但未纳入:trustmrr(/startup/ 7787 条但几乎无 AI)、showmeyour(无 AI)、shipstry(productRe 未命中)、
   // fazier/agentwork/confettisaas/launch.cab 等(无可用 sitemap,数据在 __NEXT_DATA__/首页 JS,后续按需特殊处理)
 ];
@@ -85,6 +86,19 @@ async function get(url, timeout = 18000) {
   const res = await fetch(url, { headers: { 'User-Agent': UA, 'Accept-Language': 'en;q=0.9' }, redirect: 'follow', signal: AbortSignal.timeout(timeout) });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.text();
+}
+
+/** 读官方 RSS feed(item.link → loc,item.pubDate → lastmod),返回 [{loc,lastmod}],形状同 sitemap */
+async function fetchFeed(url) {
+  let xml;
+  try { xml = await get(url, 30000); } catch (e) { console.log(`   ⚠ feed ${url} 取不到(${e.message}),退回 sitemap`); return null; }
+  const out = [];
+  for (const b of (xml.match(/<item>[\s\S]*?<\/item>/gi) || [])) {
+    const loc = (b.match(/<link>([^<]+)<\/link>/i) || [])[1];
+    const lastmod = (b.match(/<pubDate>([^<]+)<\/pubDate>/i) || [])[1] || '';
+    if (loc) out.push({ loc: decodeEnt(loc.trim()), lastmod: lastmod.trim() });
+  }
+  return out.length ? out : null;
 }
 
 /** 读 sitemap;若是 sitemapindex,展开抓子 sitemap(最多 12 个)。返回 [{loc,lastmod}] */
@@ -152,7 +166,8 @@ async function main() {
 
   for (const site of sites) {
     console.log(`── ${site.name}(${site.host})──`);
-    const entries = (await fetchSitemap(site.sitemap)).filter((e) => site.productRe.test(e.loc));
+    const src = (site.feed && await fetchFeed(site.feed)) || await fetchSitemap(site.sitemap);
+    const entries = src.filter((e) => site.productRe.test(e.loc));
     entries.sort((a, b) => new Date(b.lastmod || 0) - new Date(a.lastmod || 0));
     const pick = entries.slice(0, LIMIT);
     console.log(`   工具页 ${entries.length} 个,取最近 ${pick.length}`);
