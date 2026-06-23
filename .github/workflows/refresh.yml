@@ -93,6 +93,10 @@ jobs:
         run: node cli/gen-covers.js
         continue-on-error: true
 
+      - name: 补全工具 logo(抓官网图标自托管,新品不再首字母占位,失败不阻塞)
+        run: node cli/gen-logos.js
+        continue-on-error: true
+
       - name: 生成同源数据快照(public/data/snapshot.json · 大陆免连 Supabase 看数据)
         run: node cli/snapshot.js
         continue-on-error: true
