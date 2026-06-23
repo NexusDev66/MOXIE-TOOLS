@@ -43,6 +43,20 @@ function genStrip(t, host) {
 const SITES = [
   { name: 'Microlaunch', host: 'microlaunch.net', sitemap: 'https://microlaunch.net/sitemap.xml', productRe: /microlaunch\.net\/p\/[^/?#]+$/i, strip: (t) => t.replace(/\s+is now on Microlaunch.*$/i, '') },
   { name: 'Uneed', host: 'uneed.best', sitemap: 'https://uneed.best/sitemap.xml', productRe: /uneed\.best\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/^\s*discover\s+/i, '').replace(/\s+on uneed.*$/i, '') },
+  // FutureTools:AI 精选目录,详情页外链被 futuretools.link(meta-refresh)包装 → 抓壳页抠真域名(免无头浏览器)
+  {
+    name: 'FutureTools', host: 'futuretools.io', sitemap: 'https://www.futuretools.io/sitemap.xml',
+    productRe: /futuretools\.io\/tools\/[^/?#]+$/i,
+    strip: (t) => t.replace(/^\s*Future\s*Tools\s*[-–—|:]\s*/i, ''),
+    async resolveDomain(slug) {
+      try {
+        const body = await get(`https://futuretools.link/${slug}`, 12000);
+        const m = body.match(/http-equiv=["']refresh["'][^>]*content=["']\s*\d+\s*;\s*url=([^"']+)["']/i);
+        if (!m) return null;
+        return new URL(m[1].replace(/&amp;/g, '&')).hostname.replace(/^www\./, '').toLowerCase();
+      } catch { return null; }
+    },
+  },
   { name: 'Foundrlist', host: 'foundrlist.com', sitemap: 'https://foundrlist.com/sitemap.xml', productRe: /foundrlist\.com\/product\/[^/?#]+$/i },
   { name: 'SaaSCity', host: 'saascity.io', sitemap: 'https://saascity.io/sitemap.xml', productRe: /saascity\.io\/live\/[^/?#]+$/i },
   { name: 'MarketingDB', host: 'marketingdb.live', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i },
@@ -150,7 +164,7 @@ async function main() {
       // 通用 launch 站多数非 AI:标题+简介无 AI 信号先跳过,省 DeepSeek
       if (!AI_HINT.test(`${name} ${og}`)) { tally.notai = (tally.notai || 0) + 1; continue; }
       const slug = (e.loc.match(/\/([^/?#]+)\/?$/) || [])[1] || '';
-      const domain = extractDomain(html, site.host, slug);
+      const domain = site.resolveDomain ? await site.resolveDomain(slug) : extractDomain(html, site.host, slug);
       if (!name || !domain) { tally.nodomain++; continue; }
       if (rejected.has(domain)) { tally.rejected++; continue; }
       if (known.has(domain)) { tally.dup++; continue; }
