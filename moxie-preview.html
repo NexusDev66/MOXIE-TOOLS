@@ -362,11 +362,10 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
     <div class="center-col" id="today-list">
       <div class="center-top">
         <div class="tabs">
-          <a class="tab active">今日</a>
+          <a class="tab active">最新</a>
           <a class="tab">本周</a>
-          <a class="tab">本月</a>
+          <a class="tab">月度</a>
           <a class="tab">年榜</a>
-          <a class="tab">最新</a>
         </div>
         <div class="countdown-chip inline">
           <span class="cd-pulse"></span>
@@ -1339,7 +1338,7 @@ document.addEventListener('DOMContentLoaded', moxieWatchLogos);
   }
   /* 时间档 + 分类 共用一个渲染:不同时间档用不同「新鲜度半衰期」重排榜单 */
   var CUR_CAT = 'all';
-  var CUR_RANGE = '今日';
+  var CUR_RANGE = '最新';
   /* 今日=综合精选(weight_score 权重榜) · 年榜=纯累计票数 · 本周/本月=人气按年龄衰减过渡 */
   function scoreRange(p){
     var pop = Math.log10((p.vote_count || 0) + 1) * 20;          // 累计人气(票数,对数)
