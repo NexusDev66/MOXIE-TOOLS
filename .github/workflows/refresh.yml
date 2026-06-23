@@ -84,6 +84,10 @@ jobs:
       # 「子墨测过」改为纯人工标记(后台 moxie-admin 改 verified):不再按权重自动发徽章,
       # 否则新发现工具一进小分类前10就被误标"测过"。verified-rank.js 保留但移出流水线。
 
+      - name: 价格档补全(不详→定性档,绝不编金额;实在没把握留不详,失败不阻塞)
+        run: node cli/fix-prices.js
+        continue-on-error: true
+
       - name: 综合风评 补缺(非 verified 产品,客观风评,失败不阻塞)
         run: node cli/gen-fengping.js
         continue-on-error: true
