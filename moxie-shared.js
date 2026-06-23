@@ -386,8 +386,8 @@
   function wireMegaMenus() {
     var grids = document.querySelectorAll('[data-mega-grid]');
     if (!grids.length || typeof window.moxieWhenDBReady !== 'function') return;
-    var LABEL = { aigc: 'AIGC 创作', platform: '模型 / 平台', devtool: '开发者 / 效率' };
-    var ORDER = ['aigc', 'platform', 'devtool'];
+    var LABEL = { aigc: 'AIGC 创作', platform: '模型 / 平台', devtool: '开发者 / 效率', biz: '商业 / 行业' };
+    var ORDER = ['aigc', 'platform', 'devtool', 'biz'];
     window.moxieWhenDBReady(async function (db) {
       if (!db || !window.MoxieDB) return;
       try {
@@ -403,7 +403,8 @@
         var keys = ORDER.filter(function (k) { return groups[k]; })
           .concat(Object.keys(groups).filter(function (k) { return ORDER.indexOf(k) < 0; }));
         var html = keys.map(function (g) {
-          var list = groups[g];
+          var list = groups[g].filter(function (c) { return (cnt[c.id] || 0) > 0; });  // 隐藏空分类
+          if (!list.length) return '';
           var sum = list.reduce(function (s, c) { return s + (cnt[c.id] || 0); }, 0);
           var items = list.map(function (c) {
             var href = '/moxie-models.html?group=' + encodeURIComponent(g) + '&cat=' + encodeURIComponent(c.slug);
@@ -412,7 +413,8 @@
           return '<div class="mega-col"><h4>' + escHtml(LABEL[g] || g || '其他') + ' <span class="h4-tag">' + sum + '</span></h4><ul>' + items + '</ul></div>';
         }).join('');
         grids.forEach(function (el) { el.innerHTML = html; });
-        document.querySelectorAll('[data-mega-all]').forEach(function (a) { a.textContent = '查看全部 ' + cats.length + ' 个分类 →'; });
+        var nonEmpty = cats.filter(function (c) { return (cnt[c.id] || 0) > 0; }).length;
+        document.querySelectorAll('[data-mega-all]').forEach(function (a) { a.textContent = '查看全部 ' + nonEmpty + ' 个分类 →'; });
       } catch (e) {}
     });
   }

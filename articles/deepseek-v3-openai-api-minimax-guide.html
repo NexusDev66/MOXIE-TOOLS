@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
 <script src="/moxie-supabase.js?v=20260618-02"></script>
-<script src="/moxie-shared.js?v=20260618-02" defer></script>
+<script src="/moxie-shared.js?v=20260618-03" defer></script>
 <style>
   /* ── Hero with cover image ── */
   .art-hero { padding: 32px 0 0; }
@@ -204,12 +204,12 @@
   }
 </style>
 <meta name="description" content="本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。">
-<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-guide">
+<link rel="canonical" href="https://www.latemai.com/articles/deepseek-v3-openai-api-minimax-guide">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DeepSeek V3 怎么用？上手教程与使用技巧 · MOXIE">
 <meta property="og:description" content="本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。">
-<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-guide">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"DeepSeek V3 怎么用？上手教程与使用技巧","description":"本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。","image":["/public/covers/deepseek-v3-openai-api-minimax-guide.svg"],"datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/deepseek-v3-openai-api-minimax-guide"}}</script>
+<meta property="og:url" content="https://www.latemai.com/articles/deepseek-v3-openai-api-minimax-guide">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"DeepSeek V3 怎么用？上手教程与使用技巧","description":"本文提供 DeepSeek V3 的完整上手手册，涵盖注册、API 调用、典型工作流及使用技巧，帮你快速掌握这款国产开源大模型。","image":["/public/covers/deepseek-v3-openai-api-minimax-guide.svg"],"datePublished":"2026-06-09T02:43:12.354+00:00","dateModified":"2026-06-09T02:43:12.354+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.latemai.com/articles/deepseek-v3-openai-api-minimax-guide"}}</script>
 </head>
 <body>
 
@@ -294,7 +294,7 @@ print(response.choices[0].message.content)</code></pre><p>注意设置 <code>api
 
       <aside class="art-side"><div class="toc-block"><h4>目录</h4><ul class="toc-list"><li class="active" data-target="#sec-1">DeepSeek V3 简介与优势</li><li data-target="#sec-2">准备工作：注册与获取 API Key</li><li data-target="#sec-3">API 调用基础：快速上手</li><li data-target="#sec-4">典型工作流：从输入到输出</li><li data-target="#sec-5">DeepSeek V3 使用技巧</li><li data-target="#sec-6">常见问题</li></ul></div>
 <div class="related-block"><h4>本文涉及产品</h4><a href="/tools/deepseek-v3" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/deepseek.com.png" alt=""></div><div><div class="related-prod-name">DeepSeek V3</div><div class="related-prod-tag">大模型</div></div></a><a href="/tools/openai-api" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/platform.openai.com.png" alt=""></div><div><div class="related-prod-name">OpenAI API</div><div class="related-prod-tag">大模型</div></div></a><a href="/tools/minimax" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/minimaxi.com.png" alt=""></div><div><div class="related-prod-name">MiniMax</div><div class="related-prod-tag">大模型</div></div></a></div>
-<div class="tools-block"><h4>更多评测</h4><a href="/articles/coze-zapier-n8n-pick" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">Coze vs Zapier vs n8n：AI工作流平台选型指南</a><a href="/articles/manus-genspark-devin-pick" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">Manus vs GenSpark vs Devin：AI Agent选型指南</a><a href="/articles/dify-cherry-studio-ragflow-pick" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;">Dify 怎么选？对比 Cherry Studio 和 RAGFlow 的选型指南</a></div></aside>
+<div class="tools-block"><h4>更多评测</h4><a href="/articles/coze-zapier-n8n-guide" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">Coze 怎么用？零基础上手教程与实战技巧</a><a href="/articles/manus-genspark-devin-guide" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">Manus 怎么用？新手必看上手教程与实用技巧</a><a href="/articles/dify-cherry-studio-ragflow-guide" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;">Dify 怎么用？从零开始的 Dify 教程与使用技巧</a></div></aside>
     </div>
 
     <div class="art-end-cta">

@@ -10,7 +10,7 @@
 <script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="moxie-styles.css?v=20260617-01">
 <script src="moxie-supabase.js?v=20260618-02"></script>
-<script src="moxie-shared.js?v=20260618-02" defer></script>
+<script src="moxie-shared.js?v=20260618-03" defer></script>
 <style>
   .cats-hero { text-align: center; padding: 72px 0 40px; }
   .cats-hero .eyebrow {
@@ -348,7 +348,8 @@
   const GROUP_LABEL = {
     aigc: { title: 'AIGC 创作', desc: '给内容创作者 / 设计师 / 视频博主', submitType: 'AI 写作' },
     platform: { title: '模型 / 平台', desc: '给产品 / 技术 / RAG 落地团队', submitType: '大模型' },
-    devtool: { title: '开发者 / 效率', desc: '给独立开发者 / 一般用户', submitType: 'AI 编程' }
+    devtool: { title: '开发者 / 效率', desc: '给独立开发者 / 一般用户', submitType: 'AI 编程' },
+    biz: { title: '商业 / 行业', desc: '给营销 / 销售 / 客服 / 运营团队', submitType: 'AI 营销' }
   };
   function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -400,8 +401,12 @@
       sumByGroup[g] = groups[g].reduce((s, c) => s + (countByCat[c.id] || 0), 0);
     });
 
-    const GCOLOR = { platform: '#9aa6f6', aigc: '#f0a589', devtool: '#5fd3ab' };
-    box.innerHTML = Object.keys(groups).map(g => {
+    const GCOLOR = { platform: '#9aa6f6', aigc: '#f0a589', devtool: '#5fd3ab', biz: '#e0a3d6' };
+    const GORDER = ['aigc', 'platform', 'devtool', 'biz'];
+    const gkeys = GORDER.filter(k => groups[k]).concat(Object.keys(groups).filter(k => GORDER.indexOf(k) < 0));
+    box.innerHTML = gkeys.map(g => {
+      const list = (groups[g] || []).filter(c => (countByCat[c.id] || 0) > 0);  // 隐藏空分类
+      if (!list.length) return '';
       const label = GROUP_LABEL[g] || { title: g, desc: '', submitType: '' };
       const col = GCOLOR[g] || 'var(--accent)';
       return `
@@ -413,7 +418,7 @@
             <a class="submit-here" href="moxie-submit.html?type=${encodeURIComponent(label.submitType)}">+ 提交此类工具</a>
           </div>
           <div class="cats-grid">
-            ${groups[g].map(c => {
+            ${list.map(c => {
               // 各组统一跳精选页 moxie-models.html?group=<组>&cat=<分类>(可点 tab + 预选,不跳主页)
               const href = `moxie-models.html?group=${encodeURIComponent(g)}&cat=${encodeURIComponent(c.slug)}`;
               return `
