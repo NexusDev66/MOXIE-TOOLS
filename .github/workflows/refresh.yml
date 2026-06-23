@@ -88,6 +88,10 @@ jobs:
         run: node cli/fix-prices.js
         continue-on-error: true
 
+      - name: 国内可用性补全(不详→是/需代理/否,海外默认需代理,失败不阻塞)
+        run: node cli/fix-domestic.js
+        continue-on-error: true
+
       - name: 综合风评 补缺(非 verified 产品,客观风评,失败不阻塞)
         run: node cli/gen-fengping.js
         continue-on-error: true
