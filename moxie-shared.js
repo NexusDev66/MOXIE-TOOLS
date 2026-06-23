@@ -401,6 +401,8 @@
         prods2.forEach(function (p) { if (p.category_id != null) cnt[p.category_id] = (cnt[p.category_id] || 0) + 1; });
         // 全站「收录总数」实时同步:填所有 .js-tool-count(页脚 / 登录页等),不再写死 3,847
         if (prods2.length) document.querySelectorAll('.js-tool-count').forEach(function (e) { e.textContent = prods2.length; });
+        // 「分类数」实时同步:填所有 .js-cat-count
+        if (cats.length) document.querySelectorAll('.js-cat-count').forEach(function (e) { e.textContent = cats.length; });
         var groups = {};
         cats.forEach(function (c) { (groups[c.group_name] = groups[c.group_name] || []).push(c); });
         var keys = ORDER.filter(function (k) { return groups[k]; })
@@ -422,8 +424,18 @@
     });
   }
 
+  // 「第 N 期」全站一致:每 7 天一期,锚点 2026-06-17=142 期(与首页同公式)。填所有 .js-issue-no
+  function wireIssueNo() {
+    var els = document.querySelectorAll('.js-issue-no');
+    if (!els.length) return;
+    var anchor = new Date(2026, 5, 17).getTime();
+    var issue = 142 + Math.max(0, Math.floor((Date.now() - anchor) / 86400000 / 7));
+    els.forEach(function (e) { e.textContent = issue; });
+  }
+
   function run() {
     moxieLocalizeLogos();
+    wireIssueNo();
     document.querySelectorAll('.prow, .top1-card, .pick-mini').forEach(injectVisitLink);
     highlightActiveNav();
     wireVotes();
