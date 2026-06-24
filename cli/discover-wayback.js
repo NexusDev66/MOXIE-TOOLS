@@ -24,6 +24,7 @@ const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 function arg(n, d) { const i = process.argv.indexOf(`--${n}`); return i >= 0 && process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : d; }
 const SITE = (arg('site', 'taaft') || 'taaft').toLowerCase();
 const LIMIT = Math.max(1, Number(arg('limit', '50')) || 50);
+const MAX_SCAN = Math.max(LIMIT, Number(arg('max-scan', '150')) || 150); // 每轮最多扫多少页(防存量扫完后整目录空转/超时)
 const STATE = arg('state', '');                          // 状态文件:跨次自动递增 offset(每站独立),扫到末尾回绕
 const HAS_OFFSET = process.argv.includes('--offset');
 let OFFSET = HAS_OFFSET ? Math.max(0, Number(arg('offset', '0')) || 0) : 0;
@@ -155,7 +156,7 @@ async function main() {
 
   const tally = { ok: 0, dup: 0, rejected: 0, nodomain: 0, rule: 0, ai: 0, badcat: 0, fail: 0, scanned: 0 };
   for (const { slug, ts, orig } of list) {
-    if (tally.ok >= LIMIT) break;
+    if (tally.ok >= LIMIT || tally.scanned >= MAX_SCAN) break;
     tally.scanned++;
     let html;
     try { html = await get(`https://web.archive.org/web/${ts}id_/${orig}`, 30000, 3); } catch { tally.fail++; continue; }

@@ -49,5 +49,9 @@ jobs:
             echo "状态无变化"
           else
             git commit -m "chore(backfill): Wayback offset 推进"
-            git push
+            # 4h refresh / 周任务也会 push main;推前先 rebase,撞上了重试,避免 offset 丢失
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "push 撞车,重试 $i"; sleep 5
+            done
           fi
