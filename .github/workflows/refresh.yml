@@ -127,7 +127,7 @@ jobs:
           git config user.name "moxie-bot"
           git config user.email "507577406@qq.com"
           git rm -r --quiet --ignore-unmatch news/ 2>/dev/null || true   # /news/<id> 详情页已取消,清掉旧目录
-          git add tools/ articles/ public/covers/ sitemap.xml robots.txt
+          git add tools/ articles/ public/covers/ public/logos/ sitemap.xml robots.txt
           if git diff --cached --quiet; then
             echo "无变化,跳过提交"
           else

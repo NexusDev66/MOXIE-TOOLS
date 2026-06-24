@@ -16,6 +16,39 @@
  */
 import { screen } from './screen.mjs';
 import { normDomain, uniqueSlug } from './lib.mjs';
+import { writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const LOGO_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'logos');
+
+// 图片魔数校验(PNG/JPEG/GIF/WEBP/BMP);拒 SVG/HTML
+function isImage(b) {
+  if (!b || b.length < 16) return false;
+  if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47) return true; // PNG
+  if (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return true;                   // JPEG
+  if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46) return true;                   // GIF
+  if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[8] === 0x57) return true;  // WEBP
+  if (b[0] === 0x42 && b[1] === 0x4d) return true;                                    // BMP
+  return false;
+}
+async function fetchBuf(url, t = 12000) {
+  const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 Chrome/120', Accept: 'image/*,*/*' }, redirect: 'follow', signal: AbortSignal.timeout(t) });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return Buffer.from(await res.arrayBuffer());
+}
+// 用每个创空间自己的 CoverImage 当 logo(ms.show 共用魔搭 favicon,gen-logos 抓回来全一样 → 必须改用封面)。
+// OSS/CDN 原生缩放参数取 200×200 小方图(800KB→~20KB);拿不到原图兜底;再不行留给 gen-logos。已存在则跳过(已提交的正确封面)。
+async function saveCover(domain, cover) {
+  if (!cover) return false;
+  const out = join(LOGO_DIR, `${domain}.png`);
+  if (existsSync(out)) return true;
+  const sep = cover.includes('?') ? '&' : '?';
+  for (const u of [`${cover}${sep}x-oss-process=image/resize,m_fill,w_200,h_200`, cover]) {
+    try { const buf = await fetchBuf(u); if (buf.length > 70 && isImage(buf)) { writeFileSync(out, buf); return true; } } catch { /* 下一个 */ }
+  }
+  return false;
+}
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
@@ -77,7 +110,8 @@ async function main() {
   const catId = Object.fromEntries(catRows.map((c) => [c.slug, c.id]));
   const cats = catRows.map((c) => ({ slug: c.slug, name: c.name }));
 
-  const tally = { ok: 0, dup: 0, rejected: 0, noorg: 0, lowvisit: 0, nourl: 0, skip: 0, rule: 0, ai: 0, badcat: 0, fail: 0 };
+  if (!DRY_RUN) mkdirSync(LOGO_DIR, { recursive: true });
+  const tally = { ok: 0, dup: 0, rejected: 0, noorg: 0, lowvisit: 0, nourl: 0, skip: 0, rule: 0, ai: 0, badcat: 0, fail: 0, logo: 0 };
 
   for (let page = 1; page <= PAGES && tally.ok < LIMIT; page++) {
     let studios;
@@ -95,6 +129,8 @@ async function main() {
       const name = (st.ChineseName || st.Name || '').trim().slice(0, 60);
       if (!name || NAME_SKIP.test(name)) { tally.skip++; continue; }
       if (rejected.has(domain)) { tally.rejected++; continue; }
+      // 不论新老,先用封面纠正 logo(已上架的也借此把"共用 favicon"换成各自封面)
+      if (!DRY_RUN && await saveCover(domain, st.CoverImage)) tally.logo++;
       if (known.has(domain)) { tally.dup++; continue; }
 
       const og = `${name}。${(st.Description || '').replace(/\s+/g, ' ').trim()}`.slice(0, 400);
@@ -129,7 +165,7 @@ async function main() {
     }
   }
 
-  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · 黑名单 ${tally.rejected} · 非白名单机构 ${tally.noorg} · 访问不足 ${tally.lowvisit} · 无独立域名 ${tally.nourl} · 跳过 ${tally.skip} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
+  console.log(`\n汇总:入库 ${tally.ok} · 已收录 ${tally.dup} · 黑名单 ${tally.rejected} · 非白名单机构 ${tally.noorg} · 访问不足 ${tally.lowvisit} · 无独立域名 ${tally.nourl} · 跳过 ${tally.skip} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail} · 封面logo ${tally.logo}`);
   if (tally.ok && !DRY_RUN) console.log(`已写 ${tally.ok} 条 pending,等 enrich-detail 补 detail → promote 自动上架。`);
 }
 
