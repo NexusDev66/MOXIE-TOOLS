@@ -40,7 +40,10 @@ const SITES = {
   toolify: {
     name: 'Toolify', cdx: 'www.toolify.ai/tool/*', host: 'toolify.ai',
     pathRe: /^https?:\/\/(?:www\.)?toolify\.ai\/tool\/([^/?#]+)\/?$/i,
-    clean: (t) => t.replace(/\s*:\s*Reviews,\s*Pricing.*$/i, '').replace(/\s*[-|]\s*Toolify.*$/i, '').trim(),
+    clean: (t) => t.replace(/\s*:\s*Reviews,\s*Pricing.*$/i, '').replace(/\s+ai chrome extension\b.*$/i, '').replace(/\s*[:：].*$/, '').replace(/\s*[-|]\s*Toolify.*$/i, '').trim(),
+    // Toolify 页面满是"竞品"外链,最高频法会抓错(中文工具尤甚:文心一言→tanka.ai)。
+    // 它给工具官网专标 rel="dofollow",且 NUXT 数据有 website 字段 → 用这俩可靠信号,拿不到就跳过不猜。
+    extractDomain: toolifyDomain,
   },
 };
 const CFG = SITES[SITE];
@@ -95,6 +98,22 @@ function pickMeta(html, prop) {
 }
 function decodeEnt(s) { return String(s || '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/g, "'"); }
 
+/** Toolify 专用:rel="dofollow" 外链 = 官网;否则 NUXT 数据里本工具 slug 对应的 website;再否则 null(不猜) */
+function toolifyDomain(html, slug) {
+  for (const m of html.matchAll(/<a\b([^>]*?)>/gi)) {
+    const tag = m[1];
+    if (!/rel=["'][^"']*\bdofollow\b/i.test(tag)) continue;
+    const hm = tag.match(/href=["'](https?:\/\/[^"']+)["']/i);
+    if (!hm) continue;
+    let host; try { host = new URL(hm[1]).hostname.replace(/^www\./, '').toLowerCase(); } catch { continue; }
+    if (host && !SKIP_HOST.test(host) && !/\.(png|jpe?g|svg|gif|webp)$/i.test(host)) return host;
+  }
+  // 回退:NUXT 序列化数据 slug:"<slug>",...,website:"https://<host>"
+  const sm = html.match(new RegExp('slug:"' + slug.replace(/[^a-z0-9一-龥-]/gi, '.') + '"[^}]*?website:"([^"]+)"', 'i'));
+  if (sm) { try { return new URL(sm[1].replace(/\\u002F/gi, '/')).hostname.replace(/^www\./, '').toLowerCase(); } catch { /* ignore */ } }
+  return null;
+}
+
 /** 真域名:优先 slug 命中的外链(避开"竞品/广告"高频链),否则最高频非跳过外链 */
 function extractDomain(html, slug) {
   const slugN = slug.replace(/[^a-z0-9]/gi, '');
@@ -136,7 +155,7 @@ async function main() {
     try { html = await get(`https://web.archive.org/web/${ts}id_/${orig}`, 30000, 3); } catch { tally.fail++; continue; }
     const name = CFG.clean(decodeEnt(pickMeta(html, 'og:title'))).slice(0, 60);
     const og = decodeEnt(pickMeta(html, 'og:description')).slice(0, 600);
-    const domain = extractDomain(html, slug);
+    const domain = (CFG.extractDomain || extractDomain)(html, slug);
     if (!name || !domain) { tally.nodomain++; continue; }
     if (rejected.has(domain)) { tally.rejected++; continue; }
     if (known.has(domain)) { tally.dup++; continue; }
