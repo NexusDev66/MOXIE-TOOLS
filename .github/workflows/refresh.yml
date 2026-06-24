@@ -74,6 +74,12 @@ jobs:
         run: node cli/discover-modelscope.js --limit 12 --min-visits 30000 --pages 3
         continue-on-error: true
 
+      - name: 发现开源 AI 工具(GitHub·带官网的现实星数区间,砍刷星 → pending,失败不阻塞)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node cli/discover-github.js --limit 8 --min-stars 120 --max-stars 6000 --days 180
+        continue-on-error: true
+
       - name: 新候选详情清洗(给无 detail 的 pending 补 features,达标才能被上架,失败不阻塞)
         run: node cli/enrich-detail.js
         continue-on-error: true
