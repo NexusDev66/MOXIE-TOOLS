@@ -16,6 +16,7 @@
  */
 import { screen } from './screen.mjs';
 import { normDomain, uniqueSlug } from './lib.mjs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
@@ -23,8 +24,11 @@ const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 function arg(n, d) { const i = process.argv.indexOf(`--${n}`); return i >= 0 && process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : d; }
 const SITE = (arg('site', 'taaft') || 'taaft').toLowerCase();
 const LIMIT = Math.max(1, Number(arg('limit', '50')) || 50);
-const OFFSET = Math.max(0, Number(arg('offset', '0')) || 0);
+const STATE = arg('state', '');                          // 状态文件:跨次自动递增 offset(每站独立),扫到末尾回绕
+const HAS_OFFSET = process.argv.includes('--offset');
+let OFFSET = HAS_OFFSET ? Math.max(0, Number(arg('offset', '0')) || 0) : 0;
 const CDX_LIMIT = Math.max(100, Number(arg('cdx', '8000')) || 8000);
+function readState() { try { return JSON.parse(readFileSync(STATE, 'utf8')); } catch { return {}; } }
 const DRY_RUN = process.argv.includes('--dry-run');
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
@@ -144,6 +148,8 @@ async function main() {
 
   console.log('CDX 拉取存档工具页清单…');
   const all = await cdxSlugs();
+  // 状态文件:无显式 --offset 时,用状态里该站的 offset;扫到末尾则回绕到 0 重新巡(捡新增/上次跳过的)
+  if (STATE && !HAS_OFFSET) { OFFSET = Number(readState()[SITE]) || 0; if (OFFSET >= all.length) OFFSET = 0; }
   console.log(`存档工具页 ${all.length} 个(去重后),从 offset ${OFFSET} 起处理\n`);
   const list = all.slice(OFFSET);
 
@@ -190,7 +196,15 @@ async function main() {
   }
 
   console.log(`\n汇总:入库 ${tally.ok} · 扫描 ${tally.scanned} · 已收录 ${tally.dup} · 黑名单 ${tally.rejected} · 无名/无域名 ${tally.nodomain} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
-  if (tally.ok && !DRY_RUN) console.log(`已写 ${tally.ok} 条 pending。下次跑加 --offset ${OFFSET + tally.scanned} 继续推进。`);
+  // 回写状态:offset 推进 scanned;到末尾回绕 0(下轮重新巡一遍,捡新增的)
+  if (STATE && !DRY_RUN) {
+    const next = OFFSET + tally.scanned;
+    const st = readState(); st[SITE] = next >= all.length ? 0 : next;
+    writeFileSync(STATE, JSON.stringify(st, null, 2));
+    console.log(`状态已写 ${STATE}:${SITE} → offset ${st[SITE]}${st[SITE] === 0 ? '(已扫到末尾,下轮回绕重巡)' : ''}`);
+  } else if (tally.ok && !DRY_RUN) {
+    console.log(`已写 ${tally.ok} 条 pending。下次跑加 --offset ${OFFSET + tally.scanned} 继续推进。`);
+  }
 }
 
 main().catch((e) => { console.error('❌ 失败:', e.message); process.exit(1); });

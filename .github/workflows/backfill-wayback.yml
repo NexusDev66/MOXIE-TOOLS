@@ -1,0 +1,53 @@
+name: Backfill Wayback (TAAFT/Toolify 存量补全)
+
+# 每天一次,经 archive.org Wayback 存档抓 TAAFT/Toolify(强反爬大站,直连被 Cloudflare 挡)。
+# 用 cli/.wayback-state.json 记每站 offset,跨次自动递增推进,扫到末尾回绕重巡。
+# 写入的是 pending → 上架/渲染交给 4h 的 refresh.yml(这里只管发现 + 提交状态文件)。
+# 单独 workflow(不进 4h 循环):Wayback 慢且偶发 503,失败不该拖累新品主流程。
+
+on:
+  schedule:
+    - cron: '30 2 * * *'   # 每天 02:30 UTC(北京 10:30)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 检查配置
+        run: |
+          if [ -z "$NEXT_PUBLIC_SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ] || [ -z "$DEEPSEEK_API_KEY" ]; then
+            echo "::error::缺 SUPABASE / DEEPSEEK 配置"; exit 1
+          fi
+
+      - name: TAAFT 存量补全(Wayback,自动递增 offset,失败不阻塞)
+        run: node cli/discover-wayback.js --site taaft --state cli/.wayback-state.json --limit 15 --cdx 20000
+        continue-on-error: true
+
+      - name: Toolify 存量补全(Wayback,自动递增 offset,失败不阻塞)
+        run: node cli/discover-wayback.js --site toolify --state cli/.wayback-state.json --limit 15 --cdx 20000
+        continue-on-error: true
+
+      - name: 提交推进后的 offset 状态(供下次接着扫)
+        run: |
+          git config user.name "moxie-bot"
+          git config user.email "507577406@qq.com"
+          git add cli/.wayback-state.json
+          if git diff --cached --quiet; then
+            echo "状态无变化"
+          else
+            git commit -m "chore(backfill): Wayback offset 推进"
+            git push
+          fi
