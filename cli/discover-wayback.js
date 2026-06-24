@@ -29,6 +29,7 @@ const STATE = arg('state', '');                          // 状态文件:跨次�
 const HAS_OFFSET = process.argv.includes('--offset');
 let OFFSET = HAS_OFFSET ? Math.max(0, Number(arg('offset', '0')) || 0) : 0;
 const CDX_LIMIT = Math.max(100, Number(arg('cdx', '8000')) || 8000);
+const NO_ALIVE = process.argv.includes('--no-alive');    // 关掉入库前验活(默认开,挡 2024 快照里的死站)
 function readState() { try { return JSON.parse(readFileSync(STATE, 'utf8')); } catch { return {}; } }
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -64,6 +65,16 @@ async function sb(path, opts = {}) {
   });
   if (!res.ok) throw new Error(`Supabase ${res.status}: ${await res.text()}`);
   const t = await res.text(); return t ? JSON.parse(t) : null;
+}
+
+// 验活(Wayback 是旧快照,域名可能已失效)。保守:只有"根本不响应"才判死;
+// 任何 HTTP 响应(含 403/404,因不少真工具也挂 Cloudflare 返 403)都算活,避免误杀真站。
+async function isAlive(domain) {
+  for (const method of ['HEAD', 'GET']) {
+    try { await fetch(`https://${domain}/`, { method, redirect: 'follow', headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(8000) }); return true; }
+    catch { /* 试下一个 method */ }
+  }
+  return false;
 }
 
 async function get(url, timeout = 30000, tries = 3) {
@@ -154,7 +165,7 @@ async function main() {
   console.log(`存档工具页 ${all.length} 个(去重后),从 offset ${OFFSET} 起处理\n`);
   const list = all.slice(OFFSET);
 
-  const tally = { ok: 0, dup: 0, rejected: 0, nodomain: 0, rule: 0, ai: 0, badcat: 0, fail: 0, scanned: 0 };
+  const tally = { ok: 0, dup: 0, rejected: 0, dead: 0, nodomain: 0, rule: 0, ai: 0, badcat: 0, fail: 0, scanned: 0 };
   for (const { slug, ts, orig } of list) {
     if (tally.ok >= LIMIT || tally.scanned >= MAX_SCAN) break;
     tally.scanned++;
@@ -166,6 +177,7 @@ async function main() {
     if (!name || !domain) { tally.nodomain++; continue; }
     if (rejected.has(domain)) { tally.rejected++; continue; }
     if (known.has(domain)) { tally.dup++; continue; }
+    if (!NO_ALIVE && !(await isAlive(domain))) { console.log(`   ☠ ${name} (${domain}) → 域名已失效,跳过`); tally.dead++; continue; }
 
     try {
       const r = await screen({ name, domain, og: og || name, occurrence_count: 0, traffic_rank: null }, cats);
@@ -196,7 +208,7 @@ async function main() {
     }
   }
 
-  console.log(`\n汇总:入库 ${tally.ok} · 扫描 ${tally.scanned} · 已收录 ${tally.dup} · 黑名单 ${tally.rejected} · 无名/无域名 ${tally.nodomain} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
+  console.log(`\n汇总:入库 ${tally.ok} · 扫描 ${tally.scanned} · 已收录 ${tally.dup} · 黑名单 ${tally.rejected} · 死站跳过 ${tally.dead} · 无名/无域名 ${tally.nodomain} · 规则拒 ${tally.rule} · AI拒 ${tally.ai} · 难归类 ${tally.badcat} · 失败 ${tally.fail}`);
   // 回写状态:offset 推进 scanned;到末尾回绕 0(下轮重新巡一遍,捡新增的)
   if (STATE && !DRY_RUN) {
     const next = OFFSET + tally.scanned;
