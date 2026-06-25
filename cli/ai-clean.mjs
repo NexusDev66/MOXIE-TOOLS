@@ -60,12 +60,12 @@ const SYS = `你是 AI 工具目录的严格审核员。给你一个工具的 �
   - category_slug:必须从【给定分类】里选一个 slug。
   - tags:2-4 个简短中文标签。
   - price_label:只能是 免费 / 免费+付费 / 订阅 / 付费 / 不详 之一。【绝不编造具体金额】
-  - domestic_available:国内可用性,只能是 是 / 否 / 需代理 / 不详。
+  - domestic_available:国内可用性,只能是 是 / 需代理 / 不详(国产直连="是",海外一律"需代理";**不要用"否"**——"否"代表彻底不可用,无法核实别乱标)。
 忠实于官网摘要,不得杜撰。只输出 JSON:{"verdict","kind","reason","normalized"};reject 时 normalized 为 null。`;
 
 // trusted 模式:用于人工已确信的源(curated 种子)。只归一、不判定(种子无 og 会被分类层误拒)。
 const SYS_TRUSTED = `你是 AI 工具目录编辑。给你的工具是【人工已确认真实可用】的,你**只做中文字段归一,不做是否AI/灰产的判定**(一律 keep)。凭你确知的事实产出,不确定给保守值,绝不编造功能。
-输出 normalized:tagline_zh(一句话≤30字)、description_zh(2-3句)、category_slug(从【给定分类】选一)、tags(2-4个中文标签)、price_label(免费/免费+付费/订阅/付费/不详,绝不编造金额)、domestic_available(是/否/需代理/不详;国产一般"是"、海外一般"需代理")。
+输出 normalized:tagline_zh(一句话≤30字)、description_zh(2-3句)、category_slug(从【给定分类】选一)、tags(2-4个中文标签)、price_label(免费/免费+付费/订阅/付费/不详,绝不编造金额)、domestic_available(是/需代理/不详;国产一般"是"、海外一般"需代理";**不要用"否"**)。
 只输出 JSON:{"normalized":{...}}。`;
 
 /** 调 DeepSeek。@param {string} sys @param {string} user @returns {Promise<any>} */

@@ -14,7 +14,7 @@ const DRY = process.argv.includes('--dry-run');
 const LIMIT = Number((process.argv[process.argv.indexOf('--limit') + 1]) || 0) || 0;
 if (!SUPABASE_URL || !KEY || !DEEPSEEK) { console.error('❌ 缺 SUPABASE / DEEPSEEK 配置'); process.exit(1); }
 
-const ENUM = ['是', '需代理', '否'];
+const ENUM = ['是', '需代理']; // 不自动输出「否/不可用」——无法可靠核实,海外一律「需代理」;真被封的极少数由后台人工标
 
 async function sb(p, opts = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1${p}`, {
@@ -25,9 +25,9 @@ async function sb(p, opts = {}) {
   const t = await res.text(); return t ? JSON.parse(t) : null;
 }
 
-const SYS = `你判断一个 AI 工具在"中国大陆"的可用性,只从这 3 个里选一个原样输出:是 / 需代理 / 否。
+const SYS = `你判断一个 AI 工具在"中国大陆"的可用性,只从这 2 个里选一个原样输出:是 / 需代理。
 规则:① 中国团队出品/主要面向中国市场/域名是 .cn 或国内大厂(字节/阿里/腾讯/百度/智谱/月之暗面 等)→"是"(国内可直连)。
-② 海外工具(绝大多数 Product Hunt / 海外目录来的)→"需代理"。③ 明确在华被封禁/不可注册→"否"。④ 拿不准时,海外背景→"需代理"(这是安全默认,不是编造)。
+② 其余一律"需代理"(海外工具挂代理基本都能用;拿不准也用"需代理",这是安全默认)。**不要输出"否"**——"否/不可用"无法可靠核实,别乱标。
 只输出 JSON:{"domestic_available":"…"}`;
 
 async function classify(p) {
