@@ -138,7 +138,11 @@ jobs:
             echo "无变化,跳过提交"
           else
             git commit -m "chore(refresh): 每日重算权重 + 重渲染 + sitemap"
-            git push
+            # 并发的 refresh / backfill 也会 push main;推前先 rebase,撞上了重试,避免本轮 fail
+            for i in 1 2 3 4; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "push 撞车,重试 $i"; sleep $((RANDOM % 8 + 3))
+            done
           fi
 
       - name: 同步到 GitHub Pages 站(nexusdev66.github.io · 大陆可访问)
@@ -160,5 +164,8 @@ jobs:
             echo "Pages 站无变化"
           else
             git commit -m "sync: 来自 moxie-main 每日刷新"
-            git push
+            for i in 1 2 3 4; do
+              git push && break
+              echo "Pages push 撞车,重试 $i"; git pull --rebase --autostash; sleep $((RANDOM % 8 + 3))
+            done
           fi
