@@ -363,6 +363,19 @@
 </footer>
 
 <script>
+  /* logo 看门狗:首屏上百张图并发,慢/挂起的若 3.5s 还没加载好就强制首字母兜底,永不长时间空白;
+     MutationObserver 覆盖动态注入的行(与首页 moxie-preview 同款)。moxieLogoFallback 来自 moxie-supabase.js。 */
+  function moxieWatchLogos(){
+    document.querySelectorAll('img[onerror*="moxieLogoFallback"]:not([data-logo-watch])').forEach(function(img){
+      img.setAttribute('data-logo-watch','1');
+      if(img.complete && img.naturalWidth>0) return;
+      setTimeout(function(){
+        if(!img.dataset.logoFallback && (!img.complete || img.naturalWidth===0) && window.moxieLogoFallback) window.moxieLogoFallback(img);
+      }, 3500);
+    });
+  }
+  new MutationObserver(moxieWatchLogos).observe(document.documentElement,{childList:true,subtree:true});
+
   /* 减少动效偏好下不启用 Lenis 平滑滚动 */
   if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
@@ -397,7 +410,7 @@
         const timeCell = isNew ? '<span class="nf-new">NEW</span>' : escH(relTime(p.created_at));
         return '<a class="prow" href="/tools/' + encodeURIComponent(p.slug) + '" style="--lg:url(\'/public/logos/' + p.domain + '.png\')">'
           + '<span class="prank-cell nf-time">' + timeCell + '</span>'
-          + '<div class="plogo has-img"><img src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + escAttr(p.name) + '" onerror="moxieLogoFallback(this)" /></div>'
+          + '<div class="plogo has-img"><img src="/public/logos/' + p.domain + '.png" data-domain="' + p.domain + '" alt="' + escAttr(p.name) + '" loading="lazy" decoding="async" onerror="moxieLogoFallback(this)" /></div>'
           + '<div class="pmain"><div class="ptop"><span class="pname">' + escH(p.name) + '</span>' + (p.verified ? '<span class="verified-tag">子墨测过</span>' : '') + domBadge(p) + '</div>'
           + '<div class="pdesc">' + escH(shortDesc(p.tagline || '')) + '</div>'
           + '<div class="ptags">' + (p.tags || []).slice(0, 3).map(t => '<span class="ptag">' + escH(t) + '</span>').join('') + '</div></div>'
