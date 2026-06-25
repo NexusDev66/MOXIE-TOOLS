@@ -45,6 +45,7 @@ const SITES = [
   { name: 'Uneed', host: 'uneed.best', sitemap: 'https://uneed.best/sitemap.xml', productRe: /uneed\.best\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/^\s*discover\s+/i, '').replace(/\s+on uneed.*$/i, '') },
   // FutureTools:AI 精选目录,详情页外链被 futuretools.link(meta-refresh)包装 → 抓壳页抠真域名(免无头浏览器)
   {
+    disabled: true, // 编辑型第三方目录(二手):为把发现源提纯到一手已停用(--site 仍可手动调试)
     name: 'FutureTools', host: 'futuretools.io', sitemap: 'https://www.futuretools.io/sitemap.xml',
     productRe: /futuretools\.io\/tools\/[^/?#]+$/i,
     strip: (t) => t.replace(/^\s*Future\s*Tools\s*[-–—|:]\s*/i, ''),
@@ -58,12 +59,13 @@ const SITES = [
     },
   },
   // Futurepedia:大型 AI 目录,工具页 SSR(og 在静态 HTML),工具清单在 sitemap_tools.xml;真域名靠 slug 匹配外链
-  { name: 'Futurepedia', host: 'futurepedia.io', sitemap: 'https://www.futurepedia.io/sitemap_tools.xml', productRe: /futurepedia\.io\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/\s+(AI\s+)?Reviews?\b[:\s].*$/i, '').trim() },
+  { disabled: true, name: 'Futurepedia', host: 'futurepedia.io', sitemap: 'https://www.futurepedia.io/sitemap_tools.xml', productRe: /futurepedia\.io\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/\s+(AI\s+)?Reviews?\b[:\s].*$/i, '').trim() }, // 编辑型目录(二手)已停用
   { name: 'Foundrlist', host: 'foundrlist.com', sitemap: 'https://foundrlist.com/sitemap.xml', productRe: /foundrlist\.com\/product\/[^/?#]+$/i },
   { name: 'SaaSCity', host: 'saascity.io', sitemap: 'https://saascity.io/sitemap.xml', productRe: /saascity\.io\/live\/[^/?#]+$/i },
   // turbo0:纯 AI 工具目录(3000+ 条)。"访问官网"是联盟跳转链(pxf.io),通用就近抓会抓成姊妹站 hunt0.com;
   // 真域名在 RSC 数据块的 domain 字段里(turbo0 自存的 traffic/dr 统计,转义引号),取最高频非自家域名即真官网
   {
+    disabled: true, // 编辑型第三方目录(二手):提纯到一手已停用
     name: 'turbo0', host: 'turbo0.com', sitemap: 'https://turbo0.com/sitemap.xml',
     productRe: /turbo0\.com\/item\/[^/?#]+$/i,
     resolveDomain(slug, html) {
@@ -177,7 +179,8 @@ async function main() {
   const cats = catRows.map((c) => ({ slug: c.slug, name: c.name }));
 
   const tally = { ok: 0, dup: 0, rejected: 0, nodomain: 0, rule: 0, ai: 0, badcat: 0, fail: 0 };
-  const sites = SITES.filter((s) => !ONLY || s.name.toLowerCase().includes(ONLY) || s.host.includes(ONLY));
+  // 默认跳过 disabled(编辑型二手目录,已提纯到一手);指定 --site 时可手动单跑(含 disabled,便于调试)
+  const sites = SITES.filter((s) => ONLY ? (s.name.toLowerCase().includes(ONLY) || s.host.includes(ONLY)) : !s.disabled);
 
   for (const site of sites) {
     console.log(`── ${site.name}(${site.host})──`);

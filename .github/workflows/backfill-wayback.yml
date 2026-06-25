@@ -6,8 +6,8 @@ name: Backfill Wayback (TAAFT/Toolify 存量补全)
 # 单独 workflow(不进 4h 循环):Wayback 慢且偶发 503,失败不该拖累新品主流程。
 
 on:
-  schedule:
-    - cron: '30 2 * * *'   # 每天 02:30 UTC(北京 10:30)
+  # 已停用每日定时:TAAFT/Toolify 是第三方/同行目录(二手),为把发现源提纯到「一手」(官方接口 + 厂商自助发布平台)而转为手动。
+  # 需要补存量时再手动触发(workflow_dispatch)。
   workflow_dispatch:
 
 permissions:
