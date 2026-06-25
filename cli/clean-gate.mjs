@@ -42,6 +42,11 @@ const AGGREGATOR_DOMAINS = [
   'theresanaiforthat.com', 'futurepedia.io', 'toolify.ai', 'aitoolhunt.com',
 ];
 
+// ── 非产品托管/支付/联盟/中转/应用商店/个人页 —— 域名抓成这些=不是工具官网,硬拒 ──
+// (从 Toolify/Wayback 等抓取常误把页面里的广告/支付/竞品链当域名,如 Acta AI→get.brightdata.com)
+// 特意不含 notion.so(Notion AI 真域名)、ms.show/hf.space(魔搭/HF 工具站),防误杀。
+const NON_PRODUCT_HOST = /(^|\.)(lemonsqueezy\.com|gumroad\.com|payhip\.com|paddle\.com|buymeacoffee\.com|patreon\.com|ko-fi\.com|brightdata\.com|getrewardful\.com|pxf\.io|sjv\.io|impact\.com|go2cloud\.org|anrdoezrs\.net|dpbolvw\.net|prf\.hn|partnerstack\.com|github\.io|gitlab\.io|gitbook\.io|linktr\.ee|bio\.link|tally\.so|typeform\.com|short\.gy|bit\.ly|apps\.apple\.com|play\.google\.com|chromewebstore\.google\.com|chrome\.google\.com|microsoftedge\.microsoft\.com|addons\.mozilla\.org)$/i;
+
 // ── 高风险 TLD(灰产高发):不硬拒,加权重 ──
 const GRAY_TLD = /\.(cab|directory|live|sbs|top|click|monster|rest|cfd|lol|icu)$/i;
 
@@ -65,6 +70,9 @@ export function gate(c) {
   // 硬拒 1:聚合 / 目录站本身
   if (AGGREGATOR_DOMAINS.some((a) => root === a || root.endsWith('.' + a)))
     return { verdict: 'reject', score: 99, reasons: ['聚合/目录站本身,非产品'] };
+  // 硬拒 1.5:支付/联盟/商店/中转/个人页等非产品托管(域名抓错了)
+  if (NON_PRODUCT_HOST.test(root))
+    return { verdict: 'reject', score: 99, reasons: ['非产品域名(支付/联盟/商店/个人页等)'] };
   // 硬拒 2:无有效域名
   if (!root || !root.includes('.'))
     return { verdict: 'reject', score: 99, reasons: ['无有效域名'] };
@@ -92,6 +100,7 @@ export function prefilter(_name, domain) {
   const root = String(domain || '').toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
   if (!root || !root.includes('.')) return { reject: true, reason: '无有效域名' };
   if (AGGREGATOR_DOMAINS.some((a) => root === a || root.endsWith('.' + a))) return { reject: true, reason: '目录/聚合站' };
+  if (NON_PRODUCT_HOST.test(root)) return { reject: true, reason: '非产品域名(支付/联盟/商店等)' };
   if (GRAY_TLD.test(root)) return { reject: true, reason: '灰产高发TLD' };
   return { reject: false, reason: '' };
 }
