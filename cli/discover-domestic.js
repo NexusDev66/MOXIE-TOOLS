@@ -105,6 +105,29 @@ const SEEDS = [
   { name: 'Napkin AI', domain: 'napkin.ai', slug: 'napkin' },                 // 文字转图示
   { name: 'Beautiful.ai', domain: 'beautiful.ai', slug: 'beautiful-ai' },     // AI PPT
   { name: '网易有道', domain: 'youdao.com', slug: 'youdao' },                 // 翻译/AI
+
+  // ── 第五批补录(2026-06-25):主流国产 AI 产品(人工确认真实官网,均国内直连)──
+  { name: '豆包', domain: 'doubao.com', slug: 'doubao' },                      // 字节 AI 助手
+  { name: '通义', domain: 'tongyi.com', slug: 'tongyi' },                      // 阿里通义
+  { name: '文心一言', domain: 'yiyan.baidu.com', slug: 'wenxinyiyan' },        // 百度
+  { name: '讯飞星火', domain: 'xinghuo.xfyun.cn', slug: 'xinghuo' },           // 科大讯飞
+  { name: '可灵 AI', domain: 'klingai.com', slug: 'kling' },                   // 快手 AI 视频
+  { name: '秘塔 AI 搜索', domain: 'metaso.cn', slug: 'metaso' },               // AI 搜索
+  { name: '腾讯元宝', domain: 'yuanbao.tencent.com', slug: 'yuanbao' },        // 腾讯 AI 助手
+  { name: '海螺 AI', domain: 'hailuoai.com', slug: 'hailuo' },                 // MiniMax
+  { name: '天工 AI', domain: 'tiangong.cn', slug: 'tiangong' },                // 昆仑万维
+  { name: '百川智能', domain: 'baichuan-ai.com', slug: 'baichuan' },           // 大模型
+  { name: 'DeepSeek', domain: 'deepseek.com', slug: 'deepseek' },              // 深度求索
+  { name: '跃问', domain: 'yuewen.cn', slug: 'yuewen' },                       // 阶跃星辰
+  { name: '知乎直答', domain: 'zhida.zhihu.com', slug: 'zhida' },              // 知乎 AI 搜索
+  { name: '智谱 BigModel', domain: 'bigmodel.cn', slug: 'bigmodel' },          // 智谱开放平台
+  { name: 'WHEE', domain: 'whee.com', slug: 'whee' },                          // 美图 AI 图像
+  { name: '剪映', domain: 'jianying.com', slug: 'jianying' },                  // 字节 AI 剪辑
+  { name: '通义听悟', domain: 'tingwu.aliyun.com', slug: 'tingwu' },           // 阿里 会议转写
+  { name: '硅基流动', domain: 'siliconflow.cn', slug: 'siliconflow' },         // 大模型推理云
+  { name: '面壁智能', domain: 'modelbest.cn', slug: 'modelbest' },             // MiniCPM
+  { name: '腾讯元器', domain: 'yuanqi.tencent.com', slug: 'yuanqi' },          // 腾讯智能体平台
+  { name: '美图设计室', domain: 'x-design.com', slug: 'x-design' },            // 美图 AI 设计
 ];
 
 if (!SUPABASE_URL || !SERVICE_KEY) { console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY'); process.exit(1); }
