@@ -74,6 +74,10 @@ jobs:
         run: node cli/discover-marketingdb.js --limit 20
         continue-on-error: true
 
+      - name: 发现一手新品(trylaunch.ai 官方接口·vibe coder AI 产品,真域名+图标 → pending,失败不阻塞)
+        run: node cli/discover-trylaunch.js --limit 20
+        continue-on-error: true
+
       - name: 发现新锐 AI 工具(厂商自助发布平台 sitemap:microlaunch/saascity/foundrlist,免凭据 → pending,失败不阻塞)
         run: node cli/discover-sitemap.js --limit 30
         continue-on-error: true
