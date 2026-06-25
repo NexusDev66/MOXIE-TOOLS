@@ -19,7 +19,6 @@ import { dirname, join } from 'node:path';
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const SITE_BASE = (process.env.SITE_BASE_URL || 'https://www.latemai.com').replace(/\/+$/, '');
-const BUILD_DATE = new Date(); // 「更新于」用预渲染运行日 → 每日 refresh 重烤即刷新为最新
 if (!SUPABASE_URL || !ANON) {
   console.error('❌ 缺 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY(.env.local)');
   process.exit(1);
@@ -41,7 +40,7 @@ function jsonLd(obj) {
 }
 
 async function fetchPublishedProducts() {
-  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,domestic_available,verified,created_at,detail,category_id,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
+  const url = `${SUPABASE_URL}/rest/v1/moxie_products?status=eq.published&select=id,slug,name,domain,tagline,tags,price_label,vote_count,domestic_available,verified,created_at,updated_at,detail,category_id,moxie_categories(name,slug)&order=vote_count.desc&limit=1000`;
   const res = await fetch(url, { headers: { apikey: ANON, Authorization: `Bearer ${ANON}` } });
   if (!res.ok) throw new Error(`读取产品失败 ${res.status}: ${await res.text()}`);
   return res.json();
@@ -190,9 +189,9 @@ function buildInfoList(p) {
     const d = new Date(p.created_at);
     if (!isNaN(d)) rows.push(['收录于', `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}`]);
   }
-  // 更新于:每日最新(预渲染运行日)。每日 refresh 重烤 → 自动刷成当天
-  const u = BUILD_DATE;
-  rows.push(['更新于', `${u.getFullYear()}.${String(u.getMonth() + 1).padStart(2, '0')}.${String(u.getDate()).padStart(2, '0')}`]);
+  // 更新于:用该工具自己的 updated_at(回退 created_at)。已上架的不会每次重烤都变今天,只有新上架/内容真被更新的才显示新日期
+  const u = new Date(p.updated_at || p.created_at || Date.now());
+  if (!isNaN(u)) rows.push(['更新于', `${u.getFullYear()}.${String(u.getMonth() + 1).padStart(2, '0')}.${String(u.getDate()).padStart(2, '0')}`]);
   return '<div class="info-list">\n' +
     rows.map(([k, v]) => `            <div class="info-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('\n') +
     '\n          </div>';
