@@ -34,7 +34,8 @@ if (!DEEPSEEK_API_KEY) { console.error('❌ 缺 DEEPSEEK_API_KEY'); process.exit
 const TOPICS = ['ai-tools', 'llm', 'ai-agent', 'generative-ai', 'rag', 'text-to-image'];
 
 // homepage 域名要跳过的:代码托管/包仓/社交/文档站(非"产品官网")
-const SKIP_HOST = /(^|\.)(github\.com|gitlab\.com|gitee\.com|npmjs\.com|pypi\.org|crates\.io|readthedocs\.io|twitter\.com|x\.com|youtube\.com|youtu\.be|t\.me|discord\.gg|discord\.com|linkedin\.com|medium\.com|reddit\.com|t\.co|linktr\.ee|bit\.ly)$/i;
+// homepage 为 *.github.io / *.gitlab.io 的:多是个人/论文/项目主页,不是产品官网(如 amshaker.github.io 点开是个人介绍)→ 一并跳过
+const SKIP_HOST = /(^|\.)(github\.com|github\.io|gitlab\.com|gitlab\.io|gitee\.com|npmjs\.com|pypi\.org|crates\.io|readthedocs\.io|twitter\.com|x\.com|youtube\.com|youtu\.be|t\.me|discord\.gg|discord\.com|linkedin\.com|medium\.com|reddit\.com|t\.co|linktr\.ee|bit\.ly)$/i;
 
 async function sb(path, opts = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1${path}`, {
