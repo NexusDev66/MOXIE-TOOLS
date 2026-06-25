@@ -11,7 +11,7 @@ name: Daily Refresh (rank + prerender + sitemap)
 
 on:
   schedule:
-    - cron: '0 */4 * * *'  # 每 4 小时一次(UTC 00/04/08/12/16/20 = 北京 08/12/16/20/00/04):持续发现+发布新品,像 uneed/microlaunch 那样滚动上新
+    - cron: '0 18,22,2,6,10,14 * * *'  # 每 4 小时一次,北京 02/06/10/14/18/22(UTC 18/22/02/06/10/14):每天凌晨2点起滚动上新
   workflow_dispatch:        # 允许手动触发
 
 permissions:
