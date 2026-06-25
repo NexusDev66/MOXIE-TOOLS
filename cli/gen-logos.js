@@ -72,23 +72,36 @@ async function sb(path) {
   return res.json();
 }
 
+// 取根域:子域(free-trial.adcreative.ai / get.brightdata.com)常无 favicon,根域(adcreative.ai)才有。粗处理 co.uk 等两级 TLD。
+function apexOf(domain) {
+  const p = domain.split('.');
+  if (p.length <= 2) return domain;
+  if (p.length >= 3 && /^(co|com|org|net|gov|edu|ac)$/i.test(p[p.length - 2])) return p.slice(-3).join('.');
+  return p.slice(-2).join('.');
+}
+
 async function getLogo(domain) {
-  // ① 官网 HTML 里挑 apple-touch-icon / link icon ② 退而求 /favicon.ico ③ 顶级域 /favicon.ico
-  const tries = [];
-  try {
-    const html = (await (await fetch(`https://${domain}/`, { headers: { 'User-Agent': UA }, redirect: 'follow', signal: AbortSignal.timeout(12000) })).text()).slice(0, 80000);
-    const icon = pickIcon(html, `https://${domain}/`);
-    if (icon) tries.push(icon);
-  } catch {}
-  tries.push(`https://${domain}/apple-touch-icon.png`, `https://${domain}/favicon.ico`);
-  // 兜底图标服务(聚合 Google/Clearbit/DDG/favicon;构建时抓 + 自托管 → 大陆安全)。最大化命中率。
-  tries.push(
-    `https://unavatar.io/${domain}?fallback=false`,
-    `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-    `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-  );
-  for (const u of tries) {
-    try { const buf = await fetchBuf(u); if (buf.length > 70 && isImage(buf)) return buf; } catch {}
+  // 候选域:原域 + 根域(子域抓不到时退根域)。每个域依次:官网 apple-touch/link icon → /apple-touch-icon → /favicon → Clearbit → unavatar → DDG → Google
+  const domains = [domain];
+  const apex = apexOf(domain);
+  if (apex !== domain) domains.push(apex);
+  for (const d of domains) {
+    const tries = [];
+    try {
+      const html = (await (await fetch(`https://${d}/`, { headers: { 'User-Agent': UA }, redirect: 'follow', signal: AbortSignal.timeout(12000) })).text()).slice(0, 80000);
+      const icon = pickIcon(html, `https://${d}/`);
+      if (icon) tries.push(icon);
+    } catch {}
+    tries.push(
+      `https://${d}/apple-touch-icon.png`, `https://${d}/favicon.ico`,
+      `https://logo.clearbit.com/${d}`,                        // Clearbit:优质品牌 logo(海外可达)
+      `https://unavatar.io/${d}?fallback=false`,
+      `https://icons.duckduckgo.com/ip3/${d}.ico`,
+      `https://www.google.com/s2/favicons?domain=${d}&sz=128`,
+    );
+    for (const u of tries) {
+      try { const buf = await fetchBuf(u); if (buf.length > 70 && isImage(buf)) return buf; } catch {}
+    }
   }
   return null;
 }
