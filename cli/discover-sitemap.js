@@ -79,7 +79,7 @@ const SITES = [
     },
   },
   // MarketingDB 有官方 RSS(唯一一个):直接读 /feed.xml(它自维护的"New Launches"列表,比猜 sitemap 稳、自带发布时间);取不到再退回 sitemap
-  { name: 'MarketingDB', host: 'marketingdb.live', feed: 'https://marketingdb.live/feed.xml', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i },
+  { disabled: true, name: 'MarketingDB', host: 'marketingdb.live', feed: 'https://marketingdb.live/feed.xml', sitemap: 'https://marketingdb.live/sitemap.xml', productRe: /marketingdb\.live\/project\/[^/?#]+$/i }, // 已改走官方接口 cli/discover-marketingdb.js;若其 anon key 轮换可去掉 disabled 退回 RSS
   // 已探测但未纳入:trustmrr(/startup/ 7787 条但几乎无 AI)、showmeyour(无 AI)、shipstry(productRe 未命中)、
   // fazier/agentwork/confettisaas/launch.cab 等(无可用 sitemap,数据在 __NEXT_DATA__/首页 JS,后续按需特殊处理)
 ];
