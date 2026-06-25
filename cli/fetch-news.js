@@ -32,6 +32,10 @@ const DEFAULT_FEEDS = [
   'https://openai.com/news/rss.xml|OpenAI',
   'https://deepmind.google/blog/rss.xml|Google DeepMind',
   'https://huggingface.co/blog/feed.xml|Hugging Face',
+  // 官方一手 AI 源(公司/实验室博客,与上同性质:标题+链原文+score-news 翻译;实测可达+新鲜)
+  'https://blogs.nvidia.com/feed/|NVIDIA',
+  'https://aws.amazon.com/blogs/machine-learning/feed/|AWS 机器学习',
+  'https://blog.google/technology/ai/rss/|Google AI',
 ];
 const FEEDS = (process.env.NEWS_FEEDS
   ? process.env.NEWS_FEEDS.split(',')
@@ -95,38 +99,7 @@ async function fetchFeed(feed) {
   } catch (e) { console.log(`  ⚠ ${feed.name} 失败(${e.message}),跳过`); return []; }
 }
 
-// AIbase 国产 AI 资讯:无 RSS,/news 列表页是静态 SSR HTML(robots 允许 /news;仅禁 /blog /agent /model)。
-// /zh/news 是客户端壳不 SSR;默认 /news 英文 SSR,标题在 aria-label="阅读文章: TITLE",首个 <span> 是相对时间。
-// 英文标题无妨:score-news 本就把英文标题翻成中文标题入库(与 OpenAI/DeepMind 等英文源一致)。
-const AIBASE_LIST = 'https://www.aibase.com/news';
-function relTimeToISO(s) {
-  const now = Date.now(); let m;
-  if (/刚刚|just now/i.test(s)) return new Date(now).toISOString();
-  if ((m = s.match(/(\d+)\s*(?:分钟前|minutes?\s*ago)/i))) return new Date(now - m[1] * 60000).toISOString();
-  if ((m = s.match(/(\d+)\s*(?:小时前|hours?\s*ago)/i))) return new Date(now - m[1] * 3600000).toISOString();
-  if (/昨天|yesterday/i.test(s)) return new Date(now - 86400000).toISOString();
-  if ((m = s.match(/(\d+)\s*(?:天前|days?\s*ago)/i))) return new Date(now - m[1] * 86400000).toISOString();
-  const d = new Date(s); return isNaN(d) ? new Date(now).toISOString() : d.toISOString();
-}
-async function fetchAibase() {
-  try {
-    const res = await fetch(AIBASE_LIST, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36' }, signal: AbortSignal.timeout(20000) });
-    if (!res.ok) { console.log(`  ⚠ AIbase HTTP ${res.status},跳过`); return []; }
-    const html = await res.text();
-    const out = [], seen = new Set();
-    // 每张新闻卡:aria-label="阅读文章: 标题",href=/news/ID,其后首个 <span> 为相对时间
-    for (const m of html.matchAll(/aria-label=["']([^"']{6,300})["'][^>]*href=["']\/news\/(\d+)["'][\s\S]{0,200}?<span[^>]*>([^<]{1,24})<\/span>/gi)) {
-      const id = m[2];
-      if (seen.has(id)) continue; seen.add(id);
-      const title = decode(m[1]).replace(/^\s*(?:阅读文章|read article)\s*[:：]\s*/i, '').trim();
-      if (!title) continue;
-      out.push({ title: title.slice(0, 200), url: `https://www.aibase.com/news/${id}`, source: 'AIbase', tag: 'AIbase', published_at: relTimeToISO(m[3]), summary: '' });
-    }
-    console.log(`  ✓ AIbase:${out.length} 条`);
-    if (DRY_RUN) out.slice(0, 3).forEach((x) => console.log(`      · ${x.title}`));
-    return out;
-  } catch (e) { console.log(`  ⚠ AIbase 失败(${e.message}),跳过`); return []; }
-}
+// 已撤除 AIbase /news 抓取:那是二手聚合媒体的改写文章,转载有版权嫌疑。改为只用一手源(官方公司/实验室博客,见 DEFAULT_FEEDS)。
 
 async function sb(path, opts = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1${path}`, {
@@ -140,7 +113,7 @@ async function sb(path, opts = {}) {
 
 async function main() {
   console.log(`\n📰 抓取 AI 快讯${DRY_RUN ? ' [DRY-RUN]' : ''} · ${FEEDS.length} 源\n`);
-  const all = (await Promise.all([...FEEDS.map(fetchFeed), fetchAibase()])).flat();
+  const all = (await Promise.all(FEEDS.map(fetchFeed))).flat();
 
   // 去重(按 url)+ 按时间倒序 + 截断
   const seen = new Set();
