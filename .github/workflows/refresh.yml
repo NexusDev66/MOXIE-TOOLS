@@ -66,7 +66,11 @@ jobs:
         run: node cli/discover-hn.js --limit 30 --days 7 --min-points 10
         continue-on-error: true
 
-      - name: 发现新锐 AI 工具(Launch 聚合站 sitemap:uneed/microlaunch,免凭据 → pending,失败不阻塞)
+      - name: 发现一手新品(Uneed 官方接口·每日上新榜,真域名+简介+logo → pending,失败不阻塞)
+        run: node cli/discover-uneed.js --days 3 --limit 25
+        continue-on-error: true
+
+      - name: 发现新锐 AI 工具(厂商自助发布平台 sitemap:microlaunch/marketingdb 等,免凭据 → pending,失败不阻塞)
         run: node cli/discover-sitemap.js --limit 30
         continue-on-error: true
 

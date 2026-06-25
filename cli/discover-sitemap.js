@@ -42,7 +42,7 @@ function genStrip(t, host) {
 // 站点配置(sitemap 为主)。productRe = 工具详情页 URL 特征;strip 不填则用 genStrip。
 const SITES = [
   { name: 'Microlaunch', host: 'microlaunch.net', sitemap: 'https://microlaunch.net/sitemap.xml', productRe: /microlaunch\.net\/p\/[^/?#]+$/i, strip: (t) => t.replace(/\s+is now on Microlaunch.*$/i, '') },
-  { name: 'Uneed', host: 'uneed.best', sitemap: 'https://uneed.best/sitemap.xml', productRe: /uneed\.best\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/^\s*discover\s+/i, '').replace(/\s+on uneed.*$/i, '') },
+  { disabled: true, name: 'Uneed', host: 'uneed.best', sitemap: 'https://uneed.best/sitemap.xml', productRe: /uneed\.best\/tool\/[^/?#]+$/i, strip: (t) => t.replace(/^\s*discover\s+/i, '').replace(/\s+on uneed.*$/i, '') }, // 已改走官方接口 cli/discover-uneed.js(直接给真域名+简介+logo,比 sitemap 强)
   // FutureTools:AI 精选目录,详情页外链被 futuretools.link(meta-refresh)包装 → 抓壳页抠真域名(免无头浏览器)
   {
     disabled: true, // 编辑型第三方目录(二手):为把发现源提纯到一手已停用(--site 仍可手动调试)
