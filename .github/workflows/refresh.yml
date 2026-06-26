@@ -58,38 +58,38 @@ jobs:
         run: node cli/extract-voices.js
         continue-on-error: true
 
-      - name: 发现海外新锐 AI 工具(Product Hunt 近7天高票 → pending,失败不阻塞)
-        run: node cli/discover-tools.js --limit 60 --days 7
+      - name: 发现海外新锐 AI 工具(Product Hunt 高票 → pending,失败不阻塞)
+        run: node cli/discover-tools.js --limit 150 --days 21
         continue-on-error: true
 
       - name: 发现新锐 AI 工具(Hacker News「Show HN」高赞,免凭据兜底 → pending,失败不阻塞)
-        run: node cli/discover-hn.js --limit 30 --days 7 --min-points 10
+        run: node cli/discover-hn.js --limit 80 --days 21 --min-points 10
         continue-on-error: true
 
       - name: 发现一手新品(Uneed 官方接口·每日上新榜,真域名+简介+logo → pending,失败不阻塞)
-        run: node cli/discover-uneed.js --days 3 --limit 25
+        run: node cli/discover-uneed.js --days 21 --limit 80
         continue-on-error: true
 
       - name: 发现一手新品(MarketingDB 官方接口·上新榜,真域名+标语+logo → pending,失败不阻塞)
-        run: node cli/discover-marketingdb.js --limit 20
+        run: node cli/discover-marketingdb.js --limit 60
         continue-on-error: true
 
       - name: 发现一手新品(trylaunch.ai 官方接口·vibe coder AI 产品,真域名+图标 → pending,失败不阻塞)
-        run: node cli/discover-trylaunch.js --limit 20
+        run: node cli/discover-trylaunch.js --limit 60
         continue-on-error: true
 
       - name: 发现新锐 AI 工具(厂商自助发布平台 sitemap:microlaunch/saascity/foundrlist,免凭据 → pending,失败不阻塞)
-        run: node cli/discover-sitemap.js --limit 30
+        run: node cli/discover-sitemap.js --limit 80
         continue-on-error: true
 
       - name: 发现国产 AI 工具(魔搭创空间·官方机构高访问量 → pending,国内直连,失败不阻塞)
-        run: node cli/discover-modelscope.js --limit 12 --min-visits 30000 --pages 3
+        run: node cli/discover-modelscope.js --limit 30 --min-visits 30000 --pages 5
         continue-on-error: true
 
       - name: 发现开源 AI 工具(GitHub·带官网的现实星数区间,砍刷星 → pending,失败不阻塞)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node cli/discover-github.js --limit 8 --min-stars 120 --max-stars 6000 --days 180
+        run: node cli/discover-github.js --limit 20 --min-stars 120 --max-stars 6000 --days 365
         continue-on-error: true
 
       - name: 厂商提交质量闸(对手填 pending 过 screen:套壳/灰产/非AI 转 rejected,通过的盖 submission_screened,失败不阻塞)
