@@ -100,8 +100,8 @@ jobs:
         run: node cli/enrich-detail.js
         continue-on-error: true
 
-      - name: 候选自动上架(完善度达标的 pending → published,直连DB,失败不阻塞)
-        run: node cli/promote-candidates.js --limit 12
+      - name: 候选自动上架(完善度达标的 pending → published,留底仓防放干,直连DB,失败不阻塞)
+        run: node cli/promote-candidates.js --limit 12 --reserve 40
         continue-on-error: true
 
       - name: 重算权重(rank)
