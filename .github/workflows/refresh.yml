@@ -92,6 +92,10 @@ jobs:
         run: node cli/discover-github.js --limit 8 --min-stars 120 --max-stars 6000 --days 180
         continue-on-error: true
 
+      - name: 厂商提交质量闸(对手填 pending 过 screen:套壳/灰产/非AI 转 rejected,通过的盖 submission_screened,失败不阻塞)
+        run: node cli/screen-submissions.js
+        continue-on-error: true
+
       - name: 新候选详情清洗(给无 detail 的 pending 补 features,达标才能被上架,失败不阻塞)
         run: node cli/enrich-detail.js
         continue-on-error: true

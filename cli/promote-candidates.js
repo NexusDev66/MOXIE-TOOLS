@@ -44,7 +44,7 @@ function completeness(p) {
 
 async function main() {
   console.log(`\n🚀 候选自动上架(阈值 ${THRESHOLD},每次≤${LIMIT})${DRY_RUN ? ' [DRY-RUN]' : ''}\n`);
-  const pend = await sb('/moxie_products?status=eq.pending&select=id,name,slug,domain,tagline,tags,description,price_label,domestic_available,category_id,detail&order=created_at.desc&limit=500');
+  const pend = await sb('/moxie_products?status=eq.pending&select=id,name,slug,domain,tagline,tags,description,price_label,domestic_available,category_id,detail,submitted_by&order=created_at.desc&limit=500');
   if (!pend.length) { console.log('无 pending 候选,跳过'); return; }
 
   // 反灰产末闸:复用发现层的 clean-gate.prefilter(只查域名:目录/聚合站 + 灰产 TLD,零误杀真工具)。
@@ -52,8 +52,14 @@ async function main() {
   const { prefilter } = await import('./clean-gate.mjs');
   const domainClean = (p) => !prefilter(p.name || '', p.domain || '').reject;
 
-  // 上架硬条件:已 AI 清洗(有 detail.features)——保证 "published ⟺ 已清洗",杜绝 thin 工具上线
-  const cleaned = (p) => !!(p.detail && Array.isArray(p.detail.features) && p.detail.features.length);
+  // 上架硬条件:已 AI 清洗(有 detail.features)——保证 "published ⟺ 已清洗",杜绝 thin 工具上线。
+  // 厂商手填的(submitted_by 非空)走浏览器直插、绕过发现层 screen,额外要求 screen-submissions 审过
+  // (detail.submission_screened===true)才放行——双保险:即便审核步骤漏跑,厂商提交也绝不自动上线。
+  const cleaned = (p) => {
+    if (!(p.detail && Array.isArray(p.detail.features) && p.detail.features.length)) return false;
+    if (p.submitted_by) return p.detail.submission_screened === true;
+    return true;
+  };
   const scored = pend.map((p) => ({ p, score: completeness(p), ready: cleaned(p), clean: domainClean(p) })).sort((a, b) => b.score - a.score);
   const pass = scored.filter((x) => x.ready && x.clean && x.score >= THRESHOLD).slice(0, LIMIT);
   const low = scored.filter((x) => x.score < THRESHOLD);
