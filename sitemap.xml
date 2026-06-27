@@ -61,7 +61,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/doubao</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/github-copilot</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/perplexity</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -73,7 +79,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/github-copilot</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/doubao</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -86,12 +92,6 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/openai-api</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/perplexity</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -121,31 +121,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/wenxin</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/gemini</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vidu</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/siliconflow</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/grammarly</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/liblib</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -157,133 +133,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/cherry-studio</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tongyi</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/minimax</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/canva</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/yuanbao</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/n8n</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/fastgpt</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/pika</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/claude</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/make</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/liblib</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/xiezuocat</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/360ai</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/zapier</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/runway</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/bolt</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tiangong</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/gamma</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ragflow</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/windsurf</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/genspark</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/yuanqi</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -295,13 +145,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/heygen</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/devin</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ideogram</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/runway</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -319,31 +169,169 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/devin</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ideogram</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/replit</loc>
-    <lastmod>2026-06-09</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/bolt</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/monica</loc>
-    <lastmod>2026-06-09</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/zapier</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/synthesia</loc>
-    <lastmod>2026-06-09</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tiangong</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ragflow</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/yuanqi</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/windsurf</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/siliconflow</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/heygen</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/gamma</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/genspark</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/fastgpt</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/minimax</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/yuanbao</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/claude</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/xiezuocat</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/gemini</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vidu</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tongyi</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/360ai</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/wenxin</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/canva</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/n8n</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/pika</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/grammarly</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/cherry-studio</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/immersive-translate</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/otter</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -361,54 +349,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/minimi</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/huggingface</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/gaoding</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/veo</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/lovart</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/jasper</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/consensus</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/langchain</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/sensechat</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -421,25 +361,193 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/empromptu-ai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/poe</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tingwu</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/gaoding</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/baichuan</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tabnine</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/sora</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ms-copilot</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/lingyiwanwu</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/groq</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/dreambeans-by-google-labs</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/copy-ai</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/flowith</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/yuewen</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/recraft</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/cody</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/felo</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/glean</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/replit</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/zhida</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/synthesia</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/apple-intelligence</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/hermes-desktop</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/beautiful-ai</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/phind</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/xinghuo</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/aippt</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/huggingface</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/lovart</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/volcengine</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/consensus</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/elicit</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/pi</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/empromptu-ai</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/deepl</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -457,84 +565,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/deepl</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ms-copilot</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vaani</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/apple-intelligence</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/lingyiwanwu</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/elevenlabs</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/together-ai</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/llamaindex</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/character-ai</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/mistral</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/zhida</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/firefly</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/hermes-desktop</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/honen</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -547,25 +577,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vaani</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/descript</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/xinghuo</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/maxkb</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/grok</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/krea</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/grok</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -578,18 +614,6 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/whee</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/poe</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/zhiwen</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -619,13 +643,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/zhiwen</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/vokal</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tingwu</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/capcut</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/cline</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -643,13 +685,43 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ai21</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/meta-ai</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/reka</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/pi</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/monica</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/minimi</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/continue</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/aider</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -667,145 +739,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/sora</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/continue</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/hunyuan</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/flowith</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/yuewen</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/groq</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/copy-ai</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ai21</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/recraft</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/quillbot</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/felo</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/bailian</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/aippt</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/character-ai</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/lovable</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/beautiful-ai</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/photoroom</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/otter</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/brief</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/phind</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/volcengine</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/elicit</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tabnine</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/llama</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/aider</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/firefly</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -817,13 +763,49 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/maxkb</loc>
-    <lastmod>2026-06-08</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/elevenlabs</loc>
+    <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/dreambeans-by-google-labs</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/brief</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/together-ai</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/hunyuan</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/baichuan</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/llama</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mistral</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/quillbot</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -835,19 +817,37 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/cline</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/llamaindex</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/meta-ai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/veo</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/glean</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/jasper</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/lovable</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/langchain</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/photoroom</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -855,6 +855,258 @@
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/etryon-virtual-try-on</loc>
     <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/palabra-ai</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/qursor</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/prompt2love</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-exporter</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/taste-lab</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/agentx</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/post-perfected</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/justhireme</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/lobsterai</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/120-dev-ai-tool-for-apps</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/wobo-2-0</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/3seconds</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mellea</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/internlm</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/garden-letters</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/adcreative-ai</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/drawd</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/recipebee</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/normal-map-generator</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/jcodemunch-mcp</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/1px-ai</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/planrelief</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/settle-it</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/audenci</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/apfel</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-manga-generator</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ora-dj</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/modly</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/webmatik</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/corpusiq</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/frans</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/playground</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/renoir-ai</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/voxel-studio</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen3-asr</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/promptnoon</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/evalyze</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/free-music-creator-ai</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/zynfoai-no-code-ai-chatbot-builder-agentic-workflows</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/getgabs</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/refreshen</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ordr</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -871,8 +1123,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/heygrc</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/voice-notes-ai</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -883,8 +1135,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/04-x</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/plot-travel</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/heygrc</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -895,20 +1153,26 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/crepal</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/luna-ai</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/seedance-2-5-seedance-25</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-anydoor-online</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/crepal</loc>
     <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/candydocs</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -919,14 +1183,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/imideo</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/iconstash</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/lobsterai</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/poodle-ai-labs</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -937,8 +1201,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/forthwrite</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/cutonce</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/translate-ace</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -961,20 +1231,32 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/agent-skill</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/swarmvault</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/voxel-studio</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/agent-skill</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/xeder</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/seed-music-generator-free-by-bytedance</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/golem-workers</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -985,8 +1267,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/openscout</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/html-video</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -997,13 +1279,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/html-video</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/openscout</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/ace-id</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/accountabilabuddy</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/timelesshome-ai</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1015,14 +1309,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/timelesshome-ai</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/onehaus</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen3-asr</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/flytrap</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1033,13 +1327,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/phinite-ai</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/melolingua</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/codemachine-cli</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1051,19 +1339,25 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/phinite-ai</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/codemouse</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/2-5-demo</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/aura-personality</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vibe-code-planner</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/agentic-context-engine</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1081,20 +1375,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/simile-ai</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/tokentracker</loc>
     <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/quizlet</loc>
-    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1117,12 +1399,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/locolyst</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/3dfy</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1130,6 +1406,12 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/image-to-video-ai</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/locolyst</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1159,26 +1441,20 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/worldseed</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/gptzero</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/dataease-ai-brand-intelligence</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/worldseed</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/webclaw</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/dataease-ai-brand-intelligence</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1195,8 +1471,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ppts</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/webclaw</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1207,14 +1483,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/songive</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/onwatch</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ppts</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1225,14 +1495,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/silkwave-voice</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mini-swe-agent</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/myraxai</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/silkwave-voice</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1243,13 +1513,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/palabra-ai</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/008-agent</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/myraxai</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1261,7 +1525,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/prompt2love</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/008-agent</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/thinkwatch</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen-image-layered-demo</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/supportbridge</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1273,44 +1555,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/thinkwatch</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/videowise</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/supportbridge</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen-image-layered-demo</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/movoria-ai-all-in-one-ai</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/tencent-edgeone-makers</loc>
     <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/instant-interview</loc>
-    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1321,8 +1567,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/aippt-bigesj</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/instant-interview</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1351,14 +1597,20 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-image-variation</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/1minai</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-image-variation</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/openmemory</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1387,20 +1639,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vidbg-remover</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/302-ai</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/knowhere</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vidbg-remover</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1417,8 +1663,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/maestro</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/knowhere</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1429,14 +1675,20 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/gpt-image-2-gpt-img2</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/liveportrait</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/designlumo</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/nomi</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1447,7 +1699,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/nomi</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/designlumo</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/30-second-academy</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1459,20 +1717,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/30-second-academy</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/2-5</loc>
     <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/hiapi</loc>
-    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1484,6 +1730,12 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/abyssguard</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/selira-ai</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1501,20 +1753,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/selira-ai</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/skybridge</loc>
     <lastmod>2026-06-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/20paths</loc>
-    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1526,6 +1766,12 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/moltis</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/20paths</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1555,26 +1801,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/browseract</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/latitude</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/2slash</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/gemini-omni-ai</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/browseract</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1591,20 +1825,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/floor-plan-ai</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/gemini-omni-ai</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/31memorize</loc>
     <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/fibo</loc>
-    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1621,14 +1849,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vibeready</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/syllaby</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/syllaby</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vibeready</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1645,12 +1873,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/agent-native</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/11cast</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1658,12 +1880,6 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/1clickclaw</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/git-lrc</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1681,12 +1897,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/whacka</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/llmwiki</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1699,8 +1909,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/fashn-vton-1-5</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/whacka</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1711,19 +1921,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/100-vibe-coding</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ztronica</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/fim-one</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/fashn-vton-1-5</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1735,19 +1933,25 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ztronica</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/subtitled</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/fim-one</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/propane</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/3dpresso</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/3daily-reviews</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1759,7 +1963,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/1photoai-reviews</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/3dpresso</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1771,13 +1975,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/acryl</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/1photoai-reviews</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-medcol</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/acryl</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1795,6 +1999,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-medcol</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tripplanner</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/arcreel</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1803,12 +2019,6 @@
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/ai-powered-functionality-for-educators</loc>
     <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tripplanner</loc>
-    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1831,19 +2041,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/2pods</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/knowlix-ai</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/2pods</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/gixo-presentations</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/datephotosai</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1855,20 +2071,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/datephotosai</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/edgequake</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/geolity</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/zaro</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1879,8 +2089,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/zaro</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/cleanbox</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1897,8 +2107,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/cleanbox</loc>
-    <lastmod>2026-06-27</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/adcopy-ai</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1909,19 +2119,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/adcopy-ai</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/15minutes-ai-tool-for-book-summaries</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/120-dev-ai-tool-for-apps</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1933,20 +2131,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/kinetix</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/machinesfluent</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/wp-replai</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/nexus-ai</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1957,7 +2149,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/1px-ai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/wp-replai</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/makko-ai</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -1975,12 +2173,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/makko-ai</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/ltx-desktop</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1993,26 +2185,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/apfel</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/drawd</loc>
-    <lastmod>2026-06-27</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/happy-horse-ai-studio</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/aimage</loc>
     <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/happy-horse-ai-studio</loc>
-    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2029,25 +2209,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/elvex</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/modly</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/valuefocus</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/glm-4v-9b-demo</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2059,20 +2221,26 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/glm-4v-9b-demo</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/promptle</loc>
     <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/soulframe</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/aisa</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/aisa</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/soulframe</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2089,14 +2257,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/meltflex-ai</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/clickcast</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/clickcast</loc>
-    <lastmod>2026-06-27</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/meltflex-ai</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2113,25 +2281,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/bimg-ai</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/recallittech</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/webmatik</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/voice-sheet</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/bimg-ai</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2143,7 +2299,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/docugenie</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/voice-sheet</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2155,13 +2311,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/evalyze</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-product-photography</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/docugenie</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2173,20 +2323,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/banana-ai</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/agentscope-java</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-product-photography</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/adauris</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/banana-ai</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2197,7 +2341,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/boxlite</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/agentscope-java</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2209,7 +2353,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/landppt</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ahsk-ai</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/boxlite</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2221,14 +2371,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ask-layla</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/landppt</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/straktur</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ask-layla</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2239,20 +2389,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/beans</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/rate-my-spanish</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/asmi-ai</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/15minuteplan</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/straktur</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2263,14 +2407,38 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/axonhub</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/beans</loc>
     <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/15minuteplan</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/asmi-ai</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/prompthero</loc>
     <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/prebreach</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/axonhub</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2287,13 +2455,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/agentfield</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/removehandwriting</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/buildroy</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/agentfield</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2317,7 +2491,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/blogburst</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/dullypdf</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2329,13 +2503,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/plot-travel</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/frameai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/blogburst</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2347,13 +2515,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/masset</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/frameai</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/candydocs</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/showslide</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/masset</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2371,7 +2545,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/translate-ace</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tyto</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2407,7 +2581,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/xeder</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/elevcode</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2415,6 +2589,12 @@
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/talkie-1930-13b</loc>
     <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tryon-ink</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2431,6 +2611,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/melolingua</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/citelens-ai</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/aceify-ai</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -2443,20 +2635,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/citelens-ai</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/context-dev</loc>
     <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/seed-music-generator-free-by-bytedance</loc>
-    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2467,13 +2647,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/seedance-2-5-seedance25ai</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/iconstash</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/aura-personality</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2485,7 +2659,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/clikdeo</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/emdash</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/seedance-2-5-seedance25ai</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2497,7 +2677,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/golem-workers</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vibe-code-planner</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/clikdeo</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen2-5-vl-72b-instruct</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/seekdb</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2505,12 +2703,6 @@
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/quotio</loc>
     <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen2-5-vl-72b-instruct</loc>
-    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2533,7 +2725,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/poddisco</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/removefrom-video</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/onwatch</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2545,19 +2743,31 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/removefrom-video</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/openmed</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/inkstudioai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/fulling</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/movoria-ai-all-in-one-ai</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/maestro</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/acontext</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2575,14 +2785,32 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ocr</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/hiapi</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/display-dev</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ocr</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/surf</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/geolity</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2605,13 +2833,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/2-5-artifacts</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/bluerails-discovery</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/2-5-artifacts</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/nova-ai-app</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2629,18 +2863,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/nova-ai-app</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/pdf-to-md-converter</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/mplug-owl-multimodal-chatbot</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -2653,8 +2875,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/snippit</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/pdf-to-md-converter</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2665,19 +2887,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/2-2-ti2v-5b-demo</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-anydoor-online</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/snippit</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/saltfish</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/2-2-ti2v-5b-demo</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2695,19 +2917,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/mvp-builder</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/massgen</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/nextbunny-co</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mvp-builder</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2721,6 +2937,12 @@
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/cotypist</loc>
     <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/nextbunny-co</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2743,6 +2965,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/fun-cosyvoice3-0-5b</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/adsights</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -2755,26 +2983,20 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/fun-cosyvoice3-0-5b</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/ai</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/mintapi-structured-apis-for-humans-and-agents</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/nanobananaeditor</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/nanobananaeditor</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mintapi-structured-apis-for-humans-and-agents</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2791,13 +3013,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/placeprep-ai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/obsidian-second-brain</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/obsidian-second-brain</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/placeprep-ai</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2805,12 +3027,6 @@
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/metallm-all-ai-in-one-chat-ai-aggregator-orchestrator</loc>
     <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/nemotron-3-ultra-by-nvidia</loc>
-    <lastmod>2026-06-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2833,13 +3049,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-doctor-notes</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/nemotron-3-ultra-by-nvidia</loc>
+    <lastmod>2026-06-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/offsend</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-doctor-notes</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2851,7 +3067,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/gif-background-remover</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/offsend</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2863,8 +3079,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/claude-code-ultimate-guide</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/gif-background-remover</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2875,14 +3091,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ytskim</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/workclaw</loc>
-    <lastmod>2026-06-21</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/claude-code-ultimate-guide</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2893,8 +3103,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/propane-go</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/workclaw</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ytskim</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2911,14 +3127,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-postergenius</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/aluo</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/aluo</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-postergenius</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2953,13 +3169,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/storyship</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/offlineutils</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/storyship</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/imagineclip</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -2971,20 +3193,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/imagineclip</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-personal-tts</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/grok-imagine-spicy-mode</loc>
     <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tool-iic-personal-tts</loc>
-    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3007,14 +3223,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/foray-ai</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/batchremover</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/batchremover</loc>
-    <lastmod>2026-06-22</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/foray-ai</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3025,19 +3241,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/opc-skills</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/makersclaw</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/accountabilabuddy</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/opc-skills</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/dobs-ai</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3055,7 +3271,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/dobs-ai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mimo</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3063,12 +3279,6 @@
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/agentsmd-me</loc>
     <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/mimo</loc>
-    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3097,14 +3307,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/podtext</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/2-vl-max</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/2-vl-max</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/podtext</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3415,6 +3625,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/2-2-s2v</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/qwq-32b-vs-deepseek-r1</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -3422,12 +3638,6 @@
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/kairval-ai</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/2-2-s2v</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3457,31 +3667,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vl-max</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/cogvideox-5b-demo</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-iic-multi-style-portrait-stylization</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/3d</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/flux-flux-api</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3499,37 +3691,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/bananaify-ai</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/indextts-2-demo</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/seeto</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-agent-skills</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/cosyvoice-300m</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/stable-diffusion-xl-1-0</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3553,19 +3721,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/modelscopegpt</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/ai-iic-ai-artist</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/3</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3577,31 +3733,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen3-vl-demo</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/narcis</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/wespeak</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/backgrind</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/clint</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3631,12 +3769,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/dim0</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/oak</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -3655,25 +3787,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vivify</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/lurner</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/editly-ai</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/askedabout</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/poddisco</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3685,25 +3805,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/askedabout</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/devboardai</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/onehaus</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/flytrap</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/codemachine-cli</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/inkstudioai</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3715,14 +3829,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/codemouse</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/xleadforge</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/agentic-context-engine</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/tease</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3739,8 +3853,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/mini-swe-agent</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/atomic-chat</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3751,13 +3865,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/openmemory</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/inkly</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/jianying</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/reviewai-your-ai-shopping-assistant</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3775,19 +3889,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/gpt-image-2-gpt-img2</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/slashy</loc>
     <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/subtitled</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mirago</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/prismercloud</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/spendkeep</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3799,14 +3919,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/spendkeep</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/slashspace-ai</loc>
-    <lastmod>2026-06-15</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/open-terminal</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3817,38 +3931,20 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/scite</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/goldfish</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/internlm</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/nexus-ai</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/epochal</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/insightflow-ai</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ahsk-ai</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vl-max</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3865,8 +3961,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/rate-my-spanish</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/gemini-omni</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/epochal</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3877,8 +3979,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/prebreach</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-iic-multi-style-portrait-stylization</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3889,8 +3991,38 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/removehandwriting</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ccg-workflow</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/anyapi</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/propane-go</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/feelpair</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/quizlet</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/pixal3d</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3901,20 +4033,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/novu-connect</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/dullypdf</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/2-2-animate</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/scite</loc>
     <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/plant-identify</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3925,14 +4051,38 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/showslide</loc>
-    <lastmod>2026-06-26</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/seedance-2-5-seedance-25</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/imideo</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/videowise</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/empiriolabs-ai</loc>
     <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/flux-flux-api</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/jianying</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3961,7 +4111,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ornold-mcp</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/2-2-animate</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/followso</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/bananaify-ai</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/indextts-2-demo</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -3973,14 +4141,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/feelpair</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-agent-skills</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/reviewai-your-ai-shopping-assistant</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/antigravity-workspace-template</loc>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3991,26 +4159,32 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/stable-diffusion-xl-1-0</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/meetwave</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/lapu-ai</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/10web</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/modelscopegpt</loc>
     <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/mirago</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/xleadforge</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/3</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4021,20 +4195,50 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tease</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/qwen3-vl-demo</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/mentionagent</loc>
-    <lastmod>2026-06-22</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/thunderbit</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/vibebot-gg</loc>
-    <lastmod>2026-06-22</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/novu-connect</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/wespeak</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/aippt-bigesj</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/fibo</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ornold-mcp</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/git-lrc</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4045,32 +4249,26 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/atomic-chat</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/brandtoads</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/offerflowai</loc>
-    <lastmod>2026-06-22</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/simile-ai</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/moss-tts</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/clint</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ltx-studio</loc>
-    <lastmod>2026-06-22</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/lapu-ai</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4087,8 +4285,26 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/latitude</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/conscriba-add-webmcp-to-your-website-for-free</loc>
     <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/dim0</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/mentionagent</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4105,8 +4321,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/inkly</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vibebot-gg</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/kinetix</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4117,8 +4339,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/prismercloud</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/offerflowai</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4135,26 +4357,20 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/inkfox-ai</loc>
-    <lastmod>2026-06-22</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/floor-plan-ai</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/open-terminal</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/vivify</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/ai-pdf</loc>
     <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/firecrawl-research-index</loc>
-    <lastmod>2026-06-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4189,20 +4405,50 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/ltx-studio</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/inkfox-ai</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/evoscientist</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/insightflow-ai</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/editly-ai</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/tyto</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/deltio</loc>
     <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/adauris</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/agent-native</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/truememory</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4213,14 +4459,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/gemini-omni</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/truememory</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/firecrawl-research-index</loc>
+    <lastmod>2026-06-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4243,20 +4483,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ccg-workflow</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/jesse</loc>
     <lastmod>2026-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/claude-buddy</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/elvex</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4273,8 +4507,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/upstream</loc>
-    <lastmod>2026-06-19</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/claude-buddy</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/forthwrite</loc>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4285,8 +4525,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/swytchcode-cli</loc>
-    <lastmod>2026-06-18</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/100-vibe-coding</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/upstream</loc>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4297,14 +4543,20 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/invoko</loc>
-    <lastmod>2026-06-18</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/openart-director</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/openart-director</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/promptly</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/swytchcode-cli</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4321,14 +4573,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/antigravity-workspace-template</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/turingduel</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/iart-ai</loc>
-    <lastmod>2026-06-15</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/invoko</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4339,8 +4591,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/beatsync-pro</loc>
-    <lastmod>2026-06-23</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/3daily-reviews</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/slashspace-ai</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4351,14 +4609,26 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/10web</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/moss-tts</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/anyapi</loc>
-    <lastmod>2026-06-25</lastmod>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/04-x</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/beatsync-pro</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/iart-ai</loc>
+    <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4369,163 +4639,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/thunderbit</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://moxie-main-shiyan.vercel.app/tools/humanize-text</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/refreshen</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ai-exporter</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/qursor</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/post-perfected</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/taste-lab</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/justhireme</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/agentx</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/wobo-2-0</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/3seconds</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/garden-letters</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/adcreative-ai</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/recipebee</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/pixal3d</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/jcodemunch-mcp</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/planrelief</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/audenci</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/elevcode</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/frans</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/promptnoon</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/playground</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/renoir-ai</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/plant-identify</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/ordr</loc>
-    <lastmod>2026-06-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/zynfoai-no-code-ai-chatbot-builder-agentic-workflows</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://moxie-main-shiyan.vercel.app/tools/getgabs</loc>
+    <loc>https://moxie-main-shiyan.vercel.app/tools/songive</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
