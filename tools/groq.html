@@ -398,17 +398,17 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测Groq的LPU推理速度极快，响应几乎无延迟，非常适合实时应用。注意国内使用需代理，免费额度足够体验。</div><div class="editor-note-meta">2026.03.24 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>Groq 是一家专注于 AI 推理芯片的公司，其 LPU（语言处理单元）架构专为大模型推理设计。我上手实测了它的 API，主要场景是快速调用 Llama、Mixtral 等开源模型进行文本生成。相比传统 GPU 方案，Groq 的响应速度确实快，适合对延迟敏感的应用，比如实时对话或流式输出。</p><p>实测下来，Groq 最大的亮点是推理速度。LPU 架构让 token 生成几乎无延迟，首 token 响应通常在毫秒级，连续对话也感觉不到卡顿。此外，它支持多种主流开源模型，API 兼容 OpenAI 格式，迁移成本低。推理成本也较低，适合高频调用场景。</p><p>不足也很明显：模型选择有限，目前只支持 Llama、Mixtral 等少数几个，无法使用 GPT-4 或 Claude。国内使用需要代理，且免费额度有限，重度用户需付费。另外，LPU 架构虽快，但复杂任务（如长文本推理）的稳定性还有待观察。</p><p>Groq 适合追求极速推理的开发者，尤其是做实时应用或原型验证。如果你对模型多样性要求不高，且能接受代理和付费，它是个不错的补充。但作为主力工具，目前生态还不够成熟，建议结合其他平台使用。</p></div></details></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测Groq的API响应速度极快，推理延迟极低，适合对实时性要求高的场景。注意国内使用需代理。</div><div class="editor-note-meta">2026.03.24 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>Groq 是一家专注于 AI 推理芯片的公司，其 LPU（语言处理单元）架构专为大模型推理设计。我上手实测了它的 API，主要场景是快速调用 Llama、Mixtral 等开源模型进行文本生成。相比传统 GPU 方案，Groq 的响应速度确实快，适合对延迟敏感的应用，比如实时对话或流式输出。</p><p>实测下来，Groq 最大的亮点是推理速度。LPU 架构让 token 生成几乎无延迟，首 token 响应通常在毫秒级，连续对话也感觉不到卡顿。此外，它支持多种主流开源模型，API 兼容 OpenAI 格式，迁移成本低。推理成本也较低，适合高频调用场景。</p><p>不足也很明显：模型选择有限，目前只支持 Llama、Mixtral 等少数几个，无法使用 GPT-4 或 Claude。国内使用需要代理，且免费额度有限，重度用户需付费。另外，LPU 架构虽快，但复杂任务（如长文本推理）的稳定性还有待观察。</p><p>Groq 适合追求极速推理的开发者，尤其是做实时应用或原型验证。如果你对模型多样性要求不高，且能接受代理和付费，它是个不错的补充。但作为主力工具，目前生态还不够成熟，建议结合其他平台使用。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->
         <div class="prod-section">
           <h2>核心特点</h2>
           <div class="feat-list">
-            <div class="feat-item"><span class="n">01</span><span class="t"><strong>LPU推理芯片</strong> ── 专为AI推理设计，毫秒级响应速度。</span></div>
+            <div class="feat-item"><span class="n">01</span><span class="t"><strong>毫秒级推理</strong> ── LPU芯片实现极低延迟的模型推理。</span></div>
             <div class="feat-item"><span class="n">02</span><span class="t"><strong>支持开源模型</strong> ── 兼容Llama、Mixtral等主流开源模型。</span></div>
-            <div class="feat-item"><span class="n">03</span><span class="t"><strong>API服务</strong> ── 提供低延迟的API调用，易于集成。</span></div>
-            <div class="feat-item"><span class="n">04</span><span class="t"><strong>低成本高性能</strong> ── 兼顾速度与成本，适合开发者使用。</span></div>
+            <div class="feat-item"><span class="n">03</span><span class="t"><strong>API服务</strong> ── 提供便捷的API接口，易于集成。</span></div>
+            <div class="feat-item"><span class="n">04</span><span class="t"><strong>低成本</strong> ── 推理速度快且成本低，适合开发者。</span></div>
           </div>
         </div>
 
@@ -416,7 +416,7 @@
         <div class="prod-section">
           <h2>价格</h2>
           <div class="info-list"><div class="info-row"><span class="k">定价模式</span><span class="v">免费+付费</span></div></div>
-          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">提供免费额度，超出后需付费订阅，具体价格以官网为准。</p>
+          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">提供免费额度，超出部分需付费订阅，具体价格以官网为准。</p>
         </div>
 
         <!-- 替代品 -->
@@ -425,7 +425,7 @@
           <div class="alt-grid">
             <a href="/tools/deepseek-v3" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/deepseek.com.png" alt="DeepSeek V3"></div><div class="alt-card-name">DeepSeek V3</div></div><div class="alt-card-desc">深度求索自研的国产开源MoE大模型，推理能力对标GPT-4o，API价格仅主流模型的约1/10，适合高性价比部署。</div></a>
             <a href="/tools/openai-api" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/platform.openai.com.png" alt="OpenAI API"></div><div class="alt-card-name">OpenAI API</div></div><div class="alt-card-desc">OpenAI 官方 API，提供 GPT-4o 和 o 系列模型，支持文本、图像、音频等多模态推理，海外开发首选。</div></a>
-            <a href="/tools/siliconflow" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/siliconflow.cn.png" alt="硅基流动"></div><div class="alt-card-name">硅基流动</div></div><div class="alt-card-desc">国产AI模型API聚合平台，集成主流开源大模型，提供稳定且价格低廉的推理服务，适合开发者快速集成。</div></a>
+            <a href="/tools/minimax" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/minimaxi.com.png" alt="MiniMax"></div><div class="alt-card-name">MiniMax</div></div><div class="alt-card-desc">MiniMax 是海螺 AI 背后的国产大模型，在语音合成与长文本处理上表现突出，支持多模态交互，API 价格亲民。</div></a>
           </div>
         </div>
 
