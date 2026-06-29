@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
+<title>semantic router · MOXIE</title>
+<link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
+<script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
+<script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
+<script src="/moxie-supabase.js?v=20260618-06"></script>
+<script src="/moxie-shared.js?v=20260618-05" defer></script>
+
+<style>
+  /* 产品详情页特有样式 */
+  .prod-hero {
+    padding: 64px 0 32px;
+  }
+  .prod-breadcrumb {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .prod-breadcrumb a { color: var(--ink-2); }
+  .prod-breadcrumb a:hover { color: var(--accent); }
+  .prod-breadcrumb .sep { color: var(--ink-3); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
+
+  .prod-hero-main {
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    gap: 28px;
+    align-items: center;
+  }
+  .prod-hero-logo {
+    width: 96px; height: 96px;
+    border-radius: 18px;
+    background: white;
+    border: 1px solid var(--line);
+    padding: 12px;
+    overflow: hidden;
+  }
+  .prod-hero-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .prod-hero-name {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .prod-hero-name h1 {
+    font-size: 32px; font-weight: 500;
+    color: var(--ink); letter-spacing: -0.02em;
+  }
+  .prod-hero-url {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .prod-hero-desc {
+    font-size: 15px; color: var(--ink-1);
+    line-height: 1.7;
+    margin-bottom: 14px;
+    max-width: 640px;
+  }
+  .prod-hero-tags {
+    display: flex; gap: 14px; align-items: center;
+    font-size: 12px; color: var(--ink-2);
+  }
+  .prod-hero-tags .verified-tag { font-size: 11px; }
+  .prod-hero-actions {
+    display: flex; flex-direction: column; gap: 10px;
+    align-items: flex-end;
+  }
+  .prod-vote-big {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 22px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .15s;
+    min-width: 88px;
+  }
+  .prod-vote-big:hover { border-color: var(--accent); }
+  .prod-vote-big.voted { border-color: var(--accent); background: var(--accent-soft); }
+  .prod-vote-big .tri { font-size: 11px; color: var(--ink-3); }
+  .prod-vote-big .num { font-size: 22px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .prod-vote-big.voted .num, .prod-vote-big.voted .tri { color: var(--accent); }
+  .prod-vote-big .lbl { font-size: 10px; color: var(--ink-3); letter-spacing: 0.05em; margin-top: 4px; }
+
+  /* Section layout */
+  .prod-body {
+    padding: 48px 0 80px;
+  }
+  .prod-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 48px;
+    align-items: start;
+  }
+  .prod-section {
+    padding-bottom: 36px;
+    margin-bottom: 36px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .prod-section:last-child { border-bottom: none; }
+  .prod-section h2 {
+    font-size: 18px; font-weight: 500;
+    color: var(--ink); letter-spacing: -0.01em;
+    margin-bottom: 18px;
+  }
+  .prod-section p {
+    font-size: 13.5px; color: var(--ink-1);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+
+  /* Editor's note (子墨评测) */
+  .editor-note {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 24px 26px;
+    border-left: 3px solid var(--accent);
+  }
+  .editor-note-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    color: var(--ink-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .editor-note-head::before {
+    content: ""; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+  }
+  .editor-note-quote {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .editor-note-meta {
+    font-size: 11px; color: var(--ink-3);
+    font-family: var(--mono);
+    letter-spacing: 0.04em;
+  }
+  /* 完整评测(可展开) */
+  .full-review { margin-top: 12px; }
+  .full-review > summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; color: var(--accent); font-weight: 600;
+    padding: 4px 0; user-select: none;
+  }
+  .full-review > summary::-webkit-details-marker { display: none; }
+  .full-review > summary::after { content: "→"; transition: transform .2s; }
+  .full-review[open] > summary::after { transform: rotate(90deg); }
+  .full-review-body {
+    margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line, rgba(0,0,0,.1));
+  }
+  .full-review-body p {
+    font-size: 14.5px; color: var(--ink); line-height: 1.85; margin: 0 0 14px;
+  }
+  .full-review-body p:last-child { margin-bottom: 0; }
+  .full-review-body p strong { color: var(--ink); }
+
+  /* Feature list */
+  .feat-list {
+    display: grid; gap: 14px;
+    margin-top: 8px;
+  }
+  .feat-item {
+    display: grid; grid-template-columns: 22px 1fr;
+    gap: 12px; align-items: baseline;
+  }
+  .feat-item .n {
+    font-family: var(--mono);
+    font-size: 11px; color: var(--ink-3);
+  }
+  .feat-item .t {
+    font-size: 13.5px; color: var(--ink-1);
+    line-height: 1.65;
+  }
+  .feat-item .t strong { color: var(--ink); font-weight: 500; }
+
+  /* Price table */
+  .price-table {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .price-row {
+    display: grid; grid-template-columns: 1fr auto;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line-2);
+    align-items: center;
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-row .label { font-size: 13px; color: var(--ink-1); }
+  .price-row .label small { color: var(--ink-3); font-size: 11px; margin-left: 6px; }
+  .price-row .val { font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 500; }
+
+  /* Alternatives grid */
+  .alt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .alt-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .alt-card:hover { border-color: var(--ink-3); background: var(--bg-soft); }
+  .alt-card-top {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .alt-card-logo {
+    width: 28px; height: 28px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 3px;
+    overflow: hidden;
+  }
+  .alt-card-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .alt-card-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .alt-card-desc { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+
+  /* Right side */
+  .prod-side .side-block { margin-bottom: 28px; }
+  .info-list {}
+  .info-row {
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-2);
+    align-items: baseline;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .k { font-size: 11px; color: var(--ink-2); }
+  .info-row .v { font-size: 12.5px; color: var(--ink); text-align: right; font-family: var(--mono); }
+
+  .btn-block {
+    display: block; text-align: center;
+    width: 100%; padding: 12px 0;
+    border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    transition: all .15s;
+    margin-bottom: 8px;
+  }
+  .btn-block.primary { background: var(--accent); color: white; }
+  .btn-block.primary:hover { background: var(--accent-d); }
+  .btn-block.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink-1); }
+  .btn-block.ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* Discussion */
+  .disc-list {}
+  .disc-item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .disc-item:last-child { border-bottom: none; }
+  .disc-head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .disc-av {
+    width: 22px; height: 22px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; color: var(--ink-1);
+  }
+  .disc-name { font-size: 12px; font-weight: 500; color: var(--ink); }
+  .disc-time { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+  .disc-body { font-size: 13px; color: var(--ink-1); line-height: 1.65; margin-left: 30px; }
+
+  @media (max-width: 900px) {
+    .prod-hero-main { grid-template-columns: 64px 1fr; }
+    .prod-hero-logo { width: 64px; height: 64px; }
+    .prod-hero-name h1 { font-size: 24px; }
+    .prod-hero-actions { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; }
+    .prod-grid { grid-template-columns: 1fr; }
+    .alt-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<meta name="description" content="系统级智能路由器，用于混合模型">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/tools/semantic-router">
+<meta property="og:type" content="website">
+<meta property="og:title" content="semantic router · MOXIE">
+<meta property="og:description" content="系统级智能路由器，用于混合模型">
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/tools/semantic-router">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"semantic router","description":"系统级智能路由器，用于混合模型","url":"https://moxie-main-shiyan.vercel.app/tools/semantic-router","applicationCategory":"工作流 / Bot","operatingSystem":"Web"}</script>
+</head>
+<body>
+
+<!-- ═══════ TOPBAR (共用) ═══════ -->
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="/moxie-preview.html" class="brand-logo">
+      <img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24">
+    </a>
+    <nav class="nav-center">
+      <a href="/moxie-preview.html">榜单</a>
+      <a href="/moxie-new.html">上新</a>
+      <a href="/moxie-business.html">商业落地</a>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid" data-mega-grid></div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="/moxie-blog.html">文章</a>
+      <a href="/moxie-news.html">新闻</a>
+      
+    </nav>
+    <div class="top-actions">
+      <a href="#" class="cmd-trigger">
+        <i data-lucide="search" style="width:14px;height:14px;color:var(--ink-3);"></i>
+        <span class="label">搜索产品 / maker / tag…</span>
+      </a>
+      <a href="/moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="/moxie-login.html" class="btn-accent" id="loginBtn">登录</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════ 产品 Hero ═══════ -->
+<section class="prod-hero">
+  <div class="container">
+    <div class="prod-breadcrumb">
+      <a href="/moxie-preview.html">榜单</a>
+      <a href="/moxie-new.html">上新</a>
+      <span class="sep">/</span>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid" data-mega-grid></div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <span class="sep">/</span>
+      <span>semantic router</span>
+    </div>
+
+    <div class="prod-hero-main">
+      <div class="prod-hero-logo">
+        <img id="phLogo" src="/public/logos/vllm-semantic-router.com.png" alt="" onerror="moxieLogoFallback&&moxieLogoFallback(this)">
+      </div>
+      <div class="prod-hero-info">
+        <div class="prod-hero-name">
+          <h1 id="phName">semantic router</h1>
+          <span class="prod-hero-url" id="phUrl">vllm-semantic-router.com</span>
+        </div>
+        <p class="prod-hero-desc" id="phDesc">系统级智能路由器，用于混合模型</p>
+        <div class="prod-hero-tags" id="phTags"></div>
+      </div>
+      <div class="prod-hero-actions">
+        <a id="phVisit" href="https://vllm-semantic-router.com?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-accent-lg" style="padding: 12px 24px; font-size: 14px;">访问产品 ↗</a>
+        <div class="prod-vote-big" id="prodVote">
+          <div class="tri">▲</div>
+          <div class="num" id="phVoteNum">0</div>
+          <div class="lbl">UPVOTE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ Body ═══════ -->
+<section class="prod-body">
+  <div class="container">
+    <div class="prod-grid">
+      <!-- LEFT -->
+      <div class="prod-main-col">
+
+        <!-- 子墨评测 -->
+        <div class="prod-section">
+          <h2>风评</h2>
+          <div class="editor-note"><div class="editor-note-head">综合风评</div><div class="editor-note-quote">semantic router 是一个系统级智能路由器，专注于在云端、数据中心和边缘环境之间实现混合模型的路由与推理优化。它能够根据任务特性智能分配请求到最合适的AI模型，从而提升整体效率，适用于需要灵活调度多种模型的基础设施场景。</div><div class="editor-note-quote">该工具适合需要管理多模型部署的团队，尤其是涉及云端与边缘混合架构的项目。使用时需注意，国内访问可能需要代理，且其作为基础设施组件，部署和配置可能涉及一定的学习成本。具体定价模式需参考官网说明。</div><div class="editor-note-meta">综合公开信息整理 · 暂未列入子墨实测</div></div>
+        </div>
+
+        <!-- 核心特点 -->
+        <div class="prod-section">
+          <h2>核心特点</h2>
+          <div class="feat-list">
+            <div class="feat-item"><span class="n">01</span><span class="t"><strong>混合模型路由</strong> ── 在云端、数据中心和边缘间智能分配请求。</span></div>
+            <div class="feat-item"><span class="n">02</span><span class="t"><strong>系统级集成</strong> ── 作为基础设施层无缝对接现有架构。</span></div>
+            <div class="feat-item"><span class="n">03</span><span class="t"><strong>推理优化</strong> ── 根据任务特性选择最优模型提升效率。</span></div>
+          </div>
+        </div>
+
+        <!-- 价格 -->
+        <div class="prod-section">
+          <h2>价格</h2>
+          <div class="info-list"><div class="info-row"><span class="k">定价模式</span><span class="v">不详</span></div></div>
+          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">价格未公开，具体以官网为准。</p>
+        </div>
+
+        <!-- 替代品 -->
+        <div class="prod-section">
+          <h2>同类替代</h2>
+          <div class="alt-grid">
+            <a href="/tools/coze" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/coze.cn.png" alt="Coze"></div><div class="alt-card-name">Coze</div></div><div class="alt-card-desc">字节跳动推出的零代码 AI Bot 构建平台，支持工作流编排、知识库集成与多平台发布，国内可直接使用。</div></a>
+            <a href="/tools/zapier" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/zapier.com.png" alt="Zapier"></div><div class="alt-card-name">Zapier</div></div><div class="alt-card-desc">连接9000+应用的老牌自动化平台，通过AI工作流与智能体实现跨应用任务编排，全球300万企业信赖。</div></a>
+            <a href="/tools/yuanqi" class="alt-card"><div class="alt-card-top"><div class="alt-card-logo"><img src="/public/logos/yuanqi.tencent.com.png" alt="腾讯元器"></div><div class="alt-card-name">腾讯元器</div></div><div class="alt-card-desc">腾讯推出的零代码AI智能体开发与分发平台，深度集成微信等生态，支持免费模型，可快速创建聊天机器人并分发到多渠道。</div></a>
+          </div>
+        </div>
+
+        <!-- 讨论 -->
+        <div class="prod-section">
+          <h2>用户讨论 <span id="discCount" style="font-size:12px;color:var(--ink-3);font-weight:400;">0 条</span></h2>
+          <div id="commentForm" style="margin-bottom:18px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--bg-soft);" hidden>
+            <textarea id="commentBody" placeholder="说点真实使用体验，避免营销话术" style="width:100%;border:0;background:transparent;font-size:13px;color:var(--ink);resize:vertical;min-height:60px;outline:none;font-family:inherit;line-height:1.6;"></textarea>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <span style="font-size:11px;color:var(--ink-3)" id="commentHint"></span>
+              <button id="commentSend" class="btn-accent-lg" style="padding:7px 16px;font-size:12.5px;">发布</button>
+            </div>
+          </div>
+          <div id="commentNotLoggedIn" style="padding:18px;border:1px dashed var(--line);border-radius:10px;text-align:center;color:var(--ink-2);font-size:13px;margin-bottom:18px;" hidden>
+            登录后即可发表讨论 · <a href="/moxie-login.html" style="color:var(--accent);">去登录</a>
+          </div>
+          <div class="disc-list" id="discList">
+            <div style="padding:20px 0;color:var(--ink-3);font-size:13px;">加载评论…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <aside class="prod-side">
+        <div class="side-block">
+          <div class="sec-label"><span>产品信息</span></div>
+          <div class="info-list">
+            <div class="info-row"><span class="k">分类</span><span class="v">工作流 / Bot</span></div>
+            <div class="info-row"><span class="k">价格</span><span class="v">不详</span></div>
+            <div class="info-row"><span class="k">国内可用</span><span class="v">⚠ 需代理</span></div>
+            <div class="info-row"><span class="k">收录于</span><span class="v">2026.06</span></div>
+            <div class="info-row"><span class="k">更新于</span><span class="v">2026.06.29</span></div>
+          </div>
+        </div>
+
+        <div class="side-block">
+          <a href="https://vllm-semantic-router.com?ref=moxie" target="_blank" rel="noopener noreferrer" class="btn-block primary">访问产品官网 ↗</a>
+          <a href="#" class="btn-block ghost" id="favBtn">收藏</a>
+          <a href="#" class="btn-block ghost" id="reportBtn">举报问题</a>
+        </div>
+
+        <div class="side-block">
+          <div class="sec-label"><span>是这款产品的 Maker？</span></div>
+          <p style="font-size:12.5px;color:var(--ink-1);line-height:1.6;margin-bottom:12px;">认领后可编辑产品信息、回复用户讨论、申请 PREMIUM 推广位。</p>
+          <a href="/moxie-submit.html" class="btn-block ghost">认领此产品</a>
+          <a href="/moxie-badge.html" class="btn-block ghost" style="margin-top:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><line x1="6" x2="18" y1="9" y2="9"/><path d="M9 9v7a3 3 0 0 0 6 0V9"/><path d="M9 22h6"/><path d="M12 19v3"/></svg>
+            领取上榜徽章
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER (共用) ═══════ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="/moxie-preview.html" class="brand-logo">
+          <img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="117" height="28">
+        </a>
+        <p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p>
+        <div class="meta-line">
+          <span class="live-dot"></span>
+          MOXIE · BUILD 2026.05.23 · <span class="js-tool-count">3,847</span> TOOLS
+        </div>
+      </div>
+      <div class="fcol">
+        <h4>发现</h4>
+        <a href="/moxie-new.html">今日上新</a>
+        <a href="/moxie-business.html">商业落地</a>
+        <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid" data-mega-grid></div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+        <a href="/moxie-blog.html">文章</a>
+      </div>
+      <div class="fcol">
+        <h4>产品</h4>
+        <a href="/moxie-preview.html?chat=open">MOXIE 助手</a>
+        <span class="planned">提示词订阅 <span class="tag">规划中</span></span>
+        <span class="planned">AI 花销追踪 <span class="tag">规划中</span></span>
+      </div>
+      <div class="fcol">
+        <h4>资源</h4>
+        <a href="/moxie-about.html">关于我们</a>
+        <a href="/moxie-about.html#faq">FAQ</a>
+        
+      </div>
+      <div class="fcol">
+        <h4>合作</h4>
+        <a href="/moxie-submit.html">提交产品</a>
+        
+        <a href="/moxie-pricing.html">商务合作</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2024 — 2026 MOXIE</span>
+      <div class="right">
+        <a href="/moxie-privacy.html">隐私政策</a>
+        <a href="/moxie-terms.html">服务条款</a>
+        <a href="/moxie-about.html">联系我们</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* 减少动效偏好下不启用 Lenis 平滑滚动 */
+  if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }
+  if (window.lucide) lucide.createIcons();
+
+  // 投票
+  /* ═══════════════════ 从 Supabase 拉产品 + 评论 ═══════════════════ */
+  function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+  function timeAgo(iso) {
+    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (diff < 60) return '刚刚';
+    if (diff < 3600) return Math.floor(diff/60) + 'm';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h';
+    if (diff < 86400*7) return Math.floor(diff/86400) + 'd';
+    return new Date(iso).toISOString().slice(0,10);
+  }
+
+  let CUR_PRODUCT = null;
+
+  window.moxieWhenDBReady(async (db) => {
+    if (!db) {
+      document.getElementById('phName').textContent = '数据库未配置';
+      document.getElementById('phDesc').textContent = '打开 moxie-supabase.js?v=20260618-06 填 URL 和 anon key';
+      return;
+    }
+    const slug = "semantic-router";
+    const { data: p, error } = await window.MoxieDB.productBySlug(slug);
+    if (error || !p) {
+      document.getElementById('phName').textContent = '产品不存在';
+      document.getElementById('phDesc').textContent = '可能已下架或 slug 不对：' + slug;
+      return;
+    }
+    CUR_PRODUCT = p;
+    document.title = p.name + ' · MOXIE';
+    document.getElementById('phLogo').src = `/public/logos/${p.domain}.png`;
+    document.getElementById('phLogo').alt = p.name;
+    document.getElementById('phName').textContent = p.name;
+    document.getElementById('phUrl').textContent = p.domain;
+    document.getElementById('phDesc').textContent = p.description || p.tagline;
+    document.getElementById('phVisit').href = `https://${p.domain}?ref=moxie`;
+    document.getElementById('phVoteNum').textContent = p.vote_count;
+    const tagsBox = document.getElementById('phTags');
+    tagsBox.innerHTML = (p.verified ? '<span class="verified-tag">子墨测过</span>' : '')
+      + (p.tags || []).map(t => `<span class="ptag">${escH(t)}</span>`).join('');
+
+    /* 投票 */
+    const vEl = document.getElementById('prodVote');
+    const numEl = document.getElementById('phVoteNum');
+    const base = p.vote_count;
+    let isVoted = await window.MoxieDB.voteCheck(p.id);
+    if (isVoted) vEl.classList.add('voted');
+    vEl.addEventListener('click', async () => {
+      const res = await window.MoxieDB.voteToggle(p.id);
+      if (res.error === 'not-logged-in') {
+        window.moxieToast && window.moxieToast('登录后才能投票');
+        setTimeout(() => location.href = 'moxie-login.html', 800);
+        return;
+      }
+      isVoted = !!res.voted;
+      vEl.classList.toggle('voted', isVoted);
+      numEl.textContent = String(base + (isVoted ? 1 : 0));
+    });
+
+    /* 评论列表 + 表单 */
+    await loadComments(p.id);
+    const { data: { session } } = await db.auth.getSession();
+    if (session) {
+      document.getElementById('commentForm').hidden = false;
+    } else {
+      document.getElementById('commentNotLoggedIn').hidden = false;
+    }
+    document.getElementById('commentSend')?.addEventListener('click', async () => {
+      const body = document.getElementById('commentBody').value.trim();
+      if (!body) { window.moxieToast && window.moxieToast('内容不能为空'); return; }
+      if (body.length < 5) { window.moxieToast && window.moxieToast('再多说几句吧'); return; }
+      const btn = document.getElementById('commentSend');
+      btn.disabled = true; btn.textContent = '发送中…';
+      const { error } = await window.MoxieDB.postComment('product', p.id, body);
+      if (error) {
+        window.moxieToast && window.moxieToast('发送失败：' + (error.message || error));
+        btn.disabled = false; btn.textContent = '发布'; return;
+      }
+      document.getElementById('commentBody').value = '';
+      btn.disabled = false; btn.textContent = '发布';
+      await loadComments(p.id);
+      window.moxieToast && window.moxieToast('已发布 ✓');
+    });
+  });
+
+  async function loadComments(productId) {
+    const list = document.getElementById('discList');
+    const cnt = document.getElementById('discCount');
+    const { data, error } = await window.MoxieDB.commentsFor('product', productId);
+    if (error) { list.innerHTML = `<div style="padding:20px 0;color:var(--ink-3);font-size:13px;">加载失败</div>`; return; }
+    cnt.textContent = (data?.length || 0) + ' 条';
+    if (!data?.length) {
+      list.innerHTML = `<div style="padding:24px 0;color:var(--ink-3);font-size:13px;text-align:center;">还没有讨论。来当第一个？</div>`;
+      return;
+    }
+    list.innerHTML = data.map(c => {
+      const name = c.moxie_profiles?.display_name || '匿名';
+      const initial = (name[0] || '?').toUpperCase();
+      return `<div class="disc-item">
+        <div class="disc-head">
+          <div class="disc-av">${escH(initial)}</div>
+          <span class="disc-name">${escH(name)}</span>
+          <span class="disc-time">· ${timeAgo(c.created_at)}</span>
+        </div>
+        <div class="disc-body">${escH(c.body)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  /* 收藏 / 举报 占位 toast (不动) */
+  const FAV_KEY = 'moxie-favorites';
+  const favBtn = document.getElementById('favBtn');
+  if (favBtn) {
+    let favs = {};
+    try { favs = JSON.parse(localStorage.getItem(FAV_KEY) || '{}'); } catch (e) {}
+    favBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!CUR_PRODUCT) return;
+      const pid = CUR_PRODUCT.slug;
+      if (favs[pid]) { delete favs[pid]; favBtn.textContent = '收藏'; }
+      else { favs[pid] = 1; favBtn.textContent = '已收藏 ✓'; }
+      try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch (e) {}
+      window.moxieToast && window.moxieToast(favs[pid] ? '已加入收藏' : '已取消收藏');
+    });
+  }
+  const reportBtn = document.getElementById('reportBtn');
+  if (reportBtn) reportBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.moxieToast && window.moxieToast('举报已记录，编辑会在 24 小时内查看');
+  });
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>
