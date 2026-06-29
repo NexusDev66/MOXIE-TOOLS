@@ -11,7 +11,7 @@ name: Daily Refresh (rank + prerender + sitemap)
 
 on:
   schedule:
-    - cron: '0 18,22,2,6,10,14 * * *'  # 每 4 小时一次,北京 02/06/10/14/18/22(UTC 18/22/02/06/10/14):每天凌晨2点起滚动上新
+    - cron: '0 19,1,7,13 * * *'  # 每 6 小时一次,北京 03/09/15/21(UTC 19/01/07/13):每天凌晨3点起滚动上新
   workflow_dispatch:        # 允许手动触发
 
 permissions:
@@ -101,7 +101,7 @@ jobs:
         continue-on-error: true
 
       - name: 候选自动上架(完善度达标的 pending → published,留底仓防放干,直连DB,失败不阻塞)
-        run: node cli/promote-candidates.js --limit 20 --reserve 40
+        run: node cli/promote-candidates.js --limit 30 --reserve 40
         continue-on-error: true
 
       - name: 重算权重(rank)
