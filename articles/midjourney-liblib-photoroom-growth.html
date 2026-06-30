@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
+<title>用 Midjourney 做增长：AI图像获客与内容运营实战指南 · MOXIE</title>
+<link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
+<script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
+<script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
+<script src="/moxie-supabase.js?v=20260618-06"></script>
+<script src="/moxie-shared.js?v=20260618-05" defer></script>
+<style>
+  /* ── Hero with cover image ── */
+  .art-hero { padding: 32px 0 0; }
+  .art-breadcrumb { font-size: 12px; color: var(--ink-3); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  .art-breadcrumb a { color: var(--ink-2); }
+  .art-breadcrumb a:hover { color: var(--accent); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
+
+  .art-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+  .art-meta-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.06em; }
+  .art-meta-top .tag { color: var(--accent); font-weight: 600; }
+  .art-meta-top .sep { color: var(--ink-3); }
+  .art-title { font-size: 40px; font-weight: 500; color: var(--ink); letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 20px; }
+  .art-excerpt { font-size: 17px; color: var(--ink-1); line-height: 1.75; margin-bottom: 32px; max-width: 720px; }
+  .art-author { display: flex; align-items: center; gap: 12px; margin-bottom: 48px; }
+  .art-author-av { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; }
+  .art-author-info .n { font-size: 13.5px; color: var(--ink); font-weight: 500; }
+  .art-author-info .d { font-size: 12px; color: var(--ink-2); }
+
+  /* Cover image */
+  .art-cover {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto 56px;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 16/8;
+    background: linear-gradient(135deg, #1D2129, #2E3441);
+    position: relative;
+  }
+  .art-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .art-cover-caption {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--ink-3);
+    max-width: 800px;
+    margin: 12px auto 0;
+    font-style: italic;
+  }
+
+  /* Body */
+  .art-body { padding: 0 0 80px; }
+  .art-grid { display: grid; grid-template-columns: 1fr 240px; gap: 64px; max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+  .art-content { max-width: 720px; font-family: "Inter", "Noto Sans SC", sans-serif; }
+  .art-content h2 { font-size: 24px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin: 56px 0 18px; }
+  .art-content h3 { font-size: 18px; font-weight: 500; color: var(--ink); margin: 36px 0 14px; }
+  .art-content p { font-size: 15.5px; color: var(--ink-1); line-height: 1.85; margin-bottom: 22px; }
+  .art-content ul, .art-content ol { margin: 0 0 24px 24px; }
+  .art-content li { font-size: 15.5px; color: var(--ink-1); line-height: 1.8; margin-bottom: 8px; }
+  .art-content strong { color: var(--ink); font-weight: 500; }
+  .art-content code { font-family: var(--mono); font-size: 13px; background: var(--bg-soft); padding: 2px 6px; border-radius: 4px; color: var(--ink); }
+
+  /* Pull quote */
+  .pull-quote {
+    margin: 40px 0;
+    padding: 28px 32px;
+    border-left: 4px solid var(--accent);
+    background: var(--bg-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .pull-quote p {
+    font-size: 18px !important;
+    font-weight: 500;
+    color: var(--ink) !important;
+    line-height: 1.65 !important;
+    margin-bottom: 0 !important;
+    font-style: italic;
+  }
+  .pull-quote .qa {
+    font-size: 12px;
+    color: var(--ink-2);
+    margin-top: 12px;
+    font-style: normal;
+  }
+
+  /* Figure / inline image */
+  .figure {
+    margin: 36px 0;
+  }
+  .figure img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    background: var(--bg-soft);
+  }
+  .figure figcaption {
+    font-size: 12px;
+    color: var(--ink-2);
+    text-align: center;
+    margin-top: 12px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Side-by-side images */
+  .figure-row {
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .figure-row img { width: 100%; border-radius: 10px; display: block; }
+
+  /* Code block */
+  .code-block {
+    background: #1D2129;
+    color: #E5E6EB;
+    padding: 24px 28px;
+    border-radius: 10px;
+    margin: 28px 0;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .code-block .c-key { color: #FF6B9D; }
+  .code-block .c-str { color: #A6E3A1; }
+  .code-block .c-com { color: #6B7280; }
+
+  /* Table */
+  .art-content table { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: 13.5px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .art-content th, .art-content td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--line-2); }
+  .art-content th { background: var(--bg-soft); font-weight: 500; color: var(--ink); }
+  .art-content td { color: var(--ink-1); }
+  .art-content tr:last-child td { border-bottom: none; }
+
+  /* Tag highlight box */
+  .info-box {
+    margin: 28px 0;
+    padding: 18px 22px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(221,110,76,0.2);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .info-box::before { content: "💡 "; }
+
+  /* Image grid (3 columns) */
+  .figure-grid-3 {
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .figure-grid-3 img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+
+  /* Right side */
+  .art-side { position: sticky; top: 88px; align-self: start; }
+  .toc-block, .related-block, .tools-block { padding: 22px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 20px; }
+  .toc-block h4, .related-block h4, .tools-block h4 { font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; font-weight: 500; margin-bottom: 14px; text-transform: uppercase; }
+  .toc-list { list-style: none; }
+  .toc-list li { padding: 6px 0; font-size: 12.5px; color: var(--ink-1); line-height: 1.5; cursor: pointer; }
+  .toc-list li:hover { color: var(--accent); }
+  .toc-list li.active { color: var(--accent); font-weight: 500; }
+  .related-prod { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+  .related-prod:last-child { border-bottom: none; }
+  .related-prod-logo { width: 28px; height: 28px; background: white; border: 1px solid var(--line); border-radius: 6px; padding: 3px; overflow: hidden; flex-shrink: 0; }
+  .related-prod-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .related-prod-name { font-size: 12.5px; color: var(--ink); font-weight: 500; }
+  .related-prod-tag { font-size: 11px; color: var(--ink-2); }
+
+  /* Comments section */
+  .art-comments { max-width: 720px; margin: 64px auto 0; padding: 40px 0; border-top: 1px solid var(--line); }
+  .art-comments h2 { font-size: 22px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 24px; }
+  .comment-locked { padding: 28px; background: var(--bg-soft); border-radius: 10px; text-align: center; border: 1px dashed var(--line); }
+  .comment-locked p { font-size: 13.5px; color: var(--ink-1); margin-bottom: 14px; line-height: 1.6; }
+  .comment-list { margin-top: 28px; }
+  .comment-item { padding: 18px 0; border-bottom: 1px solid var(--line-2); }
+  .comment-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .comment-av { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-soft); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--ink-1); }
+  .comment-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .comment-time { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+  .comment-body { font-size: 14px; color: var(--ink-1); line-height: 1.7; margin-left: 38px; }
+
+  .art-end-cta { background: var(--bg-soft); border-radius: 14px; padding: 36px 32px; text-align: center; margin: 56px auto; max-width: 720px; }
+  .art-end-cta h3 { font-size: 20px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 8px; }
+  .art-end-cta p { font-size: 13px; color: var(--ink-1); line-height: 1.65; margin-bottom: 20px; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .art-end-cta .row { display: inline-flex; gap: 8px; }
+
+  @media (max-width: 900px) {
+    .art-grid { grid-template-columns: 1fr; }
+    .art-side { position: static; }
+    .art-title { font-size: 28px; }
+    .figure-row { grid-template-columns: 1fr; }
+    .figure-grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+<meta name="description" content="本文从运营增长视角，拆解如何用 Midjourney、LiblibAI、Photoroom 等工具实现内容获客、分发与转化，提供可执行的打法与案例。">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/articles/midjourney-liblib-photoroom-growth">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 Midjourney 做增长：AI图像获客与内容运营实战指南 · MOXIE">
+<meta property="og:description" content="本文从运营增长视角，拆解如何用 Midjourney、LiblibAI、Photoroom 等工具实现内容获客、分发与转化，提供可执行的打法与案例。">
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/midjourney-liblib-photoroom-growth">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用 Midjourney 做增长：AI图像获客与内容运营实战指南","description":"本文从运营增长视角，拆解如何用 Midjourney、LiblibAI、Photoroom 等工具实现内容获客、分发与转化，提供可执行的打法与案例。","image":["/public/covers/midjourney-liblib-photoroom-growth.svg"],"datePublished":"2026-06-30T06:02:39.833789+00:00","dateModified":"2026-06-30T06:02:39.833789+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/midjourney-liblib-photoroom-growth"}}</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="/moxie-preview.html" class="brand-logo"><img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24"></a>
+    <nav class="nav-center">
+      <a href="/moxie-preview.html">榜单</a>
+      <a href="/moxie-new.html">上新</a>
+      <a href="/moxie-business.html">商业落地</a>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid" data-mega-grid></div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="/moxie-blog.html" >文章</a>
+      
+      <a href="/moxie-news.html">新闻</a>
+    </nav>
+    <div class="top-actions">
+      <a href="#" class="cmd-trigger"><i data-lucide="search" style="width:14px;height:14px;color:var(--ink-3);"></i><span class="label">搜索产品 / maker / tag…</span></a>
+      <a href="/moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="/moxie-login.html" class="btn-accent" id="loginBtn">登录</a>
+    </div>
+  </div>
+</header>
+
+<section class="art-hero">
+  <div class="container">
+    <div class="art-breadcrumb">
+      <a href="/moxie-preview.html">首页</a> /
+      <a href="/moxie-blog.html">文章</a>
+      <a href="/moxie-news.html">新闻</a> /
+      <span>REVIEW</span>
+    </div>
+  </div>
+
+  <div class="art-hero-inner">
+    <div class="art-meta-top">
+      <span class="tag" id="artCategory">增长</span>
+      <span class="sep">·</span>
+      <span id="artDate">—</span>
+      <span class="sep">·</span>
+      <span id="artReadMins">— MIN READ</span>
+    </div>
+    <h1 class="art-title" id="artTitle">用 Midjourney 做增长：AI图像获客与内容运营实战指南</h1>
+    <p class="art-excerpt" id="artExcerpt">本文从运营增长视角，拆解如何用 Midjourney、LiblibAI、Photoroom 等工具实现内容获客、分发与转化，提供可执行的打法与案例。</p>
+    <div class="art-author">
+      <div class="art-author-av">编</div>
+      <div class="art-author-info">
+        <div class="n">MOXIE 编辑团队</div>
+        <div class="d">独立测试 · 不收任何赞助</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cover image -->
+  <figure class="art-cover" id="artCoverWrap">
+    <img id="artCover" src="" alt="" style="display:none;">
+  </figure>
+</section>
+
+<section class="art-body">
+  <div class="container">
+    <div class="art-grid">
+      <article class="art-content" id="artBody"><h2 id="sec-1">一、Midjourney 在增长中的定位：视觉内容引擎</h2><p>在内容驱动的增长策略中，高质量视觉素材是吸引用户点击、提升转化率的关键。<strong>用 Midjourney 做增长</strong>的核心在于将其作为“视觉内容引擎”，以极低成本批量生成符合品牌调性的图片，用于社交媒体、广告素材、落地页等场景。相比传统设计流程，Midjourney 将单张图片产出时间从小时级压缩到分钟级，且艺术风格多样，特别适合需要快速测试创意的团队。</p><h2 id="sec-2">二、Midjourney 获客：三大可执行打法</h2><h3>1. 社交媒体“视觉钩子”策略</h3><p>在 Instagram、小红书、Twitter 等平台，用 Midjourney 生成具有冲击力的系列图片作为“钩子”，吸引用户互动。例如，一个旅游账号可以生成不同风格的“未来城市”系列，每张图配一句引发好奇的文案，引导用户评论或点击链接。关键点：保持风格统一，并在图片中植入品牌水印或产品信息，实现品牌曝光。</p><h3>2. 广告素材 A/B 测试</h3><p>利用 Midjourney 快速生成多组广告图（如产品场景图、人物形象图），对比点击率。例如，电商团队可以为同一款产品生成“极简白背景”、“生活场景”、“未来科技”三种风格，投放 Facebook 广告，筛选出最优素材。注意：避免直接使用 Midjourney 生成的文字，需后期添加。</p><h3>3. 用户生成内容（UGC）激励</h3><p>发起“用 Midjourney 创作你的梦想产品”等活动，鼓励用户使用品牌提供的提示词生成图片并分享。品牌可以精选作品进行二次传播，同时收集用户偏好数据。这种<strong>Midjourney 获客</strong>方式成本低、参与感强，适合社区型产品。</p><h2 id="sec-3">三、Midjourney 内容运营：从生产到分发的闭环</h2><h3>1. 内容矩阵搭建</h3><p>将 Midjourney 生成的图片按主题分类（如教程、灵感、案例），形成内容日历。例如，每周一发布“AI 艺术赏析”，周三发布“提示词技巧”，周五发布“用户作品精选”。通过固定栏目培养用户阅读习惯，提升粘性。</p><h3>2. 结合 LiblibAI 扩展素材库</h3><p>对于需要特定风格或模型的场景，可引入 LiblibAI 平台。LiblibAI 提供海量 Stable Diffusion 模型，支持在线生图，无需本地部署。运营人员可以在 LiblibAI 上找到适合品牌风格的模型（如二次元、写实、插画），生成与 Midjourney 互补的素材。例如，用 Midjourney 生成高艺术感主图，用 LiblibAI 生成细节更可控的配图。</p><h3>3. 用 Photoroom 优化转化素材</h3><p>当需要将生成的图片用于电商或广告时，Photoroom 可以快速完成抠图、背景替换和批量处理。例如，用 Midjourney 生成模特图后，用 Photoroom 一键替换背景为纯色或场景图，再添加产品标签，形成可直接投放的素材。Photoroom 的批量处理功能尤其适合需要大量 SKU 的电商团队。</p><h2 id="sec-4">四、案例拆解：从获客到转化的完整路径</h2><p>假设一个独立站卖家销售家居装饰品，目标是通过内容营销提升转化率。具体步骤：</p><ul><li><strong>获客阶段：</strong>用 Midjourney 生成“未来家居风格”系列图片，在 Pinterest 和 Instagram 发布，标题包含“用 Midjourney 做增长”等关键词，吸引设计爱好者关注。</li><li><strong>内容运营阶段：</strong>在博客中发布“如何用 Midjourney 设计你的梦想客厅”教程，嵌入产品链接，并引导用户到 LiblibAI 下载相关模型。</li><li><strong>转化阶段：</strong>将产品实拍图用 Photoroom 处理成与 Midjourney 风格一致的场景图，作为产品详情页主图，提升页面停留时间和购买意愿。</li></ul><h2 id="sec-5">五、常见问题</h2><h3>Q1：用 Midjourney 做增长需要哪些前期准备？</h3><p>需要订阅 Midjourney 服务（具体价格以官网实测为准），并准备清晰的提示词策略。建议先建立品牌视觉规范（如主色调、风格关键词），确保生成内容一致性。国内用户使用需代理。</p><h3>Q2：如何衡量 Midjourney 内容运营的效果？</h3><p>可追踪以下指标：社交媒体互动率（点赞、评论、分享）、广告点击率（CTR）、落地页转化率、用户生成内容数量。通过 A/B 测试对比使用 Midjourney 素材前后的数据变化。</p><h3>Q3：LiblibAI 和 Photoroom 如何与 Midjourney 协同？</h3><p>LiblibAI 提供更多模型选择，适合需要特定风格或更精细控制的场景；Photoroom 用于后期处理，提升素材的商用适配性。三者结合可覆盖从创意到落地的全流程。具体价格以官网为准。</p></article>
+
+      <aside class="art-side"><div class="toc-block"><h4>目录</h4><ul class="toc-list"><li class="active" data-target="#sec-1">一、Midjourney 在增长中的定位：视觉内容引擎</li><li data-target="#sec-2">二、Midjourney 获客：三大可执行打法</li><li data-target="#sec-3">三、Midjourney 内容运营：从生产到分发的闭环</li><li data-target="#sec-4">四、案例拆解：从获客到转化的完整路径</li><li data-target="#sec-5">五、常见问题</li></ul></div>
+<div class="related-block"><h4>本文涉及产品</h4><a href="/tools/midjourney" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/midjourney.com.png" alt=""></div><div><div class="related-prod-name">Midjourney</div><div class="related-prod-tag">AI 图像</div></div></a><a href="/tools/liblib" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/liblib.art.png" alt=""></div><div><div class="related-prod-name">LiblibAI</div><div class="related-prod-tag">AI 图像</div></div></a><a href="/tools/photoroom" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/photoroom.com.png" alt=""></div><div><div class="related-prod-name">Photoroom</div><div class="related-prod-tag">AI 图像</div></div></a></div>
+<div class="tools-block"><h4>更多评测</h4><a href="/articles/supportbridge-askedabout-tease-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">用 SupportBridge 做增长：AI客服获客与内容运营实战</a><a href="/articles/copy-ai-1of10-ai-tool-for-youtube-content-optimization-saltfish-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">用 Copy.ai 做增长：从获客到转化的运营实战指南</a><a href="/articles/thunderbit-prometheus-by-firecrawl-context-dev-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;">用 Thunderbit 做增长：获客与内容运营实战指南</a></div></aside>
+    </div>
+
+    <div class="art-end-cta">
+      <h3>下一篇评测周一发</h3>
+      <p>订阅 MOXIE 周报，第一时间收到中文 AI 工具的真实评测和实操内容。</p>
+      <div class="row">
+        <a href="#" class="btn-accent-lg" style="padding: 11px 22px; font-size: 13px;">订阅周报</a>
+        <a href="/moxie-blog.html" class="btn-text-cta">查看全部文章</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand"><a href="/moxie-preview.html" class="brand-logo"><img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="117" height="28"></a><p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p><div class="meta-line"><span class="live-dot"></span>MOXIE · BUILD 2026.05.23 · <span class="js-tool-count">3,847</span> TOOLS</div></div>
+      <div class="fcol"><h4>发现</h4><a href="/moxie-new.html">今日上新</a><a href="/moxie-business.html">商业落地</a><div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid" data-mega-grid></div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div><a href="/moxie-blog.html">文章</a></div>
+      <div class="fcol"><h4>产品</h4><a href="/moxie-preview.html?chat=open">MOXIE 助手</a><span class="planned">提示词订阅 <span class="tag">规划中</span></span><span class="planned">AI 花销追踪 <span class="tag">规划中</span></span></div>
+      <div class="fcol"><h4>资源</h4><a href="/moxie-about.html">关于我们</a><a href="/moxie-about.html#faq">FAQ</a></div>
+      <div class="fcol"><h4>合作</h4><a href="/moxie-submit.html">提交产品</a><a href="/moxie-pricing.html">商务合作</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2024 — 2026 MOXIE</span><div class="right"><a href="/moxie-privacy.html">隐私政策</a><a href="/moxie-terms.html">服务条款</a><a href="/moxie-about.html">联系我们</a></div></div>
+  </div>
+</footer>
+
+<script>
+  /* 减少动效偏好下不启用 Lenis 平滑滚动 */
+  if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }
+  if (window.lucide) lucide.createIcons();
+
+  /* ── 按 ?slug= 拉文章 ── */
+  function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+  function fmtDate(s){ if(!s) return ''; const d=new Date(s); return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`; }
+
+  window.moxieWhenDBReady(async (db) => {
+    const slug = "midjourney-liblib-photoroom-growth";
+    if (!slug || !db) return; // 没 slug 就显示 fallback demo 内容
+
+    const { data: a, error } = await window.MoxieDB.articleBySlug(slug);
+    if (error || !a) {
+      document.getElementById('artTitle').textContent = '文章不存在';
+      document.getElementById('artExcerpt').textContent = 'slug = ' + slug;
+      document.getElementById('artBody').innerHTML = '<p style="color:var(--ink-3);text-align:center;padding:60px 0;">这篇文章可能已下架或还没创建。<br><a href="/moxie-blog.html" style="color:var(--accent);">回文章列表 →</a></p>';
+      return;
+    }
+    document.title = a.title + ' · MOXIE';
+    document.getElementById('artTitle').textContent = a.title;
+    document.getElementById('artExcerpt').textContent = a.excerpt || '';
+    document.getElementById('artCategory').textContent = a.category;
+    document.getElementById('artDate').textContent = fmtDate(a.published_at);
+    document.getElementById('artReadMins').textContent = (a.read_minutes || 5) + ' MIN READ';
+
+    if (a.cover_url) {
+      const img = document.getElementById('artCover');
+      img.src = a.cover_url;
+      img.alt = a.title;
+      img.style.display = 'block';
+    } else {
+      document.getElementById('artCoverWrap').style.display = 'none';
+    }
+
+    const body = document.getElementById('artBody');
+    if (a.body_html?.trim()) {
+      body.innerHTML = a.body_html;
+    } else {
+      body.innerHTML = `<div style="padding:40px 24px;background:var(--bg-soft);border-radius:12px;color:var(--ink-2);font-size:13.5px;line-height:1.7;">
+        <p style="margin:0">正文还在编辑中。这篇文章先有了标题和摘要，完整内容会在审核通过后补上。</p>
+      </div>`;
+    }
+    // 重建 TOC（按真实 h2 自动生成）
+    rebuildTOC(body);
+  });
+
+  function rebuildTOC(bodyEl) {
+    const list = document.querySelector('.toc-list');
+    if (!list) return;
+    const h2s = bodyEl.querySelectorAll('h2');
+    if (!h2s.length) { list.closest('.toc-block').style.display = 'none'; return; }
+    list.innerHTML = '';
+    h2s.forEach((h, i) => {
+      if (!h.id) h.id = 'sec-' + (i+1);
+      const li = document.createElement('li');
+      li.dataset.target = '#' + h.id;
+      li.textContent = h.textContent;
+      if (i === 0) li.classList.add('active');
+      list.appendChild(li);
+    });
+    // shared.js 的 wireArticleToc 已经在 DOMContentLoaded 跑过，需要重绑
+    list.querySelectorAll('li').forEach(li => {
+      li.addEventListener('click', () => {
+        list.querySelectorAll('li').forEach(x => x.classList.remove('active'));
+        li.classList.add('active');
+        const t = document.querySelector(li.dataset.target);
+        if (t) {
+          const top = t.getBoundingClientRect().top + window.pageYOffset - 80;
+          if (window.lenis?.scrollTo) window.lenis.scrollTo(top);
+          else window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>

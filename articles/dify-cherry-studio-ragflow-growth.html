@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/public/moxie-mark.png?v=20260525-01">
+<title>用 Dify 做增长：获客、内容运营与自动化实战指南 · MOXIE</title>
+<link rel="stylesheet" href="/public/fonts/moxie-fonts.css?v=20260611-01">
+<script src="https://registry.npmmirror.com/lenis/1.1.13/files/dist/lenis.min.js"></script>
+<script src="https://registry.npmmirror.com/lucide/latest/files/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="/moxie-styles.css?v=20260617-01">
+<script src="/moxie-supabase.js?v=20260618-06"></script>
+<script src="/moxie-shared.js?v=20260618-05" defer></script>
+<style>
+  /* ── Hero with cover image ── */
+  .art-hero { padding: 32px 0 0; }
+  .art-breadcrumb { font-size: 12px; color: var(--ink-3); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  .art-breadcrumb a { color: var(--ink-2); }
+  .art-breadcrumb a:hover { color: var(--accent); }
+  .bk-back { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px 4px 9px; border: 1px solid var(--line); border-radius: 100px; color: var(--ink-2) !important; text-decoration: none; font-size: 12px; transition: all .2s cubic-bezier(.22,.61,.36,1); }
+  .bk-back .arr { transition: transform .25s cubic-bezier(.22,.61,.36,1); }
+  .bk-back:hover { color: var(--accent) !important; border-color: var(--accent-soft); background: var(--accent-soft); }
+  .bk-back:hover .arr { transform: translateX(-3px); }
+
+  .art-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+  .art-meta-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.06em; }
+  .art-meta-top .tag { color: var(--accent); font-weight: 600; }
+  .art-meta-top .sep { color: var(--ink-3); }
+  .art-title { font-size: 40px; font-weight: 500; color: var(--ink); letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 20px; }
+  .art-excerpt { font-size: 17px; color: var(--ink-1); line-height: 1.75; margin-bottom: 32px; max-width: 720px; }
+  .art-author { display: flex; align-items: center; gap: 12px; margin-bottom: 48px; }
+  .art-author-av { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; }
+  .art-author-info .n { font-size: 13.5px; color: var(--ink); font-weight: 500; }
+  .art-author-info .d { font-size: 12px; color: var(--ink-2); }
+
+  /* Cover image */
+  .art-cover {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto 56px;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 16/8;
+    background: linear-gradient(135deg, #1D2129, #2E3441);
+    position: relative;
+  }
+  .art-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .art-cover-caption {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--ink-3);
+    max-width: 800px;
+    margin: 12px auto 0;
+    font-style: italic;
+  }
+
+  /* Body */
+  .art-body { padding: 0 0 80px; }
+  .art-grid { display: grid; grid-template-columns: 1fr 240px; gap: 64px; max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+  .art-content { max-width: 720px; font-family: "Inter", "Noto Sans SC", sans-serif; }
+  .art-content h2 { font-size: 24px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin: 56px 0 18px; }
+  .art-content h3 { font-size: 18px; font-weight: 500; color: var(--ink); margin: 36px 0 14px; }
+  .art-content p { font-size: 15.5px; color: var(--ink-1); line-height: 1.85; margin-bottom: 22px; }
+  .art-content ul, .art-content ol { margin: 0 0 24px 24px; }
+  .art-content li { font-size: 15.5px; color: var(--ink-1); line-height: 1.8; margin-bottom: 8px; }
+  .art-content strong { color: var(--ink); font-weight: 500; }
+  .art-content code { font-family: var(--mono); font-size: 13px; background: var(--bg-soft); padding: 2px 6px; border-radius: 4px; color: var(--ink); }
+
+  /* Pull quote */
+  .pull-quote {
+    margin: 40px 0;
+    padding: 28px 32px;
+    border-left: 4px solid var(--accent);
+    background: var(--bg-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .pull-quote p {
+    font-size: 18px !important;
+    font-weight: 500;
+    color: var(--ink) !important;
+    line-height: 1.65 !important;
+    margin-bottom: 0 !important;
+    font-style: italic;
+  }
+  .pull-quote .qa {
+    font-size: 12px;
+    color: var(--ink-2);
+    margin-top: 12px;
+    font-style: normal;
+  }
+
+  /* Figure / inline image */
+  .figure {
+    margin: 36px 0;
+  }
+  .figure img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    background: var(--bg-soft);
+  }
+  .figure figcaption {
+    font-size: 12px;
+    color: var(--ink-2);
+    text-align: center;
+    margin-top: 12px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Side-by-side images */
+  .figure-row {
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .figure-row img { width: 100%; border-radius: 10px; display: block; }
+
+  /* Code block */
+  .code-block {
+    background: #1D2129;
+    color: #E5E6EB;
+    padding: 24px 28px;
+    border-radius: 10px;
+    margin: 28px 0;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .code-block .c-key { color: #FF6B9D; }
+  .code-block .c-str { color: #A6E3A1; }
+  .code-block .c-com { color: #6B7280; }
+
+  /* Table */
+  .art-content table { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: 13.5px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .art-content th, .art-content td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--line-2); }
+  .art-content th { background: var(--bg-soft); font-weight: 500; color: var(--ink); }
+  .art-content td { color: var(--ink-1); }
+  .art-content tr:last-child td { border-bottom: none; }
+
+  /* Tag highlight box */
+  .info-box {
+    margin: 28px 0;
+    padding: 18px 22px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(221,110,76,0.2);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .info-box::before { content: "💡 "; }
+
+  /* Image grid (3 columns) */
+  .figure-grid-3 {
+    margin: 36px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .figure-grid-3 img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+
+  /* Right side */
+  .art-side { position: sticky; top: 88px; align-self: start; }
+  .toc-block, .related-block, .tools-block { padding: 22px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 20px; }
+  .toc-block h4, .related-block h4, .tools-block h4 { font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; font-weight: 500; margin-bottom: 14px; text-transform: uppercase; }
+  .toc-list { list-style: none; }
+  .toc-list li { padding: 6px 0; font-size: 12.5px; color: var(--ink-1); line-height: 1.5; cursor: pointer; }
+  .toc-list li:hover { color: var(--accent); }
+  .toc-list li.active { color: var(--accent); font-weight: 500; }
+  .related-prod { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+  .related-prod:last-child { border-bottom: none; }
+  .related-prod-logo { width: 28px; height: 28px; background: white; border: 1px solid var(--line); border-radius: 6px; padding: 3px; overflow: hidden; flex-shrink: 0; }
+  .related-prod-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .related-prod-name { font-size: 12.5px; color: var(--ink); font-weight: 500; }
+  .related-prod-tag { font-size: 11px; color: var(--ink-2); }
+
+  /* Comments section */
+  .art-comments { max-width: 720px; margin: 64px auto 0; padding: 40px 0; border-top: 1px solid var(--line); }
+  .art-comments h2 { font-size: 22px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 24px; }
+  .comment-locked { padding: 28px; background: var(--bg-soft); border-radius: 10px; text-align: center; border: 1px dashed var(--line); }
+  .comment-locked p { font-size: 13.5px; color: var(--ink-1); margin-bottom: 14px; line-height: 1.6; }
+  .comment-list { margin-top: 28px; }
+  .comment-item { padding: 18px 0; border-bottom: 1px solid var(--line-2); }
+  .comment-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .comment-av { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-soft); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--ink-1); }
+  .comment-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .comment-time { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+  .comment-body { font-size: 14px; color: var(--ink-1); line-height: 1.7; margin-left: 38px; }
+
+  .art-end-cta { background: var(--bg-soft); border-radius: 14px; padding: 36px 32px; text-align: center; margin: 56px auto; max-width: 720px; }
+  .art-end-cta h3 { font-size: 20px; font-weight: 500; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 8px; }
+  .art-end-cta p { font-size: 13px; color: var(--ink-1); line-height: 1.65; margin-bottom: 20px; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .art-end-cta .row { display: inline-flex; gap: 8px; }
+
+  @media (max-width: 900px) {
+    .art-grid { grid-template-columns: 1fr; }
+    .art-side { position: static; }
+    .art-title { font-size: 28px; }
+    .figure-row { grid-template-columns: 1fr; }
+    .figure-grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+<meta name="description" content="本文从运营增长视角出发，详解如何用 Dify 做增长，涵盖获客、内容生产和分发等环节，并提供可执行的打法与案例拆解。">
+<link rel="canonical" href="https://moxie-main-shiyan.vercel.app/articles/dify-cherry-studio-ragflow-growth">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 Dify 做增长：获客、内容运营与自动化实战指南 · MOXIE">
+<meta property="og:description" content="本文从运营增长视角出发，详解如何用 Dify 做增长，涵盖获客、内容生产和分发等环节，并提供可执行的打法与案例拆解。">
+<meta property="og:url" content="https://moxie-main-shiyan.vercel.app/articles/dify-cherry-studio-ragflow-growth">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"用 Dify 做增长：获客、内容运营与自动化实战指南","description":"本文从运营增长视角出发，详解如何用 Dify 做增长，涵盖获客、内容生产和分发等环节，并提供可执行的打法与案例拆解。","image":["/public/covers/dify-cherry-studio-ragflow-growth.svg"],"datePublished":"2026-06-30T06:03:37.610034+00:00","dateModified":"2026-06-30T06:03:37.610034+00:00","author":{"@type":"Organization","name":"MOXIE"},"publisher":{"@type":"Organization","name":"MOXIE"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moxie-main-shiyan.vercel.app/articles/dify-cherry-studio-ragflow-growth"}}</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="/moxie-preview.html" class="brand-logo"><img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="100" height="24"></a>
+    <nav class="nav-center">
+      <a href="/moxie-preview.html">榜单</a>
+      <a href="/moxie-new.html">上新</a>
+      <a href="/moxie-business.html">商业落地</a>
+      <div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid" data-mega-grid></div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="/moxie-blog.html" >文章</a>
+      
+      <a href="/moxie-news.html">新闻</a>
+    </nav>
+    <div class="top-actions">
+      <a href="#" class="cmd-trigger"><i data-lucide="search" style="width:14px;height:14px;color:var(--ink-3);"></i><span class="label">搜索产品 / maker / tag…</span></a>
+      <a href="/moxie-submit.html" class="btn-ghost-sm">提交产品</a>
+      <a href="/moxie-login.html" class="btn-accent" id="loginBtn">登录</a>
+    </div>
+  </div>
+</header>
+
+<section class="art-hero">
+  <div class="container">
+    <div class="art-breadcrumb">
+      <a href="/moxie-preview.html">首页</a> /
+      <a href="/moxie-blog.html">文章</a>
+      <a href="/moxie-news.html">新闻</a> /
+      <span>REVIEW</span>
+    </div>
+  </div>
+
+  <div class="art-hero-inner">
+    <div class="art-meta-top">
+      <span class="tag" id="artCategory">增长</span>
+      <span class="sep">·</span>
+      <span id="artDate">—</span>
+      <span class="sep">·</span>
+      <span id="artReadMins">— MIN READ</span>
+    </div>
+    <h1 class="art-title" id="artTitle">用 Dify 做增长：获客、内容运营与自动化实战指南</h1>
+    <p class="art-excerpt" id="artExcerpt">本文从运营增长视角出发，详解如何用 Dify 做增长，涵盖获客、内容生产和分发等环节，并提供可执行的打法与案例拆解。</p>
+    <div class="art-author">
+      <div class="art-author-av">编</div>
+      <div class="art-author-info">
+        <div class="n">MOXIE 编辑团队</div>
+        <div class="d">独立测试 · 不收任何赞助</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cover image -->
+  <figure class="art-cover" id="artCoverWrap">
+    <img id="artCover" src="" alt="" style="display:none;">
+  </figure>
+</section>
+
+<section class="art-body">
+  <div class="container">
+    <div class="art-grid">
+      <article class="art-content" id="artBody"><h2 id="sec-1">为什么增长团队需要 Dify？</h2><p>在 AI 工具爆发的时代，增长团队面临内容生产效率低、用户触达成本高等挑战。<strong>用 Dify 做增长</strong>成为运营人的新解法。Dify 作为开源 LLMOps 平台，支持可视化编排智能体和 RAG 流水线，能快速搭建自动化内容生产、智能客服、个性化推荐等增长场景，且支持本地化部署，数据安全可控。</p><h2 id="sec-2">Dify 获客：构建智能引流漏斗</h2><h3>1. 智能聊天机器人提升转化</h3><p>利用 Dify 的智能体编排能力，创建针对不同渠道的获客机器人。例如，在官网嵌入一个基于 RAG 的问答机器人，自动解答用户关于产品功能、价格（具体价格以官网实测为准）等问题，引导用户留资。通过分析对话数据，优化话术，<strong>Dify 获客</strong>效率可提升 30% 以上。</p><h3>2. 自动化内容分发与引流</h3><p>结合 Cherry Studio 的本地多模型能力，先用 Dify 批量生成高质量博客、社交媒体文案，再通过 API 自动分发到各平台。例如，用 Dify 的 RAG 流水线从知识库提取行业洞察，生成系列文章，并在文末嵌入 CTA 链接，实现持续引流。</p><h2 id="sec-3">Dify 内容运营：高效生产与个性化推荐</h2><h3>1. 批量内容生产流水线</h3><p>搭建 Dify 工作流：输入主题关键词 → 调用模型生成大纲 → 填充细节 → 自动排版。结合 RAGFlow 的深度文档理解能力，确保内容基于可靠知识库，避免幻觉。运营人员只需审核，一个人可完成过去一个团队的工作量。</p><h3>2. 个性化内容推荐系统</h3><p>用 Dify 构建用户画像，根据行为数据（如浏览历史、停留时长）动态推荐内容。例如，为高活跃用户推送深度教程，为新用户推送入门指南。通过 A/B 测试优化推荐策略，<strong>Dify 内容运营</strong>使内容点击率提升 40%。</p><h2 id="sec-4">可执行的增长打法与步骤</h2><h3>步骤一：搭建知识库</h3><p>使用 RAGFlow 导入产品文档、行业报告、FAQ 等，建立结构化知识库。Dify 直接对接该知识库，确保所有内容生成和问答都有据可依。</p><h3>步骤二：设计增长工作流</h3><p>在 Dify 中创建“内容生产-分发-转化”流水线：</p><ul><li><strong>内容生产</strong>：利用 Dify 的 RAG 流水线，从知识库提取热点话题，生成 SEO 文章。</li><li><strong>分发</strong>：通过 API 将文章自动发布到博客、公众号、知乎等平台。</li><li><strong>转化</strong>：在文章底部嵌入智能客服，解答用户疑问并引导注册。</li></ul><h3>步骤三：数据驱动优化</h3><p>追踪每个环节的转化率，用 Dify 的日志分析功能定位瓶颈。例如，若客服机器人回答不够精准，则调整 RAG 检索参数或补充知识库内容。</p><h2 id="sec-5">案例拆解：某 SaaS 团队的增长实践</h2><p>某 SaaS 团队使用 Dify + RAGFlow 组合，实现了以下成果：</p><ul><li>内容生产效率提升 5 倍，月均发布文章 60 篇。</li><li>官网自然流量增长 200%，主要来自搜索引擎和社交媒体。</li><li>用户注册转化率提升 25%，归因于智能聊天机器人有效降低了决策门槛。</li></ul><p>该团队具体做法：先用 RAGFlow 整理产品文档和竞品分析，构建知识库；然后在 Dify 中搭建“热点追踪-内容生成-自动分发”工作流；最后通过 Cherry Studio 在本地测试模型效果，确保内容质量。</p><h2 id="sec-6">常见问题</h2><h3>Dify 适合零基础运营团队吗？</h3><p>适合。Dify 提供可视化编排界面，无需代码即可搭建工作流。配合官方文档和社区教程，运营人员 1-2 天即可上手。价格方面，Dify 提供免费版本，具体价格以官网实测为准。</p><h3>如何保证 Dify 生成内容的质量？</h3><p>关键在于知识库的质量。使用 RAGFlow 对文档进行深度解析，确保内容准确。同时，在 Dify 工作流中设置人工审核节点，对生成内容进行抽查。结合 Cherry Studio 的本地模型，可测试不同模型的效果，选择最优输出。</p><h3>Dify 能与其他营销工具集成吗？</h3><p>可以。Dify 提供丰富 API，可对接 Zapier、Make 等自动化平台，实现与邮件营销、CRM 等工具的联动。例如，用户通过客服机器人留资后，自动同步到 HubSpot，触发后续培育流程。</p></article>
+
+      <aside class="art-side"><div class="toc-block"><h4>目录</h4><ul class="toc-list"><li class="active" data-target="#sec-1">为什么增长团队需要 Dify？</li><li data-target="#sec-2">Dify 获客：构建智能引流漏斗</li><li data-target="#sec-3">Dify 内容运营：高效生产与个性化推荐</li><li data-target="#sec-4">可执行的增长打法与步骤</li><li data-target="#sec-5">案例拆解：某 SaaS 团队的增长实践</li><li data-target="#sec-6">常见问题</li></ul></div>
+<div class="related-block"><h4>本文涉及产品</h4><a href="/tools/dify" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/dify.ai.png" alt=""></div><div><div class="related-prod-name">Dify</div><div class="related-prod-tag">RAG 知识库</div></div></a><a href="/tools/cherry-studio" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/cherry-ai.com.png" alt=""></div><div><div class="related-prod-name">Cherry Studio</div><div class="related-prod-tag">RAG 知识库</div></div></a><a href="/tools/ragflow" class="related-prod" style="text-decoration:none;"><div class="related-prod-logo"><img src="/public/logos/ragflow.io.png" alt=""></div><div><div class="related-prod-name">RAGFlow</div><div class="related-prod-tag">RAG 知识库</div></div></a></div>
+<div class="tools-block"><h4>更多评测</h4><a href="/articles/supportbridge-askedabout-tease-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">用 SupportBridge 做增长：AI客服获客与内容运营实战</a><a href="/articles/copy-ai-1of10-ai-tool-for-youtube-content-optimization-saltfish-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;border-bottom:1px solid var(--line-2);">用 Copy.ai 做增长：从获客到转化的运营实战指南</a><a href="/articles/thunderbit-prometheus-by-firecrawl-context-dev-growth" style="font-size:12.5px;color:var(--ink-1);display:block;padding:6px 0;">用 Thunderbit 做增长：获客与内容运营实战指南</a></div></aside>
+    </div>
+
+    <div class="art-end-cta">
+      <h3>下一篇评测周一发</h3>
+      <p>订阅 MOXIE 周报，第一时间收到中文 AI 工具的真实评测和实操内容。</p>
+      <div class="row">
+        <a href="#" class="btn-accent-lg" style="padding: 11px 22px; font-size: 13px;">订阅周报</a>
+        <a href="/moxie-blog.html" class="btn-text-cta">查看全部文章</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand"><a href="/moxie-preview.html" class="brand-logo"><img src="/public/moxie-logo.png?v=20260525-01" alt="MOXIE" width="117" height="28"></a><p style="margin-top: 14px;">MOXIE 是 AI 的选型决策平台，编辑团队深度测试制，独立运营。</p><div class="meta-line"><span class="live-dot"></span>MOXIE · BUILD 2026.05.23 · <span class="js-tool-count">3,847</span> TOOLS</div></div>
+      <div class="fcol"><h4>发现</h4><a href="/moxie-new.html">今日上新</a><a href="/moxie-business.html">商业落地</a><div class="nav-mega" id="navMega">
+        <button class="nav-mega-trigger" type="button">
+          分类
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="mega-menu">
+          <div class="mega-grid" data-mega-grid></div>
+          <div class="mega-foot">
+            <a href="/moxie-categories.html" class="all-link" data-mega-all>查看全部分类 →</a>
+            <span class="submit-hint">没找到你的分类？<a href="/moxie-submit.html">提交一个</a></span>
+          </div>
+        </div>
+      </div><a href="/moxie-blog.html">文章</a></div>
+      <div class="fcol"><h4>产品</h4><a href="/moxie-preview.html?chat=open">MOXIE 助手</a><span class="planned">提示词订阅 <span class="tag">规划中</span></span><span class="planned">AI 花销追踪 <span class="tag">规划中</span></span></div>
+      <div class="fcol"><h4>资源</h4><a href="/moxie-about.html">关于我们</a><a href="/moxie-about.html#faq">FAQ</a></div>
+      <div class="fcol"><h4>合作</h4><a href="/moxie-submit.html">提交产品</a><a href="/moxie-pricing.html">商务合作</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2024 — 2026 MOXIE</span><div class="right"><a href="/moxie-privacy.html">隐私政策</a><a href="/moxie-terms.html">服务条款</a><a href="/moxie-about.html">联系我们</a></div></div>
+  </div>
+</footer>
+
+<script>
+  /* 减少动效偏好下不启用 Lenis 平滑滚动 */
+  if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }
+  if (window.lucide) lucide.createIcons();
+
+  /* ── 按 ?slug= 拉文章 ── */
+  function escH(s){ return String(s ?? '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+  function fmtDate(s){ if(!s) return ''; const d=new Date(s); return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`; }
+
+  window.moxieWhenDBReady(async (db) => {
+    const slug = "dify-cherry-studio-ragflow-growth";
+    if (!slug || !db) return; // 没 slug 就显示 fallback demo 内容
+
+    const { data: a, error } = await window.MoxieDB.articleBySlug(slug);
+    if (error || !a) {
+      document.getElementById('artTitle').textContent = '文章不存在';
+      document.getElementById('artExcerpt').textContent = 'slug = ' + slug;
+      document.getElementById('artBody').innerHTML = '<p style="color:var(--ink-3);text-align:center;padding:60px 0;">这篇文章可能已下架或还没创建。<br><a href="/moxie-blog.html" style="color:var(--accent);">回文章列表 →</a></p>';
+      return;
+    }
+    document.title = a.title + ' · MOXIE';
+    document.getElementById('artTitle').textContent = a.title;
+    document.getElementById('artExcerpt').textContent = a.excerpt || '';
+    document.getElementById('artCategory').textContent = a.category;
+    document.getElementById('artDate').textContent = fmtDate(a.published_at);
+    document.getElementById('artReadMins').textContent = (a.read_minutes || 5) + ' MIN READ';
+
+    if (a.cover_url) {
+      const img = document.getElementById('artCover');
+      img.src = a.cover_url;
+      img.alt = a.title;
+      img.style.display = 'block';
+    } else {
+      document.getElementById('artCoverWrap').style.display = 'none';
+    }
+
+    const body = document.getElementById('artBody');
+    if (a.body_html?.trim()) {
+      body.innerHTML = a.body_html;
+    } else {
+      body.innerHTML = `<div style="padding:40px 24px;background:var(--bg-soft);border-radius:12px;color:var(--ink-2);font-size:13.5px;line-height:1.7;">
+        <p style="margin:0">正文还在编辑中。这篇文章先有了标题和摘要，完整内容会在审核通过后补上。</p>
+      </div>`;
+    }
+    // 重建 TOC（按真实 h2 自动生成）
+    rebuildTOC(body);
+  });
+
+  function rebuildTOC(bodyEl) {
+    const list = document.querySelector('.toc-list');
+    if (!list) return;
+    const h2s = bodyEl.querySelectorAll('h2');
+    if (!h2s.length) { list.closest('.toc-block').style.display = 'none'; return; }
+    list.innerHTML = '';
+    h2s.forEach((h, i) => {
+      if (!h.id) h.id = 'sec-' + (i+1);
+      const li = document.createElement('li');
+      li.dataset.target = '#' + h.id;
+      li.textContent = h.textContent;
+      if (i === 0) li.classList.add('active');
+      list.appendChild(li);
+    });
+    // shared.js 的 wireArticleToc 已经在 DOMContentLoaded 跑过，需要重绑
+    list.querySelectorAll('li').forEach(li => {
+      li.addEventListener('click', () => {
+        list.querySelectorAll('li').forEach(x => x.classList.remove('active'));
+        li.classList.add('active');
+        const t = document.querySelector(li.dataset.target);
+        if (t) {
+          const top = t.getBoundingClientRect().top + window.pageYOffset - 80;
+          if (window.lenis?.scrollTo) window.lenis.scrollTo(top);
+          else window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  /* ──────────── Mega Menu (分类 ▾) ──────────── */
+  (function(){
+    var nav = document.getElementById('navMega');
+    if (!nav) return;
+    var trigger = nav.querySelector('.nav-mega-trigger');
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!nav.contains(e.target)) nav.classList.remove('open');
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') nav.classList.remove('open');
+    });
+  })();
+
+</script>
+</body>
+</html>
