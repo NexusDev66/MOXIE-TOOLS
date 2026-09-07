@@ -398,17 +398,17 @@
         <!-- 子墨评测 -->
         <div class="prod-section">
           <h2>子墨测评</h2>
-          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测Groq的API响应速度极快，推理延迟极低，适合对实时性要求高的场景。注意国内使用需代理。</div><div class="editor-note-meta">2026.03.24 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>Groq 是一家专注于 AI 推理芯片的公司，其 LPU（语言处理单元）架构专为大模型推理设计。我上手实测了它的 API，主要场景是快速调用 Llama、Mixtral 等开源模型进行文本生成。相比传统 GPU 方案，Groq 的响应速度确实快，适合对延迟敏感的应用，比如实时对话或流式输出。</p><p>实测下来，Groq 最大的亮点是推理速度。LPU 架构让 token 生成几乎无延迟，首 token 响应通常在毫秒级，连续对话也感觉不到卡顿。此外，它支持多种主流开源模型，API 兼容 OpenAI 格式，迁移成本低。推理成本也较低，适合高频调用场景。</p><p>不足也很明显：模型选择有限，目前只支持 Llama、Mixtral 等少数几个，无法使用 GPT-4 或 Claude。国内使用需要代理，且免费额度有限，重度用户需付费。另外，LPU 架构虽快，但复杂任务（如长文本推理）的稳定性还有待观察。</p><p>Groq 适合追求极速推理的开发者，尤其是做实时应用或原型验证。如果你对模型多样性要求不高，且能接受代理和付费，它是个不错的补充。但作为主力工具，目前生态还不够成熟，建议结合其他平台使用。</p></div></details></div>
+          <div class="editor-note"><div class="editor-note-head">EDITOR'S NOTE · 测试 7 天</div><div class="editor-note-quote">实测Groq的API，响应速度确实快，几乎感觉不到延迟。用下来对Llama模型的支持很流畅，但国内需要代理，且免费额度有限。适合对速度要求高的场景，但生态还在完善中。</div><div class="editor-note-meta">2026.03.24 发布 · 子墨 亲测</div><details class="full-review" id="full-review"><summary>阅读完整评测</summary><div class="full-review-body"><p>Groq 是一家专注于 AI 推理芯片的公司，其 LPU（语言处理单元）架构专为大模型推理设计。我上手实测了它的 API，主要场景是快速调用 Llama、Mixtral 等开源模型进行文本生成。相比传统 GPU 方案，Groq 的响应速度确实快，适合对延迟敏感的应用，比如实时对话或流式输出。</p><p>实测下来，Groq 最大的亮点是推理速度。LPU 架构让 token 生成几乎无延迟，首 token 响应通常在毫秒级，连续对话也感觉不到卡顿。此外，它支持多种主流开源模型，API 兼容 OpenAI 格式，迁移成本低。推理成本也较低，适合高频调用场景。</p><p>不足也很明显：模型选择有限，目前只支持 Llama、Mixtral 等少数几个，无法使用 GPT-4 或 Claude。国内使用需要代理，且免费额度有限，重度用户需付费。另外，LPU 架构虽快，但复杂任务（如长文本推理）的稳定性还有待观察。</p><p>Groq 适合追求极速推理的开发者，尤其是做实时应用或原型验证。如果你对模型多样性要求不高，且能接受代理和付费，它是个不错的补充。但作为主力工具，目前生态还不够成熟，建议结合其他平台使用。</p></div></details></div>
         </div>
 
         <!-- 核心特点 -->
         <div class="prod-section">
           <h2>核心特点</h2>
           <div class="feat-list">
-            <div class="feat-item"><span class="n">01</span><span class="t"><strong>毫秒级推理</strong> ── LPU芯片实现极低延迟的模型推理。</span></div>
-            <div class="feat-item"><span class="n">02</span><span class="t"><strong>支持开源模型</strong> ── 兼容Llama、Mixtral等主流开源模型。</span></div>
-            <div class="feat-item"><span class="n">03</span><span class="t"><strong>API服务</strong> ── 提供便捷的API接口，易于集成。</span></div>
-            <div class="feat-item"><span class="n">04</span><span class="t"><strong>低成本</strong> ── 推理速度快且成本低，适合开发者。</span></div>
+            <div class="feat-item"><span class="n">01</span><span class="t"><strong>LPU极速推理</strong> ── 专为AI设计的LPU芯片，毫秒级响应</span></div>
+            <div class="feat-item"><span class="n">02</span><span class="t"><strong>开源模型支持</strong> ── 支持Llama、Mixtral等主流开源模型</span></div>
+            <div class="feat-item"><span class="n">03</span><span class="t"><strong>API服务</strong> ── 提供低延迟API，方便集成应用</span></div>
+            <div class="feat-item"><span class="n">04</span><span class="t"><strong>开发者平台</strong> ── 集成基础设施、推理与控制的一体化平台</span></div>
           </div>
         </div>
 
@@ -416,7 +416,7 @@
         <div class="prod-section">
           <h2>价格</h2>
           <div class="info-list"><div class="info-row"><span class="k">定价模式</span><span class="v">免费+付费</span></div></div>
-          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">提供免费额度，超出部分需付费订阅，具体价格以官网为准。</p>
+          <p style="margin-top:10px;color:var(--ink-2);font-size:13px;line-height:1.7;">提供免费额度和付费订阅，具体价格以官网为准。</p>
         </div>
 
         <!-- 替代品 -->
